@@ -1,8 +1,8 @@
-<!-- d4b41f462501 -->
+<!-- ed69fd89b797 -->
 # Hash Map Cheatsheet（雜湊表速查）
 
 > **範圍** — 鍵→值的題型模式：查找、分組、索引表、前綴和表、重新映射。
-> **另見** — *從本檔切出去的深入內容*：[hash_map_examples.md](./hash_map_examples.md) — 題解庫、單題深入（桶排序、rolling hash、拆半探測、最大頻率算術），以及有序 map（Java `TreeMap` / Python `SortedDict`）的參考。
+> **另見** — *題目集*：[hash_map_examples.md](./hash_map_examples.md) — 經典題目寫成題目卡，各自歸在它所歸約到的下列模板底下。
 > *鄰近的 cheatsheet*：[hashing.md](./hashing.md) — 雜湊本身怎麼運作，以及計數與 rolling hash 的慣用寫法；[set.md](./set.md) — 只管有沒有，不存值；[Collection.md](./Collection.md) — 一開始該選哪個容器。
 
 <!-- d19c3a8130bb -->
@@ -107,7 +107,7 @@
 	- https://blog.techbridge.cc/2017/01/21/simple-hash-table-intro/
 	- https://www.freecodecamp.org/news/hash-tables/
 
-<!-- 59ea13baeba6 -->
+<!-- 06b1bc95636e -->
 ## 辨識
 
 | 題目敘述裡的訊號 | 限制條件線索 | 該用什麼 | 不是這個的情況 |
@@ -119,17 +119,17 @@
 | 「`p` 的所有 anagram 在 `s` 中的起點」、「`s2` 裡有沒有 `s1` 的排列」 | 視窗長度固定為 `len(p)` | [模板 5](#template-5-fixed-window-character-counts--lc-438) 固定視窗的字元計數 | 視窗長度會變（「最多 k 種字元的最長子字串」）→ [sliding_window.md](./sliding_window.md) |
 | 「在這套外星語言中是否已排序」、「依照 … 給定的順序」 | 字母表 ≤ 26 → 每次查排名 O(1) | [模板 6](#template-6-rank-map--value-to-position--lc-953-) 排名表 | |
 | 「isomorphic」、「符合同一個 pattern」、「不能有兩個字元對到同一個」 | 長度相同，O(n) | [模板 7](#template-7-bijection-with-two-maps--lc-205) 雙射 | |
-| 「O(1) 的 `get` 和 `put`」、「淘汰最久沒用到的鍵」 | 最多 2·10⁵ 次呼叫 → 每個操作都要 O(1) | [模板 8](#template-8-ordered-map-as-an-lru-cache--lc-146) 用有序 map 做 LRU | 淘汰的是*使用次數*最少的 → LC 460，每個頻率一條串列 |
-| 「回傳深拷貝」、「clone 這張圖／這條串列」 | V, E ≤ 10⁴ → O(V + E) | [模板 9](#template-9-old-to-new-node-map--lc-133) 舊節點對新節點的表 | 只問連不連得到 → 一個 visited 集合（[graph.md](./graph.md)） |
-| 「從 `[0, n)` 均勻隨機挑，但絕不能挑到黑名單裡的值」 | n ≤ 10⁹、黑名單 ≤ 10⁵ → 不可能把合法值列出來 | [模板 10](#template-10-virtual-map-remapping--lc-710) 虛擬重新映射 | |
-| 「出現次數前 k 名，同次數依字母序」 | k ≪ n → 堆積勝過整個排序 | [模板 11](#template-11-map-plus-heap--lc-692) map 加堆積 | 沒有同分規則（LC 347）→ O(n) 的桶排序 |
+| 「O(1) 的 `get` 和 `put`」、「淘汰最久沒用到的鍵」 | 最多 2·10⁵ 次呼叫 → 每個操作都要 O(1) | [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) map + 雙向鏈結串列 | 淘汰的是*使用次數*最少的 → LC 460，每個頻率一條串列 |
+| 「回傳深拷貝」、「clone 這張圖／這條串列」 | V, E ≤ 10⁴ → O(V + E) | [模板 8](#template-8-old-to-new-node-map--lc-133) 舊節點對新節點的表 | 只問連不連得到 → 一個 visited 集合（[graph.md](./graph.md)） |
+| 「從 `[0, n)` 均勻隨機挑，但絕不能挑到黑名單裡的值」 | n ≤ 10⁹、黑名單 ≤ 10⁵ → 不可能把合法值列出來 | [模板 9](#template-9-virtual-map-remapping--lc-710) 虛擬重新映射 | |
+| 「出現次數前 k 名，同次數依字母序」 | k ≪ n → 堆積勝過整個排序 | [模板 10](#template-10-map-plus-heap--lc-692) map 加堆積 | 沒有同分規則（LC 347）→ O(n) 的桶排序 |
 
 > 限制條件線索依照 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 裡的尺規。
 
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- e3b07dd3ab98 -->
+<!-- 31af9e0edb17 -->
 ### 模板對照表
 
 | # | 模板 | map 的形狀 | 怎麼認出來 | 代表 LC |
@@ -141,12 +141,11 @@
 | 5 | 固定視窗的字元計數 | `{char: count in window}` | 「`p` 在 `s` 裡的 anagram」、「permutation in string」 | 438, 567, 30 |
 | 6 | 排名表 | `{value: rank}` | 「依照 ... 給定的順序」 | 953, 791, 105 |
 | 7 | 雙射（兩個 map） | `{x: y}` **和** `{y: x}` | 「一對一」、「isomorphic」、「符合這個 pattern」 | 205, 290 |
-| 8 | 用有序 map 做 LRU 快取 | 保留插入順序的 `{key: value}` | 「O(1) 的 get 和 put」、「淘汰最久沒用到的」 | 146, 460, 432 |
-| 9 | 舊節點對新節點的表 | `{original node: clone}`、`{child: parent}` | 「clone」、「深拷貝」、「父指標」 | 133, 138, 652 |
-| 10 | 虛擬映射（重新映射） | `{badIndex: goodIndex}` | 「隨機挑，但要排除 ...」 | 710 |
-| 11 | map 加堆積 | `{item: count}` + 依次數排序的堆積 | 「top-K」、「同分時依 ...」 | 692, 347, 451 |
+| 8 | 舊節點對新節點的表 | `{original node: clone}`、`{child: parent}` | 「clone」、「深拷貝」、「父指標」 | 133, 138, 652 |
+| 9 | 虛擬映射（重新映射） | `{badIndex: goodIndex}` | 「隨機挑，但要排除 ...」 | 710 |
+| 10 | map 加堆積 | `{item: count}` + 依次數排序的堆積 | 「top-K」、「同分時依 ...」 | 692, 347, 451 |
 
-> 那些其實是針對一兩題的深入討論 —— O(n) top-K 的桶排序、rolling hash、拆半探測的配對查找、最大頻率算術，以及有序 map（`TreeMap` / `SortedDict`）—— 放在 [hash_map_examples.md](./hash_map_examples.md#templates--algorithms)。
+> 每個模板的實戰題都在 [hash_map_examples.md](./hash_map_examples.md#index)，依模板分組。其他地方：有序 map（`TreeMap` / `SortedDict`）→ 下面的 [Language APIs](#language-apis--sorted-map-treemap--sorteddict)；O(n) top-K 的桶排序 → [heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)；rolling hash → [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md)；拆半探測的配對查找 → [palindrome § Template 9](./palindrome.md#template-9-palindrome-pairs-via-hashmap-split--lc-336-)；最大頻率算術（LC 621）→ [heap_examples.md](./heap_examples.md)。
 
 <!-- 4da59da56b4a -->
 ### 模板 1：查補數 —— LC 1
@@ -176,7 +175,7 @@
 
 **練習** —— LC 1 ⭐ · LC 1010 *（鍵 = 除以 60 的餘數，改成累加次數而不是回傳）* · LC 532 *（相異值，只探 `x + k`；k = 0 需要次數）* · LC 15 ⭐ *（固定一個值，剩下的做 two-sum —— [n_sum.md](./n_sum.md)）*
 
-<!-- 386895e5ba37 -->
+<!-- 248e7575787d -->
 ### 模板 2：頻率計數 —— LC 242
 
 **辨識** —— 「anagram」、「相同的字母、相同的次數」、「出現最多／最少次」、「第一個不重複的字元」、「`ransomNote` 能不能用 `magazine` 拼出來」。只有小寫英文字母 → 一個固定的 `int[26]` 就是 map，空間 O(1)。
@@ -198,7 +197,7 @@
 
 **不是這個的情況** —— 只在乎存不存在、不在乎次數（LC 217）→ 用集合（[set.md](./set.md)）；在乎的是值出現在*哪裡*而不是幾次 → 見下面的索引跨度變形。
 
-**練習** —— LC 242 ⭐ · LC 383 *（數 magazine，花在 note 上）* · LC 387 *（依字串順序再掃一次，第一個次數為 1 的）* · LC 451 *（依次數排序鍵）* · LC 347 ⭐ *（依次數取前 k —— [桶排序](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on)）*
+**練習** —— LC 242 ⭐ · LC 383 *（數 magazine，花在 note 上）* · LC 387 *（依字串順序再掃一次，第一個次數為 1 的）* · LC 451 *（依次數排序鍵）* · LC 347 ⭐ *（依次數取前 k —— [堆積或桶排序](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)）*
 
 <!-- da08f7e1d36d -->
 #### 變形：索引跨度表 —— `span == count` 證明連續 ⭐⭐⭐
@@ -469,37 +468,8 @@
 
 ---
 
-<!-- 309d047e0061 -->
-### 模板 8：用有序 map 做 LRU 快取 —— LC 146
-
-**辨識** —— 「設計一個 `get` 和 `put` 都是 O(1) 的快取」、「超過容量時，淘汰**最久沒被使用**的鍵」。最多 2·10⁵ 次呼叫 → 每個操作都必須是 O(1)。
-
-**關鍵** —— 保留插入順序的 map，只要每次存取都把該鍵移到最後，就會一直維持在「最近使用」的順序；最久沒用的鍵永遠是第一個，所以淘汰就是「移掉第一個項目」，查詢和重新排序都是 O(1)。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**複雜度**
-- **每次呼叫 O(1)**：`move_to_end` 和 `popitem(last=False)` 只是重新串接 `OrderedDict` 內部雙向鏈結串列的節點；`LinkedHashMap` 也一樣。
-- **空間 O(capacity)**：`if len(self.cache) > self.capacity` 這個淘汰讓項目最多只有 `capacity` 個。
-
-**陷阱**
-- `get` 沒有 `move_to_end`：容量 2，`put(1)`、`put(2)`、`get(1)`、`put(3)` 應該淘汰 2；少了這個移動就會淘汰 1。
-- 對已存在的鍵 `put` 時只覆寫值：鍵留在原來的位置，下一次就可能被淘汰，即使它剛剛才被用過。
-- 在插入*之前*就淘汰：容量 1，`put(1,1)`、`put(1,2)` 會先淘汰鍵 1，對一個本來就在的鍵做插入之後快取反而變空。先插入，再修剪。
-- 一個普通的 `dict` 加上一個鍵的串列：`keys.remove(key)` 每次呼叫都是 O(n)，這正是審查在 [design_examples.md](./design_examples.md) 找到的錯誤。
-
-**不是這個的情況** —— 面試官不准用 `OrderedDict`／`LinkedHashMap` → 自己手寫 map + 雙向鏈結串列（[linked_list.md](./linked_list.md)）；淘汰的是使用**次數**最少的（LC 460）→ 每個頻率一條串列，再加一個 `min_freq` 指標。
-
-**練習** —— LC 146 ⭐ · LC 460 *（LFU：每個頻率一條串列）* · LC 432 *（全部 O(1)：串列裡的計數桶）*
-
-> 以子問題狀態當鍵、用 dict 做的 top-down DP（LC 139, 1048, 322）也是同一份模板 —— 完整寫在 [hash_map_examples.md → Hash Map + Memoization / DP](./hash_map_examples.md#hash-map--memoization--dp)。
-
----
-
-<!-- eac63a28f519 -->
-### 模板 9：舊節點對新節點的表 —— LC 133
+<!-- ca82c9206716 -->
+### 模板 8：舊節點對新節點的表 —— LC 133
 
 **辨識** —— 「回傳這張圖／這條串列的**深拷貝**」、「clone」，節點型別帶有可能形成環、或可以指向任何地方的指標（random 指標）。V, E ≤ 10⁴ → O(V + E)。
 
@@ -524,8 +494,8 @@
 
 ---
 
-<!-- c467dc7137d5 -->
-### 模板 10：虛擬映射（重新映射）—— LC 710
+<!-- f47ff99f40ee -->
+### 模板 9：虛擬映射（重新映射）—— LC 710
 
 **辨識** —— 「在 `[0, n)` 裡隨機挑一個**不在** `blacklist` 裡的整數」、「盡量少呼叫亂數函式」。n ≤ 10⁹、黑名單 ≤ 10⁵ → 沒辦法把合法值列出來，而 `pick()` 必須是 O(1)。
 
@@ -552,8 +522,8 @@
 
 ---
 
-<!-- 6b95516cad51 -->
-### 模板 11：map 加堆積 —— LC 692
+<!-- 15f4cb426aa5 -->
+### 模板 10：map 加堆積 —— LC 692
 
 **辨識** —— 「回傳出現次數最多的 k 個單字，依次數排序，同次數依字母序」、「依次數取前 k」：map 負責計數，第二個結構負責把 map 數出來的東西排序。k ≪ n → 堆積勝過把每個鍵都排序。
 
@@ -563,34 +533,64 @@
 
 <!--CODE-->
 
+**第二種解法 —— 依次數分桶，不用堆積。** 次數最多是 `len(words)`，所以可以拿來當串列的索引：`buckets[c]` 放剛好出現 `c` 次的單字。從高到低走一遍次數，頻率順序就自動排好了，而同分規則只會比較次數相同的單字。這就是 LC 347 的 O(n) 桶排序（[heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)）再加上每個桶內排序 —— 面試官要你不用堆積做 top-K 時，值得會。
+
+<!--CODE-->
+
 **複雜度**
-- **Python 是 O(n + k log n)**：計數一趟，`heapify` 是 O(n)，k 次 `heappop` 每次 O(log n)。Java 的 `addAll` 是一個一個插入，所以是 O(n log n)。
-- **空間 O(n)**：`count` 和堆積對每個相異單字各一個項目。
+- **Python 是 O(n + k log n)**：計數一趟，`heapify` 是 O(n)，k 次 `heappop` 每次 O(log n)。Java 的 `addAll` 是一個一個插入，所以是 O(n log n)。分桶解法是 O(n)，再加上它讀到的每個桶的排序。
+- **空間 O(n)**：`count` 和堆積（或桶）對每個相異單字各一個項目。
 
 **陷阱**
 - 堆積裡放 `(freq, word)` 卻沒加負號，會先 pop 出**最少**出現的單字。
 - 大小為 k 的 min-heap（O(n log k) 的追問）需要**反過來**的同分順序，讓字母序較大的單字留在根部、最先被淘汰；沿用 `(-count, word)` 的順序會淘汰錯的單字。
 - Java 比較器寫成 `count.get(b) - count.get(a)` 就是減法比較器；要用 `Integer.compare`。
 
-**不是這個的情況** —— 沒有同分規則、只要出現最多的 k 個值（LC 347）→ 依頻率做桶排序，O(n)（[hash_map_examples](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on)）；要的是第 k 大的**值**而不是次數 → [heap.md](./heap.md)。
+**不是這個的情況** —— 沒有同分規則、只要出現最多的 k 個值（LC 347）→ 依頻率做桶排序，O(n)（[heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)）；要的是第 k 大的**值**而不是次數 → [heap.md](./heap.md)。
 
 **練習** —— LC 692 · LC 347 ⭐ *（沒有同分規則：堆積，或 O(n) 的桶）* · LC 451 *（每個鍵，依次數排序）* · LC 1636 *（次數遞增，同分時值遞減）*
 
-> top-K 不用堆積的 O(n) 解法，見 [Bucket Sort via Hash Map](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on)；用單調堆疊算出 `next greater` 再存進 map，見 [Monotonic Stack + Hash Map](./hash_map_examples.md#monotonic-stack--hash-map)。
+> 沒有同分規則時，top-K 不用堆積的 O(n) 解法見 [heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)；用單調堆疊算出 `next greater` 再存進 map（LC 496），見 [monotonic_stack § Template 1](./monotonic_stack.md#template-1-next-greater-element-decreasing-stack--lc-496)。
 
-<!-- cd1ec2698006 -->
+<!-- 2654cd9c0187 -->
+## 各語言 API —— 有序 map（TreeMap / SortedDict）
+
+雜湊表不保留順序。題目需要最接近的鍵（floor / ceiling）、最小或最大的鍵，或某個範圍內的所有鍵時，改用**有序 map**：Java 的 `TreeMap`，或 Python 的 `SortedDict`。Python 標準函式庫沒有有序 map；`SortedDict` 來自第三方套件 `sortedcontainers`，LeetCode 有預先安裝（本機用 `pip install sortedcontainers`）。
+
+| 你需要的 | Java `TreeMap` | Python `SortedDict`（`d`） |
+|---|---|---|
+| 最小／最大的鍵 | `firstKey()` / `lastKey()` | `d.keys()[0]` / `d.keys()[-1]` |
+| 最小／最大的項目 | `firstEntry()` / `lastEntry()` | `d.peekitem(0)` / `d.peekitem(-1)` → `(k, v)` |
+| ≤ x 的最大鍵（floor） | `floorKey(x)` → 鍵或 `null` | `i = d.bisect_right(x) - 1`，`i >= 0` 時取 `d.keys()[i]` |
+| ≥ x 的最小鍵（ceiling） | `ceilingKey(x)` → 鍵或 `null` | `i = d.bisect_left(x)`，`i < len(d)` 時取 `d.keys()[i]` |
+| < x 的最大鍵／> x 的最小鍵 | `lowerKey(x)` / `higherKey(x)` | `bisect_left(x) - 1` / `bisect_right(x)`，同樣要檢查邊界 |
+| `[lo, hi]` 內的鍵 | `subMap(lo, true, hi, true)` | `d.irange(lo, hi)` |
+| 移除最小／最大的項目 | `pollFirstEntry()` / `pollLastEntry()` | `d.popitem(0)` / `d.popitem(-1)` |
+| 第 k 小的鍵 | 不支援（只能逐一走訪） | `d.keys()[k]`，O(log n) |
+| 單純查值 `get(k)` | O(log n)，沿樹往下走 | O(1)，雜湊查找 |
+| 自訂順序 | `Comparator` | `SortedDict(key_func)` —— 是鍵的轉換，不是比較器 |
+
+**能擋掉大多數 bug 的規則**：Java 的 `floorKey` / `ceilingKey` 回傳的是**鍵**或 `null`；Python 的 `bisect_*` 回傳的是**索引**，可能是 `-1` 或 `len(d)`。取值前先檢查索引，因為 `d.keys()[-1]` 會默默回傳最大的鍵，而不是「沒有」。另外要呼叫 `d.bisect_left(x)`，不要寫 `bisect.bisect_left(list(d.keys()), x)`：`list(...)` 的複製是 O(n)。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**用在哪裡**：訂房與重疊檢查（LC 729、731、732）在 [design_examples.md](./design_examples.md#sorted-map--time-index-examples)；剩下最小的牌（LC 846）和區間串流（LC 352）在 [hash_map_examples.md](./hash_map_examples.md#index)；時間戳的 floor 查找（LC 981）在 [design_examples.md](./design_examples.md#time-based-key-value-store--lc-981)。如果鍵只需要排序一次，就排序一個串列 —— 有序 map 為了保持有序，每次更新都要付 O(log n)。
+
+<!-- 124e9f25f025 -->
 ## 練習路徑
 
 | 階段 | 題目（由易到難） | 新增的能力 |
 |---|---|---|
-| **核心** ⭐ | LC 1 · LC 242 · LC 49 · LC 347 · LC 146 | 查補數、計數、依鍵分組、依次數取前 K、把有序 map 當快取 |
+| **核心** ⭐ | LC 1 · LC 242 · LC 49 · LC 347 · LC 146 | 查補數、計數、依鍵分組、依次數取前 K、map + 串列做快取（[linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-)） |
 | **練習** | LC 205 · LC 290 · LC 383 · LC 953 · LC 438 · LC 560 · LC 133 | 雙射、把計數當預算、排名表、固定視窗計數、前綴和計數、clone 表 |
 | **延伸** | LC 692 · LC 3026 · LC 149 · LC 710 | 帶同分規則的 top-K、每個鍵存最小前綴、正規化的斜率鍵、虛擬重新映射 |
 
 <!-- ea4fa3974f42 -->
 ## 總結與速查
 
-<!-- 8c366948dba5 -->
+<!-- b7b376a44537 -->
 ### 題目 → 模式決策表
 
 | 怎麼認出來 | 模式 | 模板 | 時間／空間 | 題目 |
@@ -602,12 +602,12 @@
 | 用字母計數比較的字元視窗（這裡是固定長度；先擴張再收縮的放在 [sliding_window.md](./sliding_window.md)） | 視窗 + 字元計數 | [T5](#template-5-fixed-window-character-counts--lc-438) | O(n) / O(k) | 3, 76, 424, 438, 567, 159, 340, 904, 1004, 1208, 1234 |
 | 「依照 ... 給定的順序」、自訂字母表、某個排列、依索引切分 | 排名表 | [T6](#template-6-rank-map--value-to-position--lc-953-) | O(n) / O(n) | 953, 791, 105, 106 |
 | 一個**雙向**都必須是一對一的映射 | 雙射（兩個 map） | [T7](#template-7-bijection-with-two-maps--lc-205) | O(n) / O(n) | 205, 290 |
-| 「設計一個 cache」、O(1) get + put、淘汰機制，或值得記憶化的遞迴 | 快取／記憶化 | [T8](#template-8-ordered-map-as-an-lru-cache--lc-146) | 攤還 O(1) / O(n) | 146, 460, 705, 706, 380, 381, 432, 355, 981, 1244, 139, 322, 1048 |
-| 節點之間的關係：clone、父指標、子樹特徵、把等式當成邊 | 圖／樹的節點表 | [T9](#template-9-old-to-new-node-map--lc-133) | O(n) / O(n) | 133, 138, 652, 721, 734, 399, 947, 1257 |
-| 「均勻隨機挑一個，但絕不能挑到這些值」 | 虛擬映射（重新映射） | [T10](#template-10-virtual-map-remapping--lc-710) | 每次挑 O(1) / O(B) | 710, 398, 528, 384 |
-| 光有 map 不夠 —— 你還需要順序、堆積或堆疊 | map + 另一個結構 | [T11](#template-11-map-plus-heap--lc-692) | 視情況 | 347, 496, 503, 739, 853, 729, 846, 352 |
+| 「設計一個 cache」、O(1) get + put、淘汰機制，或值得記憶化的遞迴 | 快取／記憶化 | [linked_list § T7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) | 攤還 O(1) / O(n) | 146, 460, 705, 706, 380, 381, 432, 355, 981, 1244, 139, 322, 1048 |
+| 節點之間的關係：clone、父指標、子樹特徵、把等式當成邊 | 圖／樹的節點表 | [T8](#template-8-old-to-new-node-map--lc-133) | O(n) / O(n) | 133, 138, 652, 721, 734, 399, 947, 1257 |
+| 「均勻隨機挑一個，但絕不能挑到這些值」 | 虛擬映射（重新映射） | [T9](#template-9-virtual-map-remapping--lc-710) | 每次挑 O(1) / O(B) | 710, 398, 528, 384 |
+| 光有 map 不夠 —— 你還需要順序、堆積或堆疊 | map + 另一個結構 | [T10](#template-10-map-plus-heap--lc-692) | 視情況 | 347, 496, 503, 739, 853, 729, 846, 352 |
 
-> 上表每一列的最壞情況，在所有鍵都碰撞時都是**每次操作 O(n)**。逐題的表格（約 90 題，各自標難度與一句話洞見）在 [hash_map_examples.md → Problems by Pattern](./hash_map_examples.md#problems-by-pattern)。
+> 上表每一列的最壞情況，在所有鍵都碰撞時都是**每次操作 O(n)**。每一題實戰題，連同難度和它被詳解的那份文件，都在 [hash_map_examples.md → Index](./hash_map_examples.md#index)。
 
 <!-- bcad8c07f58c -->
 ### 關鍵洞見與辨識訊號

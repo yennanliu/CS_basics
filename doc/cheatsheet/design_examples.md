@@ -1,7 +1,7 @@
 # Design — Worked Examples
 
-> **Scope** — The worked-solution archive behind [design.md](./design.md): twenty LC "design a X" problems in full, grouped by the structure pair each one forces rather than by problem number.
-> **See also**: [design.md](./design.md) — the parent sheet: the five patterns, the five-step method and the chooser table these solutions rehearse; [design_patterns.md](./design_patterns.md) — consistent hashing, rate limiters and load balancing, which are asked in the same rounds but are not LC problems; [ood_design.md](./ood_design.md) — class modelling and SOLID for the LLD round; [iterator.md](./iterator.md) — the iterator contract on its own; [trie.md](./trie.md), [heap.md](./heap.md), [hash_map.md](./hash_map.md) — the individual structures being combined.
+> **Scope** — The worked "design a X" problems behind [design.md](./design.md), one problem card each, filed under the structure pair (design.md's patterns) that each one forces.
+> **See also**: [design.md](./design.md) — the parent sheet: the patterns, the five-step method and the chooser table these solutions rehearse; [design_patterns.md](./design_patterns.md) — consistent hashing, rate limiters and load balancing, which are asked in the same rounds but are not LC problems; [ood_design.md](./ood_design.md) — class modelling and SOLID for the LLD round; [iterator.md](./iterator.md) — the iterator contract on its own; [trie.md](./trie.md), [heap.md](./heap.md), [hash_map.md](./hash_map.md), [linked_list.md](./linked_list.md) — the individual structures being combined.
 
 ## LeetCode Problem Lists
 
@@ -10,201 +10,72 @@
 
 ## Overview
 
-This is the long tail of [design.md](./design.md). The parent sheet keeps the five structure
-patterns, the five-step interview method and the chooser table; this file keeps the designs that
-*apply* them, so the method is not buried under 1,300 lines of classes.
+[design.md](./design.md) holds the patterns: a design problem is one structure that holds the data
+plus a second structure whose only job is to make one operation fast. This sheet is the problems.
+Each card names the pattern it reduces to, the one step it adds, and one canonical solution. The
+designs whose structure is a core card elsewhere (LRU in [linked_list.md](./linked_list.md), the
+running median in [heap.md](./heap.md), the min stack in [stack.md](./stack.md)) are worked there
+and listed here as pointers.
 
-### Key Properties
-- **Complexity**: stated per design — the whole point of each is which operations are O(1) and which are O(log n)
-- **Core Idea**: every design below is one structure that holds the data plus a second structure whose only job is to make one operation fast
-- **When to Use**: after you have read the required operations off the problem and want to see the pair written out end to end
+## Index
 
+| LC | Problem | Reduces to | Difficulty | Where |
+|---|---|---|---|---|
+| 146 | LRU Cache | [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) | Medium | worked in linked_list.md |
+| 460 | LFU Cache | [linked_list § LFU variant](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-) | Hard | worked in linked_list.md |
+| 432 | All O(1) Data Structure | [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) | Hard | [below](#all-o1-data-structure--lc-432-) |
+| 703 | Kth Largest Element in a Stream | [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) | Easy | worked in heap_examples.md |
+| 355 | Design Twitter | [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-) | Medium | [below](#design-twitter--lc-355) |
+| 295 | Find Median from Data Stream | [heap § Template 4](./heap.md#template-4-two-heaps-for-a-running-median--lc-295-) | Hard | worked in heap.md |
+| 211 | Design Add and Search Words Data Structure | [trie § Template 3](./trie.md#template-3-trie-with-wildcard-support--lc-211) | Medium | worked in trie.md |
+| 642 | Design Search Autocomplete System | [trie § Template 4](./trie.md#template-4-autocomplete-trie--lc-1268) | Hard | [below](#design-search-autocomplete-system--lc-642) |
+| 362 | Design Hit Counter | [queue § Template 6](./queue.md#template-6-stream-processing-pattern--lc-346) | Medium | [below](#design-hit-counter--lc-362) |
+| 353 | Design Snake Game | [queue § Template 6](./queue.md#template-6-stream-processing-pattern--lc-346) | Medium | [below](#design-snake-game--lc-353) |
+| 380 | Insert Delete GetRandom O(1) | [design § Pattern 6](./design.md#pattern-6-hashmap--array-swap-to-end-delete) | Medium | worked in [set_examples.md](./set_examples.md#11-insert-delete-getrandom-o1--lc-380--set-semantics-array-storage-) |
+| 155 | Min Stack | [stack § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-) | Medium | worked in stack.md |
+| 1381 | Design a Stack With Increment Operation | [stack § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-) | Medium | [below](#design-a-stack-with-increment-operation--lc-1381) |
+| 895 | Maximum Frequency Stack | [stack § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-) | Hard | [below](#maximum-frequency-stack--lc-895-) |
+| 981 | Time Based Key-Value Store | [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) | Medium | [below](#time-based-key-value-store--lc-981) |
+| 729 | My Calendar I | [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) | Medium | [below](#my-calendar-i--lc-729) |
+| 731 | My Calendar II | [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) | Medium | [below](#my-calendar-ii--lc-731) |
+| 732 | My Calendar III | [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) | Hard | [below](#my-calendar-iii--lc-732) |
+| 715 | Range Module | [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) | Hard | [below](#range-module--lc-715) |
+| 2034 | Stock Price Fluctuation | [heap_advanced § two lazy heaps](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) | Medium | worked in heap_advanced.md |
+| 1166 | Design File System | [design § Pattern 9](./design.md#pattern-9-path-hierarchy) | Medium | [below](#design-file-system--lc-1166) |
+| 635 | Design Log Storage System | [design § Pattern 9](./design.md#pattern-9-path-hierarchy) | Medium | [below](#design-log-storage-system--lc-635) |
+| 588 | Design In-Memory File System | [design § Pattern 9](./design.md#pattern-9-path-hierarchy) | Hard | [below](#design-in-memory-file-system--lc-588) |
+| 348 | Design Tic-Tac-Toe | [design § Pattern 10](./design.md#pattern-10-aggregate-counters-updated-on-write) | Medium | [below](#design-tic-tac-toe--lc-348) |
+| 1396 | Design Underground System | [design § Pattern 10](./design.md#pattern-10-aggregate-counters-updated-on-write) | Medium | [below](#design-underground-system--lc-1396) |
 
-## Caches & Eviction Policies
+Other `design`-tagged problems, not worked here:
 
-### 1) LRU Cache — LC 146 ⭐⭐⭐⭐⭐
+| LC | Problem | The idea | Where |
+|---|---|---|---|
+| 705 / 706 | Design HashSet / HashMap | bucket array + separate chaining | [hash_map.md](./hash_map.md) |
+| 707 | Design Linked List | dummy head + a size field | [linked_list.md](./linked_list.md) |
+| 1472 | Design Browser History | array + a cursor; `visit` truncates the forward history | [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) drill |
+| 1352 | Product of the Last K Numbers | prefix products; `add(0)` resets the list, and `k` past its length answers 0 | [prefix_sum.md](./prefix_sum.md) |
+| 297 / 449 | Serialize and Deserialize Binary Tree / BST | preorder with a null marker; a BST can drop the markers and rebuild with `(lower, upper)` bounds | [tree.md](./tree.md) |
+| 745 | Prefix and Suffix Search | insert every `suffix + '{' + word` into one trie, query `suf + '{' + pre` | [trie.md](./trie.md) |
+| 676 / 677 | Implement Magic Dictionary / Map Sum Pairs | trie with a one-mismatch DFS / a prefix-sum per node | [trie.md](./trie.md) |
+
+## HashMap + Linked List Examples
+
+### All O(1) Data Structure — LC 432 ⭐⭐⭐⭐
+
+> **Key point** — the list holds **count buckets**, not keys, in increasing count order, so the
+> min key is in `head.next` and the max key in `tail.prev`. A count changes by exactly 1, so a key
+> only ever moves to the **adjacent** bucket, which is created next to its old one in O(1).
+
+**Reduces to**: [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) — the same sentinel doubly linked list, but each node is a bucket of keys with one count, and there is no `min_freq` to maintain (LFU's integer becomes the list's own order).
 
 ```python
 # python
-# IDEA: hash map (key -> node) + doubly linked list (most recent at the tail)
-# time = O(1) per get / put, space = O(capacity)
-# V0
-# The map makes a lookup O(1); the list makes "move to the end" and "evict the oldest" (right after
-# the head sentinel) O(1) pointer splices.
-# LC 146 LRU Cache (Least Recently Used (LRU) cache)
-class Node(object):
-    def __init__(self, key=0, val=0):
-        self.key = key
-        self.val = val
-        self.prev = None
-        self.next = None
-
-class LRUCache(object):
-
-    def __init__(self, capacity):
-        self.capacity = capacity
-        self.map = {}
-        # sentinels: head.next is the LRU node, tail.prev the MRU node
-        self.head = Node()
-        self.tail = Node()
-        self.head.next = self.tail
-        self.tail.prev = self.head
-
-    def _remove(self, node):
-        node.prev.next = node.next
-        node.next.prev = node.prev
-
-    def _append(self, node):
-        # insert just before the tail = mark as most recently used
-        node.prev = self.tail.prev
-        node.next = self.tail
-        self.tail.prev.next = node
-        self.tail.prev = node
-
-    def get(self, key):
-        if key not in self.map:
-            return -1
-        node = self.map[key]
-        self._remove(node)
-        self._append(node)
-        return node.val
-
-    def put(self, key, value):
-        if key in self.map:
-            # case 1) key in cache: update and mark as most recent
-            node = self.map[key]
-            node.val = value
-            self._remove(node)
-            self._append(node)
-            return
-        # case 2) key NOT in cache: evict the LRU node first if full
-        if len(self.map) == self.capacity:
-            lru = self.head.next
-            self._remove(lru)
-            del self.map[lru.key]
-        node = Node(key, value)
-        self.map[key] = node
-        self._append(node)
-
-# V1
-# IDEA : Ordered dictionary
-# https://leetcode.com/problems/lru-cache/solution/
-# IDEA : 
-#       -> There is a structure called ordered dictionary, it combines behind both hashmap and linked list. 
-#       -> In Python this structure is called OrderedDict 
-#       -> and in Java LinkedHashMap.
-from collections import OrderedDict
-class LRUCache(OrderedDict):
-
-    def __init__(self, capacity):
-        """
-        :type capacity: int
-        """
-        self.capacity = capacity
-
-    def get(self, key):
-        """
-        :type key: int
-        :rtype: int
-        """
-        if key not in self:
-            return - 1
-        
-        self.move_to_end(key)
-        return self[key]
-
-    def put(self, key, value):
-        """
-        :type key: int
-        :type value: int
-        :rtype: void
-        """
-        if key in self:
-            self.move_to_end(key)
-        self[key] = value
-        if len(self) > self.capacity:
-            self.popitem(last = False)
-```
-
-### 2) LFU Cache — LC 460 ⭐⭐⭐⭐
-
-The `OrderedDict`-per-frequency form. The hand-built form — one sentinel doubly linked list per
-frequency, and why `min_freq += 1` is exact rather than a scan — is worked in
-[linked_list.md](./linked_list.md#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-).
-
-```python
-# LC 460. LFU Cache
-# V0
-from collections import OrderedDict
-class Node:
-    def __init__(self, key, val, count):
-        self.key=key
-        self.val=val
-        self.count=count
-class LFUCache:
-    
-    def __init__(self, capacity):
-        """
-        :type capacity: int
-        """
-        self.capacity=capacity
-        self.key_node={}
-        self.count_node={}
-        self.minV=None
-    def get(self, key):
-        """
-        :type key: int
-        :rtype: int
-        """
-        if not key in self.key_node:  return -1 
-        node = self.key_node[key]
-        del self.count_node[node.count][key]
-        if not self.count_node[node.count]:
-            del self.count_node[node.count] 
-        node.count+=1
-        if not node.count in self.count_node:
-            self.count_node[node.count]=OrderedDict()
-        
-        self.count_node[node.count][key]=node
-        
-        if not self.minV in self.count_node:
-            self.minV+=1
-        return node.val
-    def put(self, key, value):
-        """
-        :type key: int
-        :type value: int
-        :rtype: void
-        """
-        # if element exists, -> update value and count + 1 
-        if self.capacity==0: return None
-        if key in self.key_node:
-            self.key_node[key].val=value
-            self.get(key)
-        else:
-            if len(self.key_node) == self.capacity:
-                item=self.count_node[self.minV].popitem(last=False)
-                del self.key_node[item[0]]
-            node=Node(key,value,1)
-            self.key_node[key]=node
-            if not 1 in self.count_node:
-                self.count_node[1]=OrderedDict()
-            
-            self.count_node[1][key]=node
-            self.minV=1
-
-```
-
-### 3) All O(1) Data Structure — LC 432 ⭐⭐⭐⭐
-
-```python
-# LC 432. All O`one Data Structure
-# V0
-# IDEA: HashMap + Doubly Linked List of Buckets
-# - Each bucket contains all keys with the same count
-# - HashMap: key -> bucket node
-# - Doubly Linked List: ordered buckets by count
-class Node:
+# LC 432 - All O`one Data Structure
+# IDEA: key -> count map + a doubly linked list of buckets ordered by count;
+#       inc / dec move a key to the neighbouring bucket, creating it beside the old one
+# time = O(1) per call, space = O(number of keys)
+class Bucket:
     def __init__(self, count):
         self.count = count
         self.keys = set()
@@ -212,72 +83,13 @@ class Node:
         self.next = None
 
 class AllOne:
-
     def __init__(self):
-        self.key_counter = {}  # key -> count
-        self.count_node = {}   # count -> Node
-        self.head = Node(0)    # dummy head
-        self.tail = Node(0)    # dummy tail
+        self.count_of = {}          # key -> count
+        self.bucket_of = {}         # count -> Bucket
+        self.head = Bucket(0)       # sentinel before the smallest count
+        self.tail = Bucket(0)       # sentinel after the largest count
         self.head.next = self.tail
         self.tail.prev = self.head
-
-    def inc(self, key: str) -> None:
-        if key in self.key_counter:
-            count = self.key_counter[key]
-            self.key_counter[key] = count + 1
-            cur_node = self.count_node[count]
-
-            # Remove key from current count bucket
-            cur_node.keys.remove(key)
-
-            # Get or create next count bucket
-            if count + 1 not in self.count_node:
-                new_node = Node(count + 1)
-                self.count_node[count + 1] = new_node
-                self._insert_after(cur_node, new_node)
-
-            self.count_node[count + 1].keys.add(key)
-
-            # Remove current bucket if empty
-            if not cur_node.keys:
-                self._remove_node(cur_node)
-                del self.count_node[count]
-        else:
-            self.key_counter[key] = 1
-            if 1 not in self.count_node:
-                new_node = Node(1)
-                self.count_node[1] = new_node
-                self._insert_after(self.head, new_node)
-            self.count_node[1].keys.add(key)
-
-    def dec(self, key: str) -> None:
-        count = self.key_counter[key]
-        cur_node = self.count_node[count]
-        cur_node.keys.remove(key)
-
-        if count == 1:
-            del self.key_counter[key]
-        else:
-            self.key_counter[key] = count - 1
-            if count - 1 not in self.count_node:
-                new_node = Node(count - 1)
-                self.count_node[count - 1] = new_node
-                self._insert_before(cur_node, new_node)
-            self.count_node[count - 1].keys.add(key)
-
-        if not cur_node.keys:
-            self._remove_node(cur_node)
-            del self.count_node[count]
-
-    def getMaxKey(self) -> str:
-        if self.tail.prev == self.head:
-            return ""
-        return next(iter(self.tail.prev.keys))
-
-    def getMinKey(self) -> str:
-        if self.head.next == self.tail:
-            return ""
-        return next(iter(self.head.next.keys))
 
     def _insert_after(self, node, new_node):
         new_node.prev = node
@@ -285,103 +97,403 @@ class AllOne:
         node.next.prev = new_node
         node.next = new_node
 
-    def _insert_before(self, node, new_node):
-        new_node.next = node
-        new_node.prev = node.prev
-        node.prev.next = new_node
-        node.prev = new_node
+    def _remove_if_empty(self, bucket):
+        if not bucket.keys:
+            bucket.prev.next = bucket.next
+            bucket.next.prev = bucket.prev
+            del self.bucket_of[bucket.count]
 
-    def _remove_node(self, node):
-        node.prev.next = node.next
-        node.next.prev = node.prev
+    def inc(self, key):
+        count = self.count_of.get(key, 0)
+        here = self.bucket_of[count] if count else self.head
+        if count + 1 not in self.bucket_of:              # the next bucket goes right after this one
+            new_bucket = Bucket(count + 1)
+            self.bucket_of[count + 1] = new_bucket
+            self._insert_after(here, new_bucket)
+        self.bucket_of[count + 1].keys.add(key)
+        self.count_of[key] = count + 1
+        if count:
+            here.keys.remove(key)
+            self._remove_if_empty(here)
+
+    def dec(self, key):
+        count = self.count_of[key]                      # the problem guarantees key exists
+        here = self.bucket_of[count]
+        if count == 1:
+            del self.count_of[key]
+        else:
+            if count - 1 not in self.bucket_of:          # the previous bucket goes right before this one
+                new_bucket = Bucket(count - 1)
+                self.bucket_of[count - 1] = new_bucket
+                self._insert_after(here.prev, new_bucket)
+            self.bucket_of[count - 1].keys.add(key)
+            self.count_of[key] = count - 1
+        here.keys.remove(key)
+        self._remove_if_empty(here)
+
+    def getMaxKey(self):
+        if self.tail.prev is self.head:
+            return ""
+        return next(iter(self.tail.prev.keys))
+
+    def getMinKey(self):
+        if self.head.next is self.tail:
+            return ""
+        return next(iter(self.head.next.keys))
 ```
 
-### 4) Insert Delete GetRandom O(1) — LC 380 ⭐⭐⭐⭐
+**Traps**
+- Removing the old bucket **before** inserting the new one next to it: `inc` on the only key of
+  bucket 1 unlinks bucket 1, and bucket 2 then has no anchor to be inserted after.
+- Scanning for the min / max bucket: with a hash map from count to bucket alone, `getMinKey` is
+  O(distinct counts). The list order is what makes it O(1).
+- `dec` to 0 must delete the key from `count_of`, or a later `inc` starts from a stale count.
+
+## HashMap + Heap Examples
+
+### Design Twitter — LC 355
+
+> **Key point** — every user's tweets are already in time order, so the feed is a **k-way merge**
+> over the followees' lists, stopped after 10. A global clock makes timestamps comparable across
+> users; pushing it negated lets a min-heap pop the newest tweet first.
+
+**Reduces to**: [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-) — merging k sorted lists, but lazily: only the first 10 results are pulled. The entity modelling (why `Tweet` carries a time, why the clock is global) is in [ood_design.md](./ood_design.md).
 
 ```python
-# LC 380. Insert Delete GetRandom O(1)
-# V0
-# IDEA: HashMap + ArrayList
-# - HashMap: stores value -> index mapping for O(1) lookup
-# - ArrayList: stores actual values for O(1) random access
-import random
-class RandomizedSet:
+# python
+# LC 355 - Design Twitter
+# IDEA: per-user tweet lists in post order + a follow set; getNewsFeed = lazy k-way merge, newest first
+# time = O(1) post / follow / unfollow, O(k + 10 log k) getNewsFeed for k followees; space = O(users + tweets)
+import heapq
+from collections import defaultdict
 
+class Twitter:
     def __init__(self):
-        self.dict = {}  # value -> index in list
-        self.list = []  # stores values
+        self.clock = 0
+        self.tweets = defaultdict(list)     # user -> [(time, tweetId)], oldest first
+        self.following = defaultdict(set)   # user -> users they follow
 
-    def insert(self, val: int) -> bool:
-        if val in self.dict:
-            return False
-        self.dict[val] = len(self.list)
-        self.list.append(val)
-        return True
+    def postTweet(self, userId, tweetId):
+        self.tweets[userId].append((self.clock, tweetId))
+        self.clock += 1
 
-    def remove(self, val: int) -> bool:
-        if val not in self.dict:
-            return False
-        # Move last element to the position of element to delete
-        last_element = self.list[-1]
-        idx = self.dict[val]
-        self.list[idx] = last_element
-        self.dict[last_element] = idx
-        # Remove last element
-        self.list.pop()
-        del self.dict[val]
-        return True
+    def getNewsFeed(self, userId):
+        heap = []                                       # (-time, tweetId, user, index in that user's list)
+        for user in self.following[userId] | {userId}: # a user always sees their own tweets
+            if self.tweets[user]:
+                i = len(self.tweets[user]) - 1          # newest tweet of this user
+                time, tweet_id = self.tweets[user][i]
+                heap.append((-time, tweet_id, user, i))
+        heapq.heapify(heap)
+        feed = []
+        while heap and len(feed) < 10:
+            _, tweet_id, user, i = heapq.heappop(heap)
+            feed.append(tweet_id)
+            if i > 0:                                   # this user's next-newest tweet
+                time, next_id = self.tweets[user][i - 1]
+                heapq.heappush(heap, (-time, next_id, user, i - 1))
+        return feed
 
-    def getRandom(self) -> int:
-        return random.choice(self.list)
+    def follow(self, followerId, followeeId):
+        self.following[followerId].add(followeeId)
+
+    def unfollow(self, followerId, followeeId):
+        self.following[followerId].discard(followeeId)
 ```
 
-## Stacks with Auxiliary State
+**Traps**
+- Adding the user to their own follow set inside `getNewsFeed` mutates state: a later
+  `unfollow(u, u)` then hides the user's own tweets. Union with `{userId}` instead.
+- `remove` instead of `discard` in `unfollow` raises on a user who was never followed.
+- Merging every tweet and slicing the first 10 is O(total tweets); the heap stops after 10 pops.
 
-### 5) Frequency Buckets of Stacks — Max Frequency Stack, LC 895 ⭐⭐⭐⭐
+## Trie Examples
 
+| LC | Problem | Where |
+|---|---|---|
+| 211 | Design Add and Search Words Data Structure | [trie § Template 3](./trie.md#template-3-trie-with-wildcard-support--lc-211) — the anchor problem of that card |
 
-**Pattern**: `HashMap<freq, Stack>` + `HashMap<value, freq>` + a `maxFreq` counter. Same "bucket by count" idea as LC 432, but each bucket is a **stack** so ties break by *most recently pushed*.
+### Design Search Autocomplete System — LC 642
 
-**Key trick**: on `push`, put the value into the bucket of its **new** frequency **without removing it from the lower buckets**. Every value therefore appears in bucket `1..f`, so after a `pop` the earlier copy is already sitting in bucket `f-1` — no cleanup needed.
+> **Key point** — the cursor into the trie **moves with the typed prefix**, so each keystroke is
+> one child step, not a fresh walk from the root. Once a character falls off the trie the cursor
+> stays `None` until `#`, and every later keystroke of that sentence answers `[]`.
 
-**Invariant**: `group[f]` holds, in push order, every value whose count reached `f`; `maxFreq` is the highest non-empty bucket.
+**Reduces to**: [trie § Template 4](./trie.md#template-4-autocomplete-trie--lc-1268) — the same prefix walk, plus a hot count per sentence that changes at runtime (so the top 3 are ranked at query time, not cached at insert time).
+
+```python
+# python
+# LC 642 - Design Search Autocomplete System
+# IDEA: each trie node keeps the set of sentences under it; a live cursor follows the typed prefix;
+#       '#' records the sentence (count + 1) and resets the cursor
+# time = O(m log m) per keystroke for the m sentences under the cursor, space = O(total characters)
+from collections import defaultdict
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.sentences = set()
+
+class AutocompleteSystem:
+    def __init__(self, sentences, times):
+        self.root = TrieNode()
+        self.count = defaultdict(int)       # sentence -> hot degree
+        for sentence, t in zip(sentences, times):
+            self.count[sentence] += t
+            self._add(sentence)
+        self.typed = ""
+        self.cursor = self.root
+
+    def _add(self, sentence):
+        node = self.root
+        for ch in sentence:
+            node = node.children.setdefault(ch, TrieNode())
+            node.sentences.add(sentence)
+
+    def input(self, c):
+        if c == "#":
+            self.count[self.typed] += 1
+            self._add(self.typed)
+            self.typed = ""
+            self.cursor = self.root
+            return []
+        self.typed += c
+        if self.cursor is not None:
+            self.cursor = self.cursor.children.get(c)
+        if self.cursor is None:
+            return []
+        ranked = sorted(self.cursor.sentences, key=lambda s: (-self.count[s], s))
+        return ranked[:3]
+```
+
+**Traps**
+- Resetting the cursor to the root when a character is missing: `"i a"` after a miss on `"i "`
+  would start matching from the root again and suggest sentences that do not have the prefix.
+- Ties break by ASCII order of the sentence (`' '` sorts before letters), which is plain string
+  comparison; sorting by count alone fails LC 642's example 1.
+
+## Stream / Queue Examples
+
+### Design Hit Counter — LC 362
+
+> **Key point** — timestamps arrive in non-decreasing order, so expired hits are always at the
+> **front**: the queue holds exactly the hits of the last 300 seconds after `getHits` pops from
+> the left.
+
+**Reduces to**: [queue § Template 6](./queue.md#template-6-stream-processing-pattern--lc-346) — a moving window over a stream, keyed by time instead of by count.
+
+```python
+# python
+# LC 362 - Design Hit Counter
+# IDEA: deque of hit timestamps; evict from the left everything at or before timestamp - 300
+# time = O(1) amortised per call, space = O(hits in the last 300 s)
+from collections import deque
+
+class HitCounter:
+    def __init__(self):
+        self.hits = deque()
+
+    def hit(self, timestamp):
+        self.hits.append(timestamp)
+
+    def getHits(self, timestamp):
+        while self.hits and self.hits[0] <= timestamp - 300:
+            self.hits.popleft()
+        return len(self.hits)
+```
+
+Follow-up (many hits per second): bucket by `timestamp % 300`, so memory is O(300) however
+many hits arrive. This is the second solution to give, with that reason.
+
+```python
+# python
+# LC 362 - Design Hit Counter (fixed 300 buckets)
+# IDEA: bucket i holds the hits of the last second that mapped to i; a stale bucket is reset on reuse
+# time = O(1) hit, O(300) getHits; space = O(300)
+class HitCounterBuckets:
+    def __init__(self):
+        self.times = [0] * 300
+        self.counts = [0] * 300
+
+    def hit(self, timestamp):
+        i = timestamp % 300
+        if self.times[i] != timestamp:      # this bucket still holds an older second
+            self.times[i] = timestamp
+            self.counts[i] = 0
+        self.counts[i] += 1
+
+    def getHits(self, timestamp):
+        total = 0
+        for i in range(300):
+            if timestamp - self.times[i] < 300:
+                total += self.counts[i]
+        return total
+```
+
+**Traps**
+- The window is `(timestamp - 300, timestamp]`: a hit at 1 is gone at 301. `< timestamp - 300`
+  as the eviction test keeps it one second too long.
+
+### Design Snake Game — LC 353
+
+> **Key point** — the body is a deque (head at the left, tail at the right) **plus** a set of the
+> same cells. Move the tail out of the set **before** testing the new head, because the head may
+> legally enter the cell the tail is leaving.
+
+**Reduces to**: [queue § Template 6](./queue.md#template-6-stream-processing-pattern--lc-346) — a queue whose front is consumed as the stream advances, with a set beside it for O(1) membership.
+
+```python
+# python
+# LC 353 - Design Snake Game
+# IDEA: deque body + set of occupied cells; pop the tail unless eating, then test the new head
+# time = O(1) per move, space = O(width * height)
+from collections import deque
+
+class SnakeGame:
+    def __init__(self, width, height, food):
+        self.width = width
+        self.height = height
+        self.food = deque(food)
+        self.body = deque([(0, 0)])     # head at index 0
+        self.occupied = {(0, 0)}
+        self.score = 0
+
+    def move(self, direction):
+        dr, dc = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}[direction]
+        row, col = self.body[0][0] + dr, self.body[0][1] + dc
+        if not (0 <= row < self.height and 0 <= col < self.width):
+            return -1
+        if self.food and [row, col] == self.food[0]:
+            self.food.popleft()             # eat: the tail stays, the snake grows
+            self.score += 1
+        else:
+            tail = self.body.pop()
+            self.occupied.remove(tail)
+        if (row, col) in self.occupied:
+            return -1
+        self.body.appendleft((row, col))
+        self.occupied.add((row, col))
+        return self.score
+```
+
+**Traps**
+- Testing the collision before removing the tail: a snake of length 4 moving in a 2×2 loop is
+  reported dead when its head enters the cell the tail is vacating.
+- Food is eaten one item at a time and in order: only `food[0]` is live.
+
+## HashMap + Array Examples
+
+| LC | Problem | Where |
+|---|---|---|
+| 380 | Insert Delete GetRandom O(1) | [set_examples § 11](./set_examples.md#11-insert-delete-getrandom-o1--lc-380--set-semantics-array-storage-) — swap the victim with the last element, then pop |
+
+## Stack + Auxiliary State Examples
+
+### Design a Stack With Increment Operation — LC 1381
+
+> **Key point** — `increment(k, val)` adds to the bottom k elements, so record it **once**, on the
+> k-th element, as a pending delta for everything below; `pop` hands its delta down to the next
+> element before returning. Every element therefore sees exactly the increments that covered it.
+
+**Reduces to**: [stack § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-) — one auxiliary value per layer, pushed and popped with it; here the value is a pending delta instead of a running minimum.
+
+```python
+# python
+# LC 1381 - Design a Stack With Increment Operation
+# IDEA: inc[i] = pending amount for stack[0..i]; pop adds inc[top] and passes it down to top - 1
+# time = O(1) per push / pop / increment, space = O(maxSize)
+class CustomStack:
+    def __init__(self, maxSize):
+        self.max_size = maxSize
+        self.stack = []
+        self.inc = []           # inc[i] applies to stack[0..i]
+
+    def push(self, x):
+        if len(self.stack) < self.max_size:
+            self.stack.append(x)
+            self.inc.append(0)
+
+    def pop(self):
+        if not self.stack:
+            return -1
+        add = self.inc.pop()
+        if self.inc:
+            self.inc[-1] += add  # the element below inherits the pending delta
+        return self.stack.pop() + add
+
+    def increment(self, k, val):
+        i = min(k, len(self.stack)) - 1
+        if i >= 0:
+            self.inc[i] += val
+```
 
 ```java
 // java
-// LC 895 - Maximum Frequency Stack
-// IDEA: bucket values by frequency, each bucket is a stack -> pop = top of the maxFreq bucket
-class FreqStack {
-    // time = O(1) push / O(1) pop, space = O(N)
-    private final Map<Integer, Integer> freq = new HashMap<>();          // value -> count
-    private final Map<Integer, Deque<Integer>> group = new HashMap<>();  // count -> stack of values
-    private int maxFreq = 0;
+// LC 1381 - Design a Stack With Increment Operation
+// IDEA: inc[i] = amount to add to stack[0..i]; on pop, hand the delta down to i - 1
+// time = O(1) per push / pop / increment, space = O(maxSize)
+class CustomStack {
+    private final int[] stack;
+    private final int[] inc;
+    private int size = 0;
 
-    public void push(int val) {
-        int f = freq.merge(val, 1, Integer::sum);
-        maxFreq = Math.max(maxFreq, f);
-        group.computeIfAbsent(f, x -> new ArrayDeque<>()).push(val);     // keep copies in 1..f
+    public CustomStack(int maxSize) {
+        stack = new int[maxSize];
+        inc = new int[maxSize];
+    }
+
+    public void push(int x) {
+        if (size < stack.length) {
+            stack[size++] = x;
+        }
     }
 
     public int pop() {
-        Deque<Integer> st = group.get(maxFreq);
-        int val = st.pop();
-        freq.merge(val, -1, Integer::sum);
-        if (st.isEmpty()) maxFreq--;   // buckets are dense: maxFreq only ever drops by 1
-        return val;
+        if (size == 0) {
+            return -1;
+        }
+        size--;
+        int result = stack[size] + inc[size];
+        if (size > 0) {
+            inc[size - 1] += inc[size];   // propagate the pending delta downwards
+        }
+        inc[size] = 0;                    // the slot will be reused by the next push
+        return result;
+    }
+
+    public void increment(int k, int val) {
+        int i = Math.min(k, size) - 1;    // mark only the k-th element
+        if (i >= 0) {
+            inc[i] += val;
+        }
     }
 }
 ```
 
+**Traps**
+- Looping over the bottom k elements in `increment` is O(k) per call; the delta makes it O(1).
+- Java: forgetting `inc[size] = 0` on pop leaks the old delta into the next element pushed there.
+
+### Maximum Frequency Stack — LC 895 ⭐⭐⭐⭐
+
+> **Key point** — `group[f]` is a stack of every value whose count **reached** f, in push order.
+> A push adds the value to the bucket of its new count without removing it from the lower ones, so
+> after a pop the earlier copy is already waiting in bucket `f - 1`: no cleanup, and the buckets
+> are dense, so `max_freq` only ever drops by 1.
+
+**Reduces to**: [stack § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-) — state kept per layer; here the layers are frequencies and each layer is a stack, so ties break by recency for free.
+
 ```python
 # python
 # LC 895 - Maximum Frequency Stack
+# IDEA: value -> count, count -> stack of values; pop = top of the max-count stack
+# time = O(1) per push / pop, space = O(n)
 from collections import defaultdict
 
 class FreqStack:
-    # time = O(1) push / O(1) pop, space = O(N)
     def __init__(self):
         self.freq = defaultdict(int)     # value -> count
-        self.group = defaultdict(list)   # count -> stack of values
+        self.group = defaultdict(list)   # count -> values that reached it, in push order
         self.max_freq = 0
 
     def push(self, val):
@@ -398,180 +510,133 @@ class FreqStack:
         return val
 ```
 
-### 6) Stack + Auxiliary State — O(1) min and lazy increment, LC 155 / LC 1381 ⭐⭐⭐⭐
-
-
-**Pattern**: a plain stack cannot answer aggregate queries in O(1) — so push the **answer for the prefix below** alongside each element. Because a stack only grows/shrinks at the top, the stored answer is always still valid when the element becomes the top again.
-
-**Invariant**: `stack[i].min == min(values[0..i])`, so `getMin()` is just the top's second field.
-
 ```java
 // java
-// LC 155 - Min Stack
-// IDEA: store (value, minSoFar) pairs -> every query is O(1), no recomputation on pop
-class MinStack {
-    // time = O(1) all ops, space = O(N)
-    private final Deque<int[]> st = new ArrayDeque<>(); // {value, minSoFar}
+// LC 895 - Maximum Frequency Stack
+// IDEA: bucket values by frequency, each bucket a stack -> pop = top of the maxFreq bucket
+// time = O(1) per push / pop, space = O(n)
+class FreqStack {
+    private final Map<Integer, Integer> freq = new HashMap<>();          // value -> count
+    private final Map<Integer, Deque<Integer>> group = new HashMap<>();  // count -> stack of values
+    private int maxFreq = 0;
 
     public void push(int val) {
-        int min = st.isEmpty() ? val : Math.min(val, st.peek()[1]);
-        st.push(new int[]{val, min});
-    }
-
-    public void pop()      { st.pop(); }
-    public int  top()      { return st.peek()[0]; }
-    public int  getMin()   { return st.peek()[1]; }
-}
-```
-
-```python
-# python
-# LC 155 - Min Stack
-class MinStack:
-    # time = O(1) all ops, space = O(N)
-    def __init__(self):
-        self.stack = []   # (value, min_so_far)
-
-    def push(self, val):
-        cur_min = val if not self.stack else min(val, self.stack[-1][1])
-        self.stack.append((val, cur_min))
-
-    def pop(self):
-        self.stack.pop()
-
-    def top(self):
-        return self.stack[-1][0]
-
-    def getMin(self):
-        return self.stack[-1][1]
-```
-
-**Variation - lazy increment** (twist: the auxiliary field is a **pending delta for everything below**, pushed down one level on `pop`, which turns an O(k) bulk update into O(1))
-
-```java
-// java
-// LC 1381 - Design a Stack With Increment Operation
-// IDEA: inc[i] = amount to add to stack[0..i]; on pop, hand the delta down to i-1
-class CustomStack {
-    // time = O(1) push / pop / increment, space = O(maxSize)
-    private final int[] stack, inc;
-    private int size = 0;
-
-    public CustomStack(int maxSize) {
-        stack = new int[maxSize];
-        inc = new int[maxSize];
-    }
-
-    public void push(int x) {
-        if (size < stack.length) stack[size++] = x;
+        int f = freq.merge(val, 1, Integer::sum);
+        maxFreq = Math.max(maxFreq, f);
+        group.computeIfAbsent(f, x -> new ArrayDeque<>()).push(val);     // keep copies in 1..f
     }
 
     public int pop() {
-        if (size == 0) return -1;
-        size--;
-        int res = stack[size] + inc[size];
-        if (size > 0) inc[size - 1] += inc[size];  // propagate pending delta downwards
-        inc[size] = 0;
-        return res;
-    }
-
-    public void increment(int k, int val) {
-        int i = Math.min(k, size) - 1;             // mark ONLY the k-th element
-        if (i >= 0) inc[i] += val;
+        Deque<Integer> top = group.get(maxFreq);
+        int val = top.pop();
+        freq.merge(val, -1, Integer::sum);
+        if (top.isEmpty()) {
+            maxFreq--;   // buckets are dense: maxFreq only ever drops by 1
+        }
+        return val;
     }
 }
 ```
+
+**Traps**
+- Moving the value out of its old bucket on push (as LFU does) breaks the pop: after popping
+  from bucket 2 the value must still be in bucket 1, in its original push position.
+- A heap of `(-freq, -push_index, value)` also works, but it is O(log n) per call — say it as
+  the first idea, then give the buckets.
+
+## Sorted Map / Time Index Examples
+
+### Time Based Key-Value Store — LC 981
+
+> **Key point** — `set` is called with strictly increasing timestamps, so each key's list is
+> **already sorted by time**; `get` is a binary search for the last entry with time ≤ t.
+
+**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — a hash map to a time-sorted list; the "floor" query is `bisect_right - 1`.
 
 ```python
 # python
-# LC 1381 - Design a Stack With Increment Operation
-class CustomStack:
-    # time = O(1) push / pop / increment, space = O(maxSize)
-    def __init__(self, maxSize):
-        self.max_size = maxSize
-        self.stack = []
-        self.inc = []      # inc[i] applies to stack[0..i]
+# LC 981 - Time Based Key-Value Store
+# IDEA: key -> parallel lists of times and values (appended in time order); get = floor by bisect
+# time = O(1) set, O(log n) get; space = O(n)
+import bisect
+from collections import defaultdict
 
-    def push(self, x):
-        if len(self.stack) < self.max_size:
-            self.stack.append(x)
-            self.inc.append(0)
+class TimeMap:
+    def __init__(self):
+        self.times = defaultdict(list)    # key -> timestamps, increasing
+        self.values = defaultdict(list)   # key -> values, aligned with times
 
-    def pop(self):
-        if not self.stack:
-            return -1
-        add = self.inc.pop()
-        if self.inc:
-            self.inc[-1] += add        # propagate pending delta downwards
-        return self.stack.pop() + add
+    def set(self, key, value, timestamp):
+        self.times[key].append(timestamp)
+        self.values[key].append(value)
 
-    def increment(self, k, val):
-        i = min(k, len(self.stack)) - 1
-        if i >= 0:
-            self.inc[i] += val
+    def get(self, key, timestamp):
+        i = bisect.bisect_right(self.times[key], timestamp) - 1   # last time <= timestamp
+        return self.values[key][i] if i >= 0 else ""
 ```
-
-## Ordered Maps, Heaps & Time Windows
-
-### 7) Ordered Map (TreeMap) for Booking / Interval Design — LC 715 / 729 / 731 / 732 / 2034 ⭐⭐⭐⭐⭐
-
-
-**Pattern**: keep intervals in a **sorted map keyed by start point**, and answer every query with `floorKey` (largest key `<=` x) / `ceilingKey` (smallest key `>=` x). This is the "range queries on a timeline" counterpart of HashMap + LinkedList.
-
-**Key Idea**: only 2 neighbours matter. A new interval `[start, end)` can conflict **only** with
-- the interval that starts *at or before* `start` (`floorKey`), and
-- the interval that starts *at or after* `start` (`ceilingKey`).
-
-**Quick Decision Table**
-
-| Goal | Structure | Example |
-|------|-----------|---------|
-| Reject any overlap (double-booking) | ordered map `start -> end`, check 2 neighbours | LC 729 |
-| Allow up to K overlaps / report max overlap | ordered map as **delta / sweep-line counter** (`+1` at start, `-1` at end) | LC 731, LC 732 |
-| Track a set of covered ranges (add / remove / query) | ordered map of **merged disjoint** intervals | LC 715 |
-| Find largest value `<=` / `>=` x in a live multiset | ordered map `value -> count` | LC 2034 |
-| Max **and** min of a live multiset, no ordered map available | two lazy heaps + hashmap of truth — [heap_advanced.md](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) | LC 2034 |
-
-#### Template A - reject overlap (`floor` / `ceiling`)
-
-**Invariant**: the map always holds **pairwise disjoint** intervals, keyed by start.
 
 ```java
 // java
-// LC 729 - My Calendar I
-// IDEA: ordered map start -> end; a booking is legal iff it fits between its 2 neighbours
-class MyCalendar {
-    // time = O(log N) per book, space = O(N)
-    private final TreeMap<Integer, Integer> booked = new TreeMap<>(); // start -> end
+// LC 981 - Time Based Key-Value Store
+// IDEA: key -> list of (time, value) appended in time order; get = binary search for the last time <= t
+// time = O(1) set, O(log n) get; space = O(n)
+class TimeMap {
+    private final Map<String, List<Integer>> times = new HashMap<>();
+    private final Map<String, List<String>> values = new HashMap<>();
 
-    public boolean book(int start, int end) {
-        Integer prev = booked.floorKey(start);    // latest booking starting <= start
-        if (prev != null && booked.get(prev) > start) return false;  // prev spills into us
-        Integer next = booked.ceilingKey(start);  // earliest booking starting >= start
-        if (next != null && next < end) return false;                // we spill into next
-        booked.put(start, end);
-        return true;
+    public void set(String key, String value, int timestamp) {
+        times.computeIfAbsent(key, k -> new ArrayList<>()).add(timestamp);
+        values.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
+    }
+
+    public String get(String key, int timestamp) {
+        List<Integer> ts = times.get(key);
+        if (ts == null) return "";
+        int lo = 0, hi = ts.size() - 1, found = -1;
+        while (lo <= hi) {                      // last index with ts[i] <= timestamp
+            int mid = lo + (hi - lo) / 2;
+            if (ts.get(mid) <= timestamp) {
+                found = mid;
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return found == -1 ? "" : values.get(key).get(found);
     }
 }
 ```
+
+**Traps**
+- `bisect` on a list of `(time, value)` tuples needs a sentinel for the second field
+  (`(t, chr(127))`), and a value starting with a later character breaks it. Bisect the times alone.
+- A query earlier than every `set` must return `""`, not `values[-1]`: `i == -1` is the check.
+
+### My Calendar I — LC 729
+
+> **Key point** — the stored bookings are pairwise disjoint and keyed by start, so a new
+> `[start, end)` can only collide with two of them: the one starting at or before `start` (floor)
+> and the one starting at or after it (ceiling).
+
+**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — the floor / ceiling query on a sorted map.
 
 ```python
 # python
 # LC 729 - My Calendar I
-# IDEA: python has no TreeMap -> keep 2 parallel sorted lists + bisect (floor = bisect_right - 1)
+# IDEA: sorted starts with aligned ends; check the floor (spills into us?) and the ceiling (we spill into it?)
+# time = O(log n) search + O(n) list insert per book, space = O(n)
 import bisect
 
 class MyCalendar:
-    # time = O(log N) search + O(N) list insert, space = O(N)
     def __init__(self):
-        self.starts = []   # sorted starts
-        self.ends = []     # ends, aligned with starts
+        self.starts = []
+        self.ends = []      # aligned with starts
 
     def book(self, start, end):
-        i = bisect.bisect_right(self.starts, start) - 1   # floor index
+        i = bisect.bisect_right(self.starts, start) - 1     # floor: last start <= start
         if i >= 0 and self.ends[i] > start:
             return False
-        j = i + 1                                          # ceiling index
+        j = i + 1                                           # ceiling: first start > start
         if j < len(self.starts) and self.starts[j] < end:
             return False
         self.starts.insert(j, start)
@@ -579,60 +644,86 @@ class MyCalendar:
         return True
 ```
 
-#### Template B - sweep-line delta counting (max overlap)
-
-**Twist**: instead of storing intervals, store **`+1` at start / `-1` at end** in the ordered map. A prefix sum over the keys **in sorted order** = number of active bookings at that moment.
-
 ```java
 // java
-// LC 732 - My Calendar III  (returns max number of concurrent bookings)
-// IDEA: ordered map as a delta array on a sparse timeline; prefix-sum in key order
-class MyCalendarThree {
-    // time = O(N) per book (N = distinct endpoints), space = O(N)
-    private final TreeMap<Integer, Integer> delta = new TreeMap<>();
-
-    public int book(int start, int end) {
-        delta.merge(start, 1, Integer::sum);
-        delta.merge(end, -1, Integer::sum);
-        int active = 0, best = 0;
-        for (int d : delta.values()) {   // TreeMap iterates keys ascending
-            active += d;
-            best = Math.max(best, active);
-        }
-        return best;
-    }
-}
-
-// LC 731 - My Calendar II  (variation: same delta map, but REJECT + roll back when depth would hit 3)
-class MyCalendarTwo {
-    // time = O(N) per book, space = O(N)
-    private final TreeMap<Integer, Integer> delta = new TreeMap<>();
+// LC 729 - My Calendar I
+// IDEA: TreeMap start -> end; a booking is legal iff it fits between its two neighbours
+// time = O(log n) per book, space = O(n)
+class MyCalendar {
+    private final TreeMap<Integer, Integer> booked = new TreeMap<>();   // start -> end
 
     public boolean book(int start, int end) {
-        delta.merge(start, 1, Integer::sum);
-        delta.merge(end, -1, Integer::sum);
-        int active = 0;
-        for (int d : delta.values()) {
-            active += d;
-            if (active > 2) {                        // triple booking -> undo
-                delta.merge(start, -1, Integer::sum);
-                delta.merge(end, 1, Integer::sum);
-                return false;
-            }
+        Integer prev = booked.floorKey(start);     // latest booking starting <= start
+        if (prev != null && booked.get(prev) > start) {
+            return false;                          // prev spills into us
         }
+        Integer next = booked.ceilingKey(start);   // earliest booking starting >= start
+        if (next != null && next < end) {
+            return false;                          // we spill into next
+        }
+        booked.put(start, end);
         return true;
     }
 }
 ```
 
+**Traps**
+- Intervals are half-open: `[10, 20)` then `[20, 30)` is legal. `>=` in the floor test rejects it.
+- Python has no `TreeMap`: `list.insert` is O(n), fine for LC 729's 1,000 calls; say so, or use
+  `sortedcontainers.SortedList`.
+
+### My Calendar II — LC 731
+
+> **Key point** — store `+1` at each start and `-1` at each end; a running sum over the keys in
+> sorted order is the number of bookings active at that moment. Tentatively add the new booking,
+> and roll it back if the sum ever reaches 3.
+
+**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — the sorted map used as a sparse difference array (the sweep-line count of [scanning_line.md](./scanning_line.md)).
+
+```python
+# python
+# LC 731 - My Calendar II
+# IDEA: delta map +1 / -1, sweep in key order; reject and roll back if 3 bookings overlap
+# time = O(n log n) per book, space = O(n)
+from collections import defaultdict
+
+class MyCalendarTwo:
+    def __init__(self):
+        self.delta = defaultdict(int)
+
+    def book(self, start, end):
+        self.delta[start] += 1
+        self.delta[end] -= 1
+        active = 0
+        for t in sorted(self.delta):
+            active += self.delta[t]
+            if active >= 3:                 # triple booking: undo and refuse
+                self.delta[start] -= 1
+                self.delta[end] += 1
+                return False
+        return True
+```
+
+**Traps**
+- Checking before adding forces a second pass; adding first and rolling back is one sweep.
+- The O(n²)-total cost is fine at 1,000 calls; the overlap-list solution (keep the double-booked
+  intervals) is the same bound.
+
+### My Calendar III — LC 732
+
+> **Key point** — the same delta map as LC 731, never rolled back: the answer is the **maximum**
+> running sum over the sweep.
+
+**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — the sweep of LC 731, reporting the peak instead of testing a cap.
+
 ```python
 # python
 # LC 732 - My Calendar III
-# IDEA: dict of deltas, sorted scan per query (no stdlib TreeMap)
+# IDEA: delta map +1 / -1; the max prefix sum in key order is the max concurrent bookings
+# time = O(n log n) per book, space = O(n)
 from collections import defaultdict
 
 class MyCalendarThree:
-    # time = O(N log N) per book, space = O(N)
     def __init__(self):
         self.delta = defaultdict(int)
 
@@ -644,733 +735,334 @@ class MyCalendarThree:
             active += self.delta[t]
             best = max(best, active)
         return best
-
-
-# LC 731 - My Calendar II (variation: roll back the deltas when depth would exceed 2)
-class MyCalendarTwo:
-    # time = O(N log N) per book, space = O(N)
-    def __init__(self):
-        self.delta = defaultdict(int)
-
-    def book(self, start, end):
-        self.delta[start] += 1
-        self.delta[end] -= 1
-        active = 0
-        for t in sorted(self.delta):
-            active += self.delta[t]
-            if active > 2:
-                self.delta[start] -= 1
-                self.delta[end] += 1
-                return False
-        return True
 ```
-
-#### Template C - merged disjoint ranges (add / remove / query)
-
-**Twist**: ranges are **mutable** — writes must merge with neighbours, deletes must split them.
-
-**Invariant**: intervals are disjoint, sorted, **non-adjacent** (`ends[i] < starts[i+1]`), and non-empty. Every operation restores it before returning.
 
 ```java
 // java
-// LC 715 - Range Module
-// IDEA: ordered map of merged disjoint [start, end); add = absorb neighbours then clear inside,
-//       remove = re-insert the surviving head/tail pieces then clear inside
-class RangeModule {
-    // time = O(log N) amortized per op, space = O(N)
-    private final TreeMap<Integer, Integer> m = new TreeMap<>(); // start -> end
+// LC 732 - My Calendar III
+// IDEA: TreeMap as a delta array on a sparse timeline; prefix-sum in key order
+// time = O(n) per book (n = distinct endpoints), space = O(n)
+class MyCalendarThree {
+    private final TreeMap<Integer, Integer> delta = new TreeMap<>();
 
-    public void addRange(int left, int right) {
-        Integer s = m.floorKey(left), e = m.floorKey(right);
-        if (s != null && m.get(s) >= left) left = s;        // touches/overlaps on the left -> absorb
-        if (e != null && m.get(e) > right) right = m.get(e); // extends past right -> absorb
-        m.put(left, right);
-        m.subMap(left, false, right, true).clear();          // drop everything swallowed
-    }
-
-    public boolean queryRange(int left, int right) {
-        Integer s = m.floorKey(left);
-        return s != null && m.get(s) >= right;               // one merged interval must cover it all
-    }
-
-    public void removeRange(int left, int right) {
-        Integer s = m.floorKey(left), e = m.floorKey(right);
-        if (e != null && m.get(e) > right) m.put(right, m.get(e)); // keep tail piece [right, oldEnd)
-        if (s != null && m.get(s) > left) m.put(s, left);          // keep head piece [oldStart, left)
-        m.subMap(left, true, right, false).clear();
+    public int book(int start, int end) {
+        delta.merge(start, 1, Integer::sum);
+        delta.merge(end, -1, Integer::sum);
+        int active = 0;
+        int best = 0;
+        for (int d : delta.values()) {     // TreeMap iterates keys ascending
+            active += d;
+            best = Math.max(best, active);
+        }
+        return best;
     }
 }
 ```
 
+**Traps**
+- A `-1` and a `+1` on the same key must cancel before the sum is read: `[10, 20)` and
+  `[20, 30)` never overlap. The map merges them into one key, so this holds automatically.
+
+### Range Module — LC 715
+
+> **Key point** — keep the tracked ranges **disjoint, sorted, non-adjacent and non-empty**. Every
+> operation finds the run of stored intervals it touches with two binary searches and replaces
+> that whole run with at most two intervals, restoring the invariant before it returns.
+
+**Reduces to**: [design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — the sorted interval map of LC 729, made mutable: writes merge neighbours, deletes split them. The segment-tree form is in [segment_tree.md](./segment_tree.md).
+
 ```python
 # python
 # LC 715 - Range Module
-# IDEA: same invariant, kept in 2 parallel sorted lists; slice-assignment replaces a whole run at once
+# IDEA: parallel sorted lists of disjoint [start, end); add/remove replace the touched run by slice assignment
+# time = O(log n) search + O(n) slice per call, space = O(n)
 import bisect
 
 class RangeModule:
-    # time = O(log N) search + O(N) slice per op, space = O(N)
     def __init__(self):
         self.starts = []
         self.ends = []
 
     def addRange(self, left, right):
-        i = bisect.bisect_right(self.starts, left) - 1
-        if i >= 0 and self.ends[i] >= left:      # >= -> also merges adjacent ranges
-            left = self.starts[i]
-        j = bisect.bisect_right(self.starts, right) - 1
-        if j >= 0 and self.ends[j] > right:
-            right = self.ends[j]
-        lo = bisect.bisect_left(self.starts, left)
-        hi = bisect.bisect_right(self.starts, right)
-        self.starts[lo:hi] = [left]              # replace the whole swallowed run by 1 interval
-        self.ends[lo:hi] = [right]
+        i = bisect.bisect_left(self.ends, left)        # first interval ending at or after left
+        j = bisect.bisect_right(self.starts, right)    # first interval starting after right
+        if i < j:                                      # intervals i..j-1 touch [left, right): absorb them
+            left = min(left, self.starts[i])
+            right = max(right, self.ends[j - 1])
+        self.starts[i:j] = [left]
+        self.ends[i:j] = [right]
 
     def queryRange(self, left, right):
-        i = bisect.bisect_right(self.starts, left) - 1
+        i = bisect.bisect_right(self.starts, left) - 1  # the interval that could contain left
         return i >= 0 and self.ends[i] >= right
 
     def removeRange(self, left, right):
-        lo = bisect.bisect_left(self.starts, left)
-        hi = bisect.bisect_left(self.starts, right)
-        add_s, add_e = [], []
-        if hi > lo and self.ends[hi - 1] > right:      # last touched interval survives past right
-            add_s, add_e = [right], [self.ends[hi - 1]]
-        if lo > 0 and self.ends[lo - 1] > left:        # left neighbour is cut ...
-            prev_end = self.ends[lo - 1]
-            self.ends[lo - 1] = left
-            if prev_end > right:                       # ... or split in two
-                add_s, add_e = [right], [prev_end]
-        self.starts[lo:hi] = add_s
-        self.ends[lo:hi] = add_e
+        i = bisect.bisect_right(self.ends, left)       # first interval ending after left
+        j = bisect.bisect_left(self.starts, right)     # first interval starting at or after right
+        if i >= j:
+            return                                     # nothing overlaps [left, right)
+        new_starts, new_ends = [], []
+        if self.starts[i] < left:                      # keep the head piece [start, left)
+            new_starts.append(self.starts[i])
+            new_ends.append(left)
+        if self.ends[j - 1] > right:                   # keep the tail piece [right, end)
+            new_starts.append(right)
+            new_ends.append(self.ends[j - 1])
+        self.starts[i:j] = new_starts
+        self.ends[i:j] = new_ends
 ```
-
-**Similar problems (same ordered-map skeleton)**
-
-| LC | Problem | Twist |
-|----|---------|-------|
-| 729 | My Calendar I | reject any overlap → Template A |
-| 731 | My Calendar II | allow double booking, reject triple → Template B + rollback |
-| 732 | My Calendar III | report max concurrent booking → Template B |
-| 715 | Range Module | mutable covered set (add/remove/query) → Template C |
-| 352 | Data Stream as Disjoint Intervals | `addNum` = `addRange(v, v+1)` of Template C; `getIntervals` returns the merged list |
-| 855 | Exam Room | ordered **set of seats**; on `seat()` scan gaps for max distance to nearest neighbour |
-| 2034 | Stock Price Fluctuation | ordered map `price -> count` (multiset) for O(log N) max/min + HashMap `timestamp -> price` for corrections. Without an ordered multiset (plain Python), use **two mirrored lazy heaps** instead — [heap_advanced.md](./heap_advanced.md#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) |
-
-### 8) Two Heaps — running median, LC 295 ⭐⭐⭐⭐⭐
-
-
-**Pattern**: split the stream into a **max-heap of the smaller half** (`lo`) and a **min-heap of the larger half** (`hi`).
-
-**Invariants** (restored on every insert):
-1. `max(lo) <= min(hi)` — every element of `lo` is `<=` every element of `hi`
-2. `len(lo) == len(hi)` or `len(lo) == len(hi) + 1` — so the median is `lo.top()` (odd) or the average of both tops (even)
-
-**Key trick**: to insert, always **push into `lo`, pop its max into `hi`, then rebalance back**. This preserves invariant 1 without any comparison branching.
 
 ```java
 // java
-// LC 295 - Find Median from Data Stream
-// IDEA: max-heap (small half) + min-heap (large half), sizes kept balanced
-class MedianFinder {
-    // time = O(log N) addNum / O(1) findMedian, space = O(N)
-    private final PriorityQueue<Integer> lo = new PriorityQueue<>(Collections.reverseOrder()); // max-heap
-    private final PriorityQueue<Integer> hi = new PriorityQueue<>();                           // min-heap
+// LC 715 - Range Module
+// IDEA: TreeMap of merged disjoint [start, end); add absorbs neighbours, remove re-inserts the surviving pieces
+// time = O(log n) amortised per call, space = O(n)
+class RangeModule {
+    private final TreeMap<Integer, Integer> ranges = new TreeMap<>();   // start -> end
 
-    public void addNum(int num) {
-        lo.offer(num);
-        hi.offer(lo.poll());                              // push-then-pass keeps lo <= hi
-        if (hi.size() > lo.size()) lo.offer(hi.poll());   // rebalance: lo holds the extra element
+    public void addRange(int left, int right) {
+        Integer s = ranges.floorKey(left);
+        Integer e = ranges.floorKey(right);
+        if (s != null && ranges.get(s) >= left) {
+            left = s;                                   // touches or overlaps on the left: absorb
+        }
+        if (e != null && ranges.get(e) > right) {
+            right = ranges.get(e);                      // extends past right: absorb
+        }
+        ranges.subMap(left, true, right, true).clear(); // drop everything swallowed
+        ranges.put(left, right);
     }
 
-    public double findMedian() {
-        return lo.size() > hi.size() ? lo.peek() : (lo.peek() + hi.peek()) / 2.0;
+    public boolean queryRange(int left, int right) {
+        Integer s = ranges.floorKey(left);
+        return s != null && ranges.get(s) >= right;     // one merged interval must cover it all
+    }
+
+    public void removeRange(int left, int right) {
+        Integer s = ranges.floorKey(left);
+        Integer e = ranges.floorKey(right);
+        if (e != null && ranges.get(e) > right) {
+            ranges.put(right, ranges.get(e));           // keep the tail piece [right, oldEnd)
+        }
+        if (s != null && ranges.get(s) > left) {
+            ranges.put(s, left);                        // keep the head piece [oldStart, left)
+        }
+        ranges.subMap(left, true, right, false).clear();
     }
 }
 ```
 
-```python
-# python
-# LC 295 - Find Median from Data Stream
-# IDEA: heapq is a MIN-heap -> negate values to fake the max-heap half
-import heapq
+**Dry run**
 
-class MedianFinder:
-    # time = O(log N) addNum / O(1) findMedian, space = O(N)
-    def __init__(self):
-        self.lo = []   # max-heap (negated) : smaller half
-        self.hi = []   # min-heap           : larger half
-
-    def addNum(self, num):
-        heapq.heappush(self.lo, -num)
-        heapq.heappush(self.hi, -heapq.heappop(self.lo))
-        if len(self.hi) > len(self.lo):
-            heapq.heappush(self.lo, -heapq.heappop(self.hi))
-
-    def findMedian(self):
-        if len(self.lo) > len(self.hi):
-            return float(-self.lo[0])
-        return (-self.lo[0] + self.hi[0]) / 2.0
+```text
+add [10, 20)      -> [10,20)
+remove [14, 16)   -> [10,14) [16,20)       (one interval split in two)
+query [10, 14)    -> True
+query [13, 15)    -> False                 (14..16 was removed)
+query [16, 17)    -> True
 ```
 
-**Variation - one fixed-size heap** (twist: we only need the *k-th* order statistic, not the middle one, so a single **size-k min-heap** suffices; its root is the answer)
+**Traps**
+- Adjacent ranges must merge: `add [10, 20)` then `add [20, 30)` is one range, or `query [15, 25)`
+  wrongly fails. In `addRange` the search uses `ends >= left` and `starts <= right`, both inclusive.
+- In `removeRange` the head and the tail can come from the **same** interval (a split); compute
+  both pieces before replacing the run.
 
-```java
-// java
-// LC 703 - Kth Largest Element in a Stream
-// IDEA: keep ONLY the k largest seen so far in a min-heap -> heap top == kth largest
-class KthLargest {
-    // time = O(log k) per add, space = O(k)
-    private final PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-    private final int k;
+## Path Hierarchy Examples
 
-    public KthLargest(int k, int[] nums) {
-        this.k = k;
-        for (int n : nums) add(n);
-    }
+### Design File System — LC 1166
 
-    public int add(int val) {
-        minHeap.offer(val);
-        if (minHeap.size() > k) minHeap.poll();  // evict the smallest -> heap keeps top-k
-        return minHeap.peek();
-    }
-}
-```
+> **Key point** — `createPath` only needs to know that the **parent path** exists, and the parent
+> is the path up to its last `/`. A map from full path to value answers that in one lookup; no
+> tree is needed because there is no `ls`.
+
+**Reduces to**: [design § Pattern 9](./design.md#pattern-9-path-hierarchy) — the "map keyed by the full path" side of the choice.
 
 ```python
 # python
-# LC 703 - Kth Largest Element in a Stream
-import heapq
-
-class KthLargest:
-    # time = O(log k) per add, space = O(k)
-    def __init__(self, k, nums):
-        self.k = k
-        self.heap = []
-        for n in nums:
-            self.add(n)
-
-    def add(self, val):
-        heapq.heappush(self.heap, val)
-        if len(self.heap) > self.k:
-            heapq.heappop(self.heap)
-        return self.heap[0]
-```
-
-### 9) Time Based Key-Value Store — LC 981
-
-```python
-# LC 981. Time Based Key-Value Store
-# V0
-# IDEA: HashMap + Binary Search
-# - HashMap: key -> list of (timestamp, value) pairs
-# - List is sorted by timestamp, use binary search to find largest timestamp <= target
-from collections import defaultdict
-import bisect
-
-class TimeMap:
-
-    def __init__(self):
-        self.store = defaultdict(list)  # key -> [(timestamp, value), ...]
-
-    def set(self, key: str, value: str, timestamp: int) -> None:
-        self.store[key].append((timestamp, value))
-
-    def get(self, key: str, timestamp: int) -> str:
-        if key not in self.store:
-            return ""
-
-        values = self.store[key]
-        # Binary search for largest timestamp <= target
-        idx = bisect.bisect_right(values, (timestamp, chr(127)))
-
-        return values[idx - 1][1] if idx > 0 else ""
-
-# V1 - Manual Binary Search
-class TimeMap:
-
-    def __init__(self):
-        self.store = defaultdict(list)
-
-    def set(self, key: str, value: str, timestamp: int) -> None:
-        self.store[key].append((timestamp, value))
-
-    def get(self, key: str, timestamp: int) -> str:
-        if key not in self.store:
-            return ""
-
-        values = self.store[key]
-        left, right = 0, len(values) - 1
-        result = ""
-
-        while left <= right:
-            mid = (left + right) // 2
-            if values[mid][0] <= timestamp:
-                result = values[mid][1]
-                left = mid + 1
-            else:
-                right = mid - 1
-
-        return result
-```
-
-### 10) Design Hit Counter — LC 362
-
-```python
-# LC 362. Design Hit Counter
-# V0
-# IDEA: Queue with timestamps (sliding window)
-from collections import deque
-class HitCounter:
-
-    def __init__(self):
-        self.hits = deque()  # stores timestamps
-
-    def hit(self, timestamp: int) -> None:
-        self.hits.append(timestamp)
-
-    def getHits(self, timestamp: int) -> int:
-        # Remove hits older than 300 seconds
-        while self.hits and timestamp - self.hits[0] >= 300:
-            self.hits.popleft()
-        return len(self.hits)
-
-# V1
-# IDEA: Array with buckets (optimized for multiple hits at same timestamp)
-class HitCounter:
-
-    def __init__(self):
-        self.times = [0] * 300
-        self.hits = [0] * 300
-
-    def hit(self, timestamp: int) -> None:
-        idx = timestamp % 300
-        if self.times[idx] != timestamp:
-            self.times[idx] = timestamp
-            self.hits[idx] = 1
-        else:
-            self.hits[idx] += 1
-
-    def getHits(self, timestamp: int) -> int:
-        total = 0
-        for i in range(300):
-            if timestamp - self.times[i] < 300:
-                total += self.hits[i]
-        return total
-```
-
-## Tries & Prefix Search
-
-### 11) Design Search Autocomplete System — LC 642
-
-```python
-# LC 642 Design Search Autocomplete System
-# V1
-# IDEA : DICT TRIE
-# http://bookshadow.com/weblog/2017/07/16/leetcode-design-search-autocomplete-system/
-class TrieNode:
-    def __init__(self):
-        self.children = dict()
-        self.sentences = set()
-
-class AutocompleteSystem(object):
-
-    def __init__(self, sentences, times):
-        """
-        :type sentences: List[str]
-        :type times: List[int]
-        """
-        self.buffer = ''
-        self.stimes = collections.defaultdict(int)
-        self.trie = TrieNode()
-        for s, t in zip(sentences, times):
-            self.stimes[s] = t
-            self.addSentence(s)
-        self.tnode = self.trie
-
-    def input(self, c):
-        """
-        :type c: str
-        :rtype: List[str]
-        """
-        ans = []
-        if c != '#':
-            self.buffer += c
-            if self.tnode: self.tnode = self.tnode.children.get(c)
-            if self.tnode: ans = sorted(self.tnode.sentences, key=lambda x: (-self.stimes[x], x))[:3]
-        else:
-            self.stimes[self.buffer] += 1
-            self.addSentence(self.buffer)
-            self.buffer = ''
-            self.tnode = self.trie
-        return ans
-
-    def addSentence(self, sentence):
-        node = self.trie
-        for letter in sentence:
-            child = node.children.get(letter)
-            if child is None:
-                child = TrieNode()
-                node.children[letter] = child
-            node = child
-            child.sentences.add(sentence)
-```
-
-### 12) Design Add and Search Words Data Structure — LC 211
-
-```python
-# LC 211. Design Add and Search Words Data Structure
-# V0
-# IDEA: Trie with wildcard support
-class TrieNode:
-    def __init__(self):
-        self.children = {}
-        self.is_word = False
-
-class WordDictionary:
-
-    def __init__(self):
-        self.root = TrieNode()
-
-    def addWord(self, word: str) -> None:
-        node = self.root
-        for char in word:
-            if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-        node.is_word = True
-
-    def search(self, word: str) -> bool:
-        return self.search_helper(word, 0, self.root)
-
-    def search_helper(self, word: str, index: int, node: TrieNode) -> bool:
-        if index == len(word):
-            return node.is_word
-
-        char = word[index]
-
-        if char == '.':
-            # Try all possible children
-            for child in node.children.values():
-                if self.search_helper(word, index + 1, child):
-                    return True
-            return False
-        else:
-            if char not in node.children:
-                return False
-            return self.search_helper(word, index + 1, node.children[char])
-```
-
-## File Systems & Paths
-
-### 13) Design File System — LC 1166
-
-```python
-# LC 1166. Design File System
-# V1
-# IDEA : dict
-# https://leetcode.com/problems/design-file-system/discuss/365925/Python-dict-solution
+# LC 1166 - Design File System
+# IDEA: map full path -> value; a path may be created only if it is new and its parent exists
+# time = O(L) per call for a path of length L, space = O(total path length)
 class FileSystem:
-
     def __init__(self):
-        self.d = {}
+        self.value_of = {"": -1}             # the root's parent string, so "/a" has a parent
 
-    def createPath(self, path: str, value: int) -> bool:
-        if path in self.d: return False
-        if len(path) == 1: return False
-        idx = len(path) - 1
-        while path[idx] != '/': idx -= 1
-        if idx == 0 or path[:idx] in self.d: 
-            self.d[path] = value
-            return True
-        return False
-        
-    def get(self, path: str) -> int:
-        return self.d.get(path, -1)
+    def createPath(self, path, value):
+        if not path or path == "/" or path in self.value_of:
+            return False
+        parent = path[:path.rfind("/")]
+        if parent not in self.value_of:
+            return False
+        self.value_of[path] = value
+        return True
+
+    def get(self, path):
+        if path == "":
+            return -1
+        return self.value_of.get(path, -1)
 ```
 
-### 14) Design In-Memory File System — LC 588
+**Traps**
+- `"/a/b"` before `"/a"` must fail: the parent check is the whole problem.
+- Creating an existing path returns `False` and leaves the old value.
+
+### Design Log Storage System — LC 635
+
+> **Key point** — the timestamps are fixed-width `Year:Month:Day:Hour:Minute:Second` strings, so
+> truncating to a granularity is a **prefix**, and comparing two prefixes as strings compares them
+> as times. A range query is then two string comparisons per log.
+
+**Reduces to**: [design § Pattern 9](./design.md#pattern-9-path-hierarchy) — a timestamp is a path of six components, and the granularity says how deep to compare.
 
 ```python
-# LC 588. Design In-Memory File System
-
-# V0
-# IDEA : Dict
-class FileSystem(object):
+# python
+# LC 635 - Design Log Storage System
+# IDEA: keep (timestamp, id); compare the first k characters, where k is set by the granularity
+# time = O(1) put, O(n) retrieve; space = O(n)
+class LogSystem:
+    PREFIX = {"Year": 4, "Month": 7, "Day": 10, "Hour": 13, "Minute": 16, "Second": 19}
 
     def __init__(self):
-        """
-        NOTE !!! we init root as below structure
-        """
-        self.root = {'dirs' : {}, 'files': {}}
+        self.logs = []                       # (timestamp, id)
+
+    def put(self, id, timestamp):
+        self.logs.append((timestamp, id))
+
+    def retrieve(self, start, end, granularity):
+        k = self.PREFIX[granularity]
+        low, high = start[:k], end[:k]
+        return [log_id for ts, log_id in self.logs if low <= ts[:k] <= high]
+```
+
+**Traps**
+- Parsing into integers and comparing field by field works, but the fixed-width format is the
+  trick the problem is built around.
+- Both ends are inclusive at the chosen granularity.
+
+### Design In-Memory File System — LC 588
+
+> **Key point** — `ls`, `mkdir` and file writes all walk the same path, so the structure is a
+> **trie of path components** whose nodes are directories holding child dirs and files. `ls` on a
+> file returns just its name; on a directory, the sorted names of its children.
+
+**Reduces to**: [design § Pattern 9](./design.md#pattern-9-path-hierarchy) — the trie side of the choice, needed because `ls` lists what is under a prefix.
+
+```python
+# python
+# LC 588 - Design In-Memory File System
+# IDEA: nested dict trie: each dir is {"dirs": {}, "files": {}}; walk the path's components
+# time = O(L) per walk for a path of L components (+ O(k log k) to sort k names in ls), space = O(total content)
+class FileSystem:
+    def __init__(self):
+        self.root = {"dirs": {}, "files": {}}
+
+    def _walk(self, parts):
+        """Return the directory at parts, creating missing ones."""
+        node = self.root
+        for part in parts:
+            node = node["dirs"].setdefault(part, {"dirs": {}, "files": {}})
+        return node
 
     def ls(self, path):
-        """
-        :type path: str
-        :rtype: List[str]
-        """
-        node, type = self.getExistedNode(path)
-        if type == 'dir':
-            # NOTE: `dict.keys() + dict.keys()` works only in Python 2; in Python 3 use `sorted(list(node['dirs'].keys()) + list(node['files'].keys()))`
-            return sorted(node['dirs'].keys() + node['files'].keys())
-        return [path.split('/')[-1]]
+        parts = [p for p in path.split("/") if p]
+        if parts:
+            parent = self._walk(parts[:-1])
+            if parts[-1] in parent["files"]:     # a file lists only itself
+                return [parts[-1]]
+        node = self._walk(parts)
+        return sorted(list(node["dirs"]) + list(node["files"]))
 
     def mkdir(self, path):
-        """
-        :type path: str
-        :rtype: void
-        """
-        node = self.root
-        #for dir in filter(len, path.split('/')):
-        for dir in [ x for x in path.split('/') if len(x) > 0 ]:
-            if dir not in node['dirs']:
-                node['dirs'][dir] = {'dirs' : {}, 'files': {}}
-            node = node['dirs'][dir]
+        self._walk([p for p in path.split("/") if p])
 
     def addContentToFile(self, filePath, content):
-        """
-        :type filePath: str
-        :type content: str
-        :rtype: void
-        """
-        dirs = filePath.split('/')
-        path, file = '/'.join(dirs[:-1]), dirs[-1]
-        self.mkdir(path)
-        node, type = self.getExistedNode(path)
-        if file not in node['files']:
-            node['files'][file] = ''
-        node['files'][file] += content
+        parts = [p for p in filePath.split("/") if p]
+        directory = self._walk(parts[:-1])
+        directory["files"][parts[-1]] = directory["files"].get(parts[-1], "") + content
 
     def readContentFromFile(self, filePath):
-        """
-        :type filePath: str
-        :rtype: str
-        """
-        dirs = filePath.split('/')
-        path, file = '/'.join(dirs[:-1]), dirs[-1]
-        node, type = self.getExistedNode(path)
-        return node['files'][file]
-        
-    def getExistedNode(self, path):
-        """
-        :type path: str
-        :rtype: str
-        """
-        node = self.root
-
-        # method 1) : filter
-        # https://www.runoob.com/python/python-func-filter.html
-        #print ("*** path = " + str(path))
-        #print ("*** filter(len, path.split('/') = " + str(filter(len, path.split('/'))))
-        #for dir in filter(len, path.split('/')): # filter out path.split('/') outcome which with len > 0
-
-        # method 2) list comprehension with condition
-        for dir in [ x for x in path.split('/') if len(x) > 0 ]:
-            if dir in node['dirs']: 
-                node = node['dirs'][dir]
-            else:
-                return node, 'file'
-        return node, 'dir'
+        parts = [p for p in filePath.split("/") if p]
+        return self._walk(parts[:-1])["files"][parts[-1]]
 ```
 
-### 15) Design Log Storage System — LC 635
+**Traps**
+- Python 3 `dict.keys() + dict.keys()` raises `TypeError`; build a list first.
+- `ls("/")` splits into no components; the walk must return the root, not fail.
+
+## Aggregate Counter Examples
+
+### Design Tic-Tac-Toe — LC 348
+
+> **Key point** — a player wins when one row, column or diagonal holds n of their marks. Count
+> player 1 as `+1` and player 2 as `-1` per line; a line belongs to one player exactly when its
+> sum is `±n`, and a move touches at most four lines.
+
+**Reduces to**: [design § Pattern 10](./design.md#pattern-10-aggregate-counters-updated-on-write) — update the aggregates on the write so the read (who won?) is O(1).
 
 ```python
-# LC 635 Design Log Storage System
-```
-
-## Feeds, Games & Simulation
-
-### 16) Design Twitter — LC 355
-
-```python
-# LC 355  Design Twitter
-# V0
-# https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md
-from collections import defaultdict
-from heapq import merge
-class Twitter(object):
-    
-    def __init__(self):
-        self.follower_followees_map = defaultdict(set)
-        self.user_tweets_map = defaultdict(list)
-        self.time_stamp = 0
-
-    def postTweet(self, userId, tweetId):
-        self.user_tweets_map[userId].append((self.time_stamp, tweetId))
-        self.time_stamp -= 1
-
-    def getNewsFeed(self, userId):
-        # get the followees list
-        followees = self.follower_followees_map[userId]
-        # add userId as well, since he/she can also see his/her post in the timeline
-        followees.add(userId)
-        
-        # reversed(.) returns a listreverseiterator, so the complexity is O(1) not O(n)
-        candidate_tweets = [reversed(self.user_tweets_map[u]) for u in followees]
-
-        tweets = []
-        """
-        python starred expression :
-        -> will extend Iterable Unpacking
-        example 1 : *candidate_tweets
-        exmaple 2 : a, *b, c = range(5)
-        ref :
-        https://www.python.org/dev/peps/pep-3132/
-        https://blog.csdn.net/weixin_41521681/article/details/103528136
-        http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
-        https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md
-        """
-        # complexity is 10*log(n), n is twitter's user number in worst case
-        for t in merge(*candidate_tweets):
-            tweets.append(t[1])
-            if len(tweets) == 10:
-                break
-        return tweets
-
-    def follow(self, followerId, followeeId):
-        self.follower_followees_map[followerId].add(followeeId)
-
-    def unfollow(self, followerId, followeeId):
-        self.follower_followees_map[followerId].discard(followeeId)
-```
-
-### 17) Design Tic-Tac-Toe — LC 348
-
-```python
-# LC 348. Design Tic-Tac-Toe
-# V0
-# IDEA: Track row/col/diagonal sums
-# - Each player has a unique value (+1 for player1, -1 for player2)
-# - Win when any row/col/diagonal sum equals n or -n
+# python
+# LC 348 - Design Tic-Tac-Toe
+# IDEA: one running sum per row, column and both diagonals; +1 for player 1, -1 for player 2
+# time = O(1) per move, space = O(n)
 class TicTacToe:
-
-    def __init__(self, n: int):
+    def __init__(self, n):
         self.n = n
         self.rows = [0] * n
         self.cols = [0] * n
         self.diagonal = 0
         self.anti_diagonal = 0
 
-    def move(self, row: int, col: int, player: int) -> int:
-        # player 1 -> +1, player 2 -> -1
+    def move(self, row, col, player):
         value = 1 if player == 1 else -1
-
         self.rows[row] += value
         self.cols[col] += value
-
         if row == col:
             self.diagonal += value
-
         if row + col == self.n - 1:
             self.anti_diagonal += value
-
-        # Check win condition
-        if (abs(self.rows[row]) == self.n or
-            abs(self.cols[col]) == self.n or
-            abs(self.diagonal) == self.n or
-            abs(self.anti_diagonal) == self.n):
+        if self.n in (abs(self.rows[row]), abs(self.cols[col]), abs(self.diagonal), abs(self.anti_diagonal)):
             return player
-
         return 0
 ```
 
-### 18) Design Snake Game — LC 353
+**Traps**
+- The centre of an odd board is on both diagonals: two `if`s, not `if / elif`.
+- Scanning the board after each move is O(n²) per move; the counters are O(1).
+
+### Design Underground System — LC 1396
+
+> **Key point** — the query is an average per `(start, end)` route, so keep the route's **total
+> time and trip count**, updated at check-out. A passenger's open trip is the only per-person
+> state, and it is deleted when the trip closes.
+
+**Reduces to**: [design § Pattern 10](./design.md#pattern-10-aggregate-counters-updated-on-write) — the average is a sum and a count kept on write.
 
 ```python
-# LC 353. Design Snake Game
-# V0
-# IDEA: Queue for snake body + Set for fast collision check
-from collections import deque
-class SnakeGame:
-
-    def __init__(self, width: int, height: int, food: List[List[int]]):
-        self.width = width
-        self.height = height
-        self.food = deque(food)
-        self.snake = deque([(0, 0)])  # snake body positions
-        self.snake_set = {(0, 0)}  # for O(1) collision check
-        self.score = 0
-
-    def move(self, direction: str) -> int:
-        # Calculate new head position
-        head_r, head_c = self.snake[0]
-
-        if direction == "U":
-            new_r, new_c = head_r - 1, head_c
-        elif direction == "D":
-            new_r, new_c = head_r + 1, head_c
-        elif direction == "L":
-            new_r, new_c = head_r, head_c - 1
-        else:  # "R"
-            new_r, new_c = head_r, head_c + 1
-
-        # Check boundary
-        if new_r < 0 or new_r >= self.height or new_c < 0 or new_c >= self.width:
-            return -1
-
-        # Check if eating food
-        if self.food and [new_r, new_c] == self.food[0]:
-            self.food.popleft()
-            self.score += 1
-        else:
-            # Remove tail if not eating
-            tail = self.snake.pop()
-            self.snake_set.remove(tail)
-
-        # Check self-collision (after tail removal)
-        if (new_r, new_c) in self.snake_set:
-            return -1
-
-        # Add new head
-        self.snake.appendleft((new_r, new_c))
-        self.snake_set.add((new_r, new_c))
-
-        return self.score
-```
-
-### 19) Design Underground System — LC 1396
-
-```python
-# LC 1396. Design Underground System
-# V0
-# IDEA: Two HashMaps
-# - checkInMap: id -> (stationName, time)
-# - travelMap: (start, end) -> [total_time, count]
+# python
+# LC 1396 - Design Underground System
+# IDEA: open trips id -> (station, time); route (start, end) -> [total time, trips]
+# time = O(1) per call, space = O(passengers + routes)
 from collections import defaultdict
+
 class UndergroundSystem:
-
     def __init__(self):
-        self.check_in = {}  # id -> (station, time)
-        self.travel = defaultdict(lambda: [0, 0])  # (start, end) -> [total_time, count]
+        self.open_trip = {}                          # id -> (station, time)
+        self.route = defaultdict(lambda: [0, 0])     # (start, end) -> [total time, trips]
 
-    def checkIn(self, id: int, stationName: str, t: int) -> None:
-        self.check_in[id] = (stationName, t)
+    def checkIn(self, id, stationName, t):
+        self.open_trip[id] = (stationName, t)
 
-    def checkOut(self, id: int, stationName: str, t: int) -> None:
-        start_station, start_time = self.check_in[id]
-        route = (start_station, stationName)
-        self.travel[route][0] += t - start_time
-        self.travel[route][1] += 1
-        del self.check_in[id]
+    def checkOut(self, id, stationName, t):
+        start_station, start_time = self.open_trip.pop(id)
+        totals = self.route[(start_station, stationName)]
+        totals[0] += t - start_time
+        totals[1] += 1
 
-    def getAverageTime(self, startStation: str, endStation: str) -> float:
-        total_time, count = self.travel[(startStation, endStation)]
-        return total_time / count
+    def getAverageTime(self, startStation, endStation):
+        total, trips = self.route[(startStation, endStation)]
+        return total / trips
 ```
 
-## Quick Reference
-
-### 20) Other high-frequency `design`-tagged problems
-
-
-- **LC 297. Serialize and Deserialize Binary Tree** (Hard) - preorder DFS with a `#` sentinel for null; deserialize by consuming the token stream in the same order (see `tree.md`)
-- **LC 449. Serialize and Deserialize BST** (Medium) - same idea, but BST order lets you drop the null markers and rebuild with `(lower, upper)` bounds
-- **LC 706 / 705. Design HashMap / HashSet** (Easy) - bucket array + separate chaining (see `hash_map.md`)
-- **LC 707. Design Linked List** (Medium) - dummy head + size field (see `linked_list.md`)
-- **LC 745. Prefix and Suffix Search** (Hard) - insert every `suffix + '{' + word` into one trie, then search `suf + '{' + pre`
-- **LC 676. Implement Magic Dictionary** / **LC 677. Map Sum Pairs** (Medium) - trie variations: exactly-one-char mismatch DFS / prefix-sum aggregation (see `trie.md`)
-- **LC 1472. Design Browser History** (Medium) - array + current index (truncate forward history on `visit`), or two stacks
-- **LC 1352. Product of the Last K Numbers** (Medium) - prefix products list; on `add(0)` reset the list, and answer `k > len` as 0
-
----
+**Traps**
+- Storing every trip time and averaging on read makes `getAverageTime` O(trips).
+- The route is directed: `(A, B)` and `(B, A)` are different keys.

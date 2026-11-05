@@ -354,174 +354,9 @@ Return: dummy.next = [3]
 **Not this if** — you are handed only the node to delete, never the head (LC 237): there is no
 `prev` to stand on, so copy `node.next.val` into it and delete the next node instead.
 
-**Drill** — LC 203 · LC 83 *(compare adjacent values)* · LC 19 ⭐ *(a gap of n: worked below)* · LC 82 *(drop every copy: worked below)* · LC 1474
+**Drill** — LC 203 · LC 83 *(compare adjacent values)* · LC 19 ⭐ *(a gap of n)* · LC 82 *(drop every copy)* · LC 1474
 
-#### **Why Dummy Node? Visual Comparison (LC 19)**
-
-> **Key point** — with `fast` started n + 1 steps ahead of `slow`, `slow` stops on the node
-> *before* the target. Starting both on the dummy makes that true even when the target is the head.
-
-**Reduces to**: [Template 2](#template-2-dummy-head-deletion--lc-203-) — the dummy, plus a
-fixed gap between two pointers from [Template 5](#template-5-fastslow-middle--lc-876-).
-
-> **Problem**: Remove the **n-th node from the end** of `[1, 2, 3, 4, 5]`.
-
----
-
-##### Case A — Normal removal: `n = 2` (remove node `4`)
-
-**Without dummy** — works fine here:
-
-```text
-fast = slow = head = [1]
-
-Step 1: move fast n=2 steps ahead
-  [1] -> [2] -> [3] -> [4] -> [5]
-  ^slow          ^fast
-
-Step 2: move both until fast.next is None
-  [1] -> [2] -> [3] -> [4] -> [5]
-                ^slow          ^fast
-
-Step 3: slow.next = slow.next.next  →  removes [4]
-  [1] -> [2] -> [3] -> [5]  ✓
-```
-
-**With dummy** — also works, same logic:
-
-```text
-fast = slow = dummy[0]
-
-Step 1: move fast n+1=3 steps ahead
-  [0] -> [1] -> [2] -> [3] -> [4] -> [5]
-  ^slow                ^fast
-
-Step 2: move both until fast is None
-  [0] -> [1] -> [2] -> [3] -> [4] -> [5]
-                ^slow                 ^fast → None (stop)
-
-Step 3: slow.next = slow.next.next  →  removes [4]
-  [0] -> [1] -> [2] -> [3] -> [5]  → return dummy.next = [1] ✓
-```
-
----
-
-##### Case B — Edge case: `n = 5` (remove the **head** node `1`)
-
-**Without dummy** — BREAKS, needs special-case code:
-
-```text
-fast = slow = head = [1]
-
-Step 1: move fast n=5 steps
-  fast: 1 -> 2 -> 3 -> 4 -> 5 -> None
-
-  [1] -> [2] -> [3] -> [4] -> [5] -> None
-  ^slow                               ^fast (None!)
-
-Step 2: while fast.next → fast is None, loop NEVER runs
-  slow is still at [1]  (the head itself!)
-
-Step 3: slow.next = slow.next.next
-  → This removes [2], NOT the head — WRONG ❌
-
-  Must add a special case:
-  if not fast:
-      return head.next  # ← extra branch needed
-```
-
-**With dummy** — works uniformly, NO special case:
-
-```text
-fast = slow = dummy[0]
-
-Step 1: move fast n+1=6 steps ahead
-  fast: dummy -> 1 -> 2 -> 3 -> 4 -> 5 -> None
-
-  [0] -> [1] -> [2] -> [3] -> [4] -> [5] -> None
-  ^slow                                       ^fast (None)
-
-Step 2: while fast → fast is None, loop NEVER runs
-  slow stays at dummy[0]  ← one node BEFORE the head
-
-Step 3: slow.next = slow.next.next
-  dummy.next = [2]  →  head [1] is removed ✓
-
-Return dummy.next = [2] -> [3] -> [4] -> [5]  ✓  No special case!
-```
-
----
-
-##### Summary: Why dummy wins
-
-| | Without Dummy | With Dummy |
-|---|---|---|
-| Normal removal | ✓ Works | ✓ Works |
-| Remove head (n = len) | ❌ Needs `if not fast: return head.next` | ✓ Works uniformly |
-| Code branches | Extra conditional | None |
-| `slow` start position | `head` (can't reach before head) | `dummy` (one step before head) |
-
-**Key insight**: the dummy node gives `slow` a "standing position" **one node before the head**, so it can reconnect across any node — including the head itself — without special handling.
-
-```python
-# python
-# LC 19 - Remove Nth Node From End of List
-# IDEA: start fast and slow on the dummy, open a gap of n + 1, walk both until fast falls off
-# time = O(n), space = O(1)
-class Solution(object):
-    def removeNthFromEnd(self, head, n):
-        dummy = ListNode(0)
-        dummy.next = head
-        fast = slow = dummy
-
-        for _ in range(n + 1):   # fast moves n+1 steps
-            fast = fast.next
-
-        while fast:               # move both until fast is None
-            fast = fast.next
-            slow = slow.next
-
-        slow.next = slow.next.next   # remove the target node
-        return dummy.next
-```
-
-#### Remove Duplicates from Sorted List II — LC 82
-
-> **Key point** — `prev` is the last node known to be kept. When `head` starts a run of equal
-> values, skip the whole run and hang what follows on `prev`; the dummy makes a duplicated head
-> just another run.
-
-**Reduces to**: [Template 2](#template-2-dummy-head-deletion--lc-203-) — the deletion test
-compares a node with its neighbour instead of with a fixed value.
-
-```python
-# python
-# LC 82 - Remove Duplicates from Sorted List II
-# IDEA: dummy holds the last kept node; a run of equal values is skipped as a whole
-# time = O(n), space = O(1)
-class Solution(object):
-    def deleteDuplicates(self, head):
-        dummy = ListNode(0)
-        dummy.next = head
-        prev = dummy                       # last node that is definitely kept
-
-        while head and head.next:
-            if head.val == head.next.val:
-                # skip every node of this value
-                val = head.val
-                while head and head.val == val:
-                    head = head.next
-                prev.next = head           # prev does not move: head is still unchecked
-            else:
-                prev = head
-                head = head.next
-
-        return dummy.next
-```
-
-**Traps**
-- This removes **every** copy (`[1,1,2]` → `[2]`). LC 83 keeps one copy (`[1,1,2]` → `[1,2]`);
-  there no dummy is needed, because the head is never deleted.
+Worked: [LC 19 and the other Template 2 problems](./linked_list_examples.md#dummy-head-deletion-examples) in linked_list_examples; LC 82 in [2_pointers_linkedlist § 2-2](./2_pointers_linkedlist.md#2-2-remove-duplicates-from-sorted-list-ii--lc-82-).
 
 ### Template 3: Two Dummies, Split then Join — LC 86 ⭐⭐⭐⭐
 
@@ -783,133 +618,9 @@ Final:
 the list is *rotated* (LC 61), not reversed → find the new tail with a gap and re-stitch, no
 reversal at all.
 
-**Drill** — LC 92 · LC 206 ⭐ *(k = length)* · LC 24 *(k = 2, unrolled: below)* · LC 25 *(loop the helper: below)* · LC 61
+**Drill** — LC 92 · LC 206 ⭐ *(k = length)* · LC 24 *(k = 2, unrolled)* · LC 25 *(loop the helper)* · LC 61
 
-#### Reverse Nodes in k-Group — LC 25
-
-> **Key point** — after each group, the group's old head is its new tail, and that is exactly
-> the node that must own the incoming link for the next group: `prev = new_tail`.
-
-**Reduces to**: [Template 4](#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) — the
-same helper, called once per full group of k.
-
-```python
-# python
-# LC 25 - Reverse Nodes in k-Group
-# IDEA: while k nodes remain after prev, reverse them with the helper and reconnect;
-#       a final group shorter than k is left as it is
-# time = O(n), space = O(1)
-class Solution(object):
-    def reverseKGroup(self, head, k):
-        def has_k(node, k):
-            # are there at least k nodes starting at node?
-            count = 0
-            while node and count < k:
-                node = node.next
-                count += 1
-            return count == k
-
-        dummy = ListNode(0)
-        dummy.next = head
-        prev = dummy               # node before the current group
-
-        while has_k(prev.next, k):
-            start = prev.next
-            new_head, new_tail, next_node = self.reverse_helper(start, k)
-            prev.next = new_head        # front of group
-            new_tail.next = next_node   # tail of group -> rest
-            prev = new_tail             # move `prev` to end of this group
-        return dummy.next
-
-    def reverse_helper(self, head, k):
-        prev = None
-        curr = head
-        while curr and k > 0:
-            nxt = curr.next
-            curr.next = prev
-            prev = curr
-            curr = nxt
-            k -= 1
-        return prev, head, curr
-```
-
-> **Key insight**: the *same* `reverse_helper` powers LC 206 / 92 / 25. Only the surrounding logic differs — **206** calls it once, **92** locates one segment then calls it once, **25** loops and calls it per group. Master the 3-handle return (`new_head, new_tail, next_node`) and all three collapse into "locate → reverse → reconnect".
-
-#### Swap Nodes in Pairs — LC 24
-
-> **Key point** — at k = 2 the helper's three handles become local names: `second` is the new
-> front, `first` the new tail, and `second.next` the node after. `prev` is the only cursor.
-
-**Reduces to**: [Template 4](#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) — the
-k = 2 case, unrolled, because reversing two nodes is two assignments.
-
-| The helper returns | At `k = 2` it is | Which is written as |
-|---|---|---|
-| `new_head` | `second` | `prev.next = second` |
-| `new_tail` | `first` | `prev = first` — the next iteration's `prev` |
-| `next_node` | `second.next` | folded straight into `first.next = second.next` |
-
-```python
-# python
-# LC 24 - Swap Nodes in Pairs
-# IDEA: the k = 2 case of the helper above, unrolled — only the reconnection survives.
-#       `prev` is the ONLY cursor: both members of the pair are reachable from it,
-#       so there is no second `head` walker to keep in step.
-# time = O(n), space = O(1)
-class Solution(object):
-    def swapPairs(self, head):
-        dummy = ListNode(0)
-        dummy.next = head
-        prev = dummy                  # node BEFORE the pair
-
-        # prev.next and prev.next.next ARE the pair -> no separate cursor needed
-        while prev.next and prev.next.next:
-            first = prev.next         # becomes the pair's tail  (new_tail)
-            second = first.next       # becomes the pair's front (new_head)
-
-            # reverse the 2-node segment
-            first.next = second.next  # (A) carry `next_node` straight into the new tail
-            second.next = first       # (B) flip the pair
-
-            # reconnect the front
-            prev.next = second        # (C) prev adopts the new front
-
-            # prev = new_tail: after the swap `first` sits before the next pair
-            prev = first
-
-        return dummy.next
-```
-
-```text
-input: 1 -> 2 -> 3 -> 4
-
-dummy -> 1 -> 2 -> 3 -> 4
-  ^prev  ^first
-              ^second
-
-(A) first.next  = second.next     # 1 -> 3
-(B) second.next = first           # 2 -> 1
-(C) prev.next   = second          # dummy -> 2
-
-dummy -> 2 -> 1 -> 3 -> 4
-
-prev = first
-
-dummy -> 2 -> 1 -> 3 -> 4
-              ^prev
-                   ^first
-                        ^second   <- next iteration reads the pair off prev again
-
-... repeat on (3, 4); then prev.next.next is None -> stop
-return dummy.next  =>  2 -> 1 -> 4 -> 3
-```
-
-**Traps**
-- Running `(B)` before `(A)` loses `second.next`: `[1,2,3,4]` returns `[2,1]`.
-- No guard is needed for `[]` or `[1]`: `prev.next.next` is already `None`, so the loop never runs.
-
-The full walkthrough — the three anchors, the per-iteration dry run and the recursive form — is in
-[linked_list_examples.md 3)](./linked_list_examples.md#3-swap-nodes-in-pairs--lc-24).
+Worked: [LC 24, LC 25 and LC 430](./linked_list_examples.md#reverse-a-segment-examples) in linked_list_examples.
 
 #### Recursive form — reverse the first n, then a range
 
@@ -1010,7 +721,7 @@ return 3             return 4  (the second middle)
 
 **Not this if** — "does the list have a cycle / where does it start" (LC 141, LC 142) uses the
 same two speeds but a different stopping rule → [2_pointers_linkedlist.md](./2_pointers_linkedlist.md);
-"n-th from the end" uses equal speeds with a gap of n → [the LC 19 card](#why-dummy-node-visual-comparison-lc-19).
+"n-th from the end" uses equal speeds with a gap of n → [the LC 19 card](./linked_list_examples.md#remove-nth-node-from-end-of-list--lc-19).
 
 **Drill** — LC 876 · LC 141 ⭐ *(cycle: same speeds, stop when they meet)* · LC 234 *(middle + reverse)* · LC 143 ⭐ *(first middle, reverse, interleave)* · LC 148 *(first middle, merge sort)*
 
@@ -1249,6 +960,64 @@ class LRUCache {
 }
 ```
 
+**Second solution — the library form.** Python's `OrderedDict` and Java's `LinkedHashMap` *are*
+a hash map over a doubly linked list. Name this first in the interview. Most interviewers then
+ask for the hand-built list above, so be ready to write it too.
+
+```python
+# python
+# LC 146 - LRU Cache (library form)
+# IDEA: OrderedDict keeps recency order: move_to_end on every use, popitem(last=False) evicts the oldest
+# time = O(1) per get/put, space = O(capacity)
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = OrderedDict()           # oldest key first, most recent last
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)          # a read is a use
+        return self.cache[key]
+
+    def put(self, key, value):
+        if key in self.cache:
+            self.cache.move_to_end(key)      # an update is a use too
+        self.cache[key] = value
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)   # evict the least recently used
+```
+
+```java
+// java
+// LC 146 - LRU Cache (library form)
+// IDEA: LinkedHashMap with accessOrder = true reorders on every get/put; removeEldestEntry evicts
+// time = O(1) per get/put, space = O(capacity)
+class LRUCache extends LinkedHashMap<Integer, Integer> {
+    private final int capacity;
+
+    public LRUCache(int capacity) {
+        super(capacity, 0.75f, true);        // true = iterate in access order, not insertion order
+        this.capacity = capacity;
+    }
+
+    public int get(int key) {
+        return super.getOrDefault(key, -1);
+    }
+
+    public void put(int key, int value) {
+        super.put(key, value);
+    }
+
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+        return size() > capacity;            // called after every put
+    }
+}
+```
+
 **Complexity**
 - **Time O(1) per call**: `get` and `put` do one map lookup plus a constant number of pointer
   assignments in `remove` / `add_to_tail`; nothing walks the list.
@@ -1287,10 +1056,8 @@ get(1) = -1, get(3) = 3, get(4) = 4
 | The trap | none extra | the eviction must sit **inside** the new-key branch; evicting before the existing-key check drops an entry on a plain update |
 
 **Not this if** — eviction is by **frequency**, recency only breaking ties (LC 460) → one list per
-frequency, below. In an interview you may also name the library form first: Python's
-`OrderedDict` (`move_to_end`, `popitem(last=False)`) and Java's `LinkedHashMap` (access order +
-`removeEldestEntry`) *are* this structure — worked in
-[design_examples.md 1)](./design_examples.md#1-lru-cache--lc-146-).
+frequency, below. A plain `dict` plus a list of keys looks like an LRU and is not one:
+`keys.remove(key)` is O(n) per call.
 
 | # | Problem | Key Difference |
 |---|---------|----------------|
@@ -1466,9 +1233,57 @@ get(1) = -1, get(3) = 3, get(4) = 4
   `freq` is for a touch to reach the list it must leave.
 
 **Library shortcut**: one `OrderedDict` per frequency — `popitem(last=False)` is `pop_head`,
-`move_to_end` is the append — and in Java one `LinkedHashSet<Integer>` per frequency. That form
-is worked in [design_examples.md 2)](./design_examples.md#2-lfu-cache--lc-460-); the structure
-pairing that gets you there is the table in [design.md](./design.md). LC 432 goes one step
+appending a key is `add_to_tail` — and in Java one `LinkedHashSet<Integer>` per frequency. Same
+structure, same `min_freq` rule, a third of the code:
+
+```python
+# python
+# LC 460 - LFU Cache (library form)
+# IDEA: freq -> OrderedDict of keys (oldest first); min_freq names the bucket the victim lives in
+# time = O(1) per get/put, space = O(capacity)
+from collections import OrderedDict, defaultdict
+
+class LFUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.key_to_val_freq = {}                    # key -> [value, freq]
+        self.freq_to_keys = defaultdict(OrderedDict)  # freq -> keys, least recent first
+        self.min_freq = 0
+
+    def touch(self, key):
+        value, freq = self.key_to_val_freq[key]
+        del self.freq_to_keys[freq][key]
+        if not self.freq_to_keys[freq]:
+            del self.freq_to_keys[freq]
+            if self.min_freq == freq:                # the minimum bucket just emptied
+                self.min_freq += 1
+        self.key_to_val_freq[key][1] = freq + 1
+        self.freq_to_keys[freq + 1][key] = None      # appended = most recent in its bucket
+
+    def get(self, key):
+        if key not in self.key_to_val_freq:
+            return -1
+        self.touch(key)
+        return self.key_to_val_freq[key][0]
+
+    def put(self, key, value):
+        if self.capacity == 0:
+            return
+        if key in self.key_to_val_freq:              # update: a touch, never an eviction
+            self.key_to_val_freq[key][0] = value
+            self.touch(key)
+            return
+        if len(self.key_to_val_freq) == self.capacity:
+            victim, _ = self.freq_to_keys[self.min_freq].popitem(last=False)
+            if not self.freq_to_keys[self.min_freq]:
+                del self.freq_to_keys[self.min_freq]
+            del self.key_to_val_freq[victim]
+        self.key_to_val_freq[key] = [value, 1]
+        self.freq_to_keys[1][key] = None
+        self.min_freq = 1
+```
+
+The structure pairing that gets you there is the table in [design.md](./design.md). LC 432 goes one step
 further and threads the *buckets themselves* on a doubly linked list, so there is no
 `min_freq` integer to maintain at all.
 
@@ -1488,12 +1303,12 @@ are holding it. Pick by what the answer needs, not by the problem's title.
 | reverse the **whole** list | **the 3-step loop**: cache next → flip → advance | O(1) space; the recursive form costs a frame per node for the same answer | [Template 1](#template-1-iterative-reversal--lc-206-) |
 | reverse a **segment** — `[left, right]`, every `k`, or pairs | **the reverse-k helper, returning 3 handles** | LC 92 / 25 / 24 differ only in *where the segment is*, never in how it reverses | [Template 4](#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) |
 | find the middle, detect a cycle, or reach the n-th **from the end** | **fast/slow pointers** | one pass, O(1) space, and no length to precompute | [Template 5](#template-5-fastslow-middle--lc-876-), [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
-| **reorder** — interleave, split, rotate, palindrome-check | **split with fast/slow → reverse the back half → merge** | every reorder problem is those three primitives in sequence; none of them is new | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143), [7)](./linked_list_examples.md#7-palindrome-linked-list--lc-234) |
-| merge **two** sorted lists | **dummy + a merge walk**, splicing nodes rather than copying values | the tail pointer is the whole trick: `cur.next = l1 or l2` finishes it | [examples 4)](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
-| merge **k** sorted lists, or sort one list | **divide and conquer** — pairwise merge, or merge sort via the middle | O(n log k) / O(n log n); a heap trades the recursion for O(k) space | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23), [14)](./linked_list_examples.md#14-sort-list-merge-sort-on-a-linked-list--lc-148-), [heap.md](./heap.md) |
+| **reorder** — interleave, split, rotate, palindrome-check | **split with fast/slow → reverse the back half → merge** | every reorder problem is those three primitives in sequence; none of them is new | [LC 143](./linked_list_examples.md#reorder-list--lc-143), [LC 234](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
+| merge **two** sorted lists | **dummy + a merge walk**, splicing nodes rather than copying values | the tail pointer is the whole trick: `cur.next = l1 or l2` finishes it | [LC 21](./linked_list_examples.md#merge-two-sorted-lists--lc-21) |
+| merge **k** sorted lists, or sort one list | **divide and conquer** — pairwise merge, or merge sort via the middle | O(n log k) / O(n log n); a heap trades the recursion for O(k) space | [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-), [LC 148](./advanced_divide_and_conquer.md#variation-lc-148--sort-list) |
 | do **arbitrary-position** reads *and* O(1) eviction — by recency, or by frequency | **doubly linked list + hash map** — one list, or one per frequency | the map gives you the node, the doubly-linked node gives you its neighbours — neither alone is enough | [Template 7](#template-7-hash-map--doubly-linked-list-lru--lc-146-), [LFU Variant](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-), [design.md](./design.md) |
-| do **arithmetic** on digits stored as a list | **carry loop over a dummy**, reversing first if the list is most-significant-first | the carry outlives both inputs, so the loop condition is `l1 or l2 or carry` | [Template 6](#template-6-carry-loop-over-a-dummy--lc-2-), [examples 13)](./linked_list_examples.md#13-plus-one-linked-list--lc-369) |
-| answer a question that needs **random access or a window** | **dump to an array first, then use the array technique** | prefix sums and monotonic stacks need indices; a list has none, and O(n) extra space is usually allowed | [examples 15)](./linked_list_examples.md#15-prefix-sum--hashmap-on-a-linked-list--lc-1171-), [16)](./linked_list_examples.md#16-monotonic-stack-over-a-linked-list--lc-1019-) |
+| do **arithmetic** on digits stored as a list | **carry loop over a dummy**, reversing first if the list is most-significant-first | the carry outlives both inputs, so the loop condition is `l1 or l2 or carry` | [Template 6](#template-6-carry-loop-over-a-dummy--lc-2-), [LC 369](./linked_list_examples.md#plus-one-linked-list--lc-369) |
+| answer a question that needs **random access or a window** | **dump to an array first, then use the array technique** | prefix sums and monotonic stacks need indices; a list has none, and O(n) extra space is usually allowed | [LC 1171](./linked_list_examples.md#remove-zero-sum-consecutive-nodes-from-linked-list--lc-1171), [LC 1019](./linked_list_examples.md#next-greater-node-in-linked-list--lc-1019) |
 
 ### The four traps
 
@@ -1508,17 +1323,18 @@ are holding it. Pick by what the answer needs, not by the problem's title.
 
 ## 3) Worked Examples
 
-The full solutions moved to **[linked_list_examples.md](./linked_list_examples.md)** so the
-templates above are not buried under them, grouped by the technique each one exercises:
+The problems that apply these templates are problem cards in
+**[linked_list_examples.md](./linked_list_examples.md)**, one section per template, in the same order:
 
-| Group | Problems |
+| Template | Problems |
 |---|---|
-| [Reversal & reordering](./linked_list_examples.md#reversal--reordering) | LC 92, 143, 24 |
-| [Merging & splitting](./linked_list_examples.md#merging--splitting) | LC 21, 23, 725 |
-| [Fast/slow pointers & structure](./linked_list_examples.md#fastslow-pointers--structure) | LC 234, 160, 19 |
-| [Copying, flattening & components](./linked_list_examples.md#copying-flattening--components) | LC 138, 817, 430 |
-| [Arithmetic & sorting](./linked_list_examples.md#arithmetic--sorting-on-a-list) | LC 369, 148, 147 |
-| [Array techniques borrowed onto a list](./linked_list_examples.md#array-techniques-borrowed-onto-a-list) | LC 1171, 1019 |
+| [Iterative reversal](./linked_list_examples.md#iterative-reversal-examples) | LC 143, 1019 |
+| [Dummy head deletion](./linked_list_examples.md#dummy-head-deletion-examples) | LC 19, 147, 1171 |
+| [Two dummies, split then join](./linked_list_examples.md#two-dummies-split-then-join-examples) | LC 21, 725, 817 |
+| [Reverse a segment](./linked_list_examples.md#reverse-a-segment-examples) | LC 24, 430, 25 |
+| [Fast/slow middle](./linked_list_examples.md#fastslow-middle-examples) | pointers to LC 160, 234, 142, 148 |
+| [Carry loop](./linked_list_examples.md#carry-loop-examples) | LC 369 |
+| [Hash map + doubly linked list](./linked_list_examples.md#hash-map--doubly-linked-list-examples) | LC 138 |
 
 ## 4) Drill Path
 

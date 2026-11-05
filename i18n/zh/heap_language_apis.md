@@ -137,13 +137,13 @@ API 用錯，不是演算法想錯。
 <!-- 598a9bfd2a3c -->
 ## LC 範例
 
-<!-- 9363f579ddbb -->
+<!-- 705c438667b3 -->
 ### Design Twitter — LC 355
 
-時間軸本質上是對所有追蹤對象的推文清單做**k 路合併**（每一份都已經是最新在前），
-所以用 `heapq.merge` 就能拿到最新的 10 則貼文，不必把每份清單都展開。
+> **關鍵** — 時間軸是對追蹤對象的推文清單做 **k 路合併**，每一份都已經依時間排好，
+> 拿到 10 則就停；每個追蹤對象一個游標、用 `heapq` 合併，正是這份文件在講的 API。
 
-<!--CODE-->
+**歸約到**：[heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-)。完整解法在 [design_examples.md](./design_examples.md#design-twitter--lc-355)。
 
 <!-- c60aba944554 -->
 ## 總結與速查

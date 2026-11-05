@@ -132,7 +132,7 @@
 | 輸出 | `pq.size()` / 最大值計數器 | pop 的次數 |
 | 區間語意 | 佔用**整個**區間 | 只佔用其中的**一天** |
 
-<!-- f6ae44721637 -->
+<!-- 8dba4dda5d83 -->
 #### 相似題目
 
 | LC # | 題目 | 共通模式 | 關鍵差異 |
@@ -147,7 +147,7 @@
 | 502 | IPO | 依一個鍵排序、依另一個鍵建堆 | 雙堆積貪婪（資本 → 利潤的 max heap） |
 | 871 | Min Number of Refueling Stops | 推入可達選項，貪婪地 pop 出最好的 | 油量的 max heap，卡住時才 pop |
 
-> **交叉參考**：完整的堆積視角寫法見 [`heap_examples.md` § 7](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
+> **交叉參考**：堆積這一側與 LC 253 的對照見 [`heap.md` § Template 6](./heap.md#template-6-min-heap-of-end-times--lc-253-)
 
 <!-- 99196e6a0b9b -->
 ## 雙指標求交集

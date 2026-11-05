@@ -58,7 +58,7 @@
 | 以 tab 縮排的路徑、`start`／`end` 的 log、「現在是誰在執行」 | n ≤ 10⁴ → O(n) | [模板 6](#template-6-scope--context-ledger--lc-388-lc-636-) 作用域帳本 | 巢狀結構需要被*求值* → [stack_expression_parsing.md](./stack_expression_parsing.md) |
 | 「基本計算機」、「decode string」、「逆波蘭表示法」 | | [stack_expression_parsing.md](./stack_expression_parsing.md) | |
 
-<!-- 9f5537b2631c -->
+<!-- 8b89ce6d871e -->
 ## 題型分類
 
 十種形狀幾乎涵蓋所有堆疊題。**在哪裡**這一欄告訴你程式碼放在下面哪個模板，或是解法搬到了哪一份表。
@@ -68,8 +68,8 @@
 | **括號／巢狀驗證** | 還欠一個右括號的左括號 | 20, 921, 1541, 1614 | [模板 2](#template-2-bracket-matching--lc-20-) |
 | **括號修復／計量** | 未配對括號的*索引* | 1249, 32, 856 | [模板 2 § LC 1249](#bracket-repair-variant--push-the-index-not-the-char-lc-1249-)、[stack_examples.md](./stack_examples.md) |
 | **單調 —— next greater／smaller** | 還在等答案的元素 | 496, 503, 739, 84, 907, 2104 | [模板 3](#template-3-monotonic-stack--next-greater--smaller--lc-739-)、[monotonic_stack.md](./monotonic_stack.md) |
-| **單調 —— 貪婪移除** | 目前建出來最好的前綴 | 402, 316, 1081, 1673 | [stack_examples.md](./stack_examples.md) |
-| **單調 —— span 累積** | `[value, span]` 配對，串流式處理 | 901, 735 | [stack_examples.md](./stack_examples.md) |
+| **單調 —— 貪婪移除** | 目前建出來最好的前綴 | 402, 316, 1081, 1673 | [monotonic_stack.md](./monotonic_stack.md) |
+| **單調 —— span 累積** | `[value, span]` 配對，串流式處理 | 901, 735 | [monotonic_stack.md](./monotonic_stack.md)、[stack_examples.md](./stack_examples.md) |
 | **放 `[element, count]` 配對的堆疊** | 前綴的遊程壓縮表示 | 1047, 1209, 1544 | [stack_examples.md](./stack_examples.md) |
 | **堆疊上的 O(1) 彙總值** | 每一層一個 `min`／`max`／delta 的*狀態* | 155, 716, 1381, 895 | [模板 4](#template-4-min-stack--o1-getmin--lc-155-) |
 | **運算式剖析** | 運算元／延後的項／未關閉的作用域 | 224, 227, 772, 394, 150, 682 | [stack_expression_parsing.md](./stack_expression_parsing.md) |
@@ -144,7 +144,7 @@
 
 ---
 
-<!-- 8c0e2de210ae -->
+<!-- 84d59b34b8d4 -->
 ### 模板 2：括號配對 —— LC 20 ⭐⭐⭐⭐⭐
 
 **辨識** —— 「合法括號」、「格式正確」、「平衡」、「正確巢狀」，而且括號或標籤**不只一種**。n ≤ 10⁴ → 掃一趟 O(n)。
@@ -169,16 +169,16 @@
 
 **練習** —— LC 20 ⭐ · LC 1614 *（最大深度 = 最大平衡值）* · LC 921 *（只用計數器）* · LC 1249 *（索引堆疊，見下方）* · LC 856 *（存部分分數的堆疊）* · LC 32 *（以 `-1` 為基準的索引堆疊）*
 
-**括號家族 —— 同一個模板的四種變形**（解法在 [stack_examples.md](./stack_examples.md)）：
+**括號家族 —— 同一個模板的四種變形**（各自的解法在哪裡，連結就在該列）：
 
 | LC | 變形 | 堆疊裡放什麼 |
 |----|-------|-------------|
 | 1249 | 不只驗證，還要修復 —— 見[下方](#bracket-repair-variant--push-the-index-not-the-char-lc-1249-) | 未配對 `(` 的*索引* —— 或不用堆疊：兩趟計數掃描，每個方向一趟 |
-| 921 | 只有一種括號，用計數器就夠 —— O(1) 空間 | 什麼都不放（堆疊退化成一個 size） |
-| 32 | 最長合法區段的長度 | 索引，外加一個 `-1` 當**基準**哨兵 |
-| 856 | 從巢狀結構摺出一個分數 | 每一層的部分**結果** |
+| 921 | 只有一種括號，用計數器就夠 —— O(1) 空間（[greedy_examples § 7](./greedy_examples.md#7-minimum-add-to-make-parentheses-valid--lc-921--a-balance-counter)） | 什麼都不放（堆疊退化成一個 size） |
+| 32 | 最長合法區段的長度（[stack_examples § LC 32](./stack_examples.md#longest-valid-parentheses--lc-32-)） | 索引，外加一個 `-1` 當**基準**哨兵 |
+| 856 | 從巢狀結構摺出一個分數（[stack_examples § LC 856](./stack_examples.md#score-of-parentheses--lc-856)） | 每一層的部分**結果** |
 
-<!-- e5b8c8eb294e -->
+<!-- a9badebd38a7 -->
 #### 括號修復變形 —— push 的是**索引**，不是字元（LC 1249）⭐⭐⭐⭐
 
 > **關鍵** —— LC 20 只回答*是／否*，所以堆疊可以只放左括號字元、不必記得它們在哪。LC 1249 必須**刪掉**出問題的括號，所以需要它們的*位置* —— push 每個 `(` 的**索引**。這題只有一種括號，pop 時不用比對：任何一個還開著的 `(` 都能配任何一個 `)`。
@@ -195,29 +195,21 @@
 
 **為什麼這就是最少。** 一個 `)` 如果前面沒有開著的 `(`，右邊的任何東西都不可能配到它；掃完後還留在堆疊上的 `(`，後面也沒有 `)` 可配。每一次刪除都是被迫的，其餘全部成對，所以沒有刪掉任何不必刪的括號。
 
-<!--CODE-->
-
-<!--CODE-->
-
-陷阱：
-
-- **忘了第二次清掃。** 迴圈本身只抓得到多出來的 `)`；`"(()"` 需要在迴圈結束後把剩下的索引刪掉。
-- **不要寫 `len(s) <= 1: return s` 這種捷徑。** `"("` 和 `")"` 都只有一個字元，而且都不合法 —— 答案是 `""`。一般迴圈本來就處理得了短字串。
-- **不要在迴圈裡刪。** `s = s[:i] + s[i+1:]` 每刪一次是 O(n)（總共 O(n²)），而且會讓已經在堆疊上的每個索引全部位移。先標記，最後一次重建。
-- **用一個存要刪索引的 `set` 也行**（`to_remove.update(open_idx)`，再保留 `i not in to_remove`）。演算法一樣，只是多一個結構。把 `list` 副本的位置清成空字串是比較精簡的寫法。
-
-Java 版本，以及不用堆疊的**兩趟計數掃描**（左→右刪掉多出來的 `)`，右→左刪掉多出來的 `(` —— 面試官接下來會問的 follow-up）在 [stack_examples.md § 13](./stack_examples.md#13-minimum-remove-to-make-valid-parentheses--lc-1249)；同一個「先標記再重建」的想法，從字串技巧的角度講，在 [string.md 模板 7](./string.md#template-7-in-place-char-array--mark-then-rebuild--lc-1249-)。
+完整解法（Python 與 Java，先標記再重建，附陷阱）在
+[string.md 模板 7](./string.md#template-7-in-place-char-array--mark-then-rebuild--lc-1249-)；
+不用堆疊的**兩趟計數掃描**（左→右刪掉多出來的 `)`，右→左刪掉多出來的 `(` —— 面試官接下來會問的 follow-up）在
+[stack_examples.md § LC 1249](./stack_examples.md#minimum-remove-to-make-valid-parentheses--lc-1249)。
 
 ---
 
-<!-- be2b4e503551 -->
+<!-- 157d5506f227 -->
 ### 模板 3：單調堆疊 —— Next Greater／Smaller —— LC 739 ⭐⭐⭐⭐
 
 **辨識** —— 「右邊下一個更大／更暖／更高」、「還要等幾天」、「兩側最近的較小值」。n ≤ 10⁵ → 每個元素往右掃的 O(n²) 會超時；預期 O(n)。
 
 **關鍵** —— 堆疊裡放的是**還在等答案**的索引，它們的值由底往頂遞減、允許相等；第一個勝過頂端的值，就是它 pop 掉的每個索引的答案。
 
-這份表只保留**一個**精簡版。完整家族（previous smaller、span、直方圖、子陣列最小／最大值總和，以及貪婪移除的各種變形）是 [monotonic_stack.md](./monotonic_stack.md) 的主題；解題實作在 [stack_examples.md](./stack_examples.md)。
+這份表只保留**一個**精簡版。完整家族（previous smaller、span、直方圖、子陣列最小／最大值總和，以及貪婪移除的各種變形）是 [monotonic_stack.md](./monotonic_stack.md) 的主題，它的解題實作也在那裡。
 
 <!--CODE-->
 
@@ -251,7 +243,7 @@ Java 版本，以及不用堆疊的**兩趟計數掃描**（左→右刪掉多�
 
 ---
 
-<!-- a3e3004b7d76 -->
+<!-- 779f13fac0a6 -->
 ### 模板 4：Min Stack —— O(1) getMin —— LC 155 ⭐⭐⭐⭐
 
 **辨識** —— 「設計一個堆疊，支援 `push`、`pop`、`top`，並能**以常數時間**取得最小元素」。每個操作 O(1)，最多 3·10⁴ 次呼叫。
@@ -274,7 +266,7 @@ Java 版本，以及不用堆疊的**兩趟計數掃描**（左→右刪掉多�
 
 **陷阱**
 - 只用一個 `self.min` 變數而不是陣列：`push 1, push 0, pop` 之後最小值必須回到 1，但單一變數早已被覆寫。要復原只能 O(n) 重掃。
-- 只 push *新*最小值的省空間變形必須用 `<=` 比較：用 `<` 時，`push 0, push 0, pop` 會讓 min-stack 變空，而堆疊裡還有一個 0（見 [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)）。上面的逐層陣列在 `pop` 裡完全不需要比較。
+- 只 push *新*最小值的省空間變形必須用 `<=` 比較：用 `<` 時，`push 0, push 0, pop` 會讓 min-stack 變空，而堆疊裡還有一個 0（見下方的[省空間變形](#space-saving-variant--a-second-stack-of-minima-only)）。上面的逐層陣列在 `pop` 裡完全不需要比較。
 - Java，省空間變形：對裝箱的 `Integer` 寫 `stack.peek() == minStack.peek()` 比較的是參考，所以 push 進去的 `128` 跟自己也配不上。用 `.equals` 比較，或先拆箱。
 
 **不是這個的情況** —— 最小值必須在從**中間**或任意順序刪除後依然正確（不是 LIFO）→ 搭配 lazy deletion 的 heap（[heap.md](./heap.md)）；視窗從前端滑走（LC 239）→ 用兩個這種堆疊組成佇列，或單調雙端佇列（見下方經典題表）。
@@ -288,7 +280,7 @@ Java 版本，以及不用堆疊的**兩趟計數掃描**（左→右刪掉多�
 | `{value: count}` map | O(1) | O(1) | **O(n)** | `min(counts)` 是一次掃描（`min-stack.py` 的 V0-1 就是這個） |
 | **逐層的 `min_values`** | O(1) | O(1) | O(1) | 當前頂端的答案在它被 push 的那一刻就定下來了 |
 
-<!-- 8d1be675dbfd -->
+<!-- 01a818f314bc -->
 #### 一般形式 —— 每一層一個彙總值
 
 <!--CODE-->
@@ -300,14 +292,25 @@ Java 版本，以及不用堆疊的**兩趟計數掃描**（左→右刪掉多�
   副本，所以把那一層 pop 掉就是全部的工作。這就是為什麼上面的模板不需要省空間變形那個
   `stack.pop() == mins[-1]` 的檢查。
 - **重複值不用特別處理。** `push(0); push(0); pop()` 之後 `min_values = [0]`，因為每個 `0`
-  都有自己的一層。只存*新*最小值的那種變形必須寫 `<=` 才能做對 —— 這是 LC 155 的經典 bug（見
-  [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)）。
+  都有自己的一層。只存*新*最小值的那種變形必須寫 `<=` 才能做對 —— 這是 LC 155 的經典 bug（見下方的
+  [省空間變形](#space-saving-variant--a-second-stack-of-minima-only)）。
 - **任何是前綴函數的彙總值都一樣可行** —— `max`、累加和、累積 GCD、待套用的 delta（LC 1381）、
   出現次數（LC 895）。把 `push` 裡的 `min(...)` 換掉，其他一行都不用動。
 
 同一個不變量也能裝進一個存 `(value, min_so_far)` tuple 的堆疊 —— 一個結構取代兩個，界限不變：
 
 <!--CODE-->
+
+<!-- dc519b31c83f -->
+#### 省空間變形 —— 第二個堆疊只放最小值
+
+最小值堆疊不需要每一層都有一筆：只在新值是新的最小值**或與它相等**時才 push 進去，也只在 pop 出來的值等於它的頂端時才 pop。這樣它的值由底往頂不遞增，頂端仍然是目前的最小值。大部分 push 都不會壓低最小值時，它比較省空間；而且這是面試官最常看到的寫法，所以要知道它唯一的陷阱：push 時的比較必須用 `<=`。
+
+<!--CODE-->
+
+<!--CODE-->
+
+經典 bug 是只在嚴格 `<` 時才 push 新的最小值：`push(0); push(0); pop()` 會把 `mins` 裡唯一的 `0` 移掉，之後 `getMin()` 會在空堆疊上失敗，而堆疊裡明明還有一個 `0`。
 
 <!-- aabd587e1546 -->
 #### 為什麼是 O(1) —— 狀態在 push 時就算好了
@@ -320,7 +323,7 @@ Java 版本，以及不用堆疊的**兩趟計數掃描**（左→右刪掉多�
 調，但那個值離開時卻**調不回去** —— 更早的最小值已經被覆寫掉了。陣列記得，因為它從來沒被覆寫；
 它一直就在下一層。
 
-<!-- c99d6881498a -->
+<!-- fa532a512859 -->
 #### 同一個想法走出堆疊 —— 經典題 ⭐⭐⭐⭐
 
 這個不變量需要一個**只在一端變動**的容器，這樣頂端消失時「下一層的狀態」才仍然成立。LC 題庫裡有
@@ -350,7 +353,7 @@ Java 版本，以及不用堆疊的**兩趟計數掃描**（左→右刪掉多�
 <!--CODE-->
 
 各列的深入內容在哪裡：LC 1381 的 delta 技巧在
-[design_examples.md § 6](./design_examples.md#6-stack--auxiliary-state--o1-min-and-lazy-increment-lc-155--lc-1381-)，
+[design_examples.md § LC 1381](./design_examples.md#design-a-stack-with-increment-operation--lc-1381)，
 LC 239 的 deque 寫法在
 [monotonic_queue.md](./monotonic_queue.md#template-1-sliding-window-maximum-decreasing-deque--lc-239)，
 前綴陣列在 [prefix_sum.md](./prefix_sum.md)，LC 121 在
@@ -359,14 +362,14 @@ LC 239 的 deque 寫法在
 
 ---
 
-<!-- b5bb811b4224 -->
+<!-- 20a01e67af67 -->
 ### 模板 5：顯式堆疊 —— 迭代式走訪 —— LC 144, LC 145 ⭐⭐⭐⭐
 
 **辨識** —— 「迭代地」、「不用遞迴」、「follow-up：遞迴解很簡單，你能用迭代做嗎？」，或樹／串列深到（歪斜的樹 n 可達 10⁵）會讓呼叫堆疊溢位。
 
 **關鍵** —— 堆疊存的是還沒做的工作，而堆疊吐出工作的順序與放入時相反：先 push `right` 再 push `left`，`left` 就會先被處理。後序就是以 `root → right → left` 跑的前序，再反轉。
 
-同一個堆疊的*暫停*版本 —— 必須在元素之間停下來的迭代器 —— 是 [stack_examples.md](./stack_examples.md) 裡的 LC 173／LC 341，更完整的家族在 [iterator.md](./iterator.md)。
+同一個堆疊的*暫停*版本 —— 必須在元素之間停下來的迭代器 —— 是 [bst_advanced.md § 模板 5b](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) 的 LC 173，以及 [iterator.md § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341) 的 LC 341，更完整的家族在 [iterator.md](./iterator.md)。
 
 <!--CODE-->
 

@@ -122,7 +122,7 @@
 
 <!--CODE-->
 
-<!-- b9dd4593d2be -->
+<!-- d5d46f5dda34 -->
 ### Template 2: Dummy Head Deletion — LC 203 ⭐⭐⭐⭐⭐
 
 **辨識** — 「移除所有值為 … 的節點」、「刪除重複」、「移除第 n 個節點」，或任何 **head 本身**可能被刪掉或換掉的修改。沒有虛擬節點，每一題都得多一個 `if head 就是目標` 的分支。
@@ -148,70 +148,9 @@
 
 **不是這個，如果** — 你只拿到要刪的那個節點、從來拿不到 head（LC 237）：沒有 `prev` 可以站，所以把 `node.next.val` 複製進來，改刪下一個節點。
 
-**練習** — LC 203 · LC 83 *（比較相鄰的值）* · LC 19 ⭐ *（間隔 n：下面詳寫）* · LC 82 *（重複的全部刪：下面詳寫）* · LC 1474
+**練習** — LC 203 · LC 83 *（比較相鄰的值）* · LC 19 ⭐ *（間隔 n）* · LC 82 *（重複的全部刪）* · LC 1474
 
-<!-- 074baa39e880 -->
-#### **為什麼要用虛擬節點？圖解對照（LC 19）**
-
-> **關鍵** — 讓 `fast` 比 `slow` 先走 n + 1 步，`slow` 就會停在目標的*前一個*節點。兩者都從虛擬節點出發，就算目標是 head 也成立。
-
-**化約為**：[Template 2](#template-2-dummy-head-deletion--lc-203-) — 虛擬節點，加上 [Template 5](#template-5-fastslow-middle--lc-876-) 兩個指標之間的固定間隔。
-
-> **題目**：從 `[1, 2, 3, 4, 5]` 移除**倒數第 n 個**節點。
-
----
-
-<!-- 89f72b647c8b -->
-##### 情況 A — 一般刪除：`n = 2`（刪掉節點 `4`）
-
-**不用虛擬節點** — 這裡沒問題：
-
-<!--CODE-->
-
-**用虛擬節點** — 一樣可行，邏輯相同：
-
-<!--CODE-->
-
----
-
-<!-- dcc68c71a726 -->
-##### 情況 B — 邊界情況：`n = 5`（要刪掉的是 **head** 節點 `1`）
-
-**不用虛擬節點** — 壞掉了，得寫特例：
-
-<!--CODE-->
-
-**用虛擬節點** — 一視同仁，**不需要**特例：
-
-<!--CODE-->
-
----
-
-<!-- 9260bad4b882 -->
-##### 小結：虛擬節點贏在哪
-
-| | 不用虛擬節點 | 用虛擬節點 |
-|---|---|---|
-| 一般刪除 | ✓ 可行 | ✓ 可行 |
-| 刪掉 head（n = len） | ❌ 得多一句 `if not fast: return head.next` | ✓ 一視同仁 |
-| 程式分支 | 多一個條件判斷 | 沒有 |
-| `slow` 的起點 | `head`（沒辦法站到 head 之前） | `dummy`（剛好在 head 前一步） |
-
-**關鍵洞見**：虛擬節點給了 `slow` 一個站在 **head 前一個節點**的位置，於是它能跨過任何節點重新接線 — 包括 head 本身 — 完全不用特殊處理。
-
-<!--CODE-->
-
-<!-- 359ee69be43f -->
-#### Remove Duplicates from Sorted List II — LC 82
-
-> **關鍵** — `prev` 是最後一個確定保留的節點。當 `head` 開始一串相同的值時，整串跳過，把後面的接到 `prev` 上；有了虛擬節點，head 重複也只是另一串而已。
-
-**化約為**：[Template 2](#template-2-dummy-head-deletion--lc-203-) — 刪除條件改成跟鄰居比，而不是跟固定值比。
-
-<!--CODE-->
-
-**陷阱**
-- 這會刪掉**每一個**副本（`[1,1,2]` → `[2]`）。LC 83 保留一個副本（`[1,1,2]` → `[1,2]`）；那題不需要虛擬節點，因為 head 永遠不會被刪。
+詳寫：[LC 19 與其他 Template 2 題目](./linked_list_examples.md#dummy-head-deletion-examples)在 linked_list_examples；LC 82 在 [2_pointers_linkedlist § 2-2](./2_pointers_linkedlist.md#2-2-remove-duplicates-from-sorted-list-ii--lc-82-)。
 
 <!-- ed306fa6055a -->
 ### Template 3: Two Dummies, Split then Join — LC 86 ⭐⭐⭐⭐
@@ -255,7 +194,7 @@
 
 **練習** — LC 86 · LC 21 ⭐ *（一個虛擬節點、兩條輸入）* · LC 328 *（依索引拆）* · LC 725 *（k 條鏈）*
 
-<!-- d2b8230c161c -->
+<!-- cdab16bdc4b6 -->
 ### Template 4: Reverse a Segment, Reconnect Both Ends — LC 92 ⭐⭐⭐⭐⭐
 
 **辨識** — 「反轉位置 left 到 right 的節點」（LC 92）、「每 k 個節點一組反轉」（LC 25）、「兩兩交換相鄰節點」（LC 24）。追問：一趟、O(1) 記憶體。
@@ -287,41 +226,9 @@
 
 **不是這個，如果** — 整條都要反轉 → [Template 1](#template-1-iterative-reversal--lc-206-)；串列是*旋轉*（LC 61）而不是反轉 → 用間隔找到新的尾巴再重新縫合，完全不用反轉。
 
-**練習** — LC 92 · LC 206 ⭐ *（k = 長度）* · LC 24 *（k = 2，展開：見下）* · LC 25 *（迴圈呼叫輔助函式：見下）* · LC 61
+**練習** — LC 92 · LC 206 ⭐ *（k = 長度）* · LC 24 *（k = 2，展開）* · LC 25 *（迴圈呼叫輔助函式）* · LC 61
 
-<!-- 50ea9a626ee7 -->
-#### Reverse Nodes in k-Group — LC 25
-
-> **關鍵** — 每一組做完後，這組的舊 head 就是它的新 tail，而那正是下一組的入邊必須掛上去的節點：`prev = new_tail`。
-
-**化約為**：[Template 4](#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) — 同一個輔助函式，每個滿 k 個的組呼叫一次。
-
-<!--CODE-->
-
-> **關鍵洞見**：*同一個* `reverse_helper` 就撐起了 LC 206 / 92 / 25。差別只在外圍邏輯 — **206** 呼叫一次，**92** 先定位一段再呼叫一次，**25** 用迴圈每組呼叫一次。把三把手的回傳值（`new_head, new_tail, next_node`）練熟，這三題就都塌縮成「定位 → 反轉 → 接回去」。
-
-<!-- 5d9046ae59b6 -->
-#### Swap Nodes in Pairs — LC 24
-
-> **關鍵** — 在 k = 2 時，輔助函式的三個把手變成區域變數名稱：`second` 是新的前端、`first` 是新的尾巴、`second.next` 是之後的節點。`prev` 是唯一的游標。
-
-**化約為**：[Template 4](#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) — k = 2 的情況，展開來寫，因為反轉兩個節點只是兩行賦值。
-
-| 輔助函式回傳 | 在 `k = 2` 時就是 | 實際寫成 |
-|---|---|---|
-| `new_head` | `second` | `prev.next = second` |
-| `new_tail` | `first` | `prev = first` — 下一輪的 `prev` |
-| `next_node` | `second.next` | 直接折進 `first.next = second.next` |
-
-<!--CODE-->
-
-<!--CODE-->
-
-**陷阱**
-- 把 `(B)` 放在 `(A)` 之前會弄丟 `second.next`：`[1,2,3,4]` 回傳 `[2,1]`。
-- `[]` 或 `[1]` 不需要防呆：`prev.next.next` 本來就是 `None`，迴圈根本不會跑。
-
-完整的走查 — 三個錨點、逐輪的 dry run，以及遞迴寫法 — 在 [linked_list_examples.md 3)](./linked_list_examples.md#3-swap-nodes-in-pairs--lc-24)。
+詳寫：[LC 24、LC 25 與 LC 430](./linked_list_examples.md#reverse-a-segment-examples) 在 linked_list_examples。
 
 <!-- 4e4cc4008250 -->
 #### 遞迴寫法 — 先反轉前 n 個，再反轉一段區間
@@ -330,7 +237,7 @@
 
 <!--CODE-->
 
-<!-- ee04e24f1496 -->
+<!-- 5db11bf32a46 -->
 ### Template 5: Fast/Slow Middle — LC 876 ⭐⭐⭐⭐
 
 **辨識** — 「回傳中間節點」、「把串列切成兩半」（LC 143、LC 148、LC 234）、「倒數第 n 個節點」 — 任何需要從尾端或中間量位置、但沒給長度的串列題。
@@ -353,7 +260,7 @@
 - `while fast.next and fast` 在偶數長度的串列上會對 `None` 解參考；先檢查 `fast`。
 - 為了合併排序（LC 148）或重排（LC 143）而切串列時，你需要的是**第一個**中點，左半才不會比較長：迴圈條件寫 `while fast.next and fast.next.next`。用第二個中點的寫法，`[1,2]` 永遠切不開，合併排序就會無窮遞迴。
 
-**不是這個，如果** — 「串列有沒有環／環從哪開始」（LC 141、LC 142）用的是同樣兩種速度但不同的停止條件 → [2_pointers_linkedlist.md](./2_pointers_linkedlist.md)；「倒數第 n 個」用的是同樣速度、間隔 n → [LC 19 那張卡](#why-dummy-node-visual-comparison-lc-19)。
+**不是這個，如果** — 「串列有沒有環／環從哪開始」（LC 141、LC 142）用的是同樣兩種速度但不同的停止條件 → [2_pointers_linkedlist.md](./2_pointers_linkedlist.md)；「倒數第 n 個」用的是同樣速度、間隔 n → [LC 19 那張卡](./linked_list_examples.md#remove-nth-node-from-end-of-list--lc-19)。
 
 **練習** — LC 876 · LC 141 ⭐ *（環：同樣的速度，相遇就停）* · LC 234 *（中點 + 反轉）* · LC 143 ⭐ *（第一個中點、反轉、交錯）* · LC 148 *（第一個中點、合併排序）*
 
@@ -381,7 +288,7 @@
 
 **練習** — LC 2 · LC 369 *（加一）* · LC 445 *（最高位在前）*
 
-<!-- cbba23e61167 -->
+<!-- 1cf0ac408eb3 -->
 ### Template 7: Hash Map + Doubly Linked List (LRU) — LC 146 ⭐⭐⭐⭐⭐
 
 **辨識** — 「設計一個快取」、「`get` 和 `put` 都必須平均 O(1)」、「淘汰最久沒用的 key」。任何同時需要依 key 做 O(1) 查找、又要以 O(1) 維護順序的結構。
@@ -394,6 +301,14 @@
 - `remove(node)` — 用 O(1) 把節點從串列中摘掉；只需要節點本身，因為它帶著前後兩個鄰居
 - `add_to_tail(node)` — 用 O(1) 把節點插到 dummy tail 前面（MRU 位置）
 - 「碰一下」某個 key = `remove(node)` 再 `add_to_tail(node)` — `get` **和** `put` 更新既有 key 時都用它
+
+<!--CODE-->
+
+<!--CODE-->
+
+**第二種解法 — 函式庫寫法。** Python 的 `OrderedDict` 和 Java 的 `LinkedHashMap` *本身就是*
+架在雙向鏈結串列上的 hash map。面試時先講這個。多數面試官接著會要你手刻上面那條串列，
+所以兩種都要能寫。
 
 <!--CODE-->
 
@@ -419,7 +334,7 @@
 | 淘汰對象 | `head.next` — 新節點在尾端，所以絕不會是它自己 | `head.next` |
 | 陷阱 | 沒有額外陷阱 | 淘汰必須放在「新 key」分支**裡面**；如果在檢查 key 是否存在之前就淘汰，單純的更新也會丟掉一筆 entry |
 
-**不是這個，如果** — 依**使用頻率**淘汰、最近使用度只用來打破平手（LC 460）→ 每個頻率一條串列，見下。面試時也可以先講出函式庫的寫法：Python 的 `OrderedDict`（`move_to_end`、`popitem(last=False)`）和 Java 的 `LinkedHashMap`（access order + `removeEldestEntry`）*本身就是*這個結構 — 詳寫在 [design_examples.md 1)](./design_examples.md#1-lru-cache--lc-146-)。
+**不是這個，如果** — 依**使用頻率**淘汰、最近使用度只用來打破平手（LC 460）→ 每個頻率一條串列，見下。一個普通 `dict` 加一個 key 的 list 看起來像 LRU，但不是：每次 `keys.remove(key)` 都是 O(n)。
 
 | # | 題目 | 差別在哪 |
 |---|---------|----------------|
@@ -432,7 +347,7 @@
 
 **練習** — LC 146 ⭐ · LC 1472 *（一個游標，往前截斷）* · LC 641 *（固定容量、兩端）* · LC 460 *（每個頻率一條串列：見下）* · LC 432
 
-<!-- cc336c45ea26 -->
+<!-- ea152097323c -->
 #### **LFU 變體 — 每個頻率一條串列，再加一個 `min_freq` 指標（LC 460）** ⭐⭐⭐⭐
 
 > **關鍵** — 每一條頻率串列都是上面那條 LRU 串列；`min_freq` 指出淘汰對象住在哪一條，而它只會在 touch 時 `+1`，或在插入時重設為 `1`。
@@ -477,14 +392,17 @@ LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那
   必須離開的那條串列。
 
 **函式庫捷徑**：每個頻率一個 `OrderedDict` — `popitem(last=False)` 就是 `pop_head`，
-`move_to_end` 就是接到尾端 — Java 則是每個頻率一個 `LinkedHashSet<Integer>`。那個寫法詳寫在
-[design_examples.md 2)](./design_examples.md#2-lfu-cache--lc-460-)；帶你走到這組搭配的那張表在
-[design.md](./design.md)。LC 432 再往前一步，把*桶本身*也串成一條雙向鏈結串列，於是連
+把 key 接到尾端就是 `add_to_tail` — Java 則是每個頻率一個 `LinkedHashSet<Integer>`。結構一樣、
+`min_freq` 規則一樣，程式碼只有三分之一：
+
+<!--CODE-->
+
+帶你走到這組搭配的那張表在 [design.md](./design.md)。LC 432 再往前一步，把*桶本身*也串成一條雙向鏈結串列，於是連
 `min_freq` 這個整數都不必維護。
 
 ---
 
-<!-- a795600fb71b -->
+<!-- 82c7bb0a5ce6 -->
 ## 2) 模式選擇
 
 鏈結串列題其實很少真的在考串列。它們考的是：動手術的當下，**你手上必須握著哪個把手** — 這份文件上的每個技巧，存在的理由都是確保你握著它。挑法要看答案需要什麼，不是看題目叫什麼名字。
@@ -497,12 +415,12 @@ LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那
 | 反轉**整條**串列 | **三步迴圈**：先存下 next → 翻指標 → 前進 | O(1) 空間；遞迴版答案一樣，卻要每個節點吃掉一個 stack frame | [Template 1](#template-1-iterative-reversal--lc-206-) |
 | 反轉**一段** — `[left, right]`、每 `k` 個，或成對 | **反轉 k 個的輔助函式，回傳三個把手** | LC 92 / 25 / 24 的差別只在*那一段在哪*，反轉的方式完全一樣 | [Template 4](#template-4-reverse-a-segment-reconnect-both-ends--lc-92-) |
 | 找中點、偵測環，或走到**倒數**第 n 個 | **快慢指標** | 一趟掃完、O(1) 空間，也不用先算長度 | [Template 5](#template-5-fastslow-middle--lc-876-)、[2_pointers_linkedlist.md](./2_pointers_linkedlist.md) |
-| **重排** — 交錯、切分、旋轉、回文判斷 | **快慢指標切一半 → 反轉後半 → 合併** | 每一題重排都是這三個基本操作依序組合；沒有一個是新東西 | [examples 2)](./linked_list_examples.md#2-reorder-list--lc-143)、[7)](./linked_list_examples.md#7-palindrome-linked-list--lc-234) |
-| 合併**兩條**已排序串列 | **虛擬節點 + 一趟合併走訪**，接節點而不是複製值 | 尾端指標就是全部的訣竅：`cur.next = l1 or l2` 收尾 | [examples 4)](./linked_list_examples.md#4-merge-two-sorted-lists--lc-21) |
-| 合併 **k** 條已排序串列，或把一條串列排序 | **分治法** — 兩兩合併，或用中點做合併排序 | O(n log k) / O(n log n)；用堆積則是拿 O(k) 空間換掉遞迴 | [examples 5)](./linked_list_examples.md#5-merge-k-sorted-lists--lc-23)、[14)](./linked_list_examples.md#14-sort-list-merge-sort-on-a-linked-list--lc-148-)、[heap.md](./heap.md) |
+| **重排** — 交錯、切分、旋轉、回文判斷 | **快慢指標切一半 → 反轉後半 → 合併** | 每一題重排都是這三個基本操作依序組合；沒有一個是新東西 | [LC 143](./linked_list_examples.md#reorder-list--lc-143)、[LC 234](./2_pointers_linkedlist.md#1-1-6--palindrome-linked-list-find-mid---reverse-2nd-half---compare) |
+| 合併**兩條**已排序串列 | **虛擬節點 + 一趟合併走訪**，接節點而不是複製值 | 尾端指標就是全部的訣竅：`cur.next = l1 or l2` 收尾 | [LC 21](./linked_list_examples.md#merge-two-sorted-lists--lc-21) |
+| 合併 **k** 條已排序串列，或把一條串列排序 | **分治法** — 兩兩合併，或用中點做合併排序 | O(n log k) / O(n log n)；用堆積則是拿 O(k) 空間換掉遞迴 | [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-)、[LC 148](./advanced_divide_and_conquer.md#variation-lc-148--sort-list) |
 | 同時要**任意位置**讀取*和* O(1) 淘汰 — 依最近使用度，或依使用頻率 | **雙向鏈結串列 + 雜湊表** — 一條串列，或每個頻率一條 | 表給你節點，雙向節點給你它的鄰居 — 少了任一個都不夠 | [Template 7](#template-7-hash-map--doubly-linked-list-lru--lc-146-)、[LFU 變體](#lfu-variant--one-list-per-frequency-plus-a-min_freq-pointer-lc-460-)、[design.md](./design.md) |
-| 對存成串列的位數做**算術** | **在虛擬節點上跑進位迴圈**，若最高位在前就先反轉 | 進位會活得比兩個輸入都久，所以迴圈條件是 `l1 or l2 or carry` | [Template 6](#template-6-carry-loop-over-a-dummy--lc-2-)、[examples 13)](./linked_list_examples.md#13-plus-one-linked-list--lc-369) |
-| 回答需要**隨機存取或視窗**的問題 | **先倒進陣列，再用陣列的技巧** | 前綴和與單調堆疊都需要索引，串列沒有；而且通常允許 O(n) 額外空間 | [examples 15)](./linked_list_examples.md#15-prefix-sum--hashmap-on-a-linked-list--lc-1171-)、[16)](./linked_list_examples.md#16-monotonic-stack-over-a-linked-list--lc-1019-) |
+| 對存成串列的位數做**算術** | **在虛擬節點上跑進位迴圈**，若最高位在前就先反轉 | 進位會活得比兩個輸入都久，所以迴圈條件是 `l1 or l2 or carry` | [Template 6](#template-6-carry-loop-over-a-dummy--lc-2-)、[LC 369](./linked_list_examples.md#plus-one-linked-list--lc-369) |
+| 回答需要**隨機存取或視窗**的問題 | **先倒進陣列，再用陣列的技巧** | 前綴和與單調堆疊都需要索引，串列沒有；而且通常允許 O(n) 額外空間 | [LC 1171](./linked_list_examples.md#remove-zero-sum-consecutive-nodes-from-linked-list--lc-1171)、[LC 1019](./linked_list_examples.md#next-greater-node-in-linked-list--lc-1019) |
 
 <!-- 6ef117bacd71 -->
 ### 四個陷阱
@@ -512,19 +430,20 @@ LFU 依*使用頻率*淘汰，最近使用度只拿來打破平手 — 所以那
 3. **留下一個環。** 遞迴反轉裡只寫 `head.next.next = head`，卻漏掉後面的 `head.next = null`，最後兩個節點就會互指。
 4. **走過頭。** 兩步跳要寫成 `while (fast != null && fast.next != null)`。兩個條件順序寫反，在偶數長度的串列上就會對 null 解參考。
 
-<!-- f16164715f94 -->
+<!-- 09092017ed67 -->
 ## 3) 實戰題解
 
-完整解法搬到 **[linked_list_examples.md](./linked_list_examples.md)** 了，免得上面的模板被它們埋掉；依各自演練的技巧分組：
+套用這些模板的題目，都以題目卡的形式放在 **[linked_list_examples.md](./linked_list_examples.md)**，每個模板一節，順序相同：
 
-| 分組 | 題目 |
+| 模板 | 題目 |
 |---|---|
-| [反轉與重排](./linked_list_examples.md#reversal--reordering) | LC 92, 143, 24 |
-| [合併與切分](./linked_list_examples.md#merging--splitting) | LC 21, 23, 725 |
-| [快慢指標與結構](./linked_list_examples.md#fastslow-pointers--structure) | LC 234, 160, 19 |
-| [複製、攤平與連通分量](./linked_list_examples.md#copying-flattening--components) | LC 138, 817, 430 |
-| [算術與排序](./linked_list_examples.md#arithmetic--sorting-on-a-list) | LC 369, 148, 147 |
-| [把陣列技巧借到串列上](./linked_list_examples.md#array-techniques-borrowed-onto-a-list) | LC 1171, 1019 |
+| [迭代反轉](./linked_list_examples.md#iterative-reversal-examples) | LC 143, 1019 |
+| [虛擬頭節點刪除](./linked_list_examples.md#dummy-head-deletion-examples) | LC 19, 147, 1171 |
+| [兩個虛擬節點，先拆再接](./linked_list_examples.md#two-dummies-split-then-join-examples) | LC 21, 725, 817 |
+| [反轉一段](./linked_list_examples.md#reverse-a-segment-examples) | LC 24, 430, 25 |
+| [快慢指標找中點](./linked_list_examples.md#fastslow-middle-examples) | 指向 LC 160, 234, 142, 148 |
+| [進位迴圈](./linked_list_examples.md#carry-loop-examples) | LC 369 |
+| [雜湊表 + 雙向鏈結串列](./linked_list_examples.md#hash-map--doubly-linked-list-examples) | LC 138 |
 
 <!-- b1833857d3d1 -->
 ## 4) 練習路線

@@ -36,6 +36,34 @@ below is a different way of working around that with pushes and top-of-heap pops
 | **Frequency uniqueness** | make all frequencies distinct with min deletions | LC 1647, 1481 |
 | **K-way merge variants** | merge *virtual* or *nested* sorted sources | LC 632, 1439 |
 
+### Prerequisites
+
+Each technique below extends one card in [heap.md](./heap.md); have that card down first.
+
+- [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-): the size-k heap. The bounded regret heap (§ 3) and sort + fixed-size heap (§ 6) are this heap run inside a greedy.
+- [heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-): count, then heap on the count. Lazy deletion (§ 1) is what it becomes when a count changes after it was pushed; frequency uniqueness (§ 9) is a case of it.
+- [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-): k-way merge. § 11's variants change only the bookkeeping around the frontier.
+- [heap § Template 5](./heap.md#template-5-two-heaps-with-index-expiry--lc-1438-): an entry that expires by index and is popped only at the top. Lazy deletion (§ 1, § 12), the alive heap (§ 2) and the range-jump grid (§ 8) generalise that staleness test.
+- [heap § Template 6](./heap.md#template-6-min-heap-of-end-times--lc-253-): a min-heap of end times. The resource pools (§ 5) add a second heap for the free ids; the alive heap (§ 2) orders by value and expires by end.
+- [Dijkstra.md](./Dijkstra.md): the PQ shortest path that grid best-first search (§ 7) runs on an implicit grid.
+
+## Recognition
+
+Reach for this sheet only when the core template's loop is not enough on its own: a pushed value
+changes, a decision must be revised, or the heap needs a second key.
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| a value already in the heap later **changes** or is **removed** | 10⁵ mixed updates and queries | [§ 1 Lazy deletion](#1-lazy-deletion--heap--hashmap-of-truth-) | the value only ever **grows** and you read the max once at the end → a plain count |
+| "max **and** min" over one map whose values are overwritten | 10⁵ calls, reads interleaved | [§ 1 two mirrored lazy heaps](#variant--two-mirrored-lazy-heaps-over-one-map-lc-2034-) | `sortedcontainers` / `TreeMap` allowed and asked for → ordered multiset |
+| "at every x, the tallest / shortest interval covering x" | N ≤ 10⁴–10⁵ intervals | [§ 2 Sweep + alive heap](#2-sweep-line--max-heap-of-alive-intervals-) | only the **count** covering x is asked → difference array / [heap § Template 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) |
+| "k ladders / k free passes", the rest paid from a budget | N ≤ 10⁵ | [§ 3 Bounded regret heap](#3-bounded-regret-heap--keep-the-k-best-pay-for-the-rest-) | no budget, just the k largest → [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| "minimum number of stops", "maximum courses", you learn you overcommitted **later** | N ≤ 10⁴–10⁵ | [§ 4 Greedy with regret](#4-greedy-with-regret--undo-the-worst-past-decision-) | every item fits its window independently → sort + plain greedy |
+| "smallest free chair / server", resources released at known times | N ≤ 10⁵ events | [§ 5 Resource pools](#5-two-heaps-as-resource-pools-free-pool--busy-pool-) | only how **many** resources are needed → [heap § Template 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) |
+| objective `sum(A over the chosen k) × max/min(B)` | n ≤ 10⁵, k ≤ n | [§ 6 Sort + fixed-size heap](#6-sort-by-one-criterion--fixed-size-heap-on-the-other) | the objective has one attribute → [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| grid, the next cell to expand is the **lowest / cheapest**, not the nearest | m·n ≤ 10⁴–10⁵ | [§ 7 Grid best-first](#7-min-heap-best-first-search-on-a-grid) | unit steps → BFS |
+| each cell jumps to a **range** of cells in its row / column | m·n ≤ 10⁵ | [§ 8 Range-jump grid](#8-grid-shortest-path-with-range-jumps) | jumps are to single neighbours → BFS |
+
 ## Templates & Algorithms
 
 ### 1) Lazy Deletion — Heap + HashMap of Truth ⭐⭐⭐⭐⭐
@@ -63,9 +91,9 @@ while pq and -pq[0][0] != c_map[pq[0][1]]:      # 3. pop stale tops until top is
     heapq.heappop(pq)
 ```
 
-> **NOTE !!!** we ONLY delete **until we reach a correct-count one**.
-> We leave **ALL other stale entries in the heap untouched** — they may never be popped at all.
-> Cleaning is *lazy*: pay the cost only for the entries that actually block the answer.
+> **Pop only until the top is valid, then stop.** Every other stale entry stays in the heap
+> untouched — it may never be popped at all. Cleaning is *lazy*: pay only for the entries that
+> actually block the answer.
 >
 > ```text
 > pq (max-heap by count):  [5:A]  [4:B]  [3:A]  [2:C]  [1:B]  ...
@@ -131,7 +159,7 @@ class LazyMaxTracker {
     }
 
     public long top() {
-        /** NOTE !!! pop stale tops ONLY until top is valid, then STOP */
+        // pop stale tops only until the top is valid, then stop
         while (!pq.isEmpty() && pq.peek()[0] != truth.get((int) pq.peek()[1])) {
             pq.poll();
         }
@@ -160,6 +188,95 @@ class LazyMaxTracker {
 - ⚠️ **Don't try to delete the old entry.** That's O(n) search and defeats the whole point.
 - ⚠️ Heap can grow to O(n) entries even if only a few distinct keys exist — that's the space
   you trade for the speed.
+
+**Worked example — LC 3092 Most Frequent IDs**
+
+`nums[i]` is an ID and `freq[i]` adds (or, if negative, removes) that many copies of it; after
+each step, report the count of the most frequent ID, or 0 when the collection is empty. A plain
+heap fails because an ID's count changes after it was pushed: when `2`'s count drops from 3 to 0,
+the entry `(-3, 2)` is buried in the heap and cannot be reached in O(log n). The template above is
+the whole answer:
+
+```text
+nums = [2,3,2,1],  freq = [3,2,-3,1]
+
+step 0: c_map={2:3}          push(-3,2)   top=(-3,2) valid           -> ans 3
+step 1: c_map={2:3,3:2}      push(-2,3)   top=(-3,2) valid           -> ans 3
+step 2: c_map={2:0,3:2}      push( 0,2)   top=(-3,2) STALE (2 is 0)  -> pop
+                                          top=(-2,3) valid -> STOP   -> ans 2
+                                          ( (0,2) still sits in pq, untouched )
+step 3: c_map={2:0,3:2,1:1}  push(-1,1)   top=(-2,3) valid           -> ans 2
+
+output = [3,3,2,2]
+```
+
+Step 2 pops **exactly one** entry, the one blocking the answer, and leaves every other stale
+entry in place.
+
+```python
+# python
+# LC 3092 - Most Frequent IDs
+# IDEA: hashmap of true counts + max-heap of (-count, id) candidates; pop stale tops at read time
+# time = O(n log n), space = O(n)
+import heapq
+
+def mostFrequentIDs(nums, freq):
+    c_map = {}   # id -> TRUE frequency
+    pq = []      # max-heap of (-frequency, id), possibly stale
+    ans = []
+    for val, cnt in zip(nums, freq):
+        c_map[val] = c_map.get(val, 0) + cnt         # 1. update the truth
+        heapq.heappush(pq, (-c_map[val], val))       # 2. push; the old entry stays behind
+        while pq and -pq[0][0] != c_map[pq[0][1]]:   # 3. pop stale tops only
+            heapq.heappop(pq)
+        ans.append(-pq[0][0] if pq else 0)           # 4. the top is now accurate
+    return ans
+```
+
+```java
+// java
+// LC 3092 - Most Frequent IDs
+// IDEA: HashMap of true counts + max-heap of {count, id} candidates; poll stale tops at read time
+// time = O(n log n), space = O(n)
+public long[] mostFrequentIDs(int[] nums, int[] freq) {
+    Map<Integer, Long> cMap = new HashMap<>();          // id -> TRUE frequency
+    PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(b[0], a[0]));
+    int n = nums.length;
+    long[] ans = new long[n];
+    for (int i = 0; i < n; i++) {
+        int val = nums[i];
+        long cur = cMap.getOrDefault(val, 0L) + freq[i];
+        cMap.put(val, cur);                              // 1. update the truth
+        pq.offer(new long[]{cur, val});                  // 2. the old entry stays behind
+        while (!pq.isEmpty() && pq.peek()[0] != cMap.get((int) pq.peek()[1])) {
+            pq.poll();                                   // 3. drop stale tops only
+        }
+        ans[i] = pq.isEmpty() ? 0 : pq.peek()[0];        // 4. read the answer
+    }
+    return ans;
+}
+```
+
+**Traps**
+- The collection can become empty (`nums=[5,5,3], freq=[2,-2,1]` → `[2,0,1]`): when `5` hits 0 the
+  pushed `(0, 5)` is **valid** (`0 == c_map[5]`) and the answer is correctly 0. Pushing zero
+  counts is harmless and keeps the test uniform.
+- Counts reach `n · max(freq)` = 10¹⁰: use `long` in Java, or `int` overflows.
+
+**Similar problems — the same three steps**
+
+| Problem | LC # | What goes stale | Stale test |
+|---------|------|-----------------|-----------|
+| Design a Number Container System | 2349 | an index was reassigned a new number | the index's current number != this number |
+| Stock Price Fluctuation | 2034 | a timestamp's price was corrected, in **two** heaps | `price != price_map[ts]` |
+| Sliding Window Median | 480 | an element slid out of the window | `val in removed` counter ([§ 12](#12-lazy-deletion--the-removed-counter-flavour)) |
+| Finding MK Average | 1825 | an element left the last-m stream | delete-set / multiset |
+| Maximum Number of Events | 1353 | an event's deadline passed | `pq[0] < day` |
+| Minimum Number of Visited Cells in a Grid | 2617 | a cell can no longer reach the sweep | per-row / per-column PQ ([§ 8](#8-grid-shortest-path-with-range-jumps)) |
+| Dijkstra (743, 1631, 778) | — | a shorter path was found later | `d > dist[node]: continue` |
+
+Dijkstra's `if d > dist[u]: continue` line **is** a lazy delete: it discards a stale distance
+entry instead of doing a decrease-key on the heap.
 
 #### **Variant — two mirrored lazy heaps over one map (LC 2034)** ⭐⭐⭐⭐⭐
 
@@ -226,15 +343,8 @@ class StockPrice(object):
         heapq.heappush(self.max_heap, (-price, timestamp))
         heapq.heappush(self.min_heap, (price, timestamp))
 
-        """
-        NOTE !!!  lazy delete, done here rather than in the readers
-
-        -> pop ONLY while the top disagrees with price_map, then STOP
-        -> stale entries deeper in the heap are left alone forever
-        -> no `while heap and ...` guard is needed: the entry just pushed
-           is valid by construction, so neither heap can empty
-        """
-        # 3. clean both tops
+        # 3. clean both tops: pop only while the top disagrees with price_map.
+        #    No emptiness guard: the entry just pushed is valid, so neither heap can empty.
         while -self.max_heap[0][0] != self.price_map[self.max_heap[0][1]]:
             heapq.heappop(self.max_heap)
         while self.min_heap[0][0] != self.price_map[self.min_heap[0][1]]:
@@ -276,7 +386,7 @@ class StockPrice {
         maxHeap.offer(new int[]{price, timestamp});
         minHeap.offer(new int[]{price, timestamp});
 
-        /** NOTE !!! clean BOTH tops; the entry just pushed is valid, so neither can empty */
+        // clean BOTH tops; the entry just pushed is valid, so neither heap can empty
         while (maxHeap.peek()[0] != priceMap.get(maxHeap.peek()[1])) maxHeap.poll();
         while (minHeap.peek()[0] != priceMap.get(minHeap.peek()[1])) minHeap.poll();
     }
@@ -315,7 +425,7 @@ so nothing ever asks about it. That is the point: it is never paid for.
 **The alternative** — an **ordered multiset** (`TreeMap<price, count>` / `SortedList`) deletes the
 old price on the spot, so no entry is ever stale and `maximum()` is exactly `lastKey()`. It costs a
 real `O(log n)` delete per update and a structure `heapq` does not have; see
-[design_examples.md § Ordered Map](./design_examples.md#7-ordered-map-treemap-for-booking--interval-design--lc-715--729--731--732--2034-).
+[design_examples.md § Ordered Map](./design_examples.md#sorted-map--time-index-examples).
 **Two lazy heaps is the answer to give first** — it is the one you can write in Python without
 `sortedcontainers`.
 
@@ -418,8 +528,8 @@ import heapq
 class Solution(object):
     def getSkyline(self, buildings):
         # start event: (L, -H, R)   |   end event: (R, 0, 0)
-        # NOTE !!! sorting on (-H) puts starts BEFORE ends at the same x,
-        #          and taller starts before shorter starts
+        # sorting on (-H) puts starts before ends at the same x,
+        # and taller starts before shorter starts
         events = [(L, -H, R) for L, R, H in buildings]
         events += list({(R, 0, 0) for _, R, _ in buildings})
         events.sort()
@@ -544,7 +654,7 @@ class Solution(object):
             heapq.heappush(ladder_jumps, d)    # optimistically use a ladder
 
             if len(ladder_jumps) > ladders:
-                # NOTE !!! smallest climb loses its ladder and is paid with bricks
+                # the smallest climb loses its ladder and is paid with bricks
                 bricks -= heapq.heappop(ladder_jumps)
                 if bricks < 0:
                     return i                   # stuck standing on building i
@@ -636,6 +746,36 @@ def minRefuelStops(target, startFuel, stations):
 
     return stops
 ```
+
+**Second solution for LC 871 — DP over the number of stops, O(n²).** `reach[t]` is the farthest
+position reachable with exactly `t` stops; station `i` can extend every `t` whose reach already
+covers it. It needs no exchange argument, which is its use: it is the answer to give if you cannot
+justify the greedy. The heap is V0 because it is O(n log n) and the regret argument is short.
+
+```python
+# python
+# LC 871 - Minimum Number of Refueling Stops (DP)
+# IDEA: reach[t] = farthest position with exactly t stops; relax t backwards so each station is used once
+# time = O(n^2), space = O(n)
+def minRefuelStops_dp(target, startFuel, stations):
+    n = len(stations)
+    reach = [startFuel] + [0] * n   # reach[t] = farthest position with exactly t stops
+    for i, (pos, fuel) in enumerate(stations):
+        for t in range(i, -1, -1):  # backwards: station i is used at most once
+            if reach[t] >= pos:
+                reach[t + 1] = max(reach[t + 1], reach[t] + fuel)
+    for t in range(n + 1):
+        if reach[t] >= target:
+            return t
+    return -1
+```
+
+**Traps (LC 871)**
+- Refuelling at the **nearest** passed station instead of the largest: the exchange argument only
+  holds for the largest tank.
+- Stations are already sorted by position; sorting again is harmless, sorting by fuel is wrong.
+- `startFuel >= target` needs zero stops even with no stations: check `fuel < target` before
+  popping.
 
 **Variation: Course Schedule III (LC 630)** — twist: sort by **deadline**, take every course, and the moment `time > deadline` **drop the longest course taken so far**. Dropping the longest never breaks feasibility of the earlier deadlines.
 
@@ -880,8 +1020,64 @@ def mincostToHireWorkers(quality, wage, k):
     return res
 ```
 
-**Variation: Maximum Performance of a Team (LC 1383)** — same shape, opposite directions: sort by **efficiency descending** (the current efficiency is the team minimum), keep a **min-heap of speeds** of size `k` so the sum is maximised.
-Code for LC 1383: [heap_examples.md § Maximum Performance of a Team](./heap_examples.md#12-maximum-performance-of-a-team--lc-1383).
+**Variation: Maximum Performance of a Team (LC 1383)** — same shape, opposite directions: sort by **efficiency descending** (the current efficiency is the team minimum), keep a **min-heap of speeds** of size `k` so the sum is maximised. The team may have **at most** k members, so every prefix is a candidate, not only full teams.
+
+```python
+# python
+# LC 1383 - Maximum Performance of a Team
+# IDEA: sort by efficiency descending; min-heap keeps the k fastest so far; current eff is the team min
+# time = O(n log n), space = O(n)
+import heapq
+
+def maxPerformance(n, speed, efficiency, k):
+    engineers = sorted(zip(efficiency, speed), reverse=True)   # efficiency high -> low
+    heap = []          # min-heap of the speeds on the team
+    speed_sum = 0
+    best = 0
+    for eff, spd in engineers:
+        heapq.heappush(heap, spd)
+        speed_sum += spd
+        if len(heap) > k:
+            speed_sum -= heapq.heappop(heap)   # drop the slowest
+        best = max(best, speed_sum * eff)      # eff is the team minimum
+    return best % (10**9 + 7)
+```
+
+```java
+// java
+// LC 1383 - Maximum Performance of a Team
+// IDEA: sort by efficiency descending; min-heap keeps the k fastest so far; current eff is the team min
+// time = O(n log n), space = O(n)
+public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
+    int[][] engineers = new int[n][2];                   // {efficiency, speed}
+    for (int i = 0; i < n; i++) {
+        engineers[i] = new int[]{efficiency[i], speed[i]};
+    }
+    Arrays.sort(engineers, (a, b) -> Integer.compare(b[0], a[0]));   // efficiency high -> low
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();          // speeds on the team
+    long speedSum = 0;
+    long best = 0;
+    for (int[] eng : engineers) {
+        minHeap.offer(eng[1]);
+        speedSum += eng[1];
+        if (minHeap.size() > k) {
+            speedSum -= minHeap.poll();                  // drop the slowest
+        }
+        best = Math.max(best, speedSum * eng[0]);        // eng[0] is the team minimum
+    }
+    return (int) (best % 1_000_000_007);
+}
+```
+
+```text
+speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 2
+sorted by efficiency desc: (9,1) (7,5) (5,2) (4,10) (3,3) (2,8)
+
+(9,1)   heap=[1]      sum=1    perf= 9
+(7,5)   heap=[1,5]    sum=6    perf=42
+(5,2)   heap=[2,5]    sum=7    perf=35   (1 dropped)
+(4,10)  heap=[5,10]   sum=15   perf=60   <- answer
+```
 
 **Key Observations:**
 - **Sort fixes the multiplicative factor, the heap optimises the additive factor.** Recognising which attribute to sort by is the entire problem.
@@ -981,216 +1177,147 @@ def trapRainWater(heightMap):
 | 1368 | Minimum Cost to Make at Least One Valid Path in a Grid | `cost + (0 if arrow points at neighbour else 1)` — 0/1 weights (a deque also works) |
 | 675 | Cut Off Trees for Golf Event | Trees must be cut **shortest first**: sort/heap the targets by height, then run a BFS between consecutive targets |
 ### 8) Grid Shortest Path with Range Jumps
-```java
-/**
- * Template for Grid Shortest Path with Variable Jump Ranges
- *
- * Pattern: DP + Per-row/column Priority Queues with Lazy Deletion
- *
- * Problem Type: From (0,0), each cell (i,j) can jump to:
- *   - Right: (i, k) where j < k <= j + grid[i][j]
- *   - Down:  (k, j) where i < k <= i + grid[i][j]
- * Find minimum cells to reach (m-1, n-1)
- *
- * Key Insight: Standard BFS would be O(N²) per cell; PQ reduces to O(log N)
- *
- * Time: O(M*N*log(M+N))
- * Space: O(M*N)
- */
-public int gridShortestPathTemplate(int[][] grid) {
-    int m = grid.length, n = grid[0].length;
-    int[][] dist = new int[m][n];
-    for (int[] row : dist) Arrays.fill(row, -1);
 
-    // Create one PQ per row and one PQ per column
-    // Each PQ stores {distance, index} sorted by distance
-    PriorityQueue<int[]>[] rowPQs = new PriorityQueue[m];
-    PriorityQueue<int[]>[] colPQs = new PriorityQueue[n];
+> **When**: from cell `(i, j)` you may jump to any cell up to `grid[i][j]` to the right in its row,
+> or down in its column, and the fewest cells visited is asked (LC 2617). BFS that enumerates every
+> jump target is O(m·n·(m + n)). Instead, sweep the cells in row-major order: every cell that can
+> reach `(i, j)` lies earlier in the same row or the same column, so keep **one min-heap per row
+> and one per column** of `(cells visited, index)` for the cells already finalised.
 
-    for (int i = 0; i < m; i++)
-        rowPQs[i] = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
-    for (int j = 0; j < n; j++)
-        colPQs[j] = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+**Key point** — an entry whose reach `index + grid[...]` falls short of the current column (or
+row) can never reach anything later in the sweep, so it is popped for good. The first entry that
+**can** reach is the minimum among all that can, because the heap orders by distance. This is
+lazy deletion with "expired by coordinate" as the staleness test.
 
-    dist[0][0] = 1;  // Starting cell counts as 1
-
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-
-            // 1. Check cells from same row that can reach (i,j)
-            while (!rowPQs[i].isEmpty()) {
-                int[] top = rowPQs[i].peek();
-                int prevCol = top[1];
-                // Can previous cell jump far enough to reach column j?
-                if (prevCol + grid[i][prevCol] >= j) {
-                    int d = top[0] + 1;
-                    if (dist[i][j] == -1 || d < dist[i][j])
-                        dist[i][j] = d;
-                    break;  // First valid = best (PQ sorted by distance)
-                }
-                // Lazy deletion: cell can never reach future columns
-                rowPQs[i].poll();
-            }
-
-            // 2. Check cells from same column that can reach (i,j)
-            while (!colPQs[j].isEmpty()) {
-                int[] top = colPQs[j].peek();
-                int prevRow = top[1];
-                if (prevRow + grid[prevRow][j] >= i) {
-                    int d = top[0] + 1;
-                    if (dist[i][j] == -1 || d < dist[i][j])
-                        dist[i][j] = d;
-                    break;
-                }
-                colPQs[j].poll();
-            }
-
-            // 3. Add current cell to PQs for future cells
-            if (dist[i][j] != -1 && grid[i][j] > 0) {
-                rowPQs[i].offer(new int[]{dist[i][j], j});
-                colPQs[j].offer(new int[]{dist[i][j], i});
-            }
-        }
-    }
-
-    return dist[m - 1][n - 1];
-}
-```
+**Worked example — LC 2617 Minimum Number of Visited Cells in a Grid**
 
 ```python
-# Python Template: Grid Shortest Path with Range Jumps
+# python
+# LC 2617 - Minimum Number of Visited Cells in a Grid
+# IDEA: row-major sweep; per-row and per-column min-heaps of (dist, index); pop entries whose
+#       reach falls short of the current cell, the first one left gives dist + 1
+# time = O(m*n*log(m+n)), space = O(m*n)
 import heapq
 
-def grid_shortest_path(grid):
-    """
-    Pattern: DP + Per-row/column heaps with lazy deletion
-
-    Key insight: Each cell can be processed once per row/column heap,
-    and expired cells are removed lazily when encountered.
-    """
+def minimumVisitedCells(grid):
     m, n = len(grid), len(grid[0])
     dist = [[-1] * n for _ in range(m)]
-
-    # One min-heap per row and per column
-    # Each heap stores (distance, index)
-    row_pqs = [[] for _ in range(m)]
-    col_pqs = [[] for _ in range(n)]
-
+    row_pqs = [[] for _ in range(m)]     # row_pqs[i]: (dist, col) of finalised cells in row i
+    col_pqs = [[] for _ in range(n)]     # col_pqs[j]: (dist, row) of finalised cells in column j
     dist[0][0] = 1
-
     for i in range(m):
         for j in range(n):
-            # Check row heap for cells that can reach (i, j)
-            while row_pqs[i]:
+            while row_pqs[i]:            # best cell to the left that still reaches column j
                 d, prev_col = row_pqs[i][0]
                 if prev_col + grid[i][prev_col] >= j:
                     if dist[i][j] == -1 or d + 1 < dist[i][j]:
                         dist[i][j] = d + 1
                     break
-                heapq.heappop(row_pqs[i])  # Lazy deletion
-
-            # Check column heap for cells that can reach (i, j)
-            while col_pqs[j]:
+                heapq.heappop(row_pqs[i])        # cannot reach j, so no later column either
+            while col_pqs[j]:            # best cell above that still reaches row i
                 d, prev_row = col_pqs[j][0]
                 if prev_row + grid[prev_row][j] >= i:
                     if dist[i][j] == -1 or d + 1 < dist[i][j]:
                         dist[i][j] = d + 1
                     break
                 heapq.heappop(col_pqs[j])
-
-            # Add current cell to heaps if reachable and can jump
-            if dist[i][j] != -1 and grid[i][j] > 0:
+            if dist[i][j] != -1 and grid[i][j] > 0:   # reachable and can jump: offer it forward
                 heapq.heappush(row_pqs[i], (dist[i][j], j))
                 heapq.heappush(col_pqs[j], (dist[i][j], i))
-
     return dist[m - 1][n - 1]
 ```
 
-### 9) Frequency Uniqueness — Greedy + Heap / HashSet
-```python
-def make_frequencies_unique(s):
-    """
-    Pattern: Make all character frequencies unique with minimum deletions
-    Used in: LC 1647, LC 1481
-    """
-    from collections import Counter
-    import heapq
+```java
+// java
+// LC 2617 - Minimum Number of Visited Cells in a Grid
+// IDEA: row-major sweep; per-row and per-column min-heaps of {dist, index}; poll entries that
+//       can no longer reach the current cell, the first one left gives dist + 1
+// time = O(m*n*log(m+n)), space = O(m*n)
+public int minimumVisitedCells(int[][] grid) {
+    int m = grid.length, n = grid[0].length;
+    int[][] dist = new int[m][n];
+    for (int[] row : dist) Arrays.fill(row, -1);
 
-    # Approach 1: Max Heap (process high to low)
-    def heap_approach():
-        freq_count = Counter(s)
-        max_heap = [-f for f in freq_count.values()]
-        heapq.heapify(max_heap)
+    List<PriorityQueue<int[]>> rowPQs = new ArrayList<>();   // {dist, col} per row
+    List<PriorityQueue<int[]>> colPQs = new ArrayList<>();   // {dist, row} per column
+    for (int i = 0; i < m; i++) rowPQs.add(new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0])));
+    for (int j = 0; j < n; j++) colPQs.add(new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0])));
 
-        deletions = 0
-        while len(max_heap) > 1:
-            top = -heapq.heappop(max_heap)
-            next_val = -max_heap[0]
-
-            if top == next_val:
-                top -= 1
-                deletions += 1
-                if top > 0:
-                    heapq.heappush(max_heap, -top)
-
-        return deletions
-
-    # Approach 2: HashSet (track used frequencies)
-    def hashset_approach():
-        freq_count = Counter(s)
-        used_freq = set()
-        deletions = 0
-
-        for freq in freq_count.values():
-            # Decrement until finding unused frequency
-            while freq > 0 and freq in used_freq:
-                freq -= 1
-                deletions += 1
-            used_freq.add(freq)
-
-        return deletions
-
-    # Approach 3: Sorting (ensure strictly decreasing)
-    def sort_approach():
-        freq = [0] * 26
-        for c in s:
-            freq[ord(c) - ord('a')] += 1
-
-        freq.sort(reverse=True)
-        deletions = 0
-
-        for i in range(len(freq) - 1):
-            if freq[i] == 0:
-                break
-            if freq[i] <= freq[i + 1]:
-                prev = freq[i + 1]
-                freq[i + 1] = max(0, freq[i] - 1)
-                deletions += prev - freq[i + 1]
-
-        return deletions
-
-    # Best approach depends on constraints
-    return hashset_approach()  # Generally most intuitive
+    dist[0][0] = 1;
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            PriorityQueue<int[]> rowPQ = rowPQs.get(i);
+            while (!rowPQ.isEmpty()) {
+                int[] top = rowPQ.peek();
+                if (top[1] + grid[i][top[1]] >= j) {     // still reaches column j
+                    if (dist[i][j] == -1 || top[0] + 1 < dist[i][j]) dist[i][j] = top[0] + 1;
+                    break;
+                }
+                rowPQ.poll();                            // cannot reach j, nor any later column
+            }
+            PriorityQueue<int[]> colPQ = colPQs.get(j);
+            while (!colPQ.isEmpty()) {
+                int[] top = colPQ.peek();
+                if (top[1] + grid[top[1]][j] >= i) {
+                    if (dist[i][j] == -1 || top[0] + 1 < dist[i][j]) dist[i][j] = top[0] + 1;
+                    break;
+                }
+                colPQ.poll();
+            }
+            if (dist[i][j] != -1 && grid[i][j] > 0) {
+                rowPQ.offer(new int[]{dist[i][j], j});
+                colPQ.offer(new int[]{dist[i][j], i});
+            }
+        }
+    }
+    return dist[m - 1][n - 1];
+}
 ```
 
-Java version of the max-heap approach, plus the sorting and `HashSet` alternatives:
-[heap_examples.md § Minimum Deletions to Make Character Frequencies Unique](./heap_examples.md#11-minimum-deletions-to-make-character-frequencies-unique--lc-1647).
+**Traps**
+- The start counts as one visited cell: `dist[0][0] = 1`, and a 1×1 grid answers 1.
+- `grid[i][j] == 0` cells are reachable but jump nowhere; pushing them is harmless, skipping them
+  keeps the heaps small.
+- `break` on the first entry that reaches: entries below it have a larger distance, so looking
+  further only costs time.
+- Java: an array of generic `PriorityQueue`s needs an unchecked cast; a `List` of them avoids it.
+
+### 9) Frequency Uniqueness — Greedy + Heap / HashSet
+
+"Make every frequency distinct with the fewest deletions" (LC 1647) is
+[heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-) with one
+added step: process counts from the largest down in a max-heap, and when the top ties with the next
+count, shave one off and push it back. It needs nothing from this sheet, so it is worked as a
+problem card in
+[heap_examples.md § LC 1647](./heap_examples.md#minimum-deletions-to-make-character-frequencies-unique--lc-1647),
+with the `set`-of-used-counts alternative named there.
+
+**Traps**
+- A sort-based version that `break`s at the first count shaved to 0 stops too early: 4,4,1,1,1
+  (`"aebacabbbad"`) still has two 1s after the break, and returns 2 instead of 3.
+- LC 1481 (fewest distinct values after k removals) looks related but is the opposite greedy:
+  remove the **smallest** counts whole — [heap_examples.md § LC 1481](./heap_examples.md#least-number-of-unique-integers-after-k-removals--lc-1481).
 
 ### 10) Heap with Deduplication
-```python
-def solve_with_unique_heap(nums):
-    import heapq
 
+```python
+# python
+# IDEA: a set guards the heap so each value is pushed once (LC 264 generates duplicates otherwise)
+# time = O(n log n), space = O(n)
+import heapq
+
+def solve_with_unique_heap(nums):
     heap = []
     seen = set()
-
     for num in nums:
         if num not in seen:
             heapq.heappush(heap, num)
             seen.add(num)
-
     return heap
 ```
+
+Worked use: LC 264 Ugly Number II, where `2·3` and `3·2` would both push 6 —
+[Dijkstra_examples § Variation B](./Dijkstra_examples.md#variation-b--lc-264-ugly-number-ii).
 
 ### 11) K-Way Merge Variants
 
@@ -1200,7 +1327,7 @@ def solve_with_unique_heap(nums):
 |----|---------|--------------------------|
 | 632 | Smallest Range Covering Elements from K Lists | Also track the **max** of the k heap elements; every pop gives a window `[heap_min, running_max]` that covers all lists — stop when any list is exhausted |
 | 355 | Design Twitter | The "k sorted lists" are the followees' tweet lists (newest first); push each followee's head into a max-heap by timestamp, pop 10 times |
-| 373 / 378 | K Pairs with Smallest Sums / Kth Smallest in Sorted Matrix | Lists are **virtual** rows of a sorted grid — see [heap_examples.md § LC 373](./heap_examples.md#9-find-k-pairs-with-smallest-sums--lc-373) / [§ LC 378](./heap_examples.md#10-kth-smallest-element-in-a-sorted-matrix--lc-378-) |
+| 373 / 378 | K Pairs with Smallest Sums / Kth Smallest in Sorted Matrix | Lists are **virtual** rows of a sorted grid — see [heap_examples.md § LC 373](./heap_examples.md#find-k-pairs-with-smallest-sums--lc-373) / [§ LC 378](./heap_examples.md#kth-smallest-element-in-a-sorted-matrix--lc-378-) |
 
 ```python
 # python
@@ -1232,13 +1359,16 @@ def smallestRange(nums):
 
 ### 12) Lazy Deletion — the "removed counter" Flavour
 
-When you can\'t remove arbitrary elements from a heap, mark them as invalid and skip on pop.
+When you can't remove arbitrary elements from a heap, mark them as invalid and skip on pop.
 
 > This is the **"removed counter"** flavour. For the **"hashmap of truth"** flavour (value changed
 > rather than element removed), see [1) Lazy Deletion](#1-lazy-deletion--heap--hashmap-of-truth-)
-> and [heap_examples.md § Most Frequent IDs](./heap_examples.md#18-most-frequent-ids--lc-3092).
+> and its worked example, LC 3092 Most Frequent IDs, in the same section.
 
 ```python
+# python
+# IDEA: remove() only counts the value; pop() discards counted values when they reach the top
+# time = O(log n) amortised per operation, space = O(n)
 import heapq
 
 class LazyHeap:
@@ -1282,6 +1412,27 @@ class LazyHeap:
 - d-ary heap: Better cache performance
 - Binomial heap: Better merge operation
 - Pairing heap: Simple, good practical performance
+
+## When Not to Use
+
+Most problems that look like they need a technique here are solved by a core card. Check these
+first.
+
+| Technique | Looks needed when | The simpler answer that usually suffices |
+|---|---|---|
+| § 1 Lazy deletion | a heap's values change | values only **grow** and a stale-but-larger entry is still a valid upper bound → no cleaning; or the window expires by index and needs one extreme → monotonic deque ([monotonic_queue.md](./monotonic_queue.md)) |
+| § 1 two mirrored lazy heaps | max and min of a changing set | values are insert-only and never change once added → two running variables (not LC 2034: a later `update` overwrites an old price, and the running max would keep it); the language has an ordered map (`TreeMap`) and the interviewer accepts it |
+| § 2 Sweep + alive heap | intervals and "at every x" | only the **count** covering x → difference array, or [heap § Template 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) for the peak |
+| § 3 Bounded regret heap | "k free passes" | no budget to pay from → the k largest is [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| § 4 Greedy with regret | "minimum number of stops / maximum tasks" | items are independent and sorting by deadline alone decides them → plain sort + greedy ([greedy.md](./greedy.md)) |
+| § 5 Resource pools | "assign rooms / servers" | only how many are needed, not which id → [heap § Template 6](./heap.md#template-6-min-heap-of-end-times--lc-253-) |
+| § 6 Sort + fixed-size heap | two attributes, pick k | the objective uses one attribute → [heap § Template 1](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-) |
+| § 7 Grid best-first | a weighted grid | all moves cost 1 → BFS ([bfs.md](./bfs.md)); an explicit graph → [Dijkstra.md](./Dijkstra.md) |
+| § 8 Range-jump grid | each cell jumps far | jumps are bounded by a small constant → BFS over the neighbours |
+| § 9 Frequency uniqueness | "make counts distinct" | it **is** the core card: [heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-), or a `set` of used counts |
+| § 10 Heap with deduplication | duplicates are pushed | duplicates are harmless to the answer → pop and skip a value equal to the last one popped |
+| § 11 K-way merge variants | several sorted sources | the sources are real lists → [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-) as written |
+| § 12 Removed-counter lazy deletion | values leave a two-heap window | `sortedcontainers.SortedList` / `TreeMap` is allowed → an ordered multiset deletes directly |
 
 ## Summary & Quick Reference
 

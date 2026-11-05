@@ -463,7 +463,7 @@ class Solution:
 | **1671** | Minimum Number of Removals to Make Mountain Array | The scan run forwards and backwards |
 | **1713** | Minimum Operations to Make a Subsequence | LCS with a distinct side → LIS on mapped indices |
 
-**Cousins** — still "binary search a structure you maintain", but the stored value is a DP result rather than a tail: LC 1235 (Maximum Profit in Job Scheduling), LC 1751 (Maximum Number of Events That Can Be Attended II), named under [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-); LC 981 in [design_examples.md](./design_examples.md#9-time-based-key-value-store--lc-981); LC 528 in [math.md](./math.md#1-1-11-randomized-sampling-templates-).
+**Cousins** — still "binary search a structure you maintain", but the stored value is a DP result rather than a tail: LC 1235 (Maximum Profit in Job Scheduling), LC 1751 (Maximum Number of Events That Can Be Attended II), named under [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-); LC 981 in [design_examples.md](./design_examples.md#time-based-key-value-store--lc-981); LC 528 in [math.md](./math.md#1-1-11-randomized-sampling-templates-).
 
 **Traps** — LIS-shaped, but not this algorithm:
 

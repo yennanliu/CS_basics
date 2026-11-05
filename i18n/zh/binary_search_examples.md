@@ -18,7 +18,7 @@
 （模板 4、6、8）在這裡沒有獨立一節。最後一節收錄歸約到
 [binary_search_on_answer.md](./binary_search_on_answer.md) 卡片的答案空間題，指標表則列出在其他文件解過的題目。
 
-<!-- aa9f76e407ec -->
+<!-- c33de905c402 -->
 ## 索引
 
 | 模式卡 | 題目（易 → 難） |
@@ -41,7 +41,7 @@
 | 209 | Minimum Size Subarray Sum | [sliding_window.md § Template 4](./sliding_window.md#template-4-shortest-window-satisfying-p--lc-209-) | 滑動視窗是 O(n)；前綴和 + 每個起點一次 lower bound 是 O(n log n) 的追問 |
 | 69 | Sqrt(x) | [math.md § Integer Square Root](./math.md#1-1-10-integer-square-root--binary-search--newton-) | 對答案二分搜尋與牛頓法並排 |
 | 528 | Random Pick with Weight | [math.md § Randomized Sampling](./math.md#1-1-11-randomized-sampling-templates-) | 前綴和 + 對均勻抽樣做 lower bound |
-| 981 | Time Based Key-Value Store | [design_examples.md](./design_examples.md#9-time-based-key-value-store--lc-981) | 每個 key 一份排序清單，用 upper bound − 1 查詢 |
+| 981 | Time Based Key-Value Store | [design_examples.md](./design_examples.md#time-based-key-value-store--lc-981) | 每個 key 一份排序清單，用 upper bound − 1 查詢 |
 | 287 | Find the Duplicate Number | [binary_search_on_answer.md § Find the Duplicate Number](./binary_search_on_answer.md#find-the-duplicate-number--lc-287-) | 在值域上二分搜尋，配合鴿籠計數 |
 
 <!-- afb2ed64be4a -->

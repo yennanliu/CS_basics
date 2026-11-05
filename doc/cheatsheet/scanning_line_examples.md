@@ -443,7 +443,7 @@ public int maxEvents(int[][] events) {
 | 502 | IPO | Sort by one key, heap by another | Two-heap greedy (capital → max heap of profit) |
 | 871 | Min Number of Refueling Stops | Push reachable options, greedily pop best | Max heap of fuel, pop only when stuck |
 
-> **Cross-ref**: full heap-side write-up in [`heap_examples.md` § 7](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353)
+> **Cross-ref**: the heap-side contrast with LC 253 in [`heap.md` § Template 6](./heap.md#template-6-min-heap-of-end-times--lc-253-)
 
 ## Two-Pointer Intersection
 

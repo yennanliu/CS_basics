@@ -39,7 +39,7 @@ pointer table lists the problems worked on another sheet.
 | 209 | Minimum Size Subarray Sum | [sliding_window.md § Template 4](./sliding_window.md#template-4-shortest-window-satisfying-p--lc-209-) | the window is O(n); prefix sums + a lower bound per start is the O(n log n) follow-up |
 | 69 | Sqrt(x) | [math.md § Integer Square Root](./math.md#1-1-10-integer-square-root--binary-search--newton-) | binary search on the answer and Newton's method, side by side |
 | 528 | Random Pick with Weight | [math.md § Randomized Sampling](./math.md#1-1-11-randomized-sampling-templates-) | prefix sums + a lower bound on a uniform draw |
-| 981 | Time Based Key-Value Store | [design_examples.md](./design_examples.md#9-time-based-key-value-store--lc-981) | a per-key sorted list, queried with upper bound − 1 |
+| 981 | Time Based Key-Value Store | [design_examples.md](./design_examples.md#time-based-key-value-store--lc-981) | a per-key sorted list, queried with upper bound − 1 |
 | 287 | Find the Duplicate Number | [binary_search_on_answer.md § Find the Duplicate Number](./binary_search_on_answer.md#find-the-duplicate-number--lc-287-) | binary search over the value domain, with a pigeonhole count |
 
 ## Exact Match Examples

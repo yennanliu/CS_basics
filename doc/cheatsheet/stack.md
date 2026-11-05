@@ -61,8 +61,8 @@ below owns the code, or which sheet the worked solutions moved to.
 | **Bracket / nesting validation** | the openers still owed a closer | 20, 921, 1541, 1614 | [Template 2](#template-2-bracket-matching--lc-20-) |
 | **Bracket repair / measurement** | *indices* of unmatched brackets | 1249, 32, 856 | [Template 2 § LC 1249](#bracket-repair-variant--push-the-index-not-the-char-lc-1249-), [stack_examples.md](./stack_examples.md) |
 | **Monotonic — next greater / smaller** | elements still waiting for an answer | 496, 503, 739, 84, 907, 2104 | [Template 3](#template-3-monotonic-stack--next-greater--smaller--lc-739-), [monotonic_stack.md](./monotonic_stack.md) |
-| **Monotonic — greedy removal** | the best prefix built so far | 402, 316, 1081, 1673 | [stack_examples.md](./stack_examples.md) |
-| **Monotonic — span accumulation** | `[value, span]` pairs, streaming | 901, 735 | [stack_examples.md](./stack_examples.md) |
+| **Monotonic — greedy removal** | the best prefix built so far | 402, 316, 1081, 1673 | [monotonic_stack.md](./monotonic_stack.md) |
+| **Monotonic — span accumulation** | `[value, span]` pairs, streaming | 901, 735 | [monotonic_stack.md](./monotonic_stack.md), [stack_examples.md](./stack_examples.md) |
 | **Stack with `[element, count]` pairs** | a run-length-compressed prefix | 1047, 1209, 1544 | [stack_examples.md](./stack_examples.md) |
 | **O(1) aggregate on a stack** | one `min` / `max` / delta *state* per layer | 155, 716, 1381, 895 | [Template 4](#template-4-min-stack--o1-getmin--lc-155-) |
 | **Expression parsing** | operands / deferred terms / open scopes | 224, 227, 772, 394, 150, 682 | [stack_expression_parsing.md](./stack_expression_parsing.md) |
@@ -264,14 +264,14 @@ push **indices**, below.
 **Drill** — LC 20 ⭐ · LC 1614 *(max depth = max balance)* · LC 921 *(counter only)* ·
 LC 1249 *(index stack, below)* · LC 856 *(stack of partial scores)* · LC 32 *(index stack with a `-1` base)*
 
-**The bracket family — four twists on the same template** (worked solutions in [stack_examples.md](./stack_examples.md)):
+**The bracket family — four twists on the same template** (where each is worked is linked in the row):
 
 | LC | Twist | Stack holds |
 |----|-------|-------------|
 | 1249 | repair, not just validate — [below](#bracket-repair-variant--push-the-index-not-the-char-lc-1249-) | *indices* of unmatched `(` — or no stack: two counter scans, one per direction |
-| 921 | one bracket type only, so a counter suffices — O(1) space | nothing (the stack degenerates to its size) |
-| 32 | length of the longest valid run | indices plus a `-1` **base** sentinel |
-| 856 | fold a score out of the nesting | the partial **result** of each depth |
+| 921 | one bracket type only, so a counter suffices — O(1) space ([greedy_examples § 7](./greedy_examples.md#7-minimum-add-to-make-parentheses-valid--lc-921--a-balance-counter)) | nothing (the stack degenerates to its size) |
+| 32 | length of the longest valid run ([stack_examples § LC 32](./stack_examples.md#longest-valid-parentheses--lc-32-)) | indices plus a `-1` **base** sentinel |
+| 856 | fold a score out of the nesting ([stack_examples § LC 856](./stack_examples.md#score-of-parentheses--lc-856)) | the partial **result** of each depth |
 
 #### Bracket Repair Variant — push the **index**, not the char (LC 1249) ⭐⭐⭐⭐
 
@@ -294,66 +294,11 @@ LC 1249 *(index stack, below)* · LC 856 *(stack of partial scores)* · LC 32 *(
 its right, and an `(` still on the stack at the end has no `)` after it. Each removal is forced,
 and everything else pairs up, so nothing is removed that did not have to be.
 
-```python
-# python
-# LC 1249 - Minimum Remove to Make Valid Parentheses
-# IDEA: STACK OF '(' INDICES — blank out unmatched ')' on sight, unmatched '(' after the scan
-# time = O(n), space = O(n)
-class Solution(object):
-    def minRemoveToMakeValid(self, s):
-        chars = list(s)      # mutable copy, so a position can be blanked in O(1)
-        open_idx = []        # indices of '(' still waiting for a ')'
-
-        for i in range(len(chars)):
-            if chars[i] == '(':
-                open_idx.append(i)
-            elif chars[i] == ')':
-                if open_idx:
-                    open_idx.pop()     # matched -> keep both
-                else:
-                    chars[i] = ''      # no '(' open before it -> can never match
-            # letters never affect the balance
-
-        # the second flush: what is left on the stack are unmatched '('
-        for i in open_idx:
-            chars[i] = ''
-
-        return ''.join(chars)  # '' entries vanish in the join
-```
-
-```text
-s = "a)b(c)d"
-
-i  ch   action                          open_idx   chars
-0  a    letter                          []         a ) b ( c ) d
-1  )    stack empty -> blank index 1    []         a _ b ( c ) d
-2  b    letter                          []
-3  (    push 3                          [3]
-4  c    letter                          [3]
-5  )    pop 3 (matched)                 []
-6  d    letter                          []
-end     nothing left to flush                      -> "ab(c)d"
-
-s = "))(("   ->  ')' x2 blanked on sight, '(' x2 left on the stack and flushed  ->  ""
-```
-
-Pitfalls:
-
-- **Forgetting the second flush.** The scan alone only catches the surplus `)`; `"(()"`
-  needs the leftover index removed after the loop.
-- **No `len(s) <= 1: return s` shortcut.** `"("` and `")"` are each one character and each
-  invalid — the answer is `""`. The general loop already handles the short strings.
-- **Do not delete inside the loop.** `s = s[:i] + s[i+1:]` is O(n) per removal (O(n²) overall)
-  and shifts every index already on the stack. Mark now, rebuild once.
-- **A `set` of indices to remove works too** (`to_remove.update(open_idx)`, then keep
-  `i not in to_remove`). It is the same algorithm with one more structure. Blanking the
-  `list` copy is the leaner form.
-
-The Java version and the stack-free **two counter scans** (left→right drops the surplus `)`,
-right→left drops the surplus `(` — the follow-up an interviewer asks next) are in
-[stack_examples.md § 13](./stack_examples.md#13-minimum-remove-to-make-valid-parentheses--lc-1249);
-the same mark-then-rebuild idea framed as a string technique is
-[string.md Template 7](./string.md#template-7-in-place-char-array--mark-then-rebuild--lc-1249-).
+The worked solution (Python and Java, mark-then-rebuild, with its traps) is
+[string.md Template 7](./string.md#template-7-in-place-char-array--mark-then-rebuild--lc-1249-);
+the stack-free **two counter scans** (left→right drops the surplus `)`, right→left drops the
+surplus `(` — the follow-up an interviewer asks next) are
+[stack_examples.md § LC 1249](./stack_examples.md#minimum-remove-to-make-valid-parentheses--lc-1249).
 
 ---
 
@@ -368,8 +313,7 @@ every index it pops.
 
 This sheet keeps **one** short form. The full family (previous-smaller, spans, histogram,
 subarray min/max sums, and the greedy-removal variants) is
-[monotonic_stack.md](./monotonic_stack.md)'s subject; the worked solutions are in
-[stack_examples.md](./stack_examples.md).
+[monotonic_stack.md](./monotonic_stack.md)'s subject, and its worked solutions are there too.
 
 ```python
 # python
@@ -557,7 +501,7 @@ push -2, 0, -3        then pop()
   back to 1, and a single variable has already overwritten it. Restoring it is an O(n) rescan.
 - The space-saving variant that pushes only *new* minima must compare with `<=`:
   `push 0, push 0, pop` with `<` leaves the min-stack empty while the stack still holds a 0
-  (see [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)).
+  (see [the space-saving variant](#space-saving-variant--a-second-stack-of-minima-only) below).
   The per-layer array above needs no comparison in `pop` at all.
 - Java, space-saving variant: `stack.peek() == minStack.peek()` on boxed `Integer`s compares
   references, so a pushed `128` never matches itself. Compare with `.equals`, or unbox first.
@@ -597,7 +541,7 @@ Three consequences fall straight out of the invariant:
 - **Duplicates are free.** `push(0); push(0); pop()` leaves `min_values = [0]`, because
   each `0` got its own layer. The variant that stores only *new* minima has to write `<=`
   to get this right — the classic LC 155 bug (see
-  [monotonic_stack.md § 2-16](./monotonic_stack.md#2-16-min-stack-lc-155--auxiliary-non-increasing-stack-)).
+  [the space-saving variant](#space-saving-variant--a-second-stack-of-minima-only) below).
 - **Any aggregate that is a function of the prefix works the same way** — `max`, a running
   sum, a running GCD, a pending delta (LC 1381), a frequency count (LC 895). Replace
   `min(...)` in `push` and nothing else changes.
@@ -630,6 +574,78 @@ class MinStack(object):
     def getMin(self):
         return self.stack[-1][1]
 ```
+
+#### Space-saving variant — a second stack of minima only
+
+The minima stack does not need an entry per layer: push onto it only when the new value is a
+new minimum **or ties it**, and pop from it only when the popped value equals its top. Its values
+are then non-increasing bottom → top and its top is still the live minimum. It saves space when
+most pushes do not lower the minimum, and it is the version interviewers most often see written,
+so know its one trap: the comparison on push must be `<=`.
+
+```python
+# python
+# LC 155 - Min Stack, auxiliary non-increasing stack
+# IDEA: mins holds only the values that were a minimum when pushed; '<=' keeps duplicate minima
+# time = O(1) per operation, space = O(n) worst case
+class MinStack(object):
+
+    def __init__(self):
+        self.stack = []
+        self.mins = []                 # non-increasing bottom -> top; top = current minimum
+
+    def push(self, val):
+        self.stack.append(val)
+        if not self.mins or val <= self.mins[-1]:
+            self.mins.append(val)      # '<=': a second copy of the minimum gets its own entry
+
+    def pop(self):
+        if self.stack.pop() == self.mins[-1]:
+            self.mins.pop()            # the minimum is leaving, so its entry leaves too
+
+    def top(self):
+        return self.stack[-1]
+
+    def getMin(self):
+        return self.mins[-1]
+```
+
+```java
+// java
+// LC 155 - Min Stack, auxiliary non-increasing stack
+// IDEA: mins holds only the values that were a minimum when pushed; '<=' keeps duplicate minima
+// time = O(1) per operation, space = O(n) worst case
+class MinStack {
+    private final Deque<Integer> stack = new ArrayDeque<>();
+    private final Deque<Integer> mins = new ArrayDeque<>();   // non-increasing
+
+    public void push(int val) {
+        stack.push(val);
+        if (mins.isEmpty() || val <= mins.peek()) {
+            mins.push(val);
+        }
+    }
+
+    public void pop() {
+        int v = stack.pop();                  // unbox before comparing
+        if (v == mins.peek()) {
+            mins.pop();
+        }
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return mins.peek();
+    }
+}
+```
+
+The classic bug is pushing a new minimum only on strict `<`: `push(0); push(0); pop()` removes
+the single stored `0` from `mins`, and `getMin()` then fails on an empty stack although a `0` is
+still in the stack.
 
 #### Why O(1) — the state was computed at push time
 
@@ -713,7 +729,7 @@ def maxAncestorDiff(root):
 ```
 
 Where the depth lives for each row: the LC 1381 delta trick in
-[design_examples.md § 6](./design_examples.md#6-stack--auxiliary-state--o1-min-and-lazy-increment-lc-155--lc-1381-),
+[design_examples.md § LC 1381](./design_examples.md#design-a-stack-with-increment-operation--lc-1381),
 the deque form of LC 239 in
 [monotonic_queue.md](./monotonic_queue.md#template-1-sliding-window-maximum-decreasing-deque--lc-239),
 prefix arrays in [prefix_sum.md](./prefix_sum.md), LC 121 in
@@ -733,8 +749,9 @@ order of arrival: push `right` before `left` and `left` is processed first. Post
 preorder run as `root → right → left`, reversed.
 
 The *paused* form of the same stack — an iterator that must stop between elements — is
-LC 173 / LC 341 in [stack_examples.md](./stack_examples.md), and the wider family is
-[iterator.md](./iterator.md).
+LC 173 in [bst_advanced.md § Template 5b](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-)
+and LC 341 in [iterator.md § 2-2](./iterator.md#2-2-flatten-nested-list-iterator--lc-341), and the
+wider family is [iterator.md](./iterator.md).
 
 ```python
 # python

@@ -1,7 +1,7 @@
 # Hash Map Cheatsheet
 
 > **Scope** — Key→value problem patterns — lookup, grouping, index maps, prefix-sum maps, remapping.
-> **See also** — *deep dives split out of this file*: [hash_map_examples.md](./hash_map_examples.md) — the worked-solution archive, the single-problem deep dives (bucket sort, rolling hash, split-and-probe, max-frequency arithmetic) and the ordered-map (Java `TreeMap` / Python `SortedDict`) reference.
+> **See also** — *problem set*: [hash_map_examples.md](./hash_map_examples.md) — the classic problems as cards, filed under the template below that each one reduces to.
 > *Neighbouring sheets*: [hashing.md](./hashing.md) — how hashing works, plus counting and rolling-hash idioms; [set.md](./set.md) — membership only, no values; [Collection.md](./Collection.md) — picking a container in the first place.
 
 ## LeetCode Problem Lists
@@ -200,10 +200,10 @@ In [6]:
 | "all start indices of `p`'s anagrams in `s`", "a permutation of `s1` inside `s2`" | window length fixed at `len(p)` | [Template 5](#template-5-fixed-window-character-counts--lc-438) fixed-window counts | the window length varies ("longest with at most k distinct") → [sliding_window.md](./sliding_window.md) |
 | "sorted in this alien language", "according to the order given in …" | alphabet ≤ 26 → O(1) rank lookups | [Template 6](#template-6-rank-map--value-to-position--lc-953-) rank map | |
 | "isomorphic", "follows the same pattern", "no two characters map to the same one" | equal lengths, O(n) | [Template 7](#template-7-bijection-with-two-maps--lc-205) bijection | |
-| "O(1) `get` and `put`", "evict the least recently used key" | up to 2·10⁵ calls → every op O(1) | [Template 8](#template-8-ordered-map-as-an-lru-cache--lc-146) ordered map as LRU | evict the least *frequently* used → LC 460, one list per frequency |
-| "return a deep copy", "clone the graph / list" | V, E ≤ 10⁴ → O(V + E) | [Template 9](#template-9-old-to-new-node-map--lc-133) old-to-new node map | only reachability is asked → a visited set ([graph.md](./graph.md)) |
-| "pick uniformly from `[0, n)` but never a blacklisted value" | n ≤ 10⁹, blacklist ≤ 10⁵ → cannot list the valid values | [Template 10](#template-10-virtual-map-remapping--lc-710) virtual remap | |
-| "the k most frequent, ties broken alphabetically" | k ≪ n → a heap beats a full sort | [Template 11](#template-11-map-plus-heap--lc-692) map plus heap | no tie rule (LC 347) → bucket sort in O(n) |
+| "O(1) `get` and `put`", "evict the least recently used key" | up to 2·10⁵ calls → every op O(1) | [linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) map + doubly linked list | evict the least *frequently* used → LC 460, one list per frequency |
+| "return a deep copy", "clone the graph / list" | V, E ≤ 10⁴ → O(V + E) | [Template 8](#template-8-old-to-new-node-map--lc-133) old-to-new node map | only reachability is asked → a visited set ([graph.md](./graph.md)) |
+| "pick uniformly from `[0, n)` but never a blacklisted value" | n ≤ 10⁹, blacklist ≤ 10⁵ → cannot list the valid values | [Template 9](#template-9-virtual-map-remapping--lc-710) virtual remap | |
+| "the k most frequent, ties broken alphabetically" | k ≪ n → a heap beats a full sort | [Template 10](#template-10-map-plus-heap--lc-692) map plus heap | no tie rule (LC 347) → bucket sort in O(n) |
 
 > Constraint cues follow the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md).
 
@@ -220,12 +220,11 @@ In [6]:
 | 5 | Fixed-window character counts | `{char: count in window}` | "anagram of `p` inside `s`", "permutation in string" | 438, 567, 30 |
 | 6 | Rank map | `{value: rank}` | "according to the order given in ..." | 953, 791, 105 |
 | 7 | Bijection (two maps) | `{x: y}` **and** `{y: x}` | "one-to-one", "isomorphic", "follows the pattern" | 205, 290 |
-| 8 | Ordered map as an LRU cache | insertion-ordered `{key: value}` | "O(1) get and put", "evict the least recently used" | 146, 460, 432 |
-| 9 | Old-to-new node map | `{original node: clone}`, `{child: parent}` | "clone", "deep copy", "parent pointer" | 133, 138, 652 |
-| 10 | Virtual map (remapping) | `{badIndex: goodIndex}` | "pick at random, excluding ..." | 710 |
-| 11 | Map plus heap | `{item: count}` + a heap ordered by count | "top-K", "ties broken by ..." | 692, 347, 451 |
+| 8 | Old-to-new node map | `{original node: clone}`, `{child: parent}` | "clone", "deep copy", "parent pointer" | 133, 138, 652 |
+| 9 | Virtual map (remapping) | `{badIndex: goodIndex}` | "pick at random, excluding ..." | 710 |
+| 10 | Map plus heap | `{item: count}` + a heap ordered by count | "top-K", "ties broken by ..." | 692, 347, 451 |
 
-> Patterns that are really a deep dive on one or two problems — bucket sort for O(n) top-K, rolling hash, split-and-probe pair lookup, max-frequency arithmetic, and the ordered map (`TreeMap` / `SortedDict`) — live in [hash_map_examples.md](./hash_map_examples.md#templates--algorithms).
+> Worked problems for every template are in [hash_map_examples.md](./hash_map_examples.md#index), grouped by template. Elsewhere: the sorted map (`TreeMap` / `SortedDict`) → [Language APIs](#language-apis--sorted-map-treemap--sorteddict) below; bucket sort for O(n) top-K → [heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-); rolling hash → [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md); split-and-probe pair lookup → [palindrome § Template 9](./palindrome.md#template-9-palindrome-pairs-via-hashmap-split--lc-336-); max-frequency arithmetic (LC 621) → [heap_examples.md](./heap_examples.md).
 
 ### Template 1: Complement Lookup — LC 1
 
@@ -346,7 +345,7 @@ public boolean isAnagram(String s, String t) {
 
 **Not this if** — only membership matters, not multiplicity (LC 217) → a set ([set.md](./set.md)); *where* a value occurs matters rather than how often → the index-span variation below.
 
-**Drill** — LC 242 ⭐ · LC 383 *(count the magazine, spend it on the note)* · LC 387 *(second pass in string order, first count of 1)* · LC 451 *(order keys by count)* · LC 347 ⭐ *(top k by count — [bucket sort](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on))*
+**Drill** — LC 242 ⭐ · LC 383 *(count the magazine, spend it on the note)* · LC 387 *(second pass in string order, first count of 1)* · LC 451 *(order keys by count)* · LC 347 ⭐ *(top k by count — [heap or bucket sort](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-))*
 
 #### Variation: index-span map — `span == count` proves contiguity ⭐⭐⭐
 
@@ -1082,85 +1081,7 @@ public boolean isIsomorphic(String s, String t) {
 
 ---
 
-### Template 8: Ordered Map as an LRU Cache — LC 146
-
-**Recognise** — "design a cache with O(1) `get` and `put`", "when the capacity is exceeded, evict the **least recently used** key". Up to 2·10⁵ calls → every operation must be O(1).
-
-**Key point** — an insertion-ordered map stays in recency order if every access moves its key to the end; the least recently used key is then always the first one, so eviction is "remove the first entry", and both lookup and reordering are O(1).
-
-```python
-# python
-# LC 146 - LRU Cache
-# IDEA: OrderedDict keeps recency order: move_to_end on every use, popitem(last=False) evicts the oldest
-# time = O(1) per get/put, space = O(capacity)
-from collections import OrderedDict
-
-class LRUCache:
-    def __init__(self, capacity: int):
-        self.capacity = capacity
-        self.cache = OrderedDict()           # oldest key first, most recent last
-
-    def get(self, key: int) -> int:
-        if key not in self.cache:
-            return -1
-        self.cache.move_to_end(key)          # a read is a use
-        return self.cache[key]
-
-    def put(self, key: int, value: int) -> None:
-        if key in self.cache:
-            self.cache.move_to_end(key)      # an update is a use too
-        self.cache[key] = value
-        if len(self.cache) > self.capacity:
-            self.cache.popitem(last=False)   # evict the least recently used
-```
-
-```java
-// java
-// LC 146 - LRU Cache
-// IDEA: LinkedHashMap with accessOrder = true reorders on every get/put; removeEldestEntry evicts
-// time = O(1) per get/put, space = O(capacity)
-class LRUCache extends LinkedHashMap<Integer, Integer> {
-    private final int capacity;
-
-    public LRUCache(int capacity) {
-        super(capacity, 0.75f, true);        // true = iterate in access order, not insertion order
-        this.capacity = capacity;
-    }
-
-    public int get(int key) {
-        return super.getOrDefault(key, -1);
-    }
-
-    public void put(int key, int value) {
-        super.put(key, value);
-    }
-
-    @Override
-    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
-        return size() > capacity;            // called after every put
-    }
-}
-```
-
-**Complexity**
-- **Time O(1) per call**: `move_to_end` and `popitem(last=False)` relink nodes of the doubly linked list inside `OrderedDict`; `LinkedHashMap` does the same.
-- **Space O(capacity)**: the `if len(self.cache) > self.capacity` eviction keeps at most `capacity` entries.
-
-**Traps**
-- A `get` that does not `move_to_end`: capacity 2, `put(1)`, `put(2)`, `get(1)`, `put(3)` must evict 2; without the move it evicts 1.
-- A `put` on an existing key that only overwrites the value: the key stays where it was and can be evicted next, although it was just used.
-- Evicting *before* inserting: capacity 1, `put(1,1)`, `put(1,2)` evicts key 1 and leaves the cache empty after the insert of a key that was already there. Insert first, then trim.
-- A plain `dict` plus a list of keys: `keys.remove(key)` is O(n) per call, which is the bug the review found in [design_examples.md](./design_examples.md).
-
-**Not this if** — the interviewer rules out `OrderedDict` / `LinkedHashMap` → hand-roll the map + doubly linked list ([linked_list.md](./linked_list.md)); evict the least **frequently** used (LC 460) → one list per frequency plus a `min_freq` pointer.
-
-**Drill** — LC 146 ⭐ · LC 460 *(LFU: frequency lists)* · LC 432 *(all O(1): count buckets in a list)*
-
-> Top-down DP with a dict keyed on the subproblem state (LC 139, 1048, 322) is the same template — worked out in [hash_map_examples.md → Hash Map + Memoization / DP](./hash_map_examples.md#hash-map--memoization--dp).
-
----
-
-### Template 9: Old-to-New Node Map — LC 133
+### Template 8: Old-to-New Node Map — LC 133
 
 **Recognise** — "return a **deep copy** of the graph / the list", "clone", a node type with pointers that can form cycles or point anywhere (random pointers). V, E ≤ 10⁴ → O(V + E).
 
@@ -1231,7 +1152,7 @@ public Node cloneGraph(Node node) {
 
 ---
 
-### Template 10: Virtual Map (Remapping) — LC 710
+### Template 9: Virtual Map (Remapping) — LC 710
 
 **Recognise** — "pick a random integer in `[0, n)` that is **not** in `blacklist`", "minimise calls to the random function". n ≤ 10⁹ with a blacklist ≤ 10⁵ → the valid values cannot be listed, and `pick()` must be O(1).
 
@@ -1344,7 +1265,7 @@ Valid numbers returned: {0,1,4,6,7,9} ✓ uniformly distributed
 
 ---
 
-### Template 11: Map Plus Heap — LC 692
+### Template 10: Map Plus Heap — LC 692
 
 **Recognise** — "return the k most frequent words, sorted by frequency, ties broken alphabetically", "top k by count": the map counts, and a second structure orders what the map counted. k ≪ n → a heap beats sorting every key.
 
@@ -1397,26 +1318,106 @@ public List<String> topKFrequent(String[] words, int k) {
 }
 ```
 
+**Second solution — buckets by count, no heap.** A count is at most `len(words)`, so it can index a list: `buckets[c]` holds the words seen exactly `c` times. Walking the counts from high to low gives the frequency order for free, and the tie rule only ever compares words that share a count. It is LC 347's O(n) bucket sort ([heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)) plus a sort inside each bucket — worth knowing when the interviewer asks for top-K without a heap.
+
+```python
+# python
+# LC 692 - Top K Frequent Words (buckets by count)
+# IDEA: buckets[c] = words seen exactly c times; walk counts high -> low, sorting each bucket for the tie rule
+# time = O(n log n) worst case (every word in one bucket), O(n) when the counts are distinct, space = O(n)
+def topKFrequent_buckets(words, k):
+    count = {}
+    for word in words:
+        count[word] = count.get(word, 0) + 1
+    buckets = [[] for _ in range(len(words) + 1)]   # a count is at most len(words)
+    for word, freq in count.items():
+        buckets[freq].append(word)
+    result = []
+    for freq in range(len(words), 0, -1):
+        for word in sorted(buckets[freq]):          # the tie rule: alphabetical within one count
+            result.append(word)
+            if len(result) == k:
+                return result
+    return result
+```
+
 **Complexity**
-- **Time O(n + k log n)** in Python: counting is one pass, `heapify` is O(n), and each of the k `heappop`s is O(log n). Java's `addAll` inserts one at a time, so it is O(n log n).
-- **Space O(n)**: `count` and the heap each hold one entry per distinct word.
+- **Time O(n + k log n)** in Python: counting is one pass, `heapify` is O(n), and each of the k `heappop`s is O(log n). Java's `addAll` inserts one at a time, so it is O(n log n). The bucket solution is O(n) plus the sort of each bucket it reads.
+- **Space O(n)**: `count` and the heap (or the buckets) each hold one entry per distinct word.
 
 **Traps**
 - A heap of `(freq, word)` without the minus sign pops the **least** frequent word first.
 - A size-k min-heap (the O(n log k) follow-up) needs the **reverse** tie order, so the alphabetically larger word sits at the root and is evicted first; reusing the `(-count, word)` order evicts the wrong word.
 - A Java comparator written `count.get(b) - count.get(a)` is the subtraction comparator; use `Integer.compare`.
 
-**Not this if** — no tie rule and only the k most frequent values (LC 347) → bucket sort by frequency in O(n) ([hash_map_examples](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on)); the kth largest **value**, not count → [heap.md](./heap.md).
+**Not this if** — no tie rule and only the k most frequent values (LC 347) → bucket sort by frequency in O(n) ([heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-)); the kth largest **value**, not count → [heap.md](./heap.md).
 
 **Drill** — LC 692 · LC 347 ⭐ *(no ties: a heap, or buckets in O(n))* · LC 451 *(every key, ordered by count)* · LC 1636 *(count ascending, ties by value descending)*
 
-> For the O(n) heap-free answer to top-K, see [Bucket Sort via Hash Map](./hash_map_examples.md#bucket-sort-via-hash-map-top-k-frequency-on); for `next greater` answers keyed by a monotonic stack, see [Monotonic Stack + Hash Map](./hash_map_examples.md#monotonic-stack--hash-map).
+> For the O(n) heap-free answer to top-K without a tie rule, see [heap § Template 2](./heap.md#template-2-count-then-a-size-k-heap-on-the-count--lc-347-); for `next greater` answers stored in a map by a monotonic stack (LC 496), see [monotonic_stack § Template 1](./monotonic_stack.md#template-1-next-greater-element-decreasing-stack--lc-496).
+
+## Language APIs — Sorted Map (TreeMap / SortedDict)
+
+A hash map keeps no order. When the question needs the closest key (floor / ceiling), the smallest or largest key, or every key in a range, reach for a **sorted map**: Java's `TreeMap`, or Python's `SortedDict`. Python's standard library has no sorted map; `SortedDict` comes from the third-party `sortedcontainers` package, which LeetCode preinstalls (`pip install sortedcontainers` locally).
+
+| What you need | Java `TreeMap` | Python `SortedDict` (`d`) |
+|---|---|---|
+| Smallest / largest key | `firstKey()` / `lastKey()` | `d.keys()[0]` / `d.keys()[-1]` |
+| Smallest / largest entry | `firstEntry()` / `lastEntry()` | `d.peekitem(0)` / `d.peekitem(-1)` → `(k, v)` |
+| Largest key ≤ x (floor) | `floorKey(x)` → key or `null` | `i = d.bisect_right(x) - 1`, then `d.keys()[i]` if `i >= 0` |
+| Smallest key ≥ x (ceiling) | `ceilingKey(x)` → key or `null` | `i = d.bisect_left(x)`, then `d.keys()[i]` if `i < len(d)` |
+| Largest key < x / smallest key > x | `lowerKey(x)` / `higherKey(x)` | `bisect_left(x) - 1` / `bisect_right(x)`, same guards |
+| Keys in `[lo, hi]` | `subMap(lo, true, hi, true)` | `d.irange(lo, hi)` |
+| Remove the smallest / largest | `pollFirstEntry()` / `pollLastEntry()` | `d.popitem(0)` / `d.popitem(-1)` |
+| The k-th smallest key | not supported (iterate) | `d.keys()[k]`, O(log n) |
+| Plain lookup `get(k)` | O(log n), a tree descent | O(1), a hash lookup |
+| Custom order | a `Comparator` | `SortedDict(key_func)` — a key transform, not a comparator |
+
+**The rule that prevents most bugs**: Java's `floorKey` / `ceilingKey` return a **key** or `null`; Python's `bisect_*` return an **index**, which can be `-1` or `len(d)`. Guard the index before subscripting, because `d.keys()[-1]` silently returns the largest key instead of "nothing". And call `d.bisect_left(x)`, never `bisect.bisect_left(list(d.keys()), x)`: the `list(...)` copy is O(n).
+
+```python
+# python
+# floor / ceiling on a SortedDict (pip install sortedcontainers; preinstalled on LeetCode)
+# IDEA: bisect_* returns an index into the sorted keys; guard it, then read the key
+# time = O(log n) per query, space = O(n)
+from sortedcontainers import SortedDict
+
+def floor_key(d, x):                       # Java floorKey(x): largest key <= x, or None
+    i = d.bisect_right(x) - 1
+    return d.keys()[i] if i >= 0 else None
+
+def ceiling_key(d, x):                     # Java ceilingKey(x): smallest key >= x, or None
+    i = d.bisect_left(x)
+    return d.keys()[i] if i < len(d) else None
+
+d = SortedDict({10: "a", 20: "b", 30: "c"})
+print(floor_key(d, 25), ceiling_key(d, 25))   # 20 30
+print(floor_key(d, 5), ceiling_key(d, 35))    # None None
+print(list(d.irange(15, 30)))                 # [20, 30]
+```
+
+```java
+// java
+// floor / ceiling / range on a TreeMap
+// IDEA: a red-black tree keyed in order; floorKey / ceilingKey return a key or null
+// time = O(log n) per query, space = O(n)
+TreeMap<Integer, String> d = new TreeMap<>();
+d.put(10, "a");
+d.put(20, "b");
+d.put(30, "c");
+Integer floor = d.floorKey(25);            // 20
+Integer ceiling = d.ceilingKey(25);        // 30
+Integer none = d.floorKey(5);              // null: guard it before unboxing
+SortedMap<Integer, String> range = d.subMap(15, true, 30, true);   // {20=b, 30=c}
+```
+
+**Where it is used**: booking and overlap checks (LC 729, 731, 732) in [design_examples.md](./design_examples.md#sorted-map--time-index-examples); the smallest remaining card (LC 846) and the interval stream (LC 352) in [hash_map_examples.md](./hash_map_examples.md#index); a timestamp floor lookup (LC 981) in [design_examples.md](./design_examples.md#time-based-key-value-store--lc-981). When the keys only need sorting once, sort a list instead — the sorted map pays O(log n) on every update to stay sorted.
 
 ## Drill Path
 
 | Stage | Problems (easy → hard) | What it adds |
 |---|---|---|
-| **Core** ⭐ | LC 1 · LC 242 · LC 49 · LC 347 · LC 146 | complement lookup, counting, grouping by a key, top-K by count, the ordered map as a cache |
+| **Core** ⭐ | LC 1 · LC 242 · LC 49 · LC 347 · LC 146 | complement lookup, counting, grouping by a key, top-K by count, the map + list cache ([linked_list § Template 7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-)) |
 | **Practice** | LC 205 · LC 290 · LC 383 · LC 953 · LC 438 · LC 560 · LC 133 | bijection, counting as a budget, rank map, fixed-window counts, prefix-sum counts, the clone map |
 | **Stretch** | LC 692 · LC 3026 · LC 149 · LC 710 | tie-broken top-K, a min-prefix per key, a normalised slope key, a virtual remap |
 ## Summary & Quick Reference
@@ -1432,12 +1433,12 @@ public List<String> topKFrequent(String[] words, int k) {
 | A window over characters compared by letter counts (fixed length here; grow-and-shrink lives in [sliding_window.md](./sliding_window.md)) | Window + char counts | [T5](#template-5-fixed-window-character-counts--lc-438) | O(n) / O(k) | 3, 76, 424, 438, 567, 159, 340, 904, 1004, 1208, 1234 |
 | "According to the order given in ...", a custom alphabet, a permutation, an index split | Rank map | [T6](#template-6-rank-map--value-to-position--lc-953-) | O(n) / O(n) | 953, 791, 105, 106 |
 | A mapping that must be one-to-one in **both** directions | Bijection (two maps) | [T7](#template-7-bijection-with-two-maps--lc-205) | O(n) / O(n) | 205, 290 |
-| "Design a cache", O(1) get + put, eviction, or a recursion worth memoizing | Caching / memoization | [T8](#template-8-ordered-map-as-an-lru-cache--lc-146) | O(1) amortised / O(n) | 146, 460, 705, 706, 380, 381, 432, 355, 981, 1244, 139, 322, 1048 |
-| Node relationships: clone, parent pointers, subtree signatures, equations as edges | Graph / tree node map | [T9](#template-9-old-to-new-node-map--lc-133) | O(n) / O(n) | 133, 138, 652, 721, 734, 399, 947, 1257 |
-| "Pick uniformly at random, but never these values" | Virtual map (remapping) | [T10](#template-10-virtual-map-remapping--lc-710) | O(1) per pick / O(B) | 710, 398, 528, 384 |
-| The map alone is not enough — you also need order, a heap, or a stack | Map + another structure | [T11](#template-11-map-plus-heap--lc-692) | varies | 347, 496, 503, 739, 853, 729, 846, 352 |
+| "Design a cache", O(1) get + put, eviction, or a recursion worth memoizing | Caching / memoization | [linked_list § T7](./linked_list.md#template-7-hash-map--doubly-linked-list-lru--lc-146-) | O(1) amortised / O(n) | 146, 460, 705, 706, 380, 381, 432, 355, 981, 1244, 139, 322, 1048 |
+| Node relationships: clone, parent pointers, subtree signatures, equations as edges | Graph / tree node map | [T8](#template-8-old-to-new-node-map--lc-133) | O(n) / O(n) | 133, 138, 652, 721, 734, 399, 947, 1257 |
+| "Pick uniformly at random, but never these values" | Virtual map (remapping) | [T9](#template-9-virtual-map-remapping--lc-710) | O(1) per pick / O(B) | 710, 398, 528, 384 |
+| The map alone is not enough — you also need order, a heap, or a stack | Map + another structure | [T10](#template-10-map-plus-heap--lc-692) | varies | 347, 496, 503, 739, 853, 729, 846, 352 |
 
-> Worst case for every row above is **O(n) per operation** if all keys collide. Per-problem tables (difficulty and a one-line insight for each of ~90 problems) are in [hash_map_examples.md → Problems by Pattern](./hash_map_examples.md#problems-by-pattern).
+> Worst case for every row above is **O(n) per operation** if all keys collide. Every worked problem, with its difficulty and the sheet it is worked on, is in [hash_map_examples.md → Index](./hash_map_examples.md#index).
 
 ### Key Insights and Recognition Cues
 

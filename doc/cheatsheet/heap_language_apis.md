@@ -440,59 +440,11 @@ while pq not empty:
 
 ### Design Twitter — LC 355
 
-The timeline is a **k-way merge** over the followees\' tweet lists (each already newest-first), so
-`heapq.merge` gives the 10 newest posts without materialising every list.
+> **Key point** — the timeline is a **k-way merge** over the followees' tweet lists, each already
+> in time order, stopped after 10 results; `heapq` with one cursor per followee is the API this
+> sheet is about.
 
-```python
-# 355 Design Twitter
-# https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md
-from collections import defaultdict
-from heapq import merge
-class Twitter(object):
-    
-    def __init__(self):
-        self.follower_followees_map = defaultdict(set)
-        self.user_tweets_map = defaultdict(list)
-        self.time_stamp = 0
-
-    def postTweet(self, userId, tweetId):
-        self.user_tweets_map[userId].append((self.time_stamp, tweetId))
-        self.time_stamp -= 1
-
-    def getNewsFeed(self, userId):
-        # get the followees list
-        followees = self.follower_followees_map[userId]
-        # add userId as well, since he/she can also see his/her post in the timeline
-        followees.add(userId)
-        
-        # reversed(.) returns a listreverseiterator, so the complexity is O(1) not O(n)
-        candidate_tweets = [reversed(self.user_tweets_map[u]) for u in followees]
-
-        tweets = []
-        """
-        python starred expression :
-        -> will extend Iterable Unpacking
-        example 1 : *candidate_tweets
-        exmaple 2 : a, *b, c = range(5)
-        ref :
-        https://www.python.org/dev/peps/pep-3132/
-        https://blog.csdn.net/weixin_41521681/article/details/103528136
-        http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
-        https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md
-        """
-        # complexity is 10*log(n), n is twitter's user number in worst case
-        for t in merge(*candidate_tweets):
-            tweets.append(t[1])
-            if len(tweets) == 10:
-                break
-        return tweets
-
-    def follow(self, followerId, followeeId):
-        self.follower_followees_map[followerId].add(followeeId)
-
-    def unfollow(self, followerId, followeeId):
-        self.follower_followees_map[followerId].discard(followeeId)
-```
+**Reduces to**: [heap § Template 3](./heap.md#template-3-k-way-merge--lc-23-). The full solution is worked in [design_examples.md](./design_examples.md#design-twitter--lc-355).
 
 ## Summary & Quick Reference
 
