@@ -186,24 +186,9 @@ private TreeNode build(int[] preorder, int left, int right) {
 ```
 
 **Inorder + postorder — LC 106.** The only change is where the root comes from: the *last*
-element of post-order instead of the first of pre-order, so the two child slices shift by one.
-
-```python
-def build_tree_post(inorder, postorder):
-    if not inorder or not postorder:
-        return None
-
-    # Last element in postorder is root
-    root_val = postorder[-1]
-    root = TreeNode(root_val)
-
-    root_index = inorder.index(root_val)
-
-    root.left = build_tree_post(inorder[:root_index], postorder[:root_index])
-    root.right = build_tree_post(inorder[root_index+1:], postorder[root_index:-1])
-
-    return root
-```
+element of post-order instead of the first of pre-order, so the two child slices shift by one. It is
+worked in one place, with an index map instead of slicing:
+[tree_examples.md § LC 106](./tree_examples.md#construct-binary-tree-from-inorder-and-postorder-traversal--lc-106).
 
 ### 3) Construct Binary Tree from String — LC 536 (Recursive Descent Parsing) ⭐⭐⭐⭐
 

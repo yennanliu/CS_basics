@@ -604,8 +604,10 @@ public List<List<Integer>> levelOrder(TreeNode root) {
   on `.val`.
 - `list.pop(0)` instead of `deque.popleft()` makes each dequeue O(n) — O(n²) on a wide tree.
 
-**Not this if** — the answer needs each node's **column** or horizontal gap (LC 662, LC 987):
-carry an index with the node, [Template 11](#template-11-bfs-with-positional-index--lc-662-).
+**Not this if** — the answer needs the horizontal gap inside a level (LC 662): carry a heap index
+with the node, [Template 11](#template-11-bfs-with-positional-index--lc-662-). A **column** (LC 314,
+LC 987) is a different coordinate: carry `col`, with `col - 1` for the left child and `col + 1` for
+the right.
 
 **Drill** — LC 102 ⭐ · LC 199 *(last node of each level)* · LC 103 *(reverse every other row)* ·
 LC 173 *(the in-order stack as an iterator)* · LC 314
@@ -786,7 +788,7 @@ private int height(TreeNode node) {
 LC 1448): pass it down as an argument instead — see
 [§0-5](#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-).
 
-**Drill** — LC 104 ⭐ · LC 110 ⭐ · LC 543 ⭐ · LC 687 · LC 124 ⭐
+**Drill** — LC 543 ⭐ · LC 104 ⭐ · LC 110 ⭐ · LC 687 · LC 124 ⭐
 
 ### Template 6: LCA by Returned Presence — LC 236
 
@@ -971,7 +973,7 @@ public Node connect(Node root) {
 **Not this if** — the problem allows O(n) space or wants a list per level: plain
 [Template 2](#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102).
 
-**Drill** — LC 116 *(perfect tree: the same code works unchanged)* · LC 117 · LC 199
+**Drill** — LC 117 · LC 116 *(perfect tree: the same code works unchanged)* · LC 199
 
 ---
 
@@ -1390,15 +1392,14 @@ public TreeNode pruneTree(TreeNode root) {
 **Not this if** — the tree is a BST and nodes are removed by a **value range** (LC 669) or a
 single key (LC 450): the ordering lets you discard a whole side at once, see [bst.md](./bst.md).
 
-**Drill** — LC 226 ⭐ *(return the swapped subtree)* · LC 814 · LC 1325 · LC 1110 · LC 114
+**Drill** — LC 1110 · LC 226 ⭐ *(return the swapped subtree)* · LC 814 · LC 1325 · LC 114
 
 ---
 
 ### Template 11: BFS with Positional Index — LC 662 ⭐⭐⭐⭐
 
 **Recognise** — "the **width** of a level counts the null positions between the end nodes", "is the
-tree **complete**", "vertical order / column" — a horizontal position that a plain level-order count
-cannot express.
+tree **complete**" — a horizontal position that a plain level-order count cannot express.
 
 **Key point** — each node carries its index in the complete-tree array layout (`left = 2i`,
 `right = 2i + 1`), so the index encodes the position **including the gaps**; width of a level =
@@ -1568,10 +1569,12 @@ public boolean isCompleteTree(TreeNode root) {
 }
 ```
 
-**Not this if** — columns must also be **sorted within a cell** by row and value (LC 987): carry
-`(row, col)` and sort at the end, see [tree.md](./tree.md).
+**Not this if** — the question is about **columns** (LC 314, LC 987). A column is not the heap
+index: on `[1,2,3]` the root and its left child both sit at offset 0 of their level, but in columns
+0 and −1. Carry `col` (left `col - 1`, right `col + 1`); LC 987 also sorts each cell by
+`(row, value)`, see [tree.md](./tree.md).
 
-**Drill** — LC 958 · LC 662 · LC 314 · LC 987
+**Drill** — LC 662 · LC 958 · LC 919 *(complete-tree inserter)*
 
 ---
 
@@ -1634,8 +1637,9 @@ public boolean isSameTree(TreeNode p, TreeNode q) {
   comparing. The worked cards are in [tree_examples.md](./tree_examples.md).
 
 **Not this if** — one tree is searched for inside the other (LC 572): this template runs at every
-node of the big tree, O(n · m); hashing each subtree into a string or id
-([tree_codec.md](./tree_codec.md)) makes it O(n + m).
+node of the big tree, O(n · m). Assigning fixed-size IDs from `(value, left ID, right ID)`
+([tree_codec.md](./tree_codec.md)) takes O(n + m) expected time; building a full string for every
+subtree can take O(n² + m²).
 
 **Drill** — LC 100 · LC 101 *(mirror pairing)* · LC 617 *(merge, build a new node per pair)* ·
 LC 951 *(either pairing)* · LC 572 *(at every node of the big tree)*

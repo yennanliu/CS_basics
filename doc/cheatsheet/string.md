@@ -443,7 +443,7 @@ public int myAtoi(String s) {
         i++;
     }
     int num = 0;
-    while (i < n && Character.isDigit(s.charAt(i))) {
+    while (i < n && s.charAt(i) >= '0' && s.charAt(i) <= '9') {   // ASCII digits only
         int digit = s.charAt(i) - '0';
         if (num > (Integer.MAX_VALUE - digit) / 10) {   // num * 10 + digit would overflow
             return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
