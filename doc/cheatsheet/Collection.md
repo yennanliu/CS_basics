@@ -326,7 +326,8 @@ counter suffices (or a `TreeMap` when a plain `HashMap` suffices) costs a `log N
 
 > **Gotcha**: `defaultdict` **creates keys on read** (`d[k]` inserts). `Counter` does not (`c[k]` returns 0
 > without inserting), but `c[k] -= 1` down to 0 leaves the key behind. When the answer depends on
-> `len(d)` (distinct-count windows), delete keys that hit 0, or read with `d.get(k, 0)`.
+> `len(d)` (distinct-count windows), delete keys that hit 0; `d.get(k, 0)` only reads a count
+> without inserting, it does not remove a zero.
 
 ### 3-4) Java equivalents of the Python ops above ⭐⭐⭐⭐
 

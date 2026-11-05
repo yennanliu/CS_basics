@@ -87,7 +87,7 @@ Working notes per shape — the mnemonic for the loop body, and the gotcha.
     - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
     - (for loop call help func) +  start_idx + for loop + pop(-1)
     - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
-    - No `contains` check: passing `i + 1` as the next `start_idx` uses each element at most once (passing `i` would reuse it; `contains` is the permutations idiom)
+    - No `contains` check: passing `i + 1` as the next `start_idx` uses each element at most once (passing `i` would reuse it). Permutations track used **indices** with `visited[]`, never a value `contains`, so `[1,1]` can use both 1s; LC 47's duplicate values then add same-level skipping
 - `Subsets II`
     - LC 90
     - start idx + backtrack + dedup (seen)

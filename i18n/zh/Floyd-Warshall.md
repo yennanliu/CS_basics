@@ -250,12 +250,12 @@
 | Minimum Weighted Subgraph | 2203 | 三個來源 | Hard |
 | Shortest Path in Undirected Graph | 1976 | 全點對距離 | Medium |
 
-<!-- fd1fa8945c88 -->
+<!-- 647cba200209 -->
 ### **遞移閉包類**
 | 題目 | LC # | 關鍵技巧 | 難度 |
 |---------|------|---------------|------------|
 | Course Schedule IV | 1462 | 布林版 Floyd-Warshall | Medium |
-| Graph Connectivity | 1627 | Union-find（n ≤ 10⁴ 排除 O(n³)） | Hard |
+| Graph Connectivity | 1627 | Union-Find（n ≤ 10⁴ 排除 O(n³)） | Hard |
 | Evaluate Division | 399 | 帶權重的遞移閉包 | Medium |
 
 <!-- df204e3cf50c -->

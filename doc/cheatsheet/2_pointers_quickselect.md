@@ -47,11 +47,11 @@ QuickSelect: Only finds the Kth element position → O(n) average
 
 ```python
 # python
-# LC 215 - Kth Largest Element in an Array
-# IDEA: random pivot + 3-way partition (< pivot | == pivot | > pivot); recurse into the one
-#       band that holds index n-k. The == band is what keeps all-equal input O(n): a 2-way
-#       partition puts every equal value on one side and degrades to O(n^2).
+# IDEA: random pivot + 3-way partition (< | == | >); recurse into the one band that holds index n-k
 # time = O(n) average, O(n^2) worst (vanishingly unlikely with a random pivot), space = O(1)
+# The == band is what keeps all-equal input O(n): a 2-way partition puts every equal value on one
+# side and degrades to O(n^2).
+# LC 215 - Kth Largest Element in an Array
 import random
 
 def findKthLargest(nums, k):
@@ -85,11 +85,11 @@ def findKthLargest(nums, k):
 
 ```java
 // java
-import java.util.Random;
-
-// LC 215 - Kth Largest Element in an Array
 // IDEA: random pivot + 3-way partition; keep only the band that holds index n-k
 // time = O(N) average, O(N^2) worst (vanishingly unlikely with a random pivot), space = O(1)
+// LC 215 - Kth Largest Element in an Array
+import java.util.Random;
+
 class Solution {
     private final Random rand = new Random();
 

@@ -26,9 +26,9 @@ patterns, the five-step interview method and the chooser table; this file keeps 
 
 ```python
 # python
-# V0
 # IDEA: hash map (key -> node) + doubly linked list (most recent at the tail)
 # time = O(1) per get / put, space = O(capacity)
+# V0
 # The map makes a lookup O(1); the list makes "move to the end" and "evict the oldest" (right after
 # the head sentinel) O(1) pointer splices.
 # LC 146 LRU Cache (Least Recently Used (LRU) cache)
