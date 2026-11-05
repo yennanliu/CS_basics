@@ -124,7 +124,7 @@ public List<List<Integer>> nSumTarget(int[] nums, int k, int start, long target)
 ```
 
 **Complexity**
-- **Time O(n^(k-1))**: k − 2 nested fixed elements, each an O(n) loop, around the O(n) two-pointer scan; the O(n log n) sort is dominated for k ≥ 2.
+- **Time O(n^(k-1)) after the sort**: k − 2 nested fixed elements, each an O(n) loop, around the O(n) two-pointer scan. With the sort it is O(n log n) for k = 2 (the sort is the larger term) and O(n^(k-1)) for k ≥ 3.
 - **Space**: O(k) recursion depth, plus the result lists each level builds before handing them up.
 
 **Traps**
