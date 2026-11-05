@@ -481,7 +481,7 @@ relative order within each group.
 | 2161 | Partition Array According to Given Pivot | the array form: three buckets (`<`, `==`, `>`), concatenated in order |
 | 21 | Merge Two Sorted Lists | the reverse move — one dummy, *two* inputs, one chain out |
 
-**Drill** — LC 21 ⭐ *(one dummy, two inputs)* · LC 86 · LC 328 *(split by index)* · LC 725 *(k chains)*
+**Drill** — LC 86 · LC 21 ⭐ *(one dummy, two inputs)* · LC 328 *(split by index)* · LC 725 *(k chains)*
 
 ### Template 4: Reverse a Segment, Reconnect Both Ends — LC 92 ⭐⭐⭐⭐⭐
 
@@ -618,7 +618,7 @@ Final:
 the list is *rotated* (LC 61), not reversed → find the new tail with a gap and re-stitch, no
 reversal at all.
 
-**Drill** — LC 206 ⭐ *(k = length)* · LC 92 · LC 24 *(k = 2, unrolled)* · LC 25 *(loop the helper)* · LC 61
+**Drill** — LC 92 · LC 206 ⭐ *(k = length)* · LC 24 *(k = 2, unrolled)* · LC 25 *(loop the helper)* · LC 61
 
 Worked: [LC 24, LC 25 and LC 430](./linked_list_examples.md#reverse-a-segment-examples) in linked_list_examples.
 
@@ -1068,7 +1068,7 @@ frequency, below. A plain `dict` plus a list of keys looks like an LRU and is no
 | 641 | Design Circular Deque | Doubly linked list with fixed capacity, both ends |
 | 716 | Max Stack | Stack + doubly linked list + TreeMap for O(log n) popMax |
 
-**Drill** — LC 1472 *(one cursor, truncate forward)* · LC 641 *(fixed capacity, both ends)* · LC 146 ⭐ · LC 460 *(one list per frequency: below)* · LC 432
+**Drill** — LC 146 ⭐ · LC 1472 *(one cursor, truncate forward)* · LC 641 *(fixed capacity, both ends)* · LC 460 *(one list per frequency: below)* · LC 432
 
 #### **LFU Variant — one list per frequency, plus a `min_freq` pointer (LC 460)** ⭐⭐⭐⭐
 

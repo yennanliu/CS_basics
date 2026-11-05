@@ -210,13 +210,15 @@
 <!-- f4c5ede74faf -->
 ## 有序 map／時間索引的例題
 
-<!-- 65f0908ec0cb -->
+<!-- c84ce28b5bff -->
 ### Time Based Key-Value Store — LC 981
 
 > **關鍵** — `set` 被呼叫時時間戳嚴格遞增，所以每個 key 的 list
 > **本來就依時間排好**；`get` 就是二分搜尋最後一筆時間 ≤ t 的資料。
 
-**歸約到**：[design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — 雜湊表對到依時間排好的 list；「floor」查詢就是 `bisect_right - 1`。Java 的二分搜尋寫法在 [binary_search_examples.md](./binary_search_examples.md)。
+**歸約到**：[design § Pattern 8](./design.md#pattern-8-sorted-map--time-index) — 雜湊表對到依時間排好的 list；「floor」查詢就是 `bisect_right - 1`。
+
+<!--CODE-->
 
 <!--CODE-->
 

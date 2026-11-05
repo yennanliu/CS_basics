@@ -394,7 +394,7 @@ i  val   pops (j -> res[j])          stack (indices)
 **Not this if** — the answer is a max or min over a **sliding window** of fixed width (LC 239)
 → a monotonic *deque*, which also expires from the front ([monotonic_queue.md](./monotonic_queue.md)).
 
-**Drill** — LC 496 · LC 739 ⭐ · LC 503 *(circular: walk `2n`)* · LC 901 *(online spans)* ·
+**Drill** — LC 739 ⭐ · LC 496 · LC 503 *(circular: walk `2n`)* · LC 901 *(online spans)* ·
 LC 907 *(contribution counting)* · LC 84 *(next smaller on both sides)*
 
 ---
@@ -972,7 +972,7 @@ line         depth   stack after            res
 [Template 2](#template-2-bracket-matching--lc-20-); it must be *evaluated* (calculators,
 decode string) → [stack_expression_parsing.md](./stack_expression_parsing.md).
 
-**Drill** — LC 71 *(`..` pops the parent dir)* · LC 388 · LC 636 · LC 591 *(open-tag stack plus CDATA rules)*
+**Drill** — LC 388 · LC 71 *(`..` pops the parent dir)* · LC 636 · LC 591 *(open-tag stack plus CDATA rules)*
 
 #### Variant: overwrite the depth slot instead of popping — LC 388
 
