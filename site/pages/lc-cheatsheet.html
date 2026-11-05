@@ -442,7 +442,7 @@ node script/zh.js status --write</code></pre>
             <tr><td class="num">Levels never skip</td><td><code>h3</code> &rarr; <code>h4</code>, never <code>h3</code> &rarr; <code>h5</code>. The table of contents is built from the tree, not from the text.</td></tr>
             <tr><td class="num">Each LC number once</td><td>Per heading &mdash; not <code>&hellip; (LC 1650) &mdash; LC 1650</code>.</td></tr>
             <tr><td class="num">One canonical solution</td><td>A second variant needs a stated reason: different complexity, a distinct trick, a different language idiom. Not a different spelling of the same loop.</td></tr>
-            <tr><td class="num">Match the neighbour</td><td>The sibling section is the template &mdash; heading depth, fence labels, where complexity sits. <code>00_template.md</code> wins only where the sheet has drifted.</td></tr>
+            <tr><td class="num">Write the card</td><td>Every section written or rewritten is a pattern card or a problem card from <code>00_template.md</code>, even when the sections around it are older. The neighbour is read for conventions only &mdash; heading depth, fence labels &mdash; and <code>script/check_cheatsheet_cards.py</code> fails CI on a section that is not card-shaped.</td></tr>
           </tbody>
         </table>
       </div>

@@ -1,0 +1,66 @@
+name: Cheatsheet card shape
+
+# Every new or rewritten section in doc/cheatsheet/ must be a pattern card or a
+# problem card, in the sheet role's skeleton (doc/cheatsheet/00_template.md).
+# Written as prose, that rule lost to the old section next to the one being
+# written: an agent copies its neighbour. This job is what makes it hold.
+#
+# It judges the diff, not the tree. Most sheets predate the cards, so a section
+# is held to the full card shape only when its heading is added or changed; any
+# other added line is held to the line rules (no `NOTE !!!`). Reproduce locally:
+#
+#   python3 script/test_check_cheatsheet_cards.py
+#   python3 script/check_cheatsheet_cards.py            # vs origin/master
+#
+# The rules live in the script rather than a run: block, for the reason CLAUDE.md
+# gives about site/e2e-check.js — so they can be run before pushing.
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'doc/cheatsheet/**'
+      - 'script/check_cheatsheet_cards.py'
+      - 'script/test_check_cheatsheet_cards.py'
+      - '.github/workflows/cheatsheet-cards.yml'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'doc/cheatsheet/**'
+      - 'script/check_cheatsheet_cards.py'
+      - 'script/test_check_cheatsheet_cards.py'
+      - '.github/workflows/cheatsheet-cards.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cards:
+    name: New sections are card-shaped
+    runs-on: ubuntu-latest
+
+    steps:
+      # Full history: the check diffs against the merge base.
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # The checker's own tests first: a rule that quietly stopped matching
+      # would pass every section in the repo.
+      - name: Test the checker
+        run: python3 script/test_check_cheatsheet_cards.py
+
+      - name: Check new and rewritten sections
+        env:
+          BASE: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event.before }}
+        run: |
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            BASE=HEAD~1
+          fi
+          python3 script/check_cheatsheet_cards.py --base "$BASE"

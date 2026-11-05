@@ -558,8 +558,9 @@ own yet.
 ## Updating a cheatsheet — `/lc-cheatsheet`
 
 `.claude/skills/lc-cheatsheet/` is `/lc-python`'s counterpart for the notes rather than
-the solutions: it files what a problem taught you into `doc/cheatsheet/`, in the shape
-the ~130 existing sheets use. One argument decides everything:
+the solutions: it files what a problem taught you into `doc/cheatsheet/`, as a pattern card
+or a problem card (see [What goes inside a section](#what-goes-inside-a-section--the-two-cards)),
+never in the shape of the older section next to it. One argument decides everything:
 
 ```text
 /lc-cheatsheet 1650 into binary_tree as variation
@@ -578,7 +579,13 @@ add LC 1650 to the LCA part of binary_tree.md   # the plain-English form works t
 
 **The steps live in `SKILL.md`, not here** — the [style guide below](#cheatsheet-style-guide)
 is what it applies, so the rules have one home. What the skill adds on top of them is the
-four things an edit drags behind it, each of which has actually been got wrong here:
+five things an edit drags behind it, each of which has actually been got wrong here:
+
+- **the card shape, not the neighbour's.** Most sections predate the cards, and an agent
+  writing a new one copies the section next to it. So every section written **or rewritten**
+  is a pattern card or a problem card, a section whose approach is rewritten is brought to
+  card shape in the same edit, and [`script/check_cheatsheet_cards.py`](script/check_cheatsheet_cards.py)
+  makes it hold (below);
 
 - **the sheet is chosen by its Scope line**, not by the topic name — that block exists to
   stop two files growing into the same document, and two sheets can both plausibly own
@@ -595,7 +602,21 @@ four things an edit drags behind it, each of which has actually been got wrong h
   that had been fully translated (see [Traditional Chinese docs](#traditional-chinese-docs)).
 
 Like `/lc-python` it never touches `data/progress.txt`, and it stops at the gates rather than
-committing: `bash site/build.sh`, `node site/e2e-check.js _site`, `npm test --prefix site`.
+committing: `python3 script/check_cheatsheet_cards.py`, `bash site/build.sh`,
+`node site/e2e-check.js _site`, `npm test --prefix site`.
+
+**The card gate.** `script/check_cheatsheet_cards.py` judges the **diff** against
+`origin/master`, not the tree, because most of the 135 sheets predate the cards. A section
+whose heading is added or changed is new or rewritten work, and must be a full card: a
+`Template N: <Pattern> — LC <n>` heading with **Recognise → Key point → python (then java) →
+Complexity → [Dry run] → Traps → [Not this if] → Drill** in that order, or an LC-titled
+heading that opens with `> **Key point** —` and has `**Reduces to**:` before its code. Every
+added line is held to the line rules (no `NOTE !!!`), a new sheet to the sheet rules (no
+`1-1)` numbering), and an `_examples` sheet may hold no pattern card and no
+`## Other Examples`. `.github/workflows/cheatsheet-cards.yml` runs it on every change to
+`doc/cheatsheet/`. Its tests run the two sample cards in `00_template.md` through it, so the
+template and the checker cannot disagree. **Fix the section, never the checker**; `--all
+<file>` audits a whole sheet before a P2-style rewrite.
 
 `site/pages/lc-cheatsheet.html` is its page on the site — the three ways an edit rots, the
 four modes as a selector, the anchor and translation commands, per-agent install. It is
@@ -717,6 +738,10 @@ constraint cue → card → not-this-if) after the Overview (Skeleton A: at the 
 and a Drill Path (Core ⭐ from [`data/l3_core.json`](data/l3_core.json) → Practice → Stretch)
 before `Summary` (Skeleton A: `3) Drill Path`). The canonical
 template sits in the first ~300 lines; the best section goes first, not last.
+
+**This applies to every edit, not only new sheets.** A section written or rewritten in an
+older sheet is still a card, even when nothing around it is; `script/check_cheatsheet_cards.py`
+fails CI otherwise (see [`/lc-cheatsheet`](#updating-a-cheatsheet--lc-cheatsheet)).
 
 **One home per problem.** A worked LC problem lives in exactly one sheet: a template's anchor
 problem in the core sheet's card, any other in the examples sheet (or the advanced sheet, when
