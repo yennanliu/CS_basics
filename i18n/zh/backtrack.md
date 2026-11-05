@@ -108,7 +108,7 @@
 | 7 | 限制條件滿足 | ❌ 每層處理一列／一格 | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
 | 8 | 括號／字串建構 | ❌ 用計數器當限制 | [backtrack_examples.md](./backtrack_examples.md#generate-parentheses--lc-22) | 20, 22, 93 |
 
-<!-- 67c7c1285ca0 -->
+<!-- 0ec1702abfa9 -->
 ### 各型態筆記
 
 每種形狀的隨手筆記 — 迴圈主體的口訣，以及會踩到的坑。
@@ -118,7 +118,7 @@
     - [代碼隨想錄（leetcode-master）— 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
     - 呼叫輔助函式 + `start_idx` + for 迴圈 + `pop()`
     - 樹上的每個節點都記錄；`start_idx` 把已經用過的數字排除在外
-    - 不需要 `contains` 檢查：`start_idx` 已經保證每個元素最多用一次（`contains` 是排列的寫法）
+    - 不需要 `contains` 檢查：下一層的 `start_idx` 傳 `i + 1`，每個元素就最多用一次（傳 `i` 會重複使用；`contains` 是排列的寫法）
 - `Subsets II`
     - LC 90
     - `start_idx` + 回溯 + 同層去重
@@ -194,7 +194,7 @@
 
 **練習** — LC 216 ⭐ · LC 77 *（沒有總和，只看長度 `k`）* · LC 17 *（選擇清單是該數字對應的字母）* · LC 22 *（選擇清單是「左括號或右括號」，由計數把關）*
 
-<!-- 51fff3375bf5 -->
+<!-- 28fd33775fc5 -->
 ### Template 2: `start_idx` — `i` vs `i + 1` — LC 39 ⭐⭐⭐⭐⭐
 
 **辨識** — 「組合」、「子集」、「每個數字只能用**一次**」或「同一個數字可以被選**無限次**」，
@@ -206,7 +206,7 @@
 
 | 傳什麼 | 意義 | 類比 | 例子 |
 | ---- | ------- | ------- | -------- |
-| `i`     | **同一個元素可以再用一次** | **完全背包**（數量無限） | LC 39 (Combination Sum), LC 518 (Coin Change II) |
+| `i`     | **同一個元素可以再用一次** | **完全背包**（數量無限） | LC 39 (Combination Sum)；LC 518（Coin Change II）是它的 DP 對應題，只計數不列舉 |
 | `i + 1` | **每個元素最多用一次** | **0/1 背包**、子集 | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
 
 <!--CODE-->

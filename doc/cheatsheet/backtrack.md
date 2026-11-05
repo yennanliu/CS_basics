@@ -109,7 +109,7 @@ Working notes per shape — the mnemonic for the loop body, and the gotcha.
     - [Programmer Carl (leetcode-master) — 0078 Subsets](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
     - helper call + `start_idx` + for loop + `pop()`
     - record every node of the tree; `start_idx` keeps already-used numbers out
-    - No `contains` check: `start_idx` already uses each element at most once (`contains` is the permutations idiom)
+    - No `contains` check: passing `i + 1` as the next `start_idx` uses each element at most once (passing `i` would reuse it; `contains` is the permutations idiom)
 - `Subsets II`
     - LC 90
     - `start_idx` + backtrack + same-level dedup
@@ -246,7 +246,7 @@ the current element available (unbounded), `i + 1` moves past it (once).
 
 | Pass | Meaning | Analogy | Examples |
 | ---- | ------- | ------- | -------- |
-| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum), LC 518 (Coin Change II) |
+| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum); LC 518 (Coin Change II) is the DP analogue, counted rather than listed |
 | `i + 1` | Use **each element at most once** | **0/1 knapsack**, subsets | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
 
 ```python

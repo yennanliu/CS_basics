@@ -433,6 +433,7 @@ def networkDelayTime(times, n, k):
 # time = O(n log n * α(n) + q * α(n)), space = O(n)
 def areConnected(n, threshold, queries):
     parent = list(range(n + 1))
+    size = [1] * (n + 1)
 
     def find(x):
         while parent[x] != x:
@@ -444,7 +445,10 @@ def areConnected(n, threshold, queries):
         for multiple in range(2 * g, n + 1, g):   # n/g multiples -> n log n in total
             root_g, root_m = find(g), find(multiple)
             if root_g != root_m:
+                if size[root_g] < size[root_m]:       # union by size keeps trees shallow
+                    root_g, root_m = root_m, root_g
                 parent[root_m] = root_g
+                size[root_g] += size[root_m]
 
     return [find(a) == find(b) for a, b in queries]
 ```
@@ -455,12 +459,16 @@ def areConnected(n, threshold, queries):
 // time = O(n log n * α(n) + q * α(n)), space = O(n)
 public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
     int[] parent = new int[n + 1];
-    for (int i = 0; i <= n; i++) parent[i] = i;
+    int[] size = new int[n + 1];
+    for (int i = 0; i <= n; i++) { parent[i] = i; size[i] = 1; }
 
     for (int g = threshold + 1; g <= n; g++) {
         for (int multiple = 2 * g; multiple <= n; multiple += g) {
             int rootG = find(parent, g), rootM = find(parent, multiple);
-            if (rootG != rootM) parent[rootM] = rootG;
+            if (rootG == rootM) continue;
+            if (size[rootG] < size[rootM]) { int t = rootG; rootG = rootM; rootM = t; }  // union by size
+            parent[rootM] = rootG;
+            size[rootG] += size[rootM];
         }
     }
 
