@@ -1868,10 +1868,9 @@ public List<String> topKFrequent_0_1(String[] words, int k) {
      *                 (w1, w2) -> freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : Integer.compare(freq.get(w2), freq.get(w1)));
      */
     Collections.sort(res, (x, y) -> {
-        int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
+        int valDiff = Integer.compare(freq.get(y), freq.get(x)); // bigger count first (decreasing order)
         if (valDiff == 0){
             // Sort on `key ` with `lexicographically` order (increasing order)
-            //return y.length() - x.length(); // ?
             return x.compareTo(y);
         }
         return valDiff;

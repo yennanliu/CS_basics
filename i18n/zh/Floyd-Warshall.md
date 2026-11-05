@@ -143,9 +143,9 @@
 
 <!--CODE-->
 
-<!-- 104114e1cf0f -->
+<!-- a2a47769bdda -->
 ### 2-4) Graph Connectivity With Threshold (LC 1627) — 用 Union-Find，不是 Floyd-Warshall
-> **重點** — 看起來像可達性矩陣，但 n ≤ 10⁴ 讓 Floyd-Warshall 的 O(n³) 變成約 10¹² 步。連通性只需要知道連通分量：把每個 g > threshold 和它的所有倍數 union 起來，每個詢問就是一次 `find`。
+> **重點** — 看起來像可達性矩陣，但 n ≤ 10⁴ 讓 Floyd-Warshall 的 O(n³) 變成約 10¹² 步。連通性只需要知道連通分量：把每個 g > threshold 和它的所有倍數 union 起來，每個詢問就是比較兩個根（兩次 `find`）。
 
 **歸約到**：[union_find.md](./union_find.md) — 下方的 Sizing Check 一節說明 n 超過幾百時就不該用 Floyd-Warshall。
 
