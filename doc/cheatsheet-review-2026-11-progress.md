@@ -23,7 +23,7 @@
 | 6c | **P3 + P4** arrays / strings 家族 | quickselect、KMP / rolling hash 去重；`array_examples`、`string_examples`、`2_pointers_examples`、`sliding_window_examples`、`binary_search_examples` 改 C，`sliding_window_advanced` 改 D | [#313](https://github.com/yennanliu/CS_basics/pull/313) | 🔄 |
 | 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | [#314](https://github.com/yennanliu/CS_basics/pull/314) | 🔄 |
 | 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | [#315](https://github.com/yennanliu/CS_basics/pull/315) | 🔄 |
-| 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | PR_O | 🔄 |
+| 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | [#316](https://github.com/yennanliu/CS_basics/pull/316) | 🔄 |
 | 7b | **P6** 雜訊與語言 | Python 優先、IPython transcript、行內中文、檔名修正 | | ⬜ |
 
 P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1 改寫，`knapsack_01_zh` 是 P3 #2 的 0/1 knapsack 中文 home，`python_complexity` 與 `complexity_cheatsheet` 是查表型的參考文件（沒有 pattern card 可補），在 P1 合併 constraint ruler 時一起處理。
