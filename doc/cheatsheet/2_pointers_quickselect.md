@@ -134,7 +134,9 @@ Target: k = 2 (2nd largest)
 Array: [3, 2, 1, 5, 6, 4]
 n = 6, so we need (n - k) = 4th smallest element (0-indexed)
 
-Step 1: Partition with pivot = 4 (last element)
+One possible run (the pivot is random; here it happens to be 4).
+
+Step 1: Partition with pivot = 4
 [3, 2, 1, 4, 6, 5]
          ↑
     pivot_idx = 3
