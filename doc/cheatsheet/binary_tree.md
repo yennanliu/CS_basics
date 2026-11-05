@@ -898,8 +898,8 @@ private int height(TreeNode node) {
 - **Space O(h)**: the recursion stack; the global is O(1).
 
 **Traps**
-- Returning `left + right` instead of `1 + max(left, right)`: the parent extends a bent path.
-  `[1,2,3,4,5]` would score 4 at the root instead of 3.
+- Returning `left + right` instead of `1 + max(left, right)`: every leaf returns 0, so every node
+  above it does too, and `[1,2,3,4,5]` answers 0 instead of 3.
 - Units: `height(None) = 0` counts **nodes**, so `left + right` is already the **edge** count of the
   bent path. Adding 1 gives LC 543 example 2 (`[1,2]`) the answer 2 instead of 1.
 - LC 124 (max path sum) has negative values: clamp each arm with `max(0, arm)` and start the global
