@@ -1,7 +1,7 @@
 # Advanced DP Techniques
 
 > **Scope** — The DP appendix — techniques a first pass should skip: game-theory / minimax DP, tree and re-rooting DP, interval and string DP deep dives, probability and step-indexed counting DP, monotonic-queue and stack-carried DP, and the long-form derivations trimmed out of the main sheet.
-> **See also**: [dp.md](./dp.md) — the canonical template for every must-know family; [dp_examples.md](./dp_examples.md) — the worked-solution archive; [knapsack.md](./knapsack.md) — the knapsack family in full; [dp_string.md](./dp_string.md) — the two-sequence grid; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values; [monotonic_queue.md](./monotonic_queue.md) — the sliding-window maximum structure.
+> **See also**: [dp.md](./dp.md) — the canonical template for every must-know family; [dp_examples.md](./dp_examples.md) — the problem cards; [knapsack.md](./knapsack.md) — the knapsack family in full; [dp_string.md](./dp_string.md) — the two-sequence grid; [dp_bitmask.md](./dp_bitmask.md) — state compression; [dp_monotonic_stack.md](./dp_monotonic_stack.md) — stack-carried DP values; [monotonic_queue.md](./monotonic_queue.md) — the sliding-window maximum structure.
 
 ## LeetCode Problem Lists
 
@@ -14,7 +14,22 @@
 
 Everything here is a second pass. Each section assumes the matching canonical template in
 [dp.md](./dp.md) is already familiar and adds either a harder pattern, an alternative
-implementation, or the derivation the main sheet only states the conclusion of.
+implementation, or the derivation the main sheet only states the conclusion of. Most of it is not
+asked at L3: read [When Not to Use](#when-not-to-use) first, because for nearly every section the
+core template already solves the problem that looks like it needs this one.
+
+### Prerequisites
+
+Each section builds on one card in [dp.md](./dp.md) or [knapsack.md](./knapsack.md); know that card first.
+
+- [dp.md § Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) and [§ Template 1a](./dp.md#template-1a-length-indexed-table-n--1-slots--lc-70): 1-D state and the `n + 1` table. The sizing and rolling-variable deep dives extend them.
+- [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) and [§ Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-): the grid and the fill order. The grid and palindrome sections extend them.
+- [dp.md § Template 3](./dp.md#template-3-interval-dp--lc-312): interval DP. The interval deep dives and the game-theory section extend it.
+- [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309): states per step. The state-machine and state-dimension sections extend it.
+- [dp.md § Template 7](./dp.md#template-7-longest-increasing-subsequence--lc-300-) and [§ Template 7a](./dp.md#template-7a-value-keyed-dp-dp--hash-map--lc-1218-): LIS and value-keyed DP. Chaining and weighted interval scheduling extend them.
+- [dp.md § Template 8](./dp.md#template-8-edit-distance--lc-72-) and [§ Template 9](./dp.md#template-9-longest-common-subsequence--lc-1143): the two-sequence grid. The string deep dives extend them.
+- [dp.md § Template 11](./dp.md#template-11-bitmask-dp-over-subsets--lc-1879): bitmask DP. The TSP section extends it.
+- [knapsack.md § Template 1](./knapsack.md#template-1-01-knapsack-subset-sum--lc-416-): 0/1 knapsack, which has its one home there.
 
 ### Key Properties
 - **Complexity**: stated per section — interval deep dives are O(n³), bitmask O(2^n · n), the rest O(n) to O(n²)
@@ -747,95 +762,11 @@ public int coinChange(int[] coins, int amount) {
 
 ---
 
-#### **⭐⭐⭐⭐⭐ Loop Order: Combinations vs Permutations**
-
-This is one of the most common interview traps in unbounded knapsack / coin change problems.
-
-**The Rule:**
-
-| Outer Loop | Inner Loop | Counts | Example |
-|------------|-----------|--------|---------|
-| `for coin in coins` | `for i in range(coin, amount+1)` | **Combinations** (order doesn't matter) | LC 518 |
-| `for i in range(1, amount+1)` | `for coin in coins` | **Permutations** (order matters) | LC 377 |
-
-**Why Coins-Outer → Combinations:**
-
-When `coins` is the outer loop, each coin is processed completely before the next coin is introduced. This means `[1, 2]` and `[2, 1]` are never both counted — the coin-1 pass "happened first" globally, so `[2, 1]` has no way to appear as a separate path.
-
-**Why Amount-Outer → Permutations:**
-
-When `amount` is the outer loop, for each target `i` we ask *"what was the last coin placed?"* and try every coin. So reaching `i=3` via last-coin=2 (from `dp[1]` built with coin 1) is a separate path from last-coin=1 (from `dp[2]` built with coin 2). Every ordering is counted.
-
-**Concrete Trace: `coins = [1, 2], amount = 3`**
-
-```text
-# Combinations (coins outer):
-Initial:           dp = [1, 0, 0, 0]
-After coin=1:      dp = [1, 1, 1, 1]   ← all amounts built from 1s only
-After coin=2:      dp = [1, 1, 2, 2]   ← can now use 2s on top of 1s
-
-→ dp[3] = 2 : {1,1,1}, {1,2}           ← {2,1} NOT separately counted ✓
-
-
-# Permutations (amount outer):
-Initial:           dp = [1, 0, 0, 0]
-i=1: coin=1 → dp[1]+=dp[0]=1          dp = [1, 1, 0, 0]
-i=2: coin=1 → dp[2]+=dp[1]=1
-     coin=2 → dp[2]+=dp[0]=1          dp = [1, 1, 2, 0]
-i=3: coin=1 → dp[3]+=dp[2]=2
-     coin=2 → dp[3]+=dp[1]=1          dp = [1, 1, 2, 3]
-
-→ dp[3] = 3 : {1,1,1}, {1,2}, {2,1}   ← {2,1} counted separately ✓
-```
-
-**Code Side-by-Side:**
-
-```python
-# python — Combinations (LC 518): coins outer
-def change(amount, coins):
-    dp = [0] * (amount + 1)
-    dp[0] = 1
-    for coin in coins:                    # coin fixed first → combinations
-        for i in range(coin, amount + 1):
-            dp[i] += dp[i - coin]
-    return dp[amount]
-
-# python — Permutations (LC 377): amount outer
-def combinationSum4(nums, target):
-    dp = [0] * (target + 1)
-    dp[0] = 1
-    for i in range(1, target + 1):        # amount first → permutations
-        for num in nums:
-            if i >= num:
-                dp[i] += dp[i - num]
-    return dp[target]
-```
-
-**Key Intuition — mental model:**
-
-```text
-Coins outer: "I decide to use coin-1 first, then optionally add coin-2 on top."
-             → Sequence is forced: coin-1 always before coin-2 → no duplicates.
-
-Amount outer: "To reach amount i, which coin did I place LAST?"
-             → Each last-coin choice is a distinct path → all orderings counted.
-```
-
-**What about LC 322 (min coins)?**
-
-LC 322 asks for the *minimum count*, not *how many ways* — so whether you count `[1,2]` and `[2,1]` separately doesn't matter; the minimum stays the same either way. Both loop orders are correct for LC 322.
-
-**And where this stops generalising**: coins *add*, so any multiset can be re-ordered into the coin loop's order — which is what makes coins-outer legal at all. Words *concatenate* at positions the string already fixed, so LC 139 Word Break has no legal item-outer order. The test, and LC 139 in five orders: [dp_loop_order.md](./dp_loop_order.md).
-
-**LeetCode Problem Map:**
-
-| LC # | Problem | Loop Order | Reason |
-|------|---------|-----------|--------|
-| **518** | Coin Change II | coins outer | Count combinations |
-| **377** | Combination Sum IV | amount outer | Count permutations |
-| **322** | Coin Change | either | Minimize — order irrelevant |
-| **39** | Combination Sum | backtracking | Combinations with arbitrary coins |
-| **40** | Combination Sum II | backtracking | Combinations, each used once |
+The other question a coin-change table raises, whether the coin loop or the amount loop goes
+outside, is answered once in
+[knapsack.md § Loop Order](./knapsack.md#loop-order-combinations-vs-permutations): coins outer
+counts combinations (LC 518), amount outer counts permutations (LC 377), and a min count (LC 322)
+does not care.
 
 ---
 
@@ -857,123 +788,11 @@ LC 322 asks for the *minimum count*, not *how many ways* — so whether you coun
 
 ## Knapsack Deep Dives
 
-### 2-D → 1-D derivation
-
-
-```text
-2-D (classic):
-  dp[i][w] = max value using first i items with capacity w
-
-  dp[i][w] = dp[i-1][w]                              # skip item i
-  if w >= weight[i]:
-      dp[i][w] = max(dp[i][w], dp[i-1][w-weight[i]] + value[i])   # take item i
-
-1-D (space-optimized):
-  Observe that dp[i][...] depends ONLY on dp[i-1][...].
-  Collapse to one array, iterate w BACKWARD so dp[w-weight[i]]
-  still holds dp[i-1][w-weight[i]] when we need it.
-
-  dp[w] = max(dp[w], dp[w - weight[i]] + value[i])
-  (backward w: W → weight[i])
-```
-
----
-
-### 何時使用 0/1 背包 DP？（中文速記）
-
-
-> **完整中文版** —— 這一節是速記；從「物品重量價值」講到 LC 494 / 416 的逐步 trace、`dp[0] = 1` 的意義、
-> 以及四步解題流程，見 [**knapsack_01_zh.md**](./knapsack_01_zh.md)。
-
-**三個核心識別信號** —— 題目同時出現下面 3 點，幾乎可以確定是 0/1 背包：
-
-| # | 特徵 | 說明 |
-|---|------|------|
-| **1** | 元素「**不可重複使用**」（0 或 1 的決策） | 每個物品／數字只有一個，只能 **選 (1)** 或 **不選 (0)**。對比：完全背包（Unbounded）的物品可以無限次重複選（例如無限供應的硬幣） |
-| **2** | 存在明確的「**容量 / 目標限制**」 | 題目給了一個上限或目標值（背包最大容量 $W$，或子集目標和 Target），需要在不超過它的前提下做選擇與組合 |
-| **3** | 求解目標是「**子集組合**」相關 | ① **最值**：容量內能裝入的最大價值？② **存在性**：能不能選出子集使和剛好等於目標？③ **方案數**：和等於目標的選法有幾種？ |
-
-**實務上的快速判斷** —— 題目裡同時有：
-
-1. 很多物品
-2. 每個物品有一個 **cost / weight**
-3. 每個物品有一個 **value / reward**
-4. 每個物品 **最多只能選一次**
-5. 有一個總容量 / 預算上限
-
-→ 很可能就是 **0/1 Knapsack**。
-
-> 例：「有 5 個物品，每個有重量和價值，背包最多裝重量 10，問最大價值是多少？」—— 典型 0/1 Knapsack。
-
-**為什麼叫 0/1？** 每個 item 只有兩種選擇：`0` 不拿、`1` 拿，而且**不能拿第二次**。
-
-#### 0/1 背包速記：DP 定義、方向與變形
-
-##### 最常見的 DP 定義
-
-`dp[j]` = 容量最多為 `j` 時，可以得到的最大 value。對每個 item `(weight, value)`：
-
-```text
-for each item:
-    for j = W down to weight:          # ※ j 要倒著跑
-        dp[j] = max(dp[j], dp[j - weight] + value)
-```
-
-**關鍵是 `j` 要倒著跑**。倒序的原因：你不希望同一個 item 在這一輪被重複使用——倒序時 `dp[j - weight]` 讀到的是 **上一輪（還沒用過這個 item）** 的值；正序時 `dp[j - weight]` 已經被本輪更新過，等於允許同一個 item 被選多次。詳細推導見 [dp.md](./dp.md) 的 **💡 Why Must the Inner Loop Go Backward?**（含 `nums = [3], target = 6` 的逐步 trace）。
-
-##### 跟其他 Knapsack 的區別
-
-| 類型 | 每個物品可以用幾次 | DP 容量方向 | 代表題 |
-|------|------------------:|-------------|--------|
-| **0/1 Knapsack** | 最多 1 次 | **由大到小（倒序）** | LC 416, 494, 1049 |
-| **Unbounded Knapsack** | 無限次 | **由小到大（正序）** | LC 322, 518 |
-| **Bounded Knapsack** | 最多 `k` 次 | 需要額外處理（二進制拆分成多個 0/1 物品，或單調隊列優化） | LC 2585, 1774 |
-
-一個很好用的判斷：
-
-> - **「每個東西只能選一次」→ 想 0/1 Knapsack（倒序）**
-> - **「每個東西可以一直選」→ 想 Unbounded Knapsack（正序）**
-
-##### 別被「背包」這個詞騙到
-
-0/1 Knapsack 不一定真的長得像「背包」。像是 **預算分配、選課、專案選擇、投資組合、最多只能做一次的任務選擇**，只要本質是「**選或不選 + 有容量限制**」，都可能套這個 DP。LC 416（分割等和子集）、LC 494（添加 +/- 號）、LC 474（限 0 與 1 的個數）都是被包裝過的 0/1 背包。
-
----
-
-### 2-D 0/1 knapsack (classic form)
-
-
-```python
-def knapsack_01(weights, values, capacity):
-    # time = O(n * W), space = O(n * W)
-    n = len(weights)
-    dp = [[0] * (capacity + 1) for _ in range(n + 1)]
-    for i in range(1, n + 1):
-        for w in range(capacity + 1):
-            dp[i][w] = dp[i-1][w]                                    # skip
-            if weights[i-1] <= w:
-                dp[i][w] = max(dp[i][w],
-                               dp[i-1][w - weights[i-1]] + values[i-1])  # take
-    return dp[n][capacity]
-```
-
-### What knapsack.md covers
-
-
-[**knapsack.md**](./knapsack.md) covers, in full:
-
-- **0/1 Knapsack & Subset Sum deep dive** — the partition reduction, the `(total + target) / 2`
-  transform for LC 494, boolean vs counting vs max-value variants, and the common pitfalls.
-- **Combinations vs Permutations** — visual summary of the four core loop orders, code templates
-  per pattern, and the pattern-selection decision tree.
-- **Combinations vs Permutations vs 0/1 Knapsack** — side-by-side code, a step-by-step trace of the
-  same input under both loop orders, and a when-to-use-which table.
-- **`if (i - coin >= 0)` in Coin Change** — why the guard is `>=` and not `==`.
-
-[**knapsack_01_zh.md**](./knapsack_01_zh.md) — 中文版，只聚焦 0/1 背包：state 定義、「拿或不拿」的轉移、
-倒序 vs 正序的逐步 trace、max / min / count / boolean 四種變形，以及 LC 494 / 416 / 1049 / 474 的解法。
-
----
+0/1 knapsack has one home: [knapsack.md](./knapsack.md). Its
+[Template 1](./knapsack.md#template-1-01-knapsack-subset-sum--lc-416-) holds the 1-D template, why
+the inner loop runs backward, and the derivation from the recursion through the 2-D table; the
+unbounded, bounded and group variants follow it. The Traditional Chinese walkthrough of the 0/1
+case is [knapsack_01_zh.md](./knapsack_01_zh.md).
 
 ## Grid DP — The Other Three Implementations
 
@@ -1205,7 +1024,7 @@ private int dfs(int[][] grid, int r1, int c1, int r2, Integer[][][] memo) {
     if (r1 == n - 1 && c1 == n - 1) return grid[r1][c1];   // both are forced onto (n-1, n-1)
     if (memo[r1][c1][r2] != null) return memo[r1][c1][r2];
 
-    // NOTE !!! same cell -> the cherry is taken once, not twice
+    // same cell -> the cherry is taken once, not twice
     int got = grid[r1][c1] + (r1 == r2 ? 0 : grid[r2][c2]);
 
     int rest = Math.max(
@@ -2241,7 +2060,7 @@ public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
     for (int i = 1; i <= n; i++) {
         int s = jobs[i - 1][1], p = jobs[i - 1][2];
 
-        /** NOTE !!! binary search on ends[0..i-1] :
+        /** binary search on ends[0..i-1] :
          *  largest idx with ends[idx] <= s  ->  dp[idx] is the compatible prefix
          */
         int lo = 0, hi = i - 1, idx = 0;
@@ -2487,7 +2306,7 @@ public boolean canCross(int[] stones) {
             for (int nk = k - 1; nk <= k + 1; nk++) {
                 if (nk <= 0) continue;             // jump must move forward
                 Integer j = pos.get(stones[i] + nk);
-                /** NOTE !!! j > i guarantees we only write to FUTURE stones,
+                /** j > i guarantees we only write to FUTURE stones,
                  *  so mutating dp while scanning is safe. */
                 if (j != null && j > i) dp.get(j).add(nk);
             }
@@ -2577,7 +2396,7 @@ public int numberOfArithmeticSlices(int[] nums) {
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < i; j++) {
-            // NOTE !!! (long) cast — nums[i] - nums[j] overflows int on the real test data
+            // (long) cast — nums[i] - nums[j] overflows int on the real test data
             long d = (long) nums[i] - nums[j];
             int cnt = dp.get(j).getOrDefault(d, 0);
             ans += cnt;                       // only length>=3 chains are answers
@@ -2664,7 +2483,7 @@ public int superEggDrop(int k, int n) {
     int m = 0;
     while (dp[k] < n) {
         m++;
-        // NOTE !!! descending j, so dp[j - 1] still holds the value for m - 1 moves
+        // descending j, so dp[j - 1] still holds the value for m - 1 moves
         for (int j = k; j >= 1; j--) {
             dp[j] = dp[j] + dp[j - 1] + 1;
         }
@@ -2902,6 +2721,25 @@ def maximalRectangle(matrix):
         ans = max(ans, largestRectangleArea(heights[:]))
     return ans
 ```
+
+## When Not to Use
+
+Every section above has a simpler core template that solves most of the problems that look like
+they need it. Reach for the advanced technique only when the right-hand column holds.
+
+| Technique | Usually enough instead | Reach for the technique only when |
+|---|---|---|
+| Game theory / minimax | a closed form or greedy: LC 877 is always `True`, Nim is an XOR | a player's best move depends on the opponent's best reply over a range |
+| Tree DP / re-rooting | one post-order DFS that returns a tuple per node | the answer is asked **for every node as the root**; one DFS per root is O(n²) |
+| Interval DP deep dives | [dp.md § Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) Order A, when the transition moves only the two ends | the transition needs a split point `k` strictly inside the range |
+| Grid DP variants | [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) and one rolling row | two walkers must be coordinated (LC 741) |
+| State machine, extended | [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309) and [stock_trading.md](./stock_trading.md) | the state needs a count (k transactions) or a last-move dimension |
+| String DP deep dives | [dp.md § Template 8](./dp.md#template-8-edit-distance--lc-72-) / [§ Template 9](./dp.md#template-9-longest-common-subsequence--lc-1143) | the follow-up asks for O(n) space with the path, or exactly one edit (LC 161: two pointers) |
+| Manacher's algorithm | expand around the centre, O(n²): [dp.md § Template 10](./dp.md#template-10-palindrome-substring-dp--lc-5-) | n ≥ 10⁵ and O(n²) is explicitly too slow |
+| Bitmask TSP | BFS over `(node, mask)` for unweighted LC 847 | weighted edges, n ≤ 20 |
+| Chaining DP | sort, then [dp.md § Template 7a](./dp.md#template-7a-value-keyed-dp-dp--hash-map--lc-1218-) value-keyed DP | the chain order is not a sort order and needs DFS + memo |
+| Weighted interval scheduling | greedy by end time when every interval is worth the same | intervals carry different values |
+| Monotonic-queue DP | the plain O(n · k) window DP when `k` is small | `n · k` exceeds about 10⁷ |
 
 ## Pattern Selection — Extended Reference
 

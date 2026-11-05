@@ -1,8 +1,8 @@
-<!-- 3c706a20df7e -->
+<!-- ecf41053df0c -->
 # DP 進階技巧
 
 > **範圍** — DP 的附錄——第一輪該跳過的技巧：賽局理論／minimax DP、樹形與換根 DP、區間與字串 DP 的深入探討、機率與按步數計數的 DP、單調佇列與單調堆疊承載的 DP，以及從主表裁掉的長篇推導。
-> **另見**：[dp.md](./dp.md) — 每個必會家族的標準模板；[dp_examples.md](./dp_examples.md) — 題解倉庫；[knapsack.md](./knapsack.md) — 完整的背包家族；[dp_string.md](./dp_string.md) — 雙序列格子；[dp_bitmask.md](./dp_bitmask.md) — 狀態壓縮；[dp_monotonic_stack.md](./dp_monotonic_stack.md) — 用堆疊承載 DP 值；[monotonic_queue.md](./monotonic_queue.md) — 滑動視窗最大值的結構。
+> **另見**：[dp.md](./dp.md) — 每個必會家族的標準模板；[dp_examples.md](./dp_examples.md) — problem card；[knapsack.md](./knapsack.md) — 完整的背包家族；[dp_string.md](./dp_string.md) — 雙序列格子；[dp_bitmask.md](./dp_bitmask.md) — 狀態壓縮；[dp_monotonic_stack.md](./dp_monotonic_stack.md) — 用堆疊承載 DP 值；[monotonic_queue.md](./monotonic_queue.md) — 滑動視窗最大值的結構。
 
 <!-- 4a4bac059792 -->
 ## LeetCode 題目清單
@@ -12,10 +12,24 @@
 - [Game Theory](https://leetcode.com/problem-list/game-theory/)
 - [Probability and Statistics](https://leetcode.com/problem-list/probability-and-statistics/)
 
-<!-- 267f03445ce6 -->
+<!-- 6ce1256d45fb -->
 ## 概覽
 
-這裡的東西全都屬於第二輪。每一節都假設你已經熟悉 [dp.md](./dp.md) 裡對應的標準模板，然後補上更難的模式、另一種實作，或是主表只給了結論、沒給推導的那段推導。
+這裡的東西全都屬於第二輪。每一節都假設你已經熟悉 [dp.md](./dp.md) 裡對應的標準模板，然後補上更難的模式、另一種實作，或是主表只給了結論、沒給推導的那段推導。大部分內容 L3 不會考：先讀[何時不該用](#when-not-to-use)，因為幾乎每一節，核心模板都已經能解那個看起來需要這一節的題目。
+
+<!-- 1fd7b6d27ac5 -->
+### 先備知識
+
+每一節都建立在 [dp.md](./dp.md) 或 [knapsack.md](./knapsack.md) 的某一張 card 上；先熟悉那張 card。
+
+- [dp.md § Template 1](./dp.md#template-1-1-d-linear-dp--lc-53-) 與 [§ Template 1a](./dp.md#template-1a-length-indexed-table-n--1-slots--lc-70)：一維狀態與 `n + 1` 的表。陣列大小與滾動變數的深入探討延伸自它們。
+- [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) 與 [§ Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-)：格子與填表順序。格子與回文兩節延伸自它們。
+- [dp.md § Template 3](./dp.md#template-3-interval-dp--lc-312)：區間 DP。區間深入探討與賽局理論兩節延伸自它。
+- [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309)：每一步的狀態。狀態機與狀態維度兩節延伸自它。
+- [dp.md § Template 7](./dp.md#template-7-longest-increasing-subsequence--lc-300-) 與 [§ Template 7a](./dp.md#template-7a-value-keyed-dp-dp--hash-map--lc-1218-)：LIS 與以值為鍵的 DP。鏈式 DP 與加權區間排程延伸自它們。
+- [dp.md § Template 8](./dp.md#template-8-edit-distance--lc-72-) 與 [§ Template 9](./dp.md#template-9-longest-common-subsequence--lc-1143)：雙序列格子。字串深入探討延伸自它們。
+- [dp.md § Template 11](./dp.md#template-11-bitmask-dp-over-subsets--lc-1879)：位元遮罩 DP。TSP 一節延伸自它。
+- [knapsack.md § Template 1](./knapsack.md#template-1-01-knapsack-subset-sum--lc-416-)：0/1 背包，它唯一的家在那裡。
 
 <!-- 390b1244c6f2 -->
 ### 關鍵性質
@@ -314,60 +328,16 @@ Java 程式碼：
 **追蹤範例**：`amount = 5, coins = [1, 2, 5]`
 <!--CODE-->
 
-<!-- d07f0ac0692a -->
+<!-- 357052c4ad62 -->
 ##### **LC 322 程式碼範例（拿來對照）**
 
 <!--CODE-->
 
 ---
 
-<!-- 81e05dd4a2df -->
-#### **⭐⭐⭐⭐⭐ 迴圈順序：組合 vs 排列**
-
-這是無限背包／換零錢類題目裡最常見的面試陷阱之一。
-
-**規則：**
-
-| 外層迴圈 | 內層迴圈 | 數到的是 | 例子 |
-|------------|-----------|--------|---------|
-| `for coin in coins` | `for i in range(coin, amount+1)` | **組合**（順序無關） | LC 518 |
-| `for i in range(1, amount+1)` | `for coin in coins` | **排列**（順序有關） | LC 377 |
-
-**為什麼硬幣在外層 → 組合：**
-
-當 `coins` 在外層時，每一枚硬幣會被完整處理完，下一枚才登場。這代表 `[1, 2]` 跟 `[2, 1]` 不可能同時被數到——硬幣 1 那一輪在全域上「已經發生過」，所以 `[2, 1]` 沒有機會另外成為一條路徑。
-
-**為什麼金額在外層 → 排列：**
-
-當 `amount` 在外層時，對每個目標 `i` 我們問的是*「最後放進去的是哪一枚？」*，然後每種硬幣都試。所以「經由最後一枚是 2 抵達 i=3」（從用硬幣 1 建出來的 `dp[1]`）跟「最後一枚是 1」（從用硬幣 2 建出來的 `dp[2]`）是兩條不同的路徑。每一種順序都被數進去了。
-
-**具體追蹤：`coins = [1, 2], amount = 3`**
-
-<!--CODE-->
-
-**程式碼並排：**
-
-<!--CODE-->
-
-**關鍵直覺——心智模型：**
-
-<!--CODE-->
-
-**那 LC 322（最少硬幣數）呢？**
-
-LC 322 問的是*最少數量*，不是*有幾種湊法*——所以 `[1,2]` 跟 `[2,1]` 有沒有分開算根本無所謂；最小值兩種寫法都一樣。LC 322 兩種迴圈順序都對。
-
-**這條規則在哪裡就不通用了**：硬幣是*相加*的，所以任何 multiset 都可以重排成硬幣迴圈的順序 —— 這正是硬幣放外層之所以合法的原因。單字則是接在字串早就固定好的位置上，所以 LC 139 Word Break 根本沒有合法的 item-在外寫法。判準與 LC 139 的五種寫法：[dp_loop_order.md](./dp_loop_order.md)。
-
-**LeetCode 題目對照：**
-
-| LC # | 題目 | 迴圈順序 | 原因 |
-|------|---------|-----------|------|
-| **518** | Coin Change II | 硬幣在外 | 數組合 |
-| **377** | Combination Sum IV | 金額在外 | 數排列 |
-| **322** | Coin Change | 都可以 | 求最小值——順序無關 |
-| **39** | Combination Sum | 回溯 | 硬幣任意的組合 |
-| **40** | Combination Sum II | 回溯 | 組合，每個只能用一次 |
+硬幣表引出的另一個問題 — 硬幣迴圈和金額迴圈誰放外層 — 只在
+[knapsack.md § Loop Order](./knapsack.md#loop-order-combinations-vs-permutations) 回答一次：硬幣在外層數的是組合（LC 518），
+金額在外層數的是排列（LC 377），而求最少個數（LC 322）兩種都行。
 
 ---
 
@@ -388,101 +358,10 @@ LC 322 問的是*最少數量*，不是*有幾種湊法*——所以 `[1,2]` 跟
    - `n` → `n+1`：陣列大小加 1，base case 位移，`nums[i]` 改成 `nums[i-1]`
    - `n+1` → `n`：拿掉佔位索引，base case 明寫出來，改用直接索引
 
-<!-- e9425eecdd1e -->
+<!-- 1504828e8a21 -->
 ## 背包深入探討
 
-<!-- 14863385f283 -->
-### 二維 → 一維的推導
-
-
-<!--CODE-->
-
----
-
-<!-- c90b53e7553d -->
-### 何時使用 0/1 背包 DP？（中文速記）
-
-
-> **完整中文版** —— 這一節是速記；從「物品重量價值」講到 LC 494 / 416 的逐步 trace、`dp[0] = 1` 的意義、
-> 以及四步解題流程，見 [**knapsack_01_zh.md**](./knapsack_01_zh.md)。
-
-**三個核心識別信號** —— 題目同時出現下面 3 點，幾乎可以確定是 0/1 背包：
-
-| # | 特徵 | 說明 |
-|---|------|------|
-| **1** | 元素「**不可重複使用**」（0 或 1 的決策） | 每個物品／數字只有一個，只能 **選 (1)** 或 **不選 (0)**。對比：完全背包（Unbounded）的物品可以無限次重複選（例如無限供應的硬幣） |
-| **2** | 存在明確的「**容量 / 目標限制**」 | 題目給了一個上限或目標值（背包最大容量 $W$，或子集目標和 Target），需要在不超過它的前提下做選擇與組合 |
-| **3** | 求解目標是「**子集組合**」相關 | ① **最值**：容量內能裝入的最大價值？② **存在性**：能不能選出子集使和剛好等於目標？③ **方案數**：和等於目標的選法有幾種？ |
-
-**實務上的快速判斷** —— 題目裡同時有：
-
-1. 很多物品
-2. 每個物品有一個 **cost / weight**
-3. 每個物品有一個 **value / reward**
-4. 每個物品 **最多只能選一次**
-5. 有一個總容量 / 預算上限
-
-→ 很可能就是 **0/1 Knapsack**。
-
-> 例：「有 5 個物品，每個有重量和價值，背包最多裝重量 10，問最大價值是多少？」—— 典型 0/1 Knapsack。
-
-**為什麼叫 0/1？** 每個 item 只有兩種選擇：`0` 不拿、`1` 拿，而且**不能拿第二次**。
-
-<!-- e5a0370f7528 -->
-#### 0/1 背包速記：DP 定義、方向與變形
-
-<!-- ec4604b4e571 -->
-##### 最常見的 DP 定義
-
-`dp[j]` = 容量最多為 `j` 時，可以得到的最大 value。對每個 item `(weight, value)`：
-
-<!--CODE-->
-
-**關鍵是 `j` 要倒著跑**。倒序的原因：你不希望同一個 item 在這一輪被重複使用——倒序時 `dp[j - weight]` 讀到的是 **上一輪（還沒用過這個 item）** 的值；正序時 `dp[j - weight]` 已經被本輪更新過，等於允許同一個 item 被選多次。詳細推導見 [dp.md](./dp.md) 的 **💡 Why Must the Inner Loop Go Backward?**（含 `nums = [3], target = 6` 的逐步 trace）。
-
-<!-- 53ae9a96836d -->
-##### 跟其他 Knapsack 的區別
-
-| 類型 | 每個物品可以用幾次 | DP 容量方向 | 代表題 |
-|------|------------------:|-------------|--------|
-| **0/1 Knapsack** | 最多 1 次 | **由大到小（倒序）** | LC 416, 494, 1049 |
-| **Unbounded Knapsack** | 無限次 | **由小到大（正序）** | LC 322, 518 |
-| **Bounded Knapsack** | 最多 `k` 次 | 需要額外處理（二進制拆分成多個 0/1 物品，或單調隊列優化） | LC 2585, 1774 |
-
-一個很好用的判斷：
-
-> - **「每個東西只能選一次」→ 想 0/1 Knapsack（倒序）**
-> - **「每個東西可以一直選」→ 想 Unbounded Knapsack（正序）**
-
-<!-- 18b5730b134e -->
-##### 別被「背包」這個詞騙到
-
-0/1 Knapsack 不一定真的長得像「背包」。像是 **預算分配、選課、專案選擇、投資組合、最多只能做一次的任務選擇**，只要本質是「**選或不選 + 有容量限制**」，都可能套這個 DP。LC 416（分割等和子集）、LC 494（添加 +/- 號）、LC 474（限 0 與 1 的個數）都是被包裝過的 0/1 背包。
-
----
-
-<!-- 262c12a356a9 -->
-### 二維 0/1 背包（經典寫法）
-
-
-<!--CODE-->
-
-<!-- 1e0153f2efa5 -->
-### knapsack.md 涵蓋了什麼
-
-
-[**knapsack.md**](./knapsack.md) 完整涵蓋：
-
-- **0/1 背包與子集和深入** —— 分割問題的化簡、LC 494 的 `(total + target) / 2`
-  變換、布林／計數／最大價值三種變形，以及常見陷阱。
-- **組合 vs 排列** —— 四種核心迴圈順序的圖解總結、各模式的程式碼模板，以及選模式的決策樹。
-- **組合 vs 排列 vs 0/1 背包** —— 程式碼並排、同一份輸入在兩種迴圈順序下的逐步追蹤，以及一張「該用哪個」對照表。
-- **Coin Change 裡的 `if (i - coin >= 0)`** —— 為什麼守衛是 `>=` 而不是 `==`。
-
-[**knapsack_01_zh.md**](./knapsack_01_zh.md) — 中文版，只聚焦 0/1 背包：state 定義、「拿或不拿」的轉移、
-倒序 vs 正序的逐步 trace、max / min / count / boolean 四種變形，以及 LC 494 / 416 / 1049 / 474 的解法。
-
----
+0/1 背包只有一個家：[knapsack.md](./knapsack.md)。它的 [Template 1](./knapsack.md#template-1-01-knapsack-subset-sum--lc-416-) 有一維模板、內層迴圈為什麼倒著跑，以及從遞迴經過二維表的推導；完全、多重與分組背包接在後面。0/1 的繁體中文詳解是 [knapsack_01_zh.md](./knapsack_01_zh.md)。
 
 <!-- 4351f45e719c -->
 ## 格子 DP —— 另外三種實作
@@ -1361,6 +1240,25 @@ LC 1218 Longest Arithmetic Subsequence of Given Difference（`d` 固定，所以
 用單調堆疊在 O(n) 時間內找出最大矩形面積。
 
 <!--CODE-->
+
+<!-- f02d789355b2 -->
+## 何時不該用
+
+上面每一節都有一個更簡單的核心模板，能解大多數看起來需要它的題目。只有右欄成立時，才拿出進階技巧。
+
+| 技巧 | 通常這樣就夠 | 只有在這種情況才需要這個技巧 |
+|---|---|---|
+| 賽局理論／minimax | 封閉解或貪心：LC 877 永遠是 `True`，Nim 是一個 XOR | 一方的最佳一步取決於對手在一段區間上的最佳回應 |
+| 樹形 DP／換根 | 一次後序 DFS，每個節點回傳一組值 | 要問**以每個節點為根**的答案；每個根跑一次 DFS 是 O(n²) |
+| 區間 DP 深入探討 | [dp.md § Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) 的 Order A，轉移只動兩端時 | 轉移需要一個嚴格落在區間內部的切點 `k` |
+| 格子 DP 的變形 | [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) 加上一列滾動 | 兩個走路的人要同步協調（LC 741） |
+| 狀態機延伸 | [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309) 與 [stock_trading.md](./stock_trading.md) | 狀態需要一個計數（k 次交易）或「上一步」的維度 |
+| 字串 DP 深入探討 | [dp.md § Template 8](./dp.md#template-8-edit-distance--lc-72-) / [§ Template 9](./dp.md#template-9-longest-common-subsequence--lc-1143) | 追問要 O(n) 空間且要還原路徑，或剛好一次編輯（LC 161：雙指標） |
+| Manacher 演算法 | 中心擴展，O(n²)：[dp.md § Template 10](./dp.md#template-10-palindrome-substring-dp--lc-5-) | n ≥ 10⁵，而且明說 O(n²) 太慢 |
+| 位元遮罩 TSP | 無權的 LC 847 用 `(node, mask)` 做 BFS | 邊有權重，n ≤ 20 |
+| 鏈式 DP | 先排序，再用 [dp.md § Template 7a](./dp.md#template-7a-value-keyed-dp-dp--hash-map--lc-1218-) 以值為鍵的 DP | 鏈的順序不是某種排序順序，需要 DFS + 記憶化 |
+| 加權區間排程 | 每個區間價值都一樣時，依結束時間貪心 | 區間的價值各不相同 |
+| 單調佇列 DP | `k` 很小時，直接寫 O(n · k) 的視窗 DP | `n · k` 超過大約 10⁷ |
 
 <!-- 11e62c56d761 -->
 ## 模式選擇 —— 延伸參考

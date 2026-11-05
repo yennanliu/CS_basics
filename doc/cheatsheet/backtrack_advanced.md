@@ -17,7 +17,17 @@ extra piece of state through the recursion — a **Trie node**, the **previous o
 Everything on this page assumes the [choose → explore → un-choose skeleton](./backtrack.md#template-1-choose--explore--un-choose--lc-216-)
 is already automatic. Come here when the basic shape is not enough: when re-running the simple
 template per input is too slow, when a partial solution has to be *scored* rather than
-collected, or when the search only becomes tractable after constraints are propagated.
+collected, or when the search only becomes tractable after constraints are propagated. Read
+[When Not to Use](#when-not-to-use) first: most problems that look like they need this page do not.
+
+### Prerequisites
+
+- [backtrack.md § Template 1](./backtrack.md#template-1-choose--explore--un-choose--lc-216-): choose → explore → un-choose. Every template here is this loop with extra state.
+- [backtrack.md § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-): choose where to cut. Templates 2, 3 and 5 cut a string the same way.
+- [backtrack.md § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-): mark, recurse, restore on a grid. Template 1 adds a Trie node to it.
+- [backtrack.md § Template 11](./backtrack.md#template-11-sudoku-solver--lc-37): constraint sets. Template 4 propagates them.
+- [backtrack.md § Template 13](./backtrack.md#template-13-k-bucket-partitioning--lc-698--lc-473): k buckets. Templates 5 and 8 generalise it.
+- [trie.md](./trie.md): the Trie that Template 1 walks.
 
 ### Key Properties
 
@@ -88,7 +98,7 @@ class Solution {
     public List<String> findWords(char[][] board, String[] words) {
         this.board = board;
 
-        /** NOTE !!! build Trie first -> all words share one traversal */
+        /** build Trie first -> all words share one traversal */
         TrieNode root = new TrieNode();
         for (String w : words) {
             TrieNode node = root;
@@ -110,7 +120,7 @@ class Solution {
     private void dfs(int r, int c, TrieNode parent) {
         char ch = board[r][c];
 
-        /** NOTE !!! double exit: already visited ('#') OR Trie has no such branch */
+        /** double exit: already visited ('#') OR Trie has no such branch */
         if (ch == '#' || parent.next[ch - 'a'] == null) return;
 
         TrieNode node = parent.next[ch - 'a'];
@@ -128,7 +138,7 @@ class Solution {
         }
         board[r][c] = ch;       // undo (backtrack)
 
-        /** NOTE !!! prune: a fully-consumed leaf can never match again -> unlink it */
+        /** prune: a fully-consumed leaf can never match again -> unlink it */
         boolean dead = node.word == null;
         for (TrieNode t : node.next) if (t != null) { dead = false; break; }
         if (dead) parent.next[ch - 'a'] = null;
@@ -162,7 +172,7 @@ class Solution:
         def dfs(r, c, parent):
             ch = board[r][c]
 
-            ### NOTE !!! Trie decides whether this branch is alive
+            ### Trie decides whether this branch is alive
             node = parent.children.get(ch)
             if not node:
                 return
@@ -177,7 +187,7 @@ class Solution:
                     dfs(nr, nc, node)
             board[r][c] = ch              # undo (backtrack)
 
-            ### NOTE !!! prune dead leaf -> Trie shrinks as words are found
+            ### prune dead leaf -> Trie shrinks as words are found
             if not node.children:
                 parent.children.pop(ch)
 
@@ -239,11 +249,11 @@ class Solution {
 
         for (int j = idx; j < num.length(); j++) {
 
-            /** NOTE !!! no leading zero -> "0" ok, "05" not */
+            /** no leading zero -> "0" ok, "05" not */
             if (j > idx && num.charAt(idx) == '0') break;
 
             String s = num.substring(idx, j + 1);
-            long v = Long.parseLong(s);   // NOTE !!! long, int overflows
+            long v = Long.parseLong(s);   // long, int overflows
             int len = expr.length();      // remember length -> cheap backtrack
 
             if (idx == 0) {
@@ -257,7 +267,7 @@ class Solution {
                 dfs(j + 1, expr.append('-').append(s), cur - v, -v);
                 expr.setLength(len);
 
-                /** NOTE !!! '*' : remove prev from cur, then add prev*v back */
+                /** '*' : remove prev from cur, then add prev*v back */
                 dfs(j + 1, expr.append('*').append(s), cur - prev + prev * v, prev * v);
                 expr.setLength(len);
             }
@@ -287,7 +297,7 @@ class Solution:
 
             for j in range(idx, n):
 
-                ### NOTE !!! no leading zero -> "0" ok, "05" not
+                ### no leading zero -> "0" ok, "05" not
                 if j > idx and num[idx] == '0':
                     break
 
@@ -299,7 +309,7 @@ class Solution:
                 else:
                     dfs(j + 1, expr + '+' + s, cur + v, v)
                     dfs(j + 1, expr + '-' + s, cur - v, -v)
-                    ### NOTE !!! '*' : undo prev, re-apply as prev*v
+                    ### '*' : undo prev, re-apply as prev*v
                     dfs(j + 1, expr + '*' + s, cur - prev + prev * v, prev * v)
 
         if num:
@@ -342,7 +352,7 @@ class Solution {
     public List<String> removeInvalidParentheses(String s) {
         this.s = s;
 
-        /** NOTE !!! count surplus brackets FIRST -> that fixes the removal count */
+        /** count surplus brackets FIRST -> that fixes the removal count */
         int l = 0, r = 0;
         for (char ch : s.toCharArray()) {
             if (ch == '(') l++;
@@ -375,7 +385,7 @@ class Solution {
         path.append(ch);
         if (ch != '(' && ch != ')') dfs(i + 1, l, r, open, path);
         else if (ch == '(') dfs(i + 1, l, r, open + 1, path);
-        /** NOTE !!! keep ')' ONLY when it can be matched -> prunes invalid prefixes */
+        /** keep ')' ONLY when it can be matched -> prunes invalid prefixes */
         else if (open > 0) dfs(i + 1, l, r, open - 1, path);
         path.setLength(len);   // undo (backtrack)
     }
@@ -391,7 +401,7 @@ class Solution {
 class Solution:
     def removeInvalidParentheses(self, s):
 
-        ### NOTE !!! step 1 : how many brackets MUST be removed
+        ### step 1 : how many brackets MUST be removed
         l = r = 0
         for ch in s:
             if ch == '(':
@@ -425,7 +435,7 @@ class Solution:
                 dfs(i + 1, l, r, open_cnt, path + ch)
             elif ch == '(':
                 dfs(i + 1, l, r, open_cnt + 1, path + ch)
-            ### NOTE !!! keep ')' ONLY when matchable -> prunes invalid prefixes early
+            ### keep ')' ONLY when matchable -> prunes invalid prefixes early
             elif open_cnt > 0:
                 dfs(i + 1, l, r, open_cnt - 1, path + ch)
 
@@ -502,35 +512,12 @@ def partition_array(nums, k, target_sum):
 
 ### Template 6: Equal-Subset-Sum Partitioning — LC 416
 
-Pure include/exclude recursion with no path to collect. This is the backtracking *ancestor* of
-0/1 knapsack — the same call tree, before memoisation. For the DP form see
-[knapsack.md](./knapsack.md).
-
-```python
-# python
-# LC 416 - Partition Equal Subset Sum
-def canPartition(nums):
-    total = sum(nums)
-    if total % 2 != 0:
-        return False
-
-    target = total // 2
-
-    def backtrack(index, current_sum):
-        if current_sum == target:
-            return True
-        if index >= len(nums) or current_sum > target:
-            return False
-
-        # Include current number
-        if backtrack(index + 1, current_sum + nums[index]):
-            return True
-
-        # Exclude current number
-        return backtrack(index + 1, current_sum)
-
-    return backtrack(0, 0)
-```
+The include / exclude recursion for LC 416 is the call tree that 0/1 knapsack memoises, so it
+lives with the knapsack:
+[knapsack.md § Template 1](./knapsack.md#template-1-01-knapsack-subset-sum--lc-416-) shows it
+top-down, keyed on `(i, remaining)`, and then rolled into the 1-D table. Without the memo it is
+O(2^n); with it, O(n · target). Two subsets is the `k = 2` case of
+[backtrack.md § Template 13](./backtrack.md#template-13-k-bucket-partitioning--lc-698--lc-473).
 
 ### Template 7: Memoised Backtracking
 
@@ -619,6 +606,17 @@ def backtrack(candidate):
             # backtrack
             remove(next_candidate)
 ```
+
+## When Not to Use
+
+| Technique | Usually enough instead | Reach for the technique only when |
+|---|---|---|
+| Trie + grid backtracking | [backtrack.md § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-), once per word | many words share prefixes on one board (LC 212) |
+| Expression building | evaluate with a stack once the string is fixed | operators are being **inserted**, and `*` binds tighter than `+` |
+| Deletion-budget backtracking | BFS by number of deletions, stopping at the first valid level | every minimum-deletion answer is wanted and the BFS level is too wide |
+| Constraint propagation | the plain row / column / box sets of [backtrack.md § Template 11](./backtrack.md#template-11-sudoku-solver--lc-37) | the plain search still times out |
+| Generic / bucket partitioning | [backtrack.md § Template 13](./backtrack.md#template-13-k-bucket-partitioning--lc-698--lc-473), or a DP when only two groups or a count is asked | `k` groups under a predicate that is not a sum |
+| Memoised backtracking | the DP itself: [dp.md](./dp.md) and [recursion_to_dp.md](./recursion_to_dp.md) | the state is easy to key but the bottom-up order is not |
 
 ## Summary & Quick Reference
 
