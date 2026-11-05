@@ -1778,7 +1778,10 @@ public TreeNode constructMaximumBinaryTree(int[] nums) {
 **Related:** LC 1008 (Construct BST from Preorder Traversal) uses the mirror idea — a decreasing stack where a larger value becomes the right child of the last popped node.
 
 ### 2-16) Min Stack (LC 155) — Auxiliary Non-Increasing Stack ⭐⭐⭐⭐
-> Worked in [stack.md § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-), whose anchor it is. The auxiliary non-increasing stack of minima, with its `<=` trap, is the [space-saving variant](./stack.md#space-saving-variant--a-second-stack-of-minima-only) there.
+> **Key point** — a second stack holds the minimum at every layer, so `getMin` is its top; pushing
+> only values `<=` the current minimum keeps it non-increasing and smaller.
+
+**Reduces to**: [stack.md § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-), whose anchor it is and where it is worked. The auxiliary non-increasing stack of minima, with its `<=` trap, is the [space-saving variant](./stack.md#space-saving-variant--a-second-stack-of-minima-only) there.
 
 ### 2-17) Variations of Existing Templates
 
