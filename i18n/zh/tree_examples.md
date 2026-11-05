@@ -17,7 +17,7 @@
 
 經典的二元樹題目，依各題化約到的 [binary_tree.md](./binary_tree.md) 模板分組，順序與該檔的模板順序一致。模板在 binary_tree.md，這一份只放題目，每張卡只寫這題比模板多了什麼。凡是某個模板的錨點題，或已在別份檔案完整解過的題目，Index 只放一列指過去，不在這裡再抄一份。
 
-<!-- 189f7f84f3ae -->
+<!-- d06edd636cd9 -->
 ## Index
 
 | LC | 題目 | 歸約到 | 難度 |
@@ -27,6 +27,7 @@
 | 199 | [Binary Tree Right Side View](#binary-tree-right-side-view--lc-199) | [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) | Medium |
 | 106 | [Construct Binary Tree from Inorder and Postorder Traversal](#construct-binary-tree-from-inorder-and-postorder-traversal--lc-106) | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | Medium |
 | 1448 | [Count Good Nodes in Binary Tree](#count-good-nodes-in-binary-tree--lc-1448) | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | Medium |
+| 1026 | [Maximum Difference Between Node and Ancestor](#maximum-difference-between-node-and-ancestor--lc-1026) | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | Medium |
 | 104 | [Maximum Depth of Binary Tree](#maximum-depth-of-binary-tree--lc-104) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Easy |
 | 110 | [Balanced Binary Tree](#balanced-binary-tree--lc-110) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Easy |
 | 124 | Binary Tree Maximum Path Sum — 完整解法在 [tree_lca_distance.md](./tree_lca_distance.md#binary-tree-maximum-path-sum--lc-124) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Hard |
@@ -121,6 +122,27 @@
 **陷阱**
 - 用 `>` 取代 `>=` 會漏掉等於目前最大值的節點：`[3,3,null,4,2]` 中第二個 3 是好節點，答案是 3，用 `>` 會回傳 2。
 - 起始值設成 0 而不是 `root.val`，遇到負數就錯；root 一定是好節點，所以用它自己的值（或 `-inf`）當起點。
+
+<!-- 17171bd2c22e -->
+### Maximum Difference Between Node and Ancestor — LC 1026
+
+> **關鍵** — 一條路徑上最大的 `|祖先 − 子孫|` 就是這條路徑的最大值減最小值，所以把這兩個數往下帶，
+> 路徑結束時讀出 `high − low` 即可。不用比較任何一對，也用不到 BST 的順序。
+
+**歸約到**：[tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) —— 沿根到葉路徑往下帶狀態；
+和 [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) 的上下界是同樣兩個值，只是拿來擴張而不是檢查。
+
+<!--CODE-->
+
+**陷阱**
+- 每個節點只跟父節點比：LC 1026 的範例 1，
+  `[8,3,10,1,6,null,14,null,null,4,7,13]`，會回傳 5（8 − 3）而不是 7（8 − 1，相隔兩條邊）。
+
+| | 驗證（LC 98） | 祖先最大差（LC 1026） |
+|---|---|---|
+| 往下帶的 | 合法區間 | 路徑上的最小值與最大值 |
+| 節點落在區間外時 | 回傳 false | 擴張區間 |
+| 子節點結果用什麼合併 | `and` | `max` |
 
 <!-- 6a07b8f28645 -->
 ## 高度往上傳範例
