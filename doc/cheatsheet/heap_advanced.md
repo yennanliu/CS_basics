@@ -716,7 +716,7 @@ def findMaximizedCapital(k, w, profits, capital):
 **Key Observations:**
 - Signature of the pattern: *"minimum number of X"* / *"maximum count of Y"* where a decision can be **revised later at no cost**.
 - Heap direction encodes the regret: **max-heap** when you want to *undo the worst / take the best deferred option* (LC 871, 630); **min-heap** when you want to *demote the cheapest of a limited premium resource* (LC 1642).
-- Contrast with [heap.md § Template 4 Interval Scheduling](./heap.md#template-4-interval-scheduling-pattern--lc-253): interval scheduling never revises a decision; regret-greedy is built entirely on revising them.
+- Contrast with [heap.md § Template 6 Min-Heap of End Times](./heap.md#template-6-min-heap-of-end-times--lc-253-): interval scheduling never revises a decision; regret-greedy is built entirely on revising them.
 
 ### 5) Two Heaps as Resource Pools (free pool + busy pool) ⭐⭐⭐⭐
 
@@ -828,7 +828,7 @@ public int smallestChair(int[][] times, int targetFriend) {
 | 1801 | Number of Orders in the Backlog | Two heaps of **opposite** polarity that consume each other: `buy` = max-heap by price, `sell` = min-heap by price. Each new order is matched against the other heap while the prices cross; the remainder is pushed. |
 | 2102 | Sequentially Ordinal Rank Tracker | Two heaps split the stream around the query pointer: max-heap for "already returned / better" and min-heap for the rest; each `get()` moves one element across the boundary. |
 ### 6) Sort by One Criterion + Fixed-Size Heap on the Other
-> **When**: the objective is a product/combination of two attributes, e.g. `cost = (sum of A over the chosen k) * (max of B over the chosen k)`. **Sort by B** so that iterating fixes the "max B" factor, then keep a size-`k` heap over A to minimise/maximise the sum. This is the two-attribute cousin of the [Kth Element template](./heap.md#1-kth-element-template).
+> **When**: the objective is a product/combination of two attributes, e.g. `cost = (sum of A over the chosen k) * (max of B over the chosen k)`. **Sort by B** so that iterating fixes the "max B" factor, then keep a size-`k` heap over A to minimise/maximise the sum. This is the two-attribute cousin of the [Template 1: Size-k Min-Heap](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-).
 
 ```java
 // java
@@ -886,7 +886,7 @@ Code for LC 1383: [heap_examples.md § Maximum Performance of a Team](./heap_exa
 **Key Observations:**
 - **Sort fixes the multiplicative factor, the heap optimises the additive factor.** Recognising which attribute to sort by is the entire problem.
 - Take the modulo only at the very end (LC 1383) — applying it inside the loop breaks the `max` comparison.
-- The heap must be the *opposite* direction of what you keep: keep k smallest → max-heap; keep k largest → min-heap (same rule as the [Kth Element template](./heap.md#1-kth-element-template)).
+- The heap must be the *opposite* direction of what you keep: keep k smallest → max-heap; keep k largest → min-heap (same rule as the [Template 1: Size-k Min-Heap](./heap.md#template-1-size-k-min-heap-for-the-kth-largest--lc-215-)).
 ### 7) Min-Heap Best-First Search on a Grid
 > **When**: a grid where the next cell to expand is not the nearest in steps but the **cheapest/lowest so far** — Dijkstra with the grid as an implicit graph. Template 5 assumes an adjacency list; this variant seeds the heap from a boundary and expands inward.
 

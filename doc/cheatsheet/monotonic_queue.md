@@ -502,7 +502,7 @@ public int longestSubarray(int[] nums, int limit) {
 - **Check both fronts every step.** `nums[left]` can be the max *and* the min at once (a window
   of equal values), so the two `if`s are independent, not `if / elif`.
 - **The heap alternative** — two heaps with lazy deletion by index, O(N log N) — is
-  [heap.md § 5](./heap.md#5-sliding-window-extrema--two-heaps--index-expiry-). Reach for it when
+  [heap.md § Template 5](./heap.md#template-5-two-heaps-with-index-expiry--lc-1438-). Reach for it when
   eviction is not oldest-first.
 
 ## Key Decision Guide

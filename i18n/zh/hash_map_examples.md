@@ -546,12 +546,12 @@ Python 的 `bisect_*` 給你的是**索引**，而且可能是 `-1` 或 `len(d)`
 
 <!--CODE-->
 
-<!-- af5e0dd42c9f -->
+<!-- 37f95fcb2a17 -->
 ### 2-3) Group Anagrams — LC 49
 
 **想法**：把每個字串排序，當成標準化的雜湊鍵；鍵相同的就分到同一組。
 
-> 標準解跟分組模板放在一起，見 [hash_map.md → Template 3: Grouping by a Computed Key](./hash_map.md#template-3-grouping-by-a-computed-key)。
+> 標準解跟分組模板放在一起，見 [hash_map.md → Template 3: Grouping by a Computed Key](./hash_map.md#template-3-grouping-by-a-computed-key--lc-49)。
 
 <!-- 087f0f7c04a4 -->
 ### 2-3') Longest Substring Without Repeating Characters — LC 3

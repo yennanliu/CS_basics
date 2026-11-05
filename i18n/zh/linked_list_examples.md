@@ -23,26 +23,26 @@
 - **核心想法**：每一節都是對某個母文件技巧的一次演練 — 技巧才是要背下來的東西，這些只是反覆練習
 - **什麼時候用**：當你已經知道這題要用哪個技巧，想看它從頭到尾完整寫一遍時
 
-<!-- 0aa0ea8d9ade -->
+<!-- ddcec02fbea2 -->
 ### 哪些解法刻意*不*放在這裡
 
 有三題改放在母文件裡，因為它們的解說本身*就是*重點，程式碼只是附帶的產物：
 
 | LC | 題目 | 為什麼放在母文件 |
 |---|---|---|
-| 206 | Reverse Linked List | 它*就是*那個基本操作 — [1-1-1) / 1-1-2)](./linked_list.md#1-1-1-reverse-linked-list-iteration--lc-206) |
+| 206 | Reverse Linked List | 它*就是*那個基本操作 — [模板 1](./linked_list.md#template-1-iterative-reversal--lc-206-) |
 | 19 | Remove Nth Node From End | 重點在虛擬節點的分情況討論 — [Why Dummy Node?](./linked_list.md#why-dummy-node-visual-comparison-lc-19)。下面只放兩種 Java 寫法 |
-| 92 | Reverse Linked List II | Python 版就是 reverse-k 輔助函式套用一次 — [Reverse K Nodes Helper Pattern](./linked_list.md#reverse-k-nodes-helper-pattern-)。下面只放行內展開的 Java 版 |
+| 92 | Reverse Linked List II | Python 版就是 reverse-k 輔助函式套用一次 — [模板 4：反轉一段](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-)。下面只放行內展開的 Java 版 |
 
 <!-- afd61950e8fc -->
 ## 反轉與重排
 
-<!-- 9f44339411b3 -->
+<!-- 29c9cc201026 -->
 ### 1) Reverse Linked List II — LC 92
 
 > **核心想法**：*定位*到位置 `left` 前面的那個節點，*反轉* `right - left + 1` 個節點，
 > 再把兩端*接回去*。Python 版就是母文件裡的
-> [Reverse K Nodes Helper Pattern](./linked_list.md#reverse-k-nodes-helper-pattern-)；
+> [模板 4：反轉一段](./linked_list.md#template-4-reverse-a-segment-reconnect-both-ends--lc-92-)；
 > 下面的 Java 則是同一趟走訪，只是不用輔助函式、直接行內展開。
 
 <!--CODE-->
@@ -62,7 +62,7 @@
 > **兩兩交換相鄰節點**，但不能動到值 — 只能重接 `next` 指標。
 > `1 -> 2 -> 3 -> 4`  變成  `2 -> 1 -> 4 -> 3`
 
-<!-- 6403643e9b07 -->
+<!-- b8a3a0e41e5b -->
 #### **1. 核心想法**
 
 每次交換其實牽涉到 **3 個錨點**，而不是 2 個：
@@ -77,7 +77,7 @@
 
 <!--CODE-->
 
-我們之所以需要 `prev`（因此需要**虛擬頭節點**，見 [Dummy Head Technique](./linked_list.md#dummy-head-technique)），是因為**這一對前面的節點也必須重新指向** — 否則前一對會一直黏在舊的頭（`first`）上，而不是新的頭（`second`）。
+我們之所以需要 `prev`（因此需要**虛擬頭節點**，見 [模板 2：虛擬頭節點刪除](./linked_list.md#template-2-dummy-head-deletion--lc-203-)），是因為**這一對前面的節點也必須重新指向** — 否則前一對會一直黏在舊的頭（`first`）上，而不是新的頭（`second`）。
 
 <!-- f546b5d628eb -->
 #### **2. 模式 — 我們怎麼把節點`接回去`**
@@ -154,13 +154,13 @@
 <!--CODE-->
 遞迴回傳的是每一段交換後的**新頭**，再由呼叫端接上去 — 這正是迭代版裡 `prev.next = second` 在做的事。
 
-<!-- c9dd83ad61ce -->
+<!-- 1dd1bf0809db -->
 #### **3. 相似 LC**
 
 | # | 題目 | 與 LC 24 的關係 |
 |---|---------|------------------------|
-| 206 | Reverse Linked List | 兩兩交換就是 **k=2 的分段反轉**；206 則是反轉整條串列。見 [1-1-1](./linked_list.md#1-1-1-reverse-linked-list-iteration--lc-206) |
-| 25  | Reverse Nodes in k-Group | **一般化**：LC 24 恰好是 `k=2` 的情形。同樣是「接好前端 + 內部反轉」。見 [1-1-4](./linked_list.md#1-1-4-reverse-nodes-in-k-group--linked-list-iteration--lc-25) |
+| 206 | Reverse Linked List | 兩兩交換就是 **k=2 的分段反轉**；206 則是反轉整條串列。見 [模板 1](./linked_list.md#template-1-iterative-reversal--lc-206-) |
+| 25  | Reverse Nodes in k-Group | **一般化**：LC 24 恰好是 `k=2` 的情形。同樣是「接好前端 + 內部反轉」。見 [LC 25](./linked_list.md#reverse-nodes-in-k-group--lc-25) |
 | 92  | Reverse Linked List II | 反轉一個**子區間** `[m, n]`；同樣重複使用「把 `prev` 勾到新頭、尾巴接回其餘部分」。見 [1)](#1-reverse-linked-list-ii--lc-92) |
 | 143 | Reorder List | 把兩半交錯合併 — 另一種「成對重接 `next` 指標」的合併。見 [2)](#2-reorder-list--lc-143) |
 | 1721 | Swapping Nodes in a Linked List | 更簡單 — 通常直接交換**值**；但若要交換節點，就需要同樣的三錨點功夫 |
@@ -327,7 +327,7 @@
 
 ---
 
-<!-- 51fe32fe030d -->
+<!-- 82caa4577f26 -->
 ## 相關題目 — 速查
 
 
@@ -339,7 +339,7 @@
 | 2130 | Maximum Twin Sum of a Linked List | 從中間切開 + 反轉後半（LC 234 那套回文機制），再兩兩配對 — 見 [7)](#7-palindrome-linked-list--lc-234) |
 | 109 | Convert Sorted List to BST | LC 148 的「從中間切開」；中間節點成為 BST 的根，再對兩半遞迴 |
 | 382 | Linked List Random Node | **蓄水池抽樣**：一趟走完，以 `1/i` 的機率保留第 `i` 個節點 — O(1) 空間，也不需要先知道長度 |
-| 707 | Design Linked List | 虛擬頭 + 一個 `size` 計數器；每個操作都是「走到索引 `i-1`，然後接合」（見 [Dummy Head Technique](./linked_list.md#dummy-head-technique)） |
+| 707 | Design Linked List | 虛擬頭 + 一個 `size` 計數器；每個操作都是「走到索引 `i-1`，然後接合」（見 [模板 2：虛擬頭節點刪除](./linked_list.md#template-2-dummy-head-deletion--lc-203-)） |
 | 705 / 706 | Design HashSet / HashMap | **鏈結法（separate chaining）** — 一個桶陣列，每個桶是一條線性掃描的鏈結串列 |
 | 622 | Design Circular Queue | 固定大小的環；鏈結串列版本就是把尾巴接回頭 |
 | 1669 | Merge In Between Linked Lists | 純粹的接合：走到節點 `a-1` 與節點 `b+1`，把 `list2` 的頭尾勾在中間 |

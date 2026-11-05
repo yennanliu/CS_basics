@@ -28,7 +28,7 @@
 ### 參考資料
 - [fucking-algorithm : 2 pointers](https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9)
 
-<!-- 382459703f56 -->
+<!-- c1f431381731 -->
 ## 辨識
 
 | 題目裡的訊號 | 限制條件提示 | 該用 | 不是這個，如果 |
@@ -38,7 +38,7 @@
 | 「最長／計算回文**子字串**」 | n ≤ 1000 → O(n²) 沒問題 | [模板 3](#template-3-expand-from-centre--lc-5-) 從中心擴張 — LC 5, LC 647 | 回文**子序列** → 區間 DP（LC 516） |
 | 「s 是不是 t 的**子序列**」、「刪掉一些字元後形成」 | len(t) ≤ 10⁴ | [模板 4](#template-4-subsequence-matching-one-pointer-always-moves--lc-392-) 一個指標永遠前進 — LC 392, LC 524, LC 1023, LC 809 | 連續的**子字串**比對 → KMP／視窗；最長共同子序列 → DP（LC 1143） |
 | 「把 nums2 合併進 nums1」，nums1 尾端有空位 | m + n ≤ 200，要求 O(1) 空間 | [模板 5](#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-) 從後面往前填 — LC 88, LC 977, LC 986 | 兩條鏈結串列 → 用虛擬頭節點往前合併（LC 21） |
-| 「一趟把只有 0、1、2 的陣列排好」、「依值分成三組」 | O(1) 空間、一趟 | [模板 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) 荷蘭國旗 — LC 75, LC 905 | 必須保持相對順序 → 串列的**穩定**分割（LC 86）見 [linked_list.md 的兩個虛擬節點](./linked_list.md#two-dummies--split-into-chains-then-join-lc-86-) |
+| 「一趟把只有 0、1、2 的陣列排好」、「依值分成三組」 | O(1) 空間、一趟 | [模板 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) 荷蘭國旗 — LC 75, LC 905 | 必須保持相對順序 → 串列的**穩定**分割（LC 86）見 [linked_list.md 的兩個虛擬節點](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-) |
 | 「鏈結串列有沒有環」、「環從哪裡開始」、「不修改陣列找出重複數字」 | O(1) 記憶體 | [模板 7](#template-7-fastslow-cycle-detection--lc-141-) Floyd 快慢指標 — LC 141, LC 142, LC 287 | 允許 O(n) 記憶體 → 用 visited 集合更簡單 |
 | 視窗依一個條件變大、依另一個條件縮小 | n ≤ 10⁵ | [模板 8](#template-8-grow-right-then-shrink-left--lc-567) 右邊長、左邊縮 — LC 567, LC 209 | 真正的視窗題 → [sliding_window.md](./sliding_window.md)，那裡才是這一族的主場 |
 | 第 k 大／最接近的 k 個（用選取，不要排序） | n ≤ 10⁵，平均 O(n) | [2_pointers_quickselect.md](./2_pointers_quickselect.md) — LC 215, LC 973 | k 很小或輸入是串流 → 堆積 |
@@ -392,7 +392,7 @@ n ≤ 10⁵ 需要 Manacher 的 O(n)。回文題型的完整討論在 [palindrom
 LC 350 *（兩個有序指標，保留共同的值）* · LC 986 *（推進先結束的那個區間）* ·
 LC 4 *（只在概念上合併 — 改成二分搜尋切分點）*
 
-<!-- 3f86ec765cf2 -->
+<!-- 841048b36018 -->
 ### 模板 6：三向分割（荷蘭國旗）— LC 75 ⭐⭐⭐⭐
 
 **辨識** — 「**一趟**、常數空間排好只有 0、1、2 的陣列」、「依樞紐分成小於／等於／
@@ -421,7 +421,7 @@ LC 4 *（只在概念上合併 — 改成二分搜尋切分點）*
 - `while mid < high`：`[1,0]` 在 `mid == high` 還沒檢查時就停下，維持 `[1,0]`。
 
 **不是這個，如果** — 必須保持相對順序（**穩定**分割）：串列的穩定分割（LC 86）
-見 [linked_list.md 的兩個虛擬節點](./linked_list.md#two-dummies--split-into-chains-then-join-lc-86-)，
+見 [linked_list.md 的兩個虛擬節點](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-)，
 陣列則用模板 1 的快慢指標保持順序（LC 283）。
 
 **練習** — LC 75 ⭐ · LC 905 *（兩組：一個交換指標就夠）* · LC 2161 *（穩定 — 需要

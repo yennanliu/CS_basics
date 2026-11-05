@@ -257,14 +257,14 @@
 ### 23) Last Stone Weight — LC 1046
 <!--CODE-->
 
-<!-- 2b6001fbce74 -->
+<!-- acb592a2ecf8 -->
 ## 總結與速查
 
 | # | 題目 | LC | 呈現語言 | 模式（模板所在位置） |
 |---|---------|----|----------------|------------------------------|
-| 1 | Kth Largest Element in a Stream | 703 | Python | 第 K 個元素 — [heap.md](./heap.md#specific-pattern-templates) |
+| 1 | Kth Largest Element in a Stream | 703 | Python | 第 K 個元素 — [heap.md](./heap.md#templates--algorithms) |
 | 2 | Ugly Number II | 264 | Python | 堆積生成 + 去重集合 |
-| 3 | Find Median from Data Stream | 295 | Python | 雙堆積 — [heap.md](./heap.md#specific-pattern-templates) |
+| 3 | Find Median from Data Stream | 295 | Python | 雙堆積 — [heap.md](./heap.md#templates--algorithms) |
 | 4 | Minimum Cost to Connect Sticks | 1167 | Python | 重複「取兩個最小的」 |
 | 5 | The kth Factor of n | 1492 | Python | 大小上限為 k 的最大堆積 |
 | 6 | Least Number of Unique Integers after K Removals | 1481 | Python | Counter + 次數的最小堆積 |
@@ -276,7 +276,7 @@
 | 12 | Maximum Performance of a Team | 1383 | Java | 排序 + 固定大小堆積 — [heap_advanced.md](./heap_advanced.md) |
 | 13 | Minimum Number of Refueling Stops | 871 | Java | 反悔貪婪 — [heap_advanced.md](./heap_advanced.md) |
 | 14 | Minimum Number of Visited Cells in a Grid | 2617 | Java | 每列 / 每行 PQ + 延遲刪除 — [heap_advanced.md](./heap_advanced.md) |
-| 15 | Divide Intervals Into Minimum Number of Groups | 2406 | Java | 區間排程 — [heap.md](./heap.md#template-4-interval-scheduling-pattern--lc-253) |
+| 15 | Divide Intervals Into Minimum Number of Groups | 2406 | Java | 區間排程 — [heap.md](./heap.md#template-6-min-heap-of-end-times--lc-253-) |
 | 16 | Minimize Deviation in Array | 1675 | Java | 最大堆積 + 貪婪縮小 |
 | 17 | Task Scheduler | 621 | Python | 最大堆積 + 冷卻佇列 |
 | 18 | Most Frequent IDs | 3092 | Python + Java | 延遲刪除 — [heap_advanced.md](./heap_advanced.md) |
