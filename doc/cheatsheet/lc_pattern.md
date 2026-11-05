@@ -27,10 +27,10 @@ One row per pattern. The **Card** column links to the template that solves the a
 | "count subarrays whose sum is k / divisible by k" | n ≤ 10⁵, negatives allowed | prefix sum + count map | [prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560) | all values positive and you want the longest / shortest → sliding window |
 | "many range-sum queries" | q ≤ 10⁵ | prefix sum array | [prefix_sum § Template 1](./prefix_sum.md#template-1-basic-prefix-sum-range-queries--lc-303) | the array changes between queries → Fenwick / segment tree (LC 307) |
 | "add v to every element in [l, r]", many times | n, updates ≤ 10⁵ | difference array | [difference_array § Template 1](./difference_array.md#template-1-basic-difference-array) | you must read a max after each update → segment tree with lazy propagation |
-| "pair / triplet with sum target" on a **sorted** array, "container", "palindrome check" | n ≤ 10⁵ | converging two pointers | [2_pointers § Template 2](./2_pointers.md#template-2-converging-bidirectional-pointers-) | unsorted and you need indices → hash map (LC 1) |
-| "remove / deduplicate in place", "move zeros" | O(1) extra space | read/write two pointers | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-lc-27-) | order does not matter → swap with the last element |
+| "pair / triplet with sum target" on a **sorted** array, "container", "palindrome check" | n ≤ 10⁵ | converging two pointers | [2_pointers § Template 2](./2_pointers.md#template-2-converging-pointers-from-both-ends--lc-11-) | unsorted and you need indices → hash map (LC 1) |
+| "remove / deduplicate in place", "move zeros" | O(1) extra space | read/write two pointers | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-) | order does not matter → swap with the last element |
 | "sort 0s, 1s and 2s in one pass" | O(1) space | three-way partition | [2_pointers § Template 6](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-) | more than three keys → counting sort |
-| "longest palindromic substring", "count palindromic substrings" | n ≤ 1,000 | expand from centre | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-lc-647-) | palindromic **subsequence** → interval DP (LC 516) |
+| "longest palindromic substring", "count palindromic substrings" | n ≤ 1,000 | expand from centre | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-) | palindromic **subsequence** → interval DP (LC 516) |
 | "two sum" on an unsorted array, "seen before?" | n ≤ 10⁵ | complement lookup | [hash_map § Template 2](./hash_map.md#template-2-seen-before-index-map-two-sum-shape) | sorted input and O(1) space wanted → two pointers (LC 167) |
 | "group anagrams", "count frequencies", "first unique" | n ≤ 10⁴ | grouping / counting by a computed key | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key), [Template 1](./hash_map.md#template-1-frequency-counter) | top-k by frequency → heap or bucket sort (LC 347) |
 | "maximum subarray sum / product" | n ≤ 10⁵ | Kadane: best run ending here | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template) | a subarray of length ≥ k, or a sum = k → prefix sums |
@@ -41,8 +41,8 @@ One row per pattern. The **Card** column links to the template that solves the a
 
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
-| "sorted array", "find target / first position / insert position" | n ≤ 10⁵, O(log n) asked | classic binary search | [binary_search § 2.1](./binary_search.md#21-standard-binary-search-template--lc-704) | unsorted but you need a count → sort first, or a hash map |
-| "minimum capacity / speed / largest-sum so that it fits in k", "maximize the minimum distance" | values up to 10⁹ | binary search on the answer | [binary_search_on_answer § The Unified Template](./binary_search_on_answer.md#the-unified-template) | the feasibility check is not monotonic (a bigger answer can fail) → DP or greedy |
+| "sorted array", "find target / first position / insert position" | n ≤ 10⁵, O(log n) asked | classic binary search | [binary_search § 2.1](./binary_search.md#template-1-exact-match-on-a-closed-interval--lc-704-) | unsorted but you need a count → sort first, or a hash map |
+| "minimum capacity / speed / largest-sum so that it fits in k", "maximize the minimum distance" | values up to 10⁹ | binary search on the answer | [binary_search_on_answer § The Unified Template](./binary_search_on_answer.md#template-1-smallest-feasible-value--lc-875-) | the feasibility check is not monotonic (a bigger answer can fail) → DP or greedy |
 | "rotated sorted array" | n ≤ 5,000, O(log n) asked | binary search, one half is always sorted | [binary_search](./binary_search.md) | duplicates allowed → worst case O(n) (LC 81) |
 
 ### Linked list
@@ -50,7 +50,7 @@ One row per pattern. The **Card** column links to the template that solves the a
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
 | "reverse the list / a sublist / k-group", "reorder" | O(1) space | pointer reversal, dummy head | [linked_list § 0-2](./linked_list.md#0-2-pattern) | you may use O(n) space → push to a list, rebuild |
-| "cycle", "start of the cycle", "middle node", "kth from the end" | O(1) space | fast / slow pointers | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-lc-142-) | duplicates in an array of 1..n → the same trick on indices (LC 287) |
+| "cycle", "start of the cycle", "middle node", "kth from the end" | O(1) space | fast / slow pointers | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-) | duplicates in an array of 1..n → the same trick on indices (LC 287) |
 | "merge k sorted lists" | k ≤ 10⁴ | k-way merge with a heap | [heap § Template 2](./heap.md#template-2-k-way-merge-pattern--lc-23) | only two lists → a plain merge with a dummy head (LC 21) |
 
 ### Trees

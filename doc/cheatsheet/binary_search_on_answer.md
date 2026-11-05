@@ -38,6 +38,20 @@ Instead of searching for a value IN an array, we binary search on a **range of p
 
 ---
 
+## Recognition
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "minimum speed / capacity / divisor / days such that it finishes within …" | answer range up to 10⁹, n ≤ 10⁵ → O(n log range) | [Template 1](#template-1-smallest-feasible-value--lc-875-) smallest feasible value | the answer must hit an exact count, not "at most" → the predicate is not monotone |
+| "maximize the minimum distance / sweetness / candies" | same | [Template 2](#template-2-largest-feasible-value--lc-1552-) largest feasible value, upper mid | the items can be reordered freely and one sort plus a scan answers it → [greedy.md](./greedy.md) |
+| "split / ship / distribute the array into k **contiguous** groups, minimize the largest sum" | n ≤ 1000, values ≤ 10⁶ | [Template 3](#template-3-split-into-at-most-k-contiguous-groups--lc-410-) `[max, sum]` bounds + greedy fill | groups need not be contiguous (LC 1723) → backtracking or bitmask DP |
+| "k-th smallest" in a sorted matrix, a multiplication table, or among pair distances | memory better than O(n²), so no flattening | [Template 4](#template-4-count-at-most-over-a-value-range--lc-378-) count ≤ mid over the value range | k is small next to n → a heap ([heap.md](./heap.md)) |
+| "find the target / first position ≥ x" in a sorted array | | not this sheet: index-space bounds → [binary_search.md](./binary_search.md) | |
+
+The constraint ruler behind the cue column lives in [complexity_cheatsheet.md](./complexity_cheatsheet.md).
+
+---
+
 ## Problem Categories
 
 **Pattern 1: Minimize Maximum**
@@ -81,80 +95,12 @@ P(x) = False, False, ..., False, True, True, ..., True
 Examples of monotonic predicates:
 - `canFinish(speed)` — can Koko eat all bananas in H hours at speed ≥ k? (LC 875)
 - `canShip(capacity)` — can we ship all packages in D days with capacity ≥ c? (LC 1011)
-- `isEnough(mid)` — can we find k pairs with sum ≤ mid? (LC 719)
+- `isEnough(mid)` — are there at least k pairs with distance ≤ mid? (LC 719)
 
-**Template for "find minimum x satisfying P":**
-```python
-def binary_search_on_answer(lo, hi):
-    while lo < hi:
-        mid = (lo + hi) // 2
-        if predicate(mid):    # P(mid) is True → answer is ≤ mid
-            hi = mid
-        else:
-            lo = mid + 1
-    return lo   # lo == hi == first True
-```
-
-**Template for "find maximum x satisfying P":**
-```python
-def binary_search_max(lo, hi):
-    while lo < hi:
-        mid = (lo + hi + 1) // 2   # +1 to avoid infinite loop
-        if predicate(mid):
-            lo = mid
-        else:
-            hi = mid - 1
-    return lo
-```
-
-### The Unified Template
-
-**Structure:**
-1. **Define search space**: [min_possible, max_possible]
-2. **Binary search** on this range
-3. **Validation function**: Check if current value satisfies constraints
-4. **Update boundaries** based on minimization/maximization goal
-
-```java
-// Unified Template for Binary Search on Answer Space
-public int binarySearchOnAnswer(int[] arr, int target) {
-    // Step 1: Define search space boundaries
-    int left = 1;              // Minimum possible answer
-    int right = Integer.MAX_VALUE;  // Maximum possible answer (or sum, max element, etc.)
-
-    // Step 2: Binary search on the answer space
-    while (left < right) {  // or left <= right depending on problem
-        int mid = left + (right - left) / 2;
-
-        // Step 3: Check if 'mid' is a valid answer using validation function
-        if (isValid(arr, mid, target)) {
-            // If minimizing: valid answer found, try smaller
-            right = mid;
-
-            // If maximizing: valid answer found, try larger
-            // left = mid + 1;
-        } else {
-            // If minimizing: mid is too small, try larger
-            left = mid + 1;
-
-            // If maximizing: mid is too large, try smaller
-            // right = mid - 1;
-        }
-    }
-
-    return left;  // or right, they converge to the same value
-}
-
-// Step 4: Validation function - checks if 'value' satisfies constraints
-private boolean isValid(int[] arr, int value, int target) {
-    // Problem-specific logic to check feasibility
-    // Example: Can we split array into at most K subarrays with max sum <= value?
-    // Returns true if 'value' is valid, false otherwise
-    return true;  // placeholder
-}
-```
-
----
+**The two loops.** "Find the minimum x satisfying P" is the first `True` of `False … True`:
+[Template 1](#template-1-smallest-feasible-value--lc-875-), lower mid. "Find the maximum x
+satisfying P" is the last `True` of `True … False`: [Template 2](#template-2-largest-feasible-value--lc-1552-),
+upper mid. The decision matrix below puts the two side by side.
 
 ### Decision Matrix: Minimize vs Maximize ⭐⭐⭐⭐⭐
 
@@ -188,100 +134,460 @@ return left;
 ```
 
 > **Why `+1` in the Maximize template?**
-> `// +1 avoids infinite loop: when left+1==right, (left+right)/2 == left, so right never moves`
+> `// +1 avoids infinite loop: when left+1==right, (left+right)/2 == left, so left = mid never moves`
 > Without `+1`, when `left` and `right` are adjacent (`left + 1 == right`), `mid` computes to `left`.
 > If `isValid(mid)` is true, we set `left = mid = left` — no progress, infinite loop.
 > Adding `+1` biases `mid` upward so `mid == right`, guaranteeing the loop always shrinks.
 
 ---
 
-### Search Boundary Pattern: `left = max(nums)`, `right = sum(nums)` ⭐⭐⭐⭐⭐
+### Template 1: Smallest Feasible Value — LC 875 ⭐⭐⭐⭐⭐
 
-This is the **canonical search space setup** for "Binary Search on Answer" problems
-that ask you to split/partition/allocate elements from an array.
+**Recognise** — "the **minimum** speed / capacity / divisor / number of days such that the job
+still finishes", and checking one candidate is easy while computing the optimum directly is
+not. Answer range up to 10⁹ with n ≤ 10⁴–10⁵ → O(n log range) is expected.
 
-#### Why `left = max(nums)`?
+**Key point** — `feasible(x)` reads `False … False True … True` over `[left, right]`, and the
+answer always stays inside `[left, right]`: a feasible `mid` keeps itself (`right = mid`), an
+infeasible one is discarded (`left = mid + 1`). The lower mid makes `right = mid` shrink the range
+every time, so the loop ends with `left == right == the first True`.
 
-Any valid answer (max subarray sum, capacity, speed, etc.) must be **at least** as
-large as the biggest single element — because that element must appear in *some*
-group by itself in the worst case.
+```python
+# python
+# LC 875 - Koko Eating Bananas
+# IDEA: binary search the speed; can_finish(speed) is monotone, so find its first True
+# time = O(n log M), space = O(1)   M = max(piles)
+def minEatingSpeed(piles, h):
+    def can_finish(speed):
+        hours = 0
+        for pile in piles:
+            hours += (pile + speed - 1) // speed   # ceil(pile / speed) without floats
+        return hours <= h
 
-```text
-nums = [7, 2, 5, 10, 8]
-             ^  ^^
-        max = 10  ← no matter how you split, some subarray contains 10 alone
-                     → answer cannot be smaller than 10
-left = max(nums) = 10
+    left, right = 1, max(piles)          # speed max(piles) finishes in len(piles) <= h hours
+    while left < right:
+        mid = left + (right - left) // 2  # lower mid: right = mid always shrinks the range
+        if can_finish(mid):
+            right = mid                  # mid works -> the answer is mid or smaller
+        else:
+            left = mid + 1               # mid fails -> the answer is above mid
+    return left
 ```
-
-#### Why `right = sum(nums)`?
-
-If you put **all** elements in one group, the sum is `sum(nums)`. That always works —
-it's the trivially valid upper bound. The answer can never exceed this.
-
-```text
-nums = [7, 2, 5, 10, 8]  →  sum = 32
-If k=1: one subarray containing everything, max sum = 32 ✓
-right = sum(nums) = 32
-```
-
-#### Visual: The Answer Lives Inside `[max, sum]`
-
-```text
-Answer space for nums=[7,2,5,10,8], k=2:
-
-  10    12    14    16    18    20    22   ...   32
-  |-----|-----|-----|-----|-----|-----|---------|
-  left=max                                right=sum
-
-  Can split into ≤2 subarrays with max sum ≤ mid?
-
-  mid=10: [7,2,5] ok? sum=14 > 10 ✗  →  impossible
-  mid=18: [7,2,5]=14 ✓, [10,8]=18 ✓  →  2 subarrays ✓
-  mid=15: [7,2,5]=14 ✓, [10,8]=18 > 15 ✗  →  need 3 subarrays ✗
-  mid=16: [7,2,5]=14 ✓, [10,8]=18 > 16 ✗  →  need 3 ✗
-  mid=17: same ✗
-  mid=18: ✓  ← answer = 18
-
-  Feasibility:  ✗ ✗ ✗ ✗ ✗ ✗ ✗ ✗ ✓ ✓ ✓ ... ✓
-                |<--  infeasible -->|<-- feasible -->|
-                                   ^
-                                answer = leftmost ✓
-```
-
-#### The Code Pattern (reusable across problems)
 
 ```java
-int left = 0, right = 0;
-for (int x : nums) {
-    left = Math.max(left, x);  // lower bound: must hold the largest element
-    right += x;                // upper bound: put everything in one group
-}
-// Now binary search on [left, right]
-while (left < right) {
-    int mid = left + (right - left) / 2;
-    if (isValid(nums, k, mid)) {
-        right = mid;      // valid → try smaller (minimize)
-    } else {
-        left = mid + 1;   // invalid → need larger
+// java
+// LC 875 - Koko Eating Bananas
+// IDEA: binary search the speed; canFinish(speed) is monotone, so find its first true
+// time = O(n log M), space = O(1)   M = max(piles)
+public int minEatingSpeed(int[] piles, int h) {
+    int left = 1;
+    int right = 0;
+    for (int pile : piles) {
+        right = Math.max(right, pile);        // speed max(piles) always finishes
     }
+    while (left < right) {
+        int mid = left + (right - left) / 2;  // lower mid; never overflows
+        if (canFinish(piles, h, mid)) {
+            right = mid;                      // mid works -> answer is mid or smaller
+        } else {
+            left = mid + 1;                   // mid fails -> answer is above mid
+        }
+    }
+    return left;
 }
-return left;
+
+private boolean canFinish(int[] piles, int h, int speed) {
+    long hours = 0;                           // long: 10^4 piles * 10^9 hours overflows int
+    for (int pile : piles) {
+        hours += (pile + (long) speed - 1) / speed;   // ceil without floats
+    }
+    return hours <= h;
+}
 ```
 
-#### Similar Problems Using the Same `[max, sum]` Boundary
+**Complexity**
+- **Time O(n log M)**: the `while left < right` loop halves `[1, M]`, so it runs O(log M) times,
+  and each pass calls `can_finish`, whose `for pile in piles` loop is O(n).
+- **Space O(1)**: only `left`, `right`, `mid` and the running `hours`.
 
-| LC # | Problem | What's minimized | `left` | `right` |
-|------|---------|-----------------|--------|---------|
-| **410** | Split Array Largest Sum | max subarray sum | `max(nums)` | `sum(nums)` |
+**Dry run**
+
+```text
+piles = [3,6,7,11], h = 8          hours(speed) = sum of ceil(pile / speed)
+left=1  right=11  mid=6   hours=1+1+2+2=6  <= 8  -> right=6
+left=1  right=6   mid=3   hours=1+2+3+4=10 >  8  -> left=4
+left=4  right=6   mid=5   hours=1+2+2+3=8  <= 8  -> right=5
+left=4  right=5   mid=4   hours=1+2+2+3=8  <= 8  -> right=4
+left=4  right=4   stop -> 4
+```
+
+**Traps**
+- `right = mid - 1` on a feasible `mid` can step past the answer and return an unchecked value:
+  `piles = [30,11,23,4,20]`, `h = 6` returns 22 instead of 23. Keep `right = mid`.
+- `left = 0` divides by zero once `mid` reaches 0: `piles = [1]`, `h = 1` probes speed 0.
+- An `int` hour count overflows in Java: `piles = [10^9, 10^9]`, `h = 3` sums 2·10⁹ hours at speed 1.
+  Use `long`.
+- Mixing styles: `while left <= right` with `right = mid` never ends once `left == right` is
+  feasible. Either `left < right` + `right = mid`, or `left <= right` + `right = mid - 1` + an `ans`
+  variable — never half of each.
+- `math.ceil(pile / speed)` goes through a float; `(pile + speed - 1) // speed` is exact.
+
+**Not this if** — the question is the **largest** value that still works (maximize the minimum):
+the `True` block is on the left, so use [Template 2](#template-2-largest-feasible-value--lc-1552-)
+and its upper mid. And if more of `x` can make the job *fail* again (an exact count), the
+predicate is not monotone and no binary search applies.
+
+**Drill** — LC 875 ⭐ · LC 1283 *(sum of ceil divisions)* · LC 1011 *(greedy day count; [Template 3](#template-3-split-into-at-most-k-contiguous-groups--lc-410-) bounds)* · LC 1482 *(predicate counts runs of k)* · LC 2616 *(sort, then greedy pairing)*
+
+---
+
+### Template 2: Largest Feasible Value — LC 1552 ⭐⭐⭐⭐⭐
+
+**Recognise** — "**maximize the minimum** distance / sweetness / candies per child", or "the
+largest x such that it is still possible". The feasible block is on the *left* now: if a gap of
+x can be kept, any smaller gap can too. Same sizes as Template 1 → O(n log range).
+
+**Key point** — `feasible(x)` reads `True … True False … False`, and the answer stays inside
+`[left, right]`: a feasible `mid` keeps itself (`left = mid`), an infeasible one is discarded
+(`right = mid - 1`). Only the **upper** mid, `left + (right - left + 1) // 2`, makes `left = mid`
+move when `left + 1 == right`.
+
+```python
+# python
+# LC 1552 - Magnetic Force Between Two Balls
+# IDEA: binary search the minimum gap; can_place(gap) is monotone (smaller is easier), find its last True
+# time = O(n log n + n log R), space = O(n)   R = max(position) - min(position)
+def maxDistance(position, m):
+    position = sorted(position)          # the greedy placement needs left-to-right order
+
+    def can_place(gap):
+        placed = 1                       # the first ball always goes at position[0]
+        last = position[0]
+        for p in position[1:]:
+            if p - last >= gap:          # far enough from the previous ball -> place one
+                placed += 1
+                last = p
+        return placed >= m
+
+    left, right = 1, position[-1] - position[0]   # positions are distinct, so gap 1 always works
+    while left < right:
+        mid = left + (right - left + 1) // 2      # upper mid: left = mid always shrinks the range
+        if can_place(mid):
+            left = mid                   # mid works -> the answer is mid or larger
+        else:
+            right = mid - 1              # mid fails -> the answer is below mid
+    return left
+```
+
+```java
+// java
+// LC 1552 - Magnetic Force Between Two Balls
+// IDEA: binary search the minimum gap with the upper mid; find the last gap canPlace accepts
+// time = O(n log n + n log R), space = O(1) beyond the sort   R = max(position) - min(position)
+public int maxDistance(int[] position, int m) {
+    Arrays.sort(position);
+    int left = 1;
+    int right = position[position.length - 1] - position[0];
+    while (left < right) {
+        int mid = left + (right - left + 1) / 2;   // upper mid: left = mid always moves
+        if (canPlace(position, m, mid)) {
+            left = mid;                            // mid works -> answer is mid or larger
+        } else {
+            right = mid - 1;                       // mid fails -> answer is below mid
+        }
+    }
+    return left;
+}
+
+private boolean canPlace(int[] position, int m, int gap) {
+    int placed = 1;                                // first ball at position[0]
+    int last = position[0];
+    for (int i = 1; i < position.length; i++) {
+        if (position[i] - last >= gap) {           // greedy: place as early as allowed
+            placed++;
+            last = position[i];
+        }
+    }
+    return placed >= m;
+}
+```
+
+**Complexity**
+- **Time O(n log n + n log R)**: the sort is O(n log n) once; then the `while left < right` loop
+  runs O(log R) times and each `can_place` is one O(n) pass.
+- **Space O(n)** in Python for the sorted copy; O(1) extra in Java, which sorts in place.
+
+**Dry run**
+
+```text
+position = [1,2,3,4,7], m = 3
+left=1  right=6  mid=4   place 1, 7          -> 2 balls < 3  -> right=3
+left=1  right=3  mid=2   place 1, 3, 7       -> 3 balls      -> left=2
+left=2  right=3  mid=3   place 1, 4, 7       -> 3 balls      -> left=3
+left=3  right=3  stop -> 3
+```
+
+**Traps**
+- The lower mid with `left = mid` loops forever once the range is two wide: `position = [1,2,3]`,
+  `m = 2` reaches `left=1, right=2`, `mid=1` is feasible, and `left` stays 1.
+- Not sorting: `position = [5,4,3,2,1,1000000000]`, `m = 2` returns 999999995 instead of 999999999,
+  because the greedy anchors the first ball at 5.
+- Placing greedily as **early** as possible is what makes `can_place` exact: placing a ball later
+  than necessary can only shrink the room left for the rest.
+- The closed form (`while left <= right`, `ans = mid; left = mid + 1`) is also correct, and is what
+  LC 1231 uses below. It needs no upper mid — but then it needs `ans`.
+
+**Not this if** — the answer is the **smallest** value that works (minimize the maximum) →
+[Template 1](#template-1-smallest-feasible-value--lc-875-), lower mid. If the minimum gap is
+asked over a fixed placement (no choice of where the balls go), it is a single scan, not a search.
+
+**Drill** — LC 1552 ⭐ · LC 2226 *(candies: `sum(c // x) >= k`)* · LC 2517 *(same gap greedy on prices)* · LC 1231 *(the mirror of LC 410: cut when the piece reaches x)* · LC 1802 *(feasibility is an arithmetic sum)*
+
+---
+
+### Template 3: Split Into at Most K Contiguous Groups — LC 410 ⭐⭐⭐⭐⭐
+
+**Recognise** — "split / ship / distribute the array into k **contiguous** subarrays, days or
+workers, and **minimize the largest** group sum". n ≤ 1000 and values ≤ 10⁶ (LC 410), or
+n ≤ 5·10⁴ (LC 1011) → O(n log sum).
+
+**Key point** — the answer lies in `[max(nums), sum(nums)]`: below `max(nums)` the largest element
+fits in no group, and `sum(nums)` is one group holding everything. For a cap `x`, filling each group
+until the next element would overflow uses the **fewest** groups any split can, so "fits in ≤ k
+groups" is monotone in `x` and Template 1's loop finds the smallest cap that fits.
+
+```python
+# python
+# LC 410 - Split Array Largest Sum
+# IDEA: binary search the cap in [max(nums), sum(nums)]; greedy fill counts the fewest groups for a cap
+# time = O(n log S), space = O(1)   S = sum(nums)
+def splitArray(nums, k):
+    def can_split(cap):
+        groups = 1
+        current = 0
+        for num in nums:
+            if current + num <= cap:     # num still fits in the current group
+                current += num
+            else:                        # close the group, start a new one with num
+                groups += 1
+                current = num
+                if groups > k:           # early exit: already too many groups
+                    return False
+        return True
+
+    left = max(nums)                     # a group must hold the largest element on its own
+    right = sum(nums)                    # one group holding everything always works
+    while left < right:
+        mid = left + (right - left) // 2
+        if can_split(mid):
+            right = mid                  # fits in <= k groups -> try a smaller cap
+        else:
+            left = mid + 1               # needs > k groups -> the cap must grow
+    return left
+```
+
+```java
+// java
+// LC 410 - Split Array Largest Sum
+// IDEA: binary search the cap in [max(nums), sum(nums)]; greedy fill counts the fewest groups for a cap
+// time = O(n log S), space = O(1)   S = sum(nums)
+public int splitArray(int[] nums, int k) {
+    int left = 0;
+    int right = 0;
+    for (int num : nums) {
+        left = Math.max(left, num);   // lower bound: a group must hold the largest element
+        right += num;                 // upper bound: one group holds everything
+    }
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (canSplit(nums, k, mid)) {
+            right = mid;              // fits -> try a smaller cap
+        } else {
+            left = mid + 1;           // too many groups -> the cap must grow
+        }
+    }
+    return left;
+}
+
+private boolean canSplit(int[] nums, int k, int cap) {
+    int groups = 1;
+    int current = 0;
+    for (int num : nums) {
+        if (current + num <= cap) {
+            current += num;
+        } else {
+            groups++;
+            current = num;
+            if (groups > k) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+```
+
+**Complexity**
+- **Time O(n log S)**: the `while left < right` loop halves `[max, sum]`, so O(log S) passes, and
+  each `can_split` is one O(n) scan.
+- **Space O(1)**: the greedy keeps only `groups` and `current`.
+
+**Bounds by problem** — the same loop, with the range set by what one candidate means:
+
+| LC | Problem | What is minimized | `left` | `right` |
+|----|---------|-------------------|--------|---------|
+| **410** | Split Array Largest Sum | largest subarray sum | `max(nums)` | `sum(nums)` |
 | **1011** | Capacity To Ship Packages | ship capacity | `max(weights)` | `sum(weights)` |
-| **1482** | Min Days to Make m Bouquets | days | `1` | `max(bloomDay)` |
 | **875** | Koko Eating Bananas | eating speed | `1` | `max(piles)` |
 | **1283** | Find the Smallest Divisor | divisor | `1` | `max(nums)` |
+| **1482** | Min Days to Make m Bouquets | days | `min(bloomDay)` | `max(bloomDay)` |
 | **2064** | Minimized Maximum of Products Distributed | max per store | `1` | `max(quantities)` |
 
-> **Tip:** Whenever the problem says "split/ship/distribute array elements into K groups,
-> minimize the maximum", reach for `left = max(nums)`, `right = sum(nums)`.
+**Dry run**
+
+```text
+nums = [7,2,5,10,8], k = 2           search [10, 32]
+left=10  right=32  mid=21   [7,2,5]=14 [10,8]=18        2 groups -> right=21
+left=10  right=21  mid=15   [7,2,5]=14 [10] [8]         3 groups -> left=16
+left=16  right=21  mid=18   [7,2,5]=14 [10,8]=18        2 groups -> right=18
+left=16  right=18  mid=17   [7,2,5]=14 [10] [8]         3 groups -> left=18
+left=18  right=18  stop -> 18
+```
+
+**Traps**
+- `left = min(nums)` or `1` lets `can_split` open a group that already exceeds the cap, and it then
+  under-counts: `nums = [1,4,4]`, `k = 3` returns 1 instead of 4. Start at `max(nums)`.
+- `current + num < cap` instead of `<=` refuses a group that exactly hits the cap: `[7,2,5,10,8]`,
+  `k = 2` returns 19 instead of 18.
+- `can_split` answers "**at most** k groups", not "exactly k": any split into fewer groups can be cut
+  further without raising the maximum, as long as `k <= n`.
+- `right` can exceed `int` in a variant with large values: `sum` of 10⁵ values of 10⁹. Use `long`.
+
+**Not this if** — the groups need **not** be contiguous (assign jobs to k workers, LC 1723): the greedy
+fill no longer counts the fewest groups, so it is backtracking or bitmask DP. If the cost is the
+**sum** of per-group costs rather than the largest one, it is partition DP ([dp.md](./dp.md)).
+
+**Drill** — LC 410 ⭐ · LC 1011 *(same problem, packages and days)* · LC 2064 *(groups are per store: `ceil(q / x)`)* · LC 1231 *(maximize the minimum: [Template 2](#template-2-largest-feasible-value--lc-1552-))*
+
+---
+
+### Template 4: Count-at-Most Over a Value Range — LC 378 ⭐⭐⭐⭐⭐
+
+**Recognise** — "the **k-th smallest**" of something you cannot afford to list: an `n × n` matrix
+sorted by row and column, a multiplication table, all pair distances. "Memory better than O(n²)"
+or values up to 10⁹ with a cheap way to *count* how many are ≤ x.
+
+**Key point** — `count(x)` = how many values are `≤ x` never decreases as `x` grows, and it only
+steps up at values that exist. So the smallest `x` with `count(x) ≥ k` is the k-th smallest **and**
+is always a real element: search the value range, not the indices, with Template 1's loop.
+
+```python
+# python
+# LC 378 - Kth Smallest Element in a Sorted Matrix
+# IDEA: binary search the value range; first x with count(<= x) >= k is the answer
+# time = O(n log(max - min)), space = O(1)
+def kthSmallest(matrix, k):
+    n = len(matrix)
+
+    def count_at_most(x):
+        # staircase from the bottom-left corner: each step drops a row or a column
+        row, col = n - 1, 0
+        count = 0
+        while row >= 0 and col < n:
+            if matrix[row][col] <= x:
+                count += row + 1         # this cell and every cell above it are <= x
+                col += 1
+            else:
+                row -= 1
+        return count
+
+    left, right = matrix[0][0], matrix[n - 1][n - 1]
+    while left < right:
+        mid = left + (right - left) // 2
+        if count_at_most(mid) >= k:
+            right = mid                  # at least k values <= mid -> answer is mid or smaller
+        else:
+            left = mid + 1               # fewer than k -> answer is above mid
+    return left
+```
+
+```java
+// java
+// LC 378 - Kth Smallest Element in a Sorted Matrix
+// IDEA: binary search the value range; first x with countAtMost(x) >= k is the answer
+// time = O(n log(max - min)), space = O(1)
+public int kthSmallest(int[][] matrix, int k) {
+    int n = matrix.length;
+    int left = matrix[0][0];
+    int right = matrix[n - 1][n - 1];
+    while (left < right) {
+        int mid = left + (right - left) / 2;   // floors even for negatives; (left + right) / 2 does not
+        if (countAtMost(matrix, mid) >= k) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left;
+}
+
+private int countAtMost(int[][] matrix, int x) {
+    int n = matrix.length;
+    int row = n - 1;          // start bottom-left
+    int col = 0;
+    int count = 0;
+    while (row >= 0 && col < n) {
+        if (matrix[row][col] <= x) {
+            count += row + 1;  // the whole column above is <= x too
+            col++;
+        } else {
+            row--;
+        }
+    }
+    return count;
+}
+```
+
+**Complexity**
+- **Time O(n log(max − min))**: the `while left < right` loop halves the value range, and each
+  `count_at_most` is one staircase walk, which moves up or right at most 2n times.
+- **Space O(1)**: the walk keeps `row`, `col` and `count`, never a copy of the matrix.
+
+**Dry run**
+
+```text
+matrix = [[1,5,9],[10,11,13],[12,13,15]], k = 8
+left=1   right=15  mid=8    values <= 8: 1,5                      count=2 < 8  -> left=9
+left=9   right=15  mid=12   1,5,9,10,11,12                         count=6 < 8  -> left=13
+left=13  right=15  mid=14   1,5,9,10,11,12,13,13                   count=8 >= 8 -> right=14
+left=13  right=14  mid=13   same eight                             count=8 >= 8 -> right=13
+left=13  right=13  stop -> 13          (mid=14 also had count 8, but 14 is not in the matrix)
+```
+
+**Traps**
+- Returning `mid` as soon as `count(mid) == k`: on the trace above `mid=14` has count 8 and is not in
+  the matrix. Keep narrowing to the first such value.
+- `(left + right) / 2` in Java rounds toward zero for negatives: `[[-5,-4],[-4,-3]]`, `k = 2` reaches
+  `left=-5, right=-4`, gets `mid=-4`, sets `right=-4` and never moves. Use `left + (right - left) / 2`.
+- Starting the staircase top-left: both neighbours are larger, so a step cannot decide its direction.
+  Start bottom-left (or top-right).
+
+**Not this if** — k is small next to n²: pop a min-heap `k` times, O(k log n) ([heap.md](./heap.md)).
+And when the values are unsorted but bounded, the count still works but the test changes — LC 287
+below binary searches `[1, n]` with the pigeonhole test `count(mid) > mid`.
+
+**Drill** — LC 378 ⭐ · LC 287 *(count > mid means the duplicate is ≤ mid)* · LC 668 *(count = Σ min(x // i, n))* · LC 719 *(sort + two-pointer count of pairs ≤ x)* · LC 786 *(fractions: search a real range)*
+
+**Similar problems**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| **668** | Kth Smallest Number in Multiplication Table | `count(x) = Σ min(x // i, n)` |
+| **719** | Find K-th Smallest Pair Distance | count pairs with distance ≤ x by two pointers |
+| **786** | K-th Smallest Prime Fraction | binary search a real value + count |
+| **373** | Find K Pairs with Smallest Sums | heap variant of the same k-smallest question |
+| **240** | Search a 2D Matrix II | the same staircase walk, searching instead of counting |
+| **4**   | Median of Two Sorted Arrays | k-th smallest by a partition binary search |
 
 ---
 
@@ -385,204 +691,9 @@ For LC 2616: range = 10⁹, n = 10⁵
    - Usually uses greedy approach
 ```
 
-#### Common "Minimize Maximum" Problem Structure
-
-```java
-public int minimizeMaximum(int[] arr, int constraint) {
-    // Step 1: Define bounded search space
-    int left = minPossibleAnswer;   // Often 0 or min(arr)
-    int right = maxPossibleAnswer;  // Often sum(arr) or max(arr)
-
-    // Step 2: Binary search using monotonic property
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-
-        // Step 3: Check feasibility (must be O(n) or O(n log n))
-        if (isValid(arr, constraint, mid)) {
-            right = mid;      // Valid → try smaller (minimize)
-        } else {
-            left = mid + 1;   // Invalid → need larger
-        }
-    }
-
-    return left;  // Leftmost valid answer
-}
-
-// Validation function - the KEY to correctness
-// Must return true for all values >= optimal answer
-private boolean isValid(int[] arr, int constraint, int maxAllowed) {
-    // Greedy check: can we satisfy constraint with this maxAllowed?
-    // This is problem-specific
-}
-```
-
----
-
-### Template Variations
-
-**Variation 1: Closed Interval [left, right]**
-```java
-while (left <= right) {
-    int mid = left + (right - left) / 2;
-    if (isValid(mid)) {
-        result = mid;  // Store potential answer
-        right = mid - 1;  // Try to minimize
-    } else {
-        left = mid + 1;
-    }
-}
-return result;
-```
-
-**Variation 2: Half-Open Interval [left, right)**
-```java
-while (left < right) {
-    int mid = left + (right - left) / 2;
-    if (isValid(mid)) {
-        right = mid;  // Keep mid in range
-    } else {
-        left = mid + 1;
-    }
-}
-return left;  // left == right
-```
-
 ---
 
 ## LC Examples
-
-### Split Array Largest Sum — LC 410 ⭐⭐⭐⭐⭐
-
-**Problem:** Split array into m subarrays, minimize the largest sum among subarrays.
-
-**Insight:** Binary search on possible "largest sum" values. For each mid, check if we can split array into ≤ m subarrays with each sum ≤ mid.
-
-```java
-// LC 410 - Split Array Largest Sum
-class Solution {
-    /**
-     * time = O(N × log(sum))
-     * space = O(1)
-     *
-     * Approach: Binary search on answer space [max_element, total_sum]
-     */
-    public int splitArray(int[] nums, int k) {
-        // Step 1: Define search space
-        int left = 0;   // Minimum: largest single element
-        int right = 0;  // Maximum: sum of all elements
-
-        for (int num : nums) {
-            left = Math.max(left, num);  // Must fit largest element
-            right += num;                // Upper bound is total sum
-        }
-
-        // Step 2: Binary search on possible "largest subarray sum"
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-
-            // Step 3: Check if we can split into ≤ k subarrays with max sum = mid
-            if (canSplit(nums, k, mid)) {
-                // Valid! Try smaller max sum (minimize)
-                right = mid;
-            } else {
-                // Can't split with this sum, need larger max sum
-                left = mid + 1;
-            }
-        }
-
-        return left;  // Smallest valid maximum subarray sum
-    }
-
-    // Validation: Can we split array into at most k subarrays with max sum <= maxSum?
-    private boolean canSplit(int[] nums, int k, int maxSum) {
-        int subarrayCount = 1;  // Start with 1 subarray
-        int currentSum = 0;
-
-        for (int num : nums) {
-            // Try to add num to current subarray
-            if (currentSum + num <= maxSum) {
-                currentSum += num;
-            } else {
-                // Start new subarray
-                subarrayCount++;
-                currentSum = num;
-
-                // Early termination: too many subarrays needed
-                if (subarrayCount > k) {
-                    return false;
-                }
-            }
-        }
-
-        return true;  // Successfully split into ≤ k subarrays
-    }
-}
-```
-
-```python
-# Python - LC 410
-def splitArray(nums, k):
-    """
-    Time: O(n × log(sum))
-    Space: O(1)
-    """
-    def can_split(max_sum):
-        """Check if we can split into <= k subarrays with max sum <= max_sum"""
-        subarray_count = 1
-        current_sum = 0
-
-        for num in nums:
-            if current_sum + num <= max_sum:
-                current_sum += num
-            else:
-                subarray_count += 1
-                current_sum = num
-                if subarray_count > k:
-                    return False
-
-        return True
-
-    # Binary search on answer space
-    left = max(nums)   # Min: largest element
-    right = sum(nums)  # Max: total sum
-
-    while left < right:
-        mid = left + (right - left) // 2
-
-        if can_split(mid):
-            right = mid  # Try smaller (minimize)
-        else:
-            left = mid + 1
-
-    return left
-```
-
-**Step-by-Step Trace:** `nums = [7,2,5,10,8], k = 2`
-
-```text
-Search space: [10, 32]  (max element to sum)
-
-Iteration 1: mid = 21
-  Can split into [[7,2,5], [10,8]]? Sum = [14, 18] ≤ 21 ✓
-  Valid! Try smaller: right = 21
-
-Iteration 2: mid = 15
-  Can split [[7,2,5], [10,8]]? Sum = [14, 18] ≤ 15 ✗ (18 > 15)
-  Invalid! Need larger: left = 16
-
-Iteration 3: mid = 18
-  Can split [[7,2], [5,10], [8]]? Need 3 subarrays ✗ (k=2)
-  Can split [[7,2,5], [10,8]]? Sum = [14, 18] ≤ 18 ✓
-  Valid! Try smaller: right = 18
-
-left = 16, right = 18
-Iteration 4: mid = 17
-  Can split? Need to check...
-
-Final: left = 18 (minimum largest sum)
-```
-
----
 
 ### Capacity To Ship Packages Within D Days — LC 1011
 
@@ -682,61 +793,6 @@ class Solution(object):
                 else:
                     r = mid - 1
             return l
-```
-
----
-
-### Koko Eating Bananas — LC 875
-**Problem:** Koko must eat all bananas within h hours. Find minimum eating speed.
-
-```python
-# LC 875 - Koko Eating Bananas
-def minEatingSpeed(piles, h):
-    """
-    Time: O(n × log(max_pile))
-    Space: O(1)
-    """
-    import math
-
-    def can_finish(speed):
-        """Check if Koko can finish with this speed"""
-        hours_needed = sum(math.ceil(pile / speed) for pile in piles)
-        return hours_needed <= h
-
-    # Binary search on speed [1, max(piles)]
-    left, right = 1, max(piles)
-
-    while left < right:
-        mid = left + (right - left) // 2
-
-        if can_finish(mid):
-            right = mid  # Try slower speed (minimize)
-        else:
-            left = mid + 1  # Need faster speed
-
-    return left
-```
-
-> Binary search on the eating speed; check if all bananas can be eaten in H hours.
-
-```java
-// LC 875 - Koko Eating Bananas
-// IDEA: Binary search on answer space [1, max(piles)]
-// time = O(N log M), space = O(1)  M = max pile size
-public int minEatingSpeed(int[] piles, int h) {
-    int l = 1, r = Arrays.stream(piles).max().getAsInt();
-    while (l < r) {
-        int mid = (l + r) / 2;
-        if (canFinish(piles, mid, h)) r = mid;
-        else l = mid + 1;
-    }
-    return l;
-}
-private boolean canFinish(int[] piles, int speed, int h) {
-    int hours = 0;
-    for (int pile : piles) hours += (pile + speed - 1) / speed;
-    return hours <= h;
-}
 ```
 
 ---
@@ -1094,7 +1150,7 @@ Binary search guarantees correctness via monotonic property.
 
 ### Path With Minimum Effort — LC 1631, a Graph Predicate ⭐⭐⭐⭐
 
-> Same "minimize the maximum" skeleton as the unified template above, but the feasibility check is a **BFS/DFS reachability test** instead of an `O(n)` scan.
+> Same "minimize the maximum" skeleton as [Template 1](#template-1-smallest-feasible-value--lc-875-) above, but the feasibility check is a **BFS/DFS reachability test** instead of an `O(n)` scan.
 
 `canReach(limit)` = "can I walk from top-left to bottom-right using only steps whose cost `<= limit`?" — monotone in `limit` (a bigger limit only unlocks more edges), which is exactly what binary search needs.
 
@@ -1184,100 +1240,6 @@ class Solution:
 > Alternative for both: **Dijkstra with a min-max ("bottleneck") relaxation** `nd = max(d, cost)`, or **union-find** processing cells in sorted order. Binary search + BFS is the easiest to derive under time pressure; say the Dijkstra variant out loud as the `O(mn log mn)` improvement.
 
 ---
-
-### Kth Smallest Element in a Sorted Matrix — LC 378 ⭐⭐⭐⭐⭐
-
-> Given an `n x n` matrix where each **row and column** is sorted ascending, return the `k`-th smallest element. Requires memory better than `O(n²)` (so we can't just flatten & sort).
-
-#### 1. Core Idea
-
-**Binary search on the VALUE RANGE, not on indices.**
-
-Because rows/columns are sorted, the answer lies in `[matrix[0][0], matrix[n-1][n-1]]`. We binary search over this **value space** and, for each candidate `mid`, count how many matrix elements are `<= mid`.
-
-- The function `count(mid) = #elements <= mid` is **monotonically non-decreasing** in `mid` → this monotonicity is what enables binary search.
-- We want the **smallest value** `x` such that `count(x) >= k`. That `x` is guaranteed to be an actual element in the matrix (the k-th smallest).
-
-```text
-if count(mid) < k  → answer is bigger  → left  = mid + 1
-else               → mid might be it   → right = mid   (keep left half, include mid)
-```
-
-Loop `while left < right`, converge to a single value, return `left`.
-
-#### 2. Pattern
-
-**"Binary search on answer + count check"** — same family as Koko (LC 875), Split Array (LC 410).
-The twist: the **count step** exploits the sorted-matrix structure to run in `O(n)` (staircase walk) instead of `O(n²)`.
-
-**Count `<= target` in O(n) — staircase from bottom-left:**
-
-```python
-def countLessEqual(matrix, target):
-    n = len(matrix)
-    row, col = n - 1, 0          # start bottom-left corner
-    count = 0
-    while row >= 0 and col < n:
-        if matrix[row][col] <= target:
-            count += row + 1     # whole column above is also <= target
-            col += 1             # move right
-        else:
-            row -= 1             # move up
-    return count
-```
-
-**Full solution:**
-
-```python
-# LC 378 - Kth Smallest Element in a Sorted Matrix
-# IDEA: binary search on value range + O(n) count of elements <= mid
-# time = O(n * log(max - min)), space = O(1)
-class Solution:
-    def kthSmallest(self, matrix, k):
-        n = len(matrix)
-        left, right = matrix[0][0], matrix[n - 1][n - 1]
-
-        while left < right:
-            mid = left + (right - left) // 2
-            if self.countLessEqual(matrix, mid) < k:
-                left = mid + 1          # too few <= mid, go higher
-            else:
-                right = mid             # enough, mid may be the answer
-        return left                     # left == right == k-th smallest
-
-    def countLessEqual(self, matrix, target):
-        n = len(matrix)
-        row, col = n - 1, 0
-        count = 0
-        while row >= 0 and col < n:
-            if matrix[row][col] <= target:
-                count += row + 1
-                col += 1
-            else:
-                row -= 1
-        return count
-```
-
-**Key points to remember:**
-- Search space is **values** (`matrix[0][0] .. matrix[n-1][n-1]`), not indices.
-- Use `while left < right` + `right = mid` (left-boundary style) so we converge on the first value with `count >= k`.
-- `left` always ends on a real matrix element — no need to snap it back.
-- Alternative count: per-row `bisect_right` gives `O(n log n)`; the staircase is `O(n)`.
-- Alternative overall approach: **min-heap** of `(val, r, c)`, pop `k` times → `O(k log n)` time, `O(n)` space (worse memory, simpler to reason about).
-
-#### 3. Similar LC Problems
-
-| LC | Problem | Relation |
-|----|---------|----------|
-| **378** | Kth Smallest Element in a Sorted Matrix | This problem — BS on value + count |
-| **668** | Kth Smallest Number in Multiplication Table | BS on value; `count(x)=Σ min(x//i, n)` |
-| **719** | Find K-th Smallest Pair Distance | BS on distance value + two-pointer count |
-| **786** | K-th Smallest Prime Fraction | BS on fraction value + count |
-| **373** | Find K Pairs with Smallest Sums | Heap variant (same k-smallest idea) |
-| **240** | Search a 2D Matrix II | Same staircase walk (search, not count) |
-| **875** | Koko Eating Bananas | Same "BS on answer + count/feasibility" template |
-| **410** | Split Array Largest Sum | Same "BS on answer" template |
-| **4**   | Median of Two Sorted Arrays | k-th smallest via binary search partition |
 
 ### Find the Duplicate Number — LC 287, Searching a Value Domain ⭐⭐⭐⭐⭐
 
@@ -1438,6 +1400,16 @@ class Solution:
 - "I'll binary search on [min, max] and use a helper to validate"
 - "The answer has monotonic property: if X works, larger X also works"
 - "Time complexity: O(n × log(range)) where n is validation cost"
+
+---
+
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 875 ⭐ · LC 1552 · LC 410 | the smallest feasible value, the largest feasible value (upper mid), and the `[max, sum]` split |
+| **Practice** | LC 1283 · LC 1011 · LC 1482 · LC 2226 · LC 287 · LC 378 | other greedy predicates; then counting over a value range |
+| **Stretch** | LC 2616 · LC 1631 · LC 1231 · LC 668 · LC 719 | sort-then-pair, a BFS predicate, maximize the minimum by cutting, counting without listing |
 
 ---
 
