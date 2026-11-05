@@ -109,7 +109,7 @@ Working notes per shape — the mnemonic for the loop body, and the gotcha.
     - [Programmer Carl (leetcode-master) — 0078 Subsets](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
     - helper call + `start_idx` + for loop + `pop()`
     - record every node of the tree; `start_idx` keeps already-used numbers out
-    - No `contains` check: passing `i + 1` as the next `start_idx` uses each element at most once (passing `i` would reuse it; `contains` is the permutations idiom)
+    - No `contains` check: passing `i + 1` as the next `start_idx` uses each element at most once (passing `i` would reuse it). Permutations track used **indices** with `visited[]`, never a value `contains`, so `[1,1]` can use both 1s; LC 47's duplicate values then add same-level skipping
 - `Subsets II`
     - LC 90
     - `start_idx` + backtrack + same-level dedup

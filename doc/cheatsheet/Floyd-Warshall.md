@@ -701,7 +701,7 @@ Read the constraints before committing to Floyd-Warshall — the cube is unforgi
 | Problem | LC # | Key Technique | Difficulty |
 |---------|------|---------------|------------|
 | Course Schedule IV | 1462 | Boolean Floyd-Warshall | Medium |
-| Graph Connectivity | 1627 | Union-find (n ≤ 10⁴ rules out O(n³)) | Hard |
+| Graph Connectivity | 1627 | Union-Find (n ≤ 10⁴ rules out O(n³)) | Hard |
 | Evaluate Division | 399 | Weighted transitive closure | Medium |
 
 ### **Minimax/Maximin Problems**
