@@ -114,7 +114,7 @@ public boolean predictTheWinner(int[] nums) {
 > the other `n - size[v]` one farther.
 
 **Reduces to**: [tree.md § Re-rooting DP](./tree.md#re-rooting-dp--answer-for-every-root), where it
-is worked in Python and Java. LC 2581 re-roots a guess count the same way.
+is worked in Python. LC 2581 re-roots a guess count the same way.
 
 #### Re-rooting DP — When and How
 
