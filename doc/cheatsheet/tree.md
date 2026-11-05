@@ -1,6 +1,6 @@
 # Tree Data Structure - Concepts & Patterns
 
-> **Scope** — Tree concepts, tree types and traversal-order *strategy* — the **why** and **which**, plus the advanced techniques that are not per-pattern templates (Morris threading, binary lifting, re-rooting). The templates themselves live in [tree2.md](./tree2.md).
+> **Scope** — Tree concepts, tree types and traversal-order *strategy* — the **why** and **which**, plus the advanced techniques that are worked here (Morris threading, binary lifting, and re-rooting DP, the home of LC 834). The per-pattern binary-tree templates live in [tree2.md](./tree2.md).
 > **See also** — *deep dives split out of this file*: [tree_lca_distance.md](./tree_lca_distance.md) — LCA, node distance, parent maps and root-to-leaf path templates; [tree_codec.md](./tree_codec.md) — subtree serialization and tree ⟷ string codecs; [tree_construction.md](./tree_construction.md) — building a tree from traversals, strings and index ranges; [tree_examples.md](./tree_examples.md) — the worked LC archive for the patterns taught here.
 > *Neighbouring sheets*: [tree2.md](./tree2.md) — one numbered, copy-paste template per pattern; [binary_tree.md](./binary_tree.md) — binary-tree DFS state-flow and structural templates; [bst.md](./bst.md) — ordered trees; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems that undo state on the way back up.
 
@@ -947,11 +947,12 @@ an O(1) update per edge.
 
 ```python
 # python
-# LC 834 - Sum of Distances in Tree
-# IDEA: pass 1 (children first) roots the tree at 0: size[u] = nodes under u, ans[0] = sum of depths.
-#       pass 2 (parents first) moves the root across edge u -> v: the size[v] nodes under v get 1 closer,
-#       the other n - size[v] get 1 farther, so ans[v] = ans[u] - size[v] + (n - size[v]).
+# IDEA: two passes; the second moves the root across each edge and adjusts the answer by subtree size
 # time = O(n), space = O(n)
+# pass 1 (children first) roots the tree at 0: size[u] = nodes under u, ans[0] = sum of depths.
+# pass 2 (parents first) moves the root across edge u -> v: the size[v] nodes under v get 1 closer,
+# the other n - size[v] get 1 farther, so ans[v] = ans[u] - size[v] + (n - size[v]).
+# LC 834 - Sum of Distances in Tree
 def sumOfDistancesInTree(n, edges):
     graph = [[] for _ in range(n)]
     for u, v in edges:
@@ -989,10 +990,10 @@ def sumOfDistancesInTree(n, edges):
 
 ```java
 // java
-// LC 834 - Sum of Distances in Tree
-// IDEA: pass 1 roots the tree at 0 (size[], ans[0]); pass 2 re-roots across each edge:
-//       ans[v] = ans[u] - size[v] + (n - size[v])
+// IDEA: two passes; the second re-roots across each edge and adjusts the answer by subtree size
 // time = O(n), space = O(n)
+// pass 1 roots the tree at 0 (size[], ans[0]); pass 2: ans[v] = ans[u] - size[v] + (n - size[v])
+// LC 834 - Sum of Distances in Tree
 public int[] sumOfDistancesInTree(int n, int[][] edges) {
     List<List<Integer>> graph = new ArrayList<>();
     for (int i = 0; i < n; i++) {
