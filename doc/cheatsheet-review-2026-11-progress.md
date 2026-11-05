@@ -24,7 +24,7 @@
 | 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | [#314](https://github.com/yennanliu/CS_basics/pull/314) | 🔄 |
 | 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | [#315](https://github.com/yennanliu/CS_basics/pull/315) | 🔄 |
 | 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | [#316](https://github.com/yennanliu/CS_basics/pull/316) | 🔄 |
-| 7b | **P6** 雜訊與語言 | Python 優先、IPython transcript、行內中文、檔名修正 | | ⬜ |
+| 7b | **P6** 雜訊與語言 | Python 優先、IPython transcript、行內中文、檔名修正 | PR_P | 🔄 |
 
 P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1 改寫，`knapsack_01_zh` 是 P3 #2 的 0/1 knapsack 中文 home，`python_complexity` 與 `complexity_cheatsheet` 是查表型的參考文件（沒有 pattern card 可補），在 P1 合併 constraint ruler 時一起處理。
 
@@ -77,14 +77,14 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 - [x] （6d）LC 72 / 1143 的 rolling-row Python 從 `advanced_string_algorithms` 移出後沒有家，應放進 `dp.md`
 - [ ] （6d 之後）`dp_advanced`、`backtrack_advanced` 約 48 個 LC 標題還不是 problem card；`dp_advanced` 仍有 30 個 emoji 標題、11 個 code-first
 - [ ] （6c 之後）`2_pointers.md` 的 Drill Path 與 Pattern Selection 表還沒列新的 T9；`advanced_string_algorithms` 模板編號 2/3/5/6、`array.md` 缺 Template 6
-- [ ] （P6）`string`、`2_pointers`、`binary_search_on_answer` 的 Summary 決策表與新的 Recognition / Drill Path 部分重複
+- [x] （P6）`string`、`2_pointers`、`binary_search_on_answer` 的 Summary 決策表與新的 Recognition / Drill Path 部分重複
 - [x] （6d，P3）LC 416 同時在 `dp` T4 與 `knapsack` T1；LC 216、526 是 `backtrack` 的錨定題，也在 `backtrack_examples` 解過
 - [x] （6d，P4）標題含 LC 編號、但還不是 problem card 的段落（如 `dp`「Worked table — LC 516」、`backtrack` 的 LC 1219）
 - [x] （6e，P3）LC 560 同時是 `hash_map` T4 與 `prefix_sum` T2 的錨定題；LC 146 在 `hash_map`、`linked_list`、`design_examples` 三處
 - [ ] （6e 之後）`hash_map` Summary 決策表仍有幾題用舊的模板編號；`monotonic_stack` 除了範例段落外還不是 card
 - [ ] （6e 之後，跨家族）同一題在多處：LC 621 / 767（`greedy`）、402 / 316（`greedy_examples`）、735（`advanced_simulation`）、388（`string`）、729 / 731 / 715（`intervals`、`scanning_line`、`segment_tree`）、21 / 24 / 25（`recursion` 的遞迴版）；不同解法刻意保留的：LC 703、378、373、973、981、670、1249、445
-- [ ] （P6）`hash_map` Overview 的 IPython 與 `NOTE !!!`、blog 連結；`stack` Summary 的空泛 Common Traps；`heap` Summary 決策表沒連到 card
-- [ ] （跨 PR）中文 card 標籤：graph 家族用了 辨識 / 關鍵 / 複雜度 / 試跑 / 陷阱 / 不適用時 / 練習，其他家族不一定一致；P6 統一
+- [x] （P6）`hash_map` Overview 的 IPython 與 `NOTE !!!`、blog 連結；`stack` Summary 的空泛 Common Traps；`heap` Summary 決策表沒連到 card
+- [x] （跨 PR）中文 card 標籤：graph 家族用了 辨識 / 關鍵 / 複雜度 / 試跑 / 陷阱 / 不適用時 / 練習，其他家族不一定一致；P6 統一
 
 ## 紀錄
 
@@ -105,3 +105,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 | 2026-11-05 | 6d | P3+P4 dp：0/1 knapsack 歸 `knapsack.md`（2-D 推導與 top-down LC 416 移入 Template 1）；`dp_advanced` 中文速記改成指向 `knapsack_01_zh` 的一行；`backtrack_examples`、`dp_examples` 改 C，兩份 `_advanced` 改 D；LC 72 / 1143 rolling-row 補進 `dp` T8 / T9 |
 | 2026-11-05 | 6e | P3+P4 hashing / stacks：LC 146 / 460 歸 `linked_list` T7；LC 560 歸 `hash_map` T4；單調堆疊題歸 `monotonic_stack`；五份 `_examples` 改 C、`heap_advanced` 改 D；`design.md` 新增 Pattern 6–10；修 LC 1963、`heap_advanced` §9、LC 588、LC 24 / 25 / 1171 的 trap 敘述；疊合時修 12 條跨家族連結 |
 | 2026-11-05 | 7a | P5 第二階段：`stampDrillVerdicts` 在每份 Drill Path 的 LC 編號旁標出 `progress.txt` 的最新 verdict（ok / again / 未練），英文與中文頁都有；e2e 逐題比對 `progress.json`（709 個 badge） |
+| 2026-11-05 | 7b | P6：IPython 319→0、`NOTE !!!` 183→0、blog 連結 14→0、gpt 6→0；`dp_monotonic_stack`、`dp_string`、`n_sum` 改 Python 先（`n_sum` 的 C++ 換掉）；`array_overlap_explaination` → `array_overlap_explanation`（留 stub）；英文 sheet 的行內中文移到 overlay；中文 card 標籤統一；card gate 改成把改名視為改名而不是新檔 |
