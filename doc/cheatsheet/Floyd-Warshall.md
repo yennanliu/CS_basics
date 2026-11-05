@@ -250,64 +250,10 @@ def floyd_warshall_optimized(n, edges):
 
 ## Algorithm Comparison
 
-### Floyd-Warshall vs Dijkstra vs Bellman-Ford
-
-| Feature | Floyd-Warshall | Dijkstra | Bellman-Ford |
-|---------|----------------|----------|--------------|
-| **Problem Type** | All-pairs shortest path | Single-source shortest path | Single-source shortest path |
-| **Time Complexity** | O(V³) | O((V+E) log V) | O(V·E) |
-| **Space Complexity** | O(V²) | O(V) | O(V) |
-| **Negative Weights** | ✅ Yes | ❌ No | ✅ Yes |
-| **Negative Cycles** | Detects | N/A | Detects |
-| **Implementation** | Very simple (3 loops) | Moderate (priority queue) | Simple (2 loops) |
-| **Graph Type** | Dense graphs preferred | Sparse graphs preferred | Any |
-| **Output** | All-pairs distances | Single-source distances | Single-source distances |
-| **Best Use Case** | Small graphs, all-pairs | Large sparse graphs | Negative weights, cycle detection |
-
-### When to Use Which Algorithm
-
-```text
-Algorithm Selection Flowchart:
-
-1. Need all-pairs shortest paths?
-   ├── YES → Consider Floyd-Warshall
-   │   ├── Small graph (V ≤ 400)? → Use Floyd-Warshall
-   │   └── Large graph? → Run Dijkstra/Bellman-Ford V times
-   └── NO → Single-source problem → Continue to 2
-
-2. Are there negative edge weights?
-   ├── YES → Use Bellman-Ford (or SPFA)
-   └── NO → Use Dijkstra
-
-3. Is graph dense (E ≈ V²)?
-   ├── YES → Consider Floyd-Warshall for all-pairs
-   └── NO → Dijkstra is more efficient
-```
-
-### Practical Comparison Table
-
-| Scenario | Best Algorithm | Reason |
-|----------|----------------|--------|
-| Small complete graph, all-pairs | Floyd-Warshall | O(V³) is acceptable, simple code |
-| Large sparse graph, single-source | Dijkstra | O((V+E) log V) much faster |
-| Negative weights, single-source | Bellman-Ford | Only algorithm that handles it |
-| Transitive closure | Floyd-Warshall | Natural DP formulation |
-| Grid shortest path | Dijkstra | Graph is implicit, sparse |
-| Network diameter | Floyd-Warshall | Need all-pairs anyway |
-| Path with constraints | Dijkstra (modified) | Flexible state tracking |
-| Arbitrage detection | Floyd-Warshall | Need cycle detection, all-pairs |
-
-### Complexity Comparison Examples
-
-For a graph with V=1000 vertices and E=5000 edges:
-
-| Algorithm | Operations | Relative Speed |
-|-----------|------------|----------------|
-| Floyd-Warshall | 1,000,000,000 | Baseline (slowest) |
-| Dijkstra (V times) | ~50,000 × log(1000) × 1000 | ~20x faster |
-| Dijkstra (single) | ~5,000 × log(1000) | ~20,000x faster |
-| Bellman-Ford | 1000 × 5000 = 5,000,000 | ~200x faster |
-
+The comparison with the other shortest-path algorithms — complexity, negative weights, early exit,
+path reconstruction, and which one a given situation calls for — lives in one place:
+[shortest_path_comparison.md § Side-by-Side Comparison](./shortest_path_comparison.md#side-by-side-comparison)
+and [§ Scenario → Algorithm](./shortest_path_comparison.md#scenario--algorithm). The one-line version for this sheet: Floyd-Warshall is for every pair on a small graph (n ≈ 400 or less) or for transitive closure; one source, or a large sparse graph, is Dijkstra or Bellman-Ford.
 
 ## LC Examples
 

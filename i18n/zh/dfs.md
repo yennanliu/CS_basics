@@ -1,8 +1,8 @@
-<!-- 5c7716820e6e -->
+<!-- 997f2d644cc0 -->
 # DFS（深度優先搜尋）
 
 > **範圍** — DFS 的主文件：十個核心的深度優先模板 — 樹走訪、網格填色（flood fill）、路徑搜尋、回溯、樹結構修改、後序彙總、邊界消除、形狀簽名與帶權邊走訪 — 並附上用來挑選模板的辨識表。
-> **另見** — *從本檔案拆出去的深入主題*：[dfs_advanced.md](./dfs_advanced.md) — 尤拉路徑（Hierholzer）、Tarjan 找橋、字典樹 + 萬用字元 DFS、以深度為索引的堆疊 DFS、距離桶配對葉節點、N 元樹與 `parent[]` 的彙總；[dfs_examples.md](./dfs_examples.md) — 題解存放處，以及依模式與難度整理的完整題目索引。
+> **另見** — *從本檔案拆出去的深入主題*：[dfs_advanced.md](./dfs_advanced.md) — 雙網格驗證、邊方向標記、跨連通分量配對計數、字典樹 + 萬用字元 DFS、以深度為索引的堆疊 DFS、距離桶配對葉節點、N 元樹與 `parent[]` 的彙總；[graph_advanced.md](./graph_advanced.md) — 尤拉路徑（Hierholzer）與 Tarjan low-link；[dfs_examples.md](./dfs_examples.md) — 經典題目，依本檔的模板分組，附索引。
 > *鄰近文件*：[bfs.md](./bfs.md) — 廣度優先的對應版本以及如何取捨；[backtrack.md](./backtrack.md) — 回程時會還原狀態的 DFS；[graph.md](./graph.md) — 圖的表示法；[tree.md](./tree.md) — 樹上的 DFS。
 
 <!-- d9aab21dcee5 -->
@@ -29,7 +29,7 @@
 - [DFS vs BFS Comparison](https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_vs_bfs.png)
 - [Tree Traversal Animations](https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png)
 
-<!-- cc6552d7e231 -->
+<!-- be39d769e1b7 -->
 ## 辨識
 
 下面每個模式都**只出現一次**，以卡片形式放在「模板與演算法」底下。先比對題目敘述裡的用語，再拿限制條件對照
@@ -37,7 +37,7 @@
 
 | 題目敘述裡的訊號 | 限制提示 | 該用 | 不適用時 |
 |---|---|---|---|
-| 「中序／前序／後序」、「走訪所有節點」、「序列化」、「是不是鏡像」、「兩棵樹是否相同」 | 節點 ≤ 10⁴ | [Template 1](#template-1-tree-traversal--lc-94-) — 樹走訪；兩棵樹 → 它的[成對 DFS 變形](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree) | 一層一層 → [bfs.md § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) |
+| 「中序／前序／後序」、「走訪所有節點」、「序列化」、「是不是鏡像」、「兩棵樹是否相同」 | 節點 ≤ 10⁴ | [Template 1](#template-1-tree-traversal--lc-94-) — 樹走訪；兩棵樹 → 它的[成對 DFS 變形](#symmetric-tree--lc-101) | 一層一層 → [bfs.md § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) |
 | 「島嶼數量」、「連通區域」、「flood fill」、「複製圖」 | 網格 ≤ 300 × 300 | [Template 2](#template-2-graph--grid-dfs-flood-fill--lc-200-) — flood fill，數啟動次數 | 兩格之間的最短路線 → [bfs.md § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-) |
 | 「根到葉的路徑和」、「路徑是否存在」、「所有路徑」 | 節點 ≤ 5,000 | [Template 3](#template-3-path-finding--lc-112-) — 狀態往下傳、提早回傳 | 路徑可以從根以下開始 → 路徑上的前綴和（LC 437） |
 | 「所有排列／組合／子集」 | n ≤ 10（n!）或 n ≤ 20（2ⁿ） | [Template 4](#template-4-backtracking--lc-46) — 選、遞迴、取消選 | 只要數量、且狀態會重複 → DP |
@@ -49,11 +49,12 @@
 | 「除法求值」、「匯率」、「傳遞性比值」 | 變數 ≤ 40 | [Template 10](#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) — 帶權 DFS，沿路相乘 | 固定的圖上有很多查詢 → 帶權併查集 |
 
 **不在本頁** — 這些放在 [dfs_advanced.md](./dfs_advanced.md)：雙網格驗證（LC 1905）、
-邊方向追蹤（LC 1466）、連通分量配對計數（LC 2316）、尤拉路徑（LC 332, 753）、Tarjan
-橋（LC 1192）、trie + 萬用字元 DFS（LC 211, 676）、以深度為索引的堆疊 DFS（LC 388, 1233）、
-依距離分桶的葉節點配對（LC 1530）、N 元樹後序彙總（LC 3965）、樹 ⟷ 字串編解碼
-（LC 606, 536），以及 `parent[]` 陣列的深度攀爬（LC 4015）。依模式與難度整理的完整題目清單在
-[dfs_examples.md → Problems by Pattern](./dfs_examples.md#problems-by-pattern)。
+邊方向追蹤（LC 1466）、連通分量配對計數（LC 2316）、trie + 萬用字元 DFS（LC 211,
+676）、以深度為索引的堆疊 DFS（LC 388, 1233）、依距離分桶的葉節點配對（LC 1530）、N 元樹
+後序彙總（LC 3965），以及 `parent[]` 陣列的深度攀爬（LC 4015）。尤拉路徑（LC 332, 753）
+與 Tarjan 橋（LC 1192）在 [graph_advanced.md](./graph_advanced.md)；樹 ⟷ 字串編解碼
+（LC 606, 536）在 [tree_codec.md](./tree_codec.md)。依模板分組的題目在
+[dfs_examples.md → Index](./dfs_examples.md#index)。
 
 <!-- ddc7f484e4af -->
 ## 模板與演算法
@@ -107,31 +108,25 @@
 LC 100 ⭐ *（成對 DFS）* · LC 101 *（鏡像的成對 DFS：見下方）* · LC 297 ⭐ *（帶 null 標記的
 前序）*
 
-<!-- e8a9d2ba073d -->
-#### 變化型：成對（雙指標）DFS — LC 101 Symmetric Tree
+<!-- db85f6a110e9 -->
+#### Symmetric Tree — LC 101
 
-> 來源：[`symmetric-tree.py`](../../leetcode_python/Stack/symmetric-tree.py)
+> **關鍵** — 一棵樹對稱的充要條件是它的兩棵子樹互為**鏡像**，所以 DFS 一次帶**兩個游標**
+> `(a, b)`，檢查兩者之間的關係：值相等，接著是**外側**那一對 `(a.left, b.right)` 與**內側**那一對
+> `(a.right, b.left)`。你往下遞迴時怎麼配對，*就是*這題本身：同向配對 `(a.left, b.left)` +
+> `(a.right, b.right)` 就是 LC 100 Same Tree。
 
-- **說明**：一次帶**兩個游標**的 DFS。遞迴不再是從一個節點「算出」某個值，
-  而是檢查一對節點之間的**關係**，並對配好對的子節點繼續遞迴。
-- **辨識**："is it a mirror of itself"、"are these two trees the same"、
-  "symmetric around its centre"、"same shape and same values" — 凡是述語本身就需要兩個節點才講得出來的題目。
-- **關鍵技巧**：helper 收的是 `(a, b)`，不是 `node`。而你往下遞迴時**怎麼配對**，就是這類題的全部：
-  - `(a.left, b.left)` + `(a.right, b.right)` → *同向*配對＝「兩棵樹相同」（LC 100）
-  - `(a.left, b.right)` + `(a.right, b.left)` → *鏡像*配對＝「對稱」（LC 101）
-- **核心想法**：
-  1. 一棵樹對稱的充要條件是**它的兩棵子樹互為鏡像**，所以起手式是
-     `helper(root.left, root.right)` — 根節點本身從頭到尾不跟任何節點比較。
-  2. 三個 base case，**順序很重要**：兩邊皆空 → `True`；只有一邊空 → `False`；
-     值不同 → `False`。三關都過了才往下走。
-  3. 依鏡像配對往下遞迴，並把兩個結果 `and` 起來：**外側**那一對（`a.left` ↔ `b.right`）
-     與**內側**那一對（`a.right` ↔ `b.left`）。
-  4. `and` 會短路，所以任何位置第一次對不上，整趟走訪就結束。
+**歸約到**：[Template 1](#template-1-tree-traversal--lc-94-) — 對*一對*節點做前序走訪，而不是一個。
+來源：[`symmetric-tree.py`](../../leetcode_python/Stack/symmetric-tree.py)。
+
+起手式是 `helper(root.left, root.right)`；根節點本身從頭到尾不跟任何節點比較。三個 base case，
+順序如下：兩邊皆空 → `True`；只有一邊空 → `False`；值不同 → `False`。三關都過了才往下走，並讓
+`and` 在第一次對不上時短路。
 
 <!--CODE-->
 
-- **最該背下來的那個 bug**：在這題改用*同向*配對並不是「大致上可行」 —
-  它回答的是另一個問題（「左子樹是否等於右子樹？」），而且**兩個方向都會答錯**：
+**陷阱** — 改用*同向*配對並不是「大致上可行」：它回答的是另一個問題（「左子樹是否等於右子樹？」），
+而且**兩個方向都會答錯**：
 
 <!--CODE-->
 
@@ -139,7 +134,7 @@ LC 100 ⭐ *（成對 DFS）* · LC 101 *（鏡像的成對 DFS：見下方）* 
 
 <!--CODE-->
 
-<!-- 45399a59d4e0 -->
+<!-- 7289640e5dbf -->
 ##### 迭代寫法 — 把配對放在堆疊上
 
 題目自己的 follow up 就在問這個寫法，而它也是把成對 DFS 去遞迴化的通用做法：堆疊裡放的是
@@ -156,7 +151,7 @@ LC 100 ⭐ *（成對 DFS）* · LC 101 *（鏡像的成對 DFS：見下方）* 
 - **換成配對佇列也完全一樣** — 把堆疊換成 `deque`、連 `popleft()` 兩次；比較的順序會變，答案不會變。
   見 [bfs.md](./bfs.md) 裡的 LC 101 那一列。
 
-- **類似的經典 LC 題目**：
+**類似題**：
   - LC 100 - Same Tree（同一個骨架，改用*同向*配對）
   - LC 951 - Flip Equivalent Binary Trees（**兩種**配對都試，再 `or` 起來）
   - LC 572 - Subtree of Another Tree（把 LC 100 的成對 DFS 在每個節點重新發動一次）
@@ -201,19 +196,24 @@ LC 100 ⭐ *（成對 DFS）* · LC 101 *（鏡像的成對 DFS：見下方）* 
 LC 133 ⭐ *（visited 就是 `{original: copy}` 這張對照表）* · LC 417 ⭐ *（從兩個海洋各自往內淹，
 再取交集）* · LC 419 *（完全不用 DFS：見下方變形）*
 
-<!-- c007da359200 -->
-#### 變體：**不用** flood fill 也能數連通分量 — LC 419 Battleships in a Board
+<!-- 4627728f1acf -->
+#### Battleships in a Board — LC 419
 
-**巧思**：當每個連通分量都保證是筆直的 1×k / k×1 直線時，你根本不需要 DFS —
-只要數出屬於某艘船**左上端**的格子即可，這讓額外空間降到 `O(1)`
-（不用 `visited` 集合，也不用就地改動）。在 LC 200 的 flood fill 基準之上，
-這正是那個經典追問 *「能不能一趟掃完、O(1) 空間、且不修改盤面？」* 的好答案。
+> **關鍵** — 每艘船都是一條筆直的 1×k 或 k×1 線段，所以每艘船恰好有一個**左上端點**：一個上方和
+> 左方都沒有 `'X'` 的 `'X'`。數這些格子就等於數船 —— 一次掃描、O(1) 額外空間、不用 `visited`
+> 集合、不改動棋盤。
+
+**歸約到**：[Template 2](#template-2-graph--grid-dfs-flood-fill--lc-200-) — 數連通分量，只是「船是
+直線」的保證讓你只需數每個分量的第一格，不必 flood fill 整個分量。這正是題目的 follow up
+（*一次掃描、O(1) 空間、不改動棋盤*），建立在 LC 200 的 flood fill 之上。
 
 <!--CODE-->
 
 <!--CODE-->
 
-> 如果拿掉「船一定是直線」這個保證，就退回上面那套 LC 200 的網格 DFS。
+**陷阱**
+- 這招靠的是那個保證。拿掉「船是直線」，L 形的船就會有兩個看起來像左上端點的格子；這時退回上面
+  LC 200 的 flood fill。
 
 <!-- 75e640214580 -->
 ### 模板 3：路徑搜尋 — LC 112 ⭐⭐⭐⭐⭐
@@ -390,24 +390,23 @@ LCA 其實是偽裝的後序：答案是往上走時，第一個在**兩側**都
   （有父指標：雙指標往上走）、LC 1676（多個目標）。完整解法在
   [tree_lca_distance.md](./tree_lca_distance.md)。
 
-<!-- dbba4d58947e -->
-#### 全域累加器寫法 — LC 124 Binary Tree Maximum Path Sum
+<!-- dff905a3fa24 -->
+#### Binary Tree Maximum Path Sum — LC 124
 
-> 來源：[`binary-tree-maximum-path-sum.py`](../../leetcode_python/Tree/binary-tree-maximum-path-sum.py)
+> **關鍵** — 每個節點會算出**兩個不同的值**。在這裡*轉彎*的路徑（`left + right + node.val`，用到
+> 兩個子節點）是答案候選，記進全域最大值、永遠不回傳。交給父節點的值
+> （`max(left, right) + node.val`）只能保留**一個**子節點，因為繼續往上的路徑不能分岔。負的子樹用
+> `max(0, …)` 丟掉。
 
-- **關鍵想法**：一個節點會算出**兩個不同的值**，把它們搞混就是這題全部的難處：
-  1. **答案候選**（`left + right + node.val`）—— 在這個節點*轉彎*、同時用到**兩個**子節點的路徑。
-     它被記進全域最大值，**從不回傳**。
-  2. **回傳給父節點的值**（`max(left, right) + node.val`）—— 繼續往上延伸的路徑只能用**一個**子節點，
-     因為路徑是一串節點，不是分叉。
-- **辨識**：「路徑不必經過 root」、「路徑可以在某個節點轉彎」、「對所有路徑取最大值」——
-  任何最佳的局部答案*不是*父節點所需之值的情況。
-- **為什麼要 `max(0, ...)`**：往下最佳總和為負的子樹就直接**丟掉** —— 接上它只會讓路徑更糟。
-  夾到 `0` 就是「丟掉」的寫法。
-- **為什麼用 `float('-inf')` 而不是 `0`**：路徑必須非空，所以全為負數的樹（`[-3]` → `-3`）必須能勝出。
-  用 `0` 當初值，在那裡會悄悄回傳 `0`。
-- **不要把 `left + right + node.val` 往上回傳。** 這是最常見的單一 bug：它交給父節點一條分叉的路徑，
-  父節點再分叉一次，產生的形狀根本不是路徑。
+**歸約到**：[Template 6](#template-6-bottom-up-post-order-dfs--lc-543-) — 直徑那張卡片，把邊數換成
+總和，負的分支夾到 0。來源：
+[`binary-tree-maximum-path-sum.py`](../../leetcode_python/Tree/binary-tree-maximum-path-sum.py)。
+
+**陷阱**
+- 把 `left + right + node.val` 往上回傳，等於交給父節點一條已分岔的路徑，父節點再分岔一次。這是
+  最常見的單一 bug。
+- 全域值要用 `float('-inf')` 起始，不是 `0`：路徑不能是空的，所以 `[-3]` 的答案是 `-3`。
+- 辨識訊號是「路徑不一定要經過根」：在地最佳答案不是父節點需要的那個值。
 
 <!--CODE-->
 
@@ -424,27 +423,15 @@ LCA 其實是偽裝的後序：答案是往上走時，第一個在**兩側**都
 > 優先用 `max(0, ...)` 的寫法。它比較短，`- node.val` 的修正很容易忘記，而且夾到 0
 > 直接讀起來就是不變量*「負的子樹永遠不值得接上」*。
 
-<!-- 468c9b14a335 -->
-#### 變化：後序**餘額／流量**累加 — LC 979 Distribute Coins in Binary Tree
+<!-- c54e8cfd4cb7 -->
+#### Distribute Coins in Binary Tree — LC 979
 
-- **說明**：後序 DFS，每個節點回傳其子樹的**盈餘／短缺**（`balance`），同時用一個全域計數器累加每條邊上的 `|balance|`
-- **辨識**：「在**相鄰**節點間移動一個單位」、「最少移動次數」、「讓每個節點恰好有一個 X」、「總供給等於總需求」
-- **關鍵技巧**：答案是對**邊**求和，不是對節點。每條樹邊都是一座**橋**：切斷子樹上方的邊，會把樹恰好分成兩個連通元件，所以越過它的硬幣只能是 `|balance(subtree)|`。流量是*被迫*的 —— 沒有東西要搜尋或最佳化，只需要計數。
-- **例題**：LC 979（Distribute Coins in Binary Tree）
-- **核心想法**：
-  1. `balance(node) = node.val - 1 + balance(left) + balance(right)` —— 節點自己留 1 枚硬幣，子樹其餘的淨盈餘（`> 0`）或短缺（`< 0`）往上推給父節點。
-  2. 每枚越過一條邊的硬幣就是**一步**，所以子樹上方的邊花費 `|balance(subtree)|` 步 → `moves += |balance|`。
-  3. **只有大小重要**：往上流的硬幣和往下流的硬幣花費相同，所以累加時取 `abs()`。
-  4. `balance(root) == 0` 永遠成立（題目保證 `Σ node.val == n`）—— 正是這個不變量讓貪婪的邊計數成為最佳解。
-- **兩個等價的累加位置**（外面兩種都看得到，總和相同）：
-  - **由父節點收費**：回傳前 `self.moves += abs(left) + abs(right)` —— 每個非 root 節點以某人子節點的身分被收一次費。
-  - **由節點自己收費**：算出後 `self.moves += abs(current_balance)` —— 每個節點為自己通往父節點的邊付費；root 加的是 `|0| = 0`。
-- **重要提醒**：
-  - 回傳**帶正負號**的 balance，但累加**絕對值**。把 `abs(...)` 往上回傳是經典 bug：`-2` 的短缺必須保持負數，才能在父節點和兄弟的 `+2` 盈餘抵銷。
-  - `node.val - 1` 就是整個技巧 ——「每個節點恰好留一枚硬幣」把分配問題變成流量守恆問題。
-  - **不要**在 `node.val == 1` 時提早返回；局部平衡的節點仍然是子樹流量的通道。
-  - **不要**把樹攤平成無向鄰接串列再用 BFS 擴散硬幣 —— 這是常見的錯誤直覺。BFS 的前緣是*局部*的：它看不到左子樹缺 3 枚而右子樹多 3 枚，因此無法得知那 3 枚必須**往上經過 root 再往下**。它最後會沿著非最佳的路徑搬硬幣（或陷入迴圈），因為它沒有子樹淨需求的概念。
-  - 後序彙總提供的正是缺少的**全域**視角：`balance(subtree)` 是整個連通元件的淨盈餘／短缺，而且只能由下而上得到。把樹重新建模成圖，會丟掉上述的切割結構（每條邊都是橋），而正是這個結構讓每條邊的成本成為封閉形式而非搜尋。
+> **關鍵** — 每條樹邊都是一座橋：切斷子樹上方的邊，剛好分成兩邊，所以必須越過它的硬幣數是
+> `|balance(subtree)|`，其中 `balance = node.val - 1 + balance(left) + balance(right)`（自己留一枚，
+> 其餘往上推）。流量是被迫的；答案就是每條邊上 `|balance|` 的總和，沒有東西要搜尋。
+
+**歸約到**：[Template 6](#template-6-bottom-up-post-order-dfs--lc-543-) — 往上回傳一個有號的值
+（餘額），在全域累加另一個值（它的絕對值）。
 
 <!--CODE-->
 
@@ -452,41 +439,42 @@ LCA 其實是偽裝的後序：答案是往上走時，第一個在**兩側**都
 
 <!--CODE-->
 
-- **相似的經典 LC 題目**：
-  - LC 979 - Distribute Coins in Binary Tree（典型的後序餘額／流量）
+**陷阱**
+- 回傳**有號**的餘額，累加絕對值。把 `abs(...)` 往上回傳是經典 bug：`-2` 的短缺必須保持負號，
+  才能在父節點抵銷兄弟的 `+2`。
+- 不要因為 `node.val == 1` 就跳過節點：本身平衡的節點仍然要轉運子樹的流量。
+- 不要在鄰接串列上用 BFS 擴散硬幣。BFS 的前緣看不到左子樹缺 3 枚、右子樹多 3 枚；只有由下往上
+  的餘額才給得出這個全域視角。
+
+**類似題**：
+  - LC 979 - Distribute Coins in Binary Tree（後序餘額／流量的標準題）
   - LC 2477 - Minimum Fuel Cost to Report to the Capital（同樣的邊流量計數，但每條邊是 `ceil(people / seats)`）
   - LC 1443 - Minimum Time to Collect All Apples in a Tree（後序，每條有用的邊算 2）
-  - LC 1339 - Maximum Product of Splitted Binary Tree（後序子樹總和，再切斷一條邊）
-  - LC 508 - Most Frequent Subtree Sum（每棵子樹的值以後序彙總）
-  - LC 124 - Binary Tree Maximum Path Sum（往上回傳一個值，全域彙總另一個值）
-  - LC 2049 - Count Nodes With the Highest Score（子樹大小彙總 —— 見下方變化）
+  - LC 1339 - Maximum Product of Splitted Binary Tree（後序子樹和，再切一條邊）
+  - LC 508 - Most Frequent Subtree Sum（每棵子樹的值由後序往上彙總）
+  - LC 124 - Binary Tree Maximum Path Sum（往上回傳一個值，在全域彙總另一個值）
+  - LC 2049 - Count Nodes With the Highest Score（子樹大小彙總 —— 見下面的題目）
 
-<!-- 44959c0e78bf -->
-#### 變體：子樹大小彙總（移除節點後計分） — LC 2049
-- **說明**：後序 DFS 回傳每個節點的**子樹大小**，同時算出由「移除該節點後形成的各連通分量大小」推導出的每個節點的值（分數）
-- **辨識**："remove node and edges → tree splits into subtrees"、"product/sum of component sizes"、"score of a node"、"tree given as `parents[]` array"
-- **關鍵技巧**：一趟 DFS 回傳 `subtree_size = 1 + Σ child_subtree_size`。移除節點後，連通分量是 (a) 每個子節點的子樹，以及 (b) **上方那一側** = `n - subtree_size`。邊走邊彙總即可。
-- **例題**：LC 2049（Count Nodes With the Highest Score）
-- **核心想法**：
-  - 移除節點 `x` 會把樹切成 `len(children[x])` 個子節點分量，**再加上**「上方」那個分量（x 子樹以外的所有東西）。
-  - `child component size` = 每個子節點的子樹大小（由 DFS 回傳）。
-  - `parent / above component size` = `n - subtree_size(x)`（只有在 `> 0`，也就是 x 不是根節點時才算數）。
-  - `score(x) = Π(child subtree sizes) × max(1, n - subtree_size(x))` — 每個子樹大小都只算**一次**，因此是 O(n) 時間／O(n) 空間（n ≤ 10^5 時必須如此）。
-- **從 `parents[]` 建樹**：對 `i != root` 做 `children[parents[i]].append(i)`；根節點是 `parents[i] == -1` 的那個索引（通常是節點 0）。
-- **模式變體**：
-  - **一趟 DFS**（回傳大小的同時就地累乘／更新最大值）— 最精簡
-  - **兩趟**（第一趟：預先算出 `subtree_size[]` 陣列；第二趟：逐一走過節點算分數）— 把算大小和算分數拆開，比較好推理
-- **重要提醒**：
-  - 用 `max(1, ...)` 或 `if remaining > 0` 保護上方分量 — 根節點沒有「上方」分量。
-  - 用以分數為鍵的 `Counter`／dict 來數有多少節點達到最大值，或是邊走邊追蹤 `(max_score, count)`。
-  - 這個做法不限於二元樹 — 同一套 DFS 適用於任何以 `parents[]`／鄰接表給定的樹。
-- **相似的經典 LC 題目**：
-  - LC 2049 - Count Nodes With the Highest Score（移除節點計分的代表題）
-  - LC 1519 - Number of Nodes in the Sub-Tree With the Same Label（用 DFS 做子樹彙總）
-  - LC 508 - Most Frequent Subtree Sum（每個子樹的值 + 次數統計）
-  - LC 543 - Diameter of Binary Tree（由下而上的子樹指標）
-  - LC 124 - Binary Tree Maximum Path Sum（回傳子樹值，彙總全域最大）
-  - LC 834 - Sum of Distances in Tree（子樹大小 + 換根 DP，進階追問）
+<!-- 33569e884d59 -->
+#### Count Nodes With the Highest Score — LC 2049
+
+> **關鍵** — 移除節點 `x` 後，每個子節點的子樹各自成為一個分量，再加上 `x` **上方**的全部節點，
+> 大小是 `n - size(x)`。所以一趟回傳子樹大小的後序走訪就能替每個節點計分：
+> `score(x) = Π size(child) × (n - size(x))`，在根節點時省略最後一項。
+
+**歸約到**：[Template 6](#template-6-bottom-up-post-order-dfs--lc-543-) — 往上回傳子樹大小，沿途
+彙總分數（以及有幾個節點達到最佳分數）。
+
+<!--CODE-->
+
+**陷阱**
+- 根節點上方沒有分量：`n - size(root) == 0` 會把根的分數歸零。這一項是 0 時就跳過。
+- n ≤ 10⁵ 而且樹可能是一條鏈，Python 的遞迴會超過預設上限。用 `sys.setrecursionlimit` 調高，或依
+  反向 BFS 順序以迭代方式計算大小。
+- 三個約 3·10⁴ 節點分量的乘積約為 2.7·10¹³：在 Java 裡需要 `long`。
+
+**類似題** — LC 1519 *（依標籤彙總子樹）* · LC 508 *（子樹和 + 頻率）* ·
+LC 834 *（子樹大小，再換根）*
 
 <!-- 408055ccfd19 -->
 ### 模板 7：兩趟 DFS（邊界消除） — LC 1254
@@ -724,7 +712,7 @@ BFS。數區域（LC 200）→ 標記後**永不**還原
 4. **處理邊界情況**：空的、單一元素、環
 5. **必要時最佳化**：記憶化、剪枝
 
-<!-- c06e07056dd3 -->
+<!-- 0853c143652b -->
 ### 選模板的實用心法
 
 - **兩趟型問題**：如果得先消掉某些東西（邊界、邊），用模板 7
@@ -732,7 +720,7 @@ BFS。數區域（LC 200）→ 標記後**永不**還原
 - **由下而上彙總**：如果答案取決於先處理完子節點，用模板 6
 - **嘗試所有可能**：如果題目要「所有」解／組合，用模板 4（回溯）
 - **多起點且路徑重疊**：標記、遞迴，然後**還原** — 模板 9
-- **述語需要兩個節點**：如果問題沒辦法只用一個節點*講出來*（「鏡像」、「兩棵樹相同」），就把一**對**節點帶著遞迴 — 模板 1 的[成對 DFS 變化型](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree)
+- **述語需要兩個節點**：如果問題沒辦法只用一個節點*講出來*（「鏡像」、「兩棵樹相同」），就把一**對**節點帶著遞迴 — 模板 1 的[成對 DFS 變化型](#symmetric-tree--lc-101)
 - **完全對不上的題目**：在自創模式之前，先翻 [dfs_advanced.md](./dfs_advanced.md)
 
 <!-- 0e8ae5c71de4 -->

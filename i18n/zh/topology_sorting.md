@@ -212,6 +212,17 @@ O(m·n)。當格子大到遞迴可能爆堆疊，或面試官明確要求用拓�
 
 ---
 
+<!-- 85b67e93764e -->
+#### 第二種解法：記憶化 DFS
+
+不用剝層，改由上往下：「只能走到嚴格更大的值」讓網格成為 DAG，所以 `memo[cell]`（從這格出發的最長
+路徑）只算一次，也不需要 `visited` 集合 —— 嚴格不等式本身就禁止走回目前路徑上。這是大多數面試官
+最先期待的版本；上面的 Kahn 版本則避開了深達 m·n 的遞迴。
+
+<!--CODE-->
+
+<!--CODE-->
+
 <!-- 702c7a3c7877 -->
 ### 模板 10：入度特徵（答案直接從度數讀出來）⭐⭐⭐⭐
 
@@ -468,27 +479,30 @@ DFS 檢查，那是 O(n²)，n = 10⁵ 時會超時。**全域掃描**改成對�
 | 863 All Nodes Distance K in Binary Tree | Medium | 先補上父節點連結，再從某個節點**往外** BFS，方向剛好相反 |
 | 1443 Minimum Time to Collect All Apples in a Tree | Medium | 剪的依據是*內容*（子樹裡沒有蘋果），不是度數 |
 
-<!-- 8f6ae47f1610 -->
+<!-- c89398b1069f -->
 ## 決策框架
 
 <!--CODE-->
 
-> 上面的 `UnionFind` 類別就是模板；LC 547 用三種方式套用它——
-> 併查集、DFS 與 BFS——見
-> [topology_sorting_examples.md](./topology_sorting_examples.md#8-number-of-provinces--lc-547)。
+> 上面的 `UnionFind` 類別就是模板；LC 547 本身以走訪的方式解在
+> [graph.md § Template 1](./graph.md#template-1-connected-components-by-traversal--lc-547-)，
+> 以併查集的方式解在 [union_find_examples.md](./union_find_examples.md)。
 
-<!-- d6dcff876e4a -->
+<!-- 0155f7ba1696 -->
 ## 完整解題範例
 
-八道題目，依它們所編碼的相依關係形狀分組，收錄在
-**[topology_sorting_examples.md](./topology_sorting_examples.md)**：
+經典題目收錄在 **[topology_sorting_examples.md](./topology_sorting_examples.md)**，依它們練到的模板分組：
 
 | 分組 | 題目 | 練到的模板 |
 |---|---|---|
-| [課程排程與排序](./topology_sorting_examples.md#course-scheduling--ordering) | LC 210、207、269、444 | Kahn（T1）、三色 DFS（T2）、字典序（T4） |
-| [分層與平行排程](./topology_sorting_examples.md#layering--parallel-scheduling) | LC 1136 | 平行任務排程（T6） |
-| [環的偵測與安全狀態](./topology_sorting_examples.md#cycle-detection--safe-states) | LC 802 | 三色 DFS（T2） |
-| [無向圖 — 連通分量與重心](./topology_sorting_examples.md#undirected-graphs--components--centroids) | LC 310、547 | 葉節點剝除（T7）、併查集（T8） |
+| [Kahn 演算法](./topology_sorting_examples.md#kahns-algorithm-examples) | LC 210、444、269 | Kahn（T1） |
+| [平行任務排程](./topology_sorting_examples.md#parallel-task-scheduling-examples) | LC 1136 | 平行任務排程（T6） |
+| [葉節點剝除](./topology_sorting_examples.md#leaf-trimming-examples) | LC 310 | 葉節點剝除（T7） |
+
+LC 207 與 LC 802 是
+[graph.md § Template 4](./graph.md#template-4-topological-sort-kahns-bfs--lc-207-) 與
+[§ Template 5](./graph.md#template-5-three-state-dfs-cycle-detection--lc-802-) 的錨定題；LC 329 解在上面的
+[Template 9](#template-9-topological-sort--dp-on-an-implicit-dag-)。
 
 <!-- 5d1b8e4b8f13 -->
 ## 總結與面試提示

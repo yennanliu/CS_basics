@@ -593,7 +593,7 @@ After:   A → E
 - **A `parent[]` array that is already a tree** (e.g. `parent[0] = -1`, LC 4015 Weighted Sum of a
   Tree). It *looks* like a DSU array, but with no `union()` there is nothing to merge — just memoize
   `depth[x] = depth[parent[x]] + 1` and climb. Same walk as `find()` with path compression, none of
-  the bookkeeping. See [dfs_advanced.md → Template 11](./dfs_advanced.md#template-11-parent-array-tree--memoized-upward-depth--lc-4015).
+  the bookkeeping. See [dfs_advanced.md → Template 8](./dfs_advanced.md#template-8-memoized-climb-on-a-parent-array--lc-4015).
 - Need shortest paths (use Dijkstra/Floyd-Warshall)
 - Directed graph strongly connected components (use Tarjan's)
 - Small graphs where simple adjacency checks work

@@ -1,8 +1,8 @@
-<!-- 4ba421a43d78 -->
+<!-- 3475a3262ab9 -->
 # 拓撲排序 — 實戰題解
 
-> **範圍** — [topology_sorting.md](./topology_sorting.md) 背後的解題檔案庫：八題、兩種語言，依照題目編碼出來的「相依關係形狀」分組，而不是依題號排。
-> **另見**：[topology_sorting.md](./topology_sorting.md) — 母頁：十個模板、題型分類，以及這些解法所套用的決策框架；[graph.md](./graph.md) — 圖的表示法與走訪通論；[bfs.md](./bfs.md) 與 [dfs.md](./dfs.md) — Kahn 與三色模板所依賴的兩種走訪；[union_find.md](./union_find.md) — LC 547 背後的併查集結構。
+> **範圍** — [topology_sorting.md](./topology_sorting.md) 背後的題目集：每題一張 problem card，依照它歸約到的模板分組，本身不放任何模板或理論。
+> **另見**：[topology_sorting.md](./topology_sorting.md) — 這些卡片套用的十個模板、題型分類與決策流程；[graph.md](./graph.md) — LC 207 和 LC 802 在那裡是 Kahn 與三態 DFS 兩張卡的錨定題；[bfs.md](./bfs.md) 和 [dfs.md](./dfs.md) — Kahn 演算法與三色模板所依靠的兩種走訪。
 
 <!-- ce782da61195 -->
 ## LeetCode 題目清單
@@ -10,138 +10,123 @@
 - [Topological Sort](https://leetcode.com/problem-list/topological-sort/)
 - [Graph](https://leetcode.com/problem-list/graph/)
 
-<!-- a26c1e15710b -->
+<!-- 1614991528b3 -->
 ## 總覽
 
-這裡是 [topology_sorting.md](./topology_sorting.md) 的長尾。母頁負責十個模板與決策框架，這一頁負責*套用*它們的題目，免得模板被 1,200 行的解法淹沒。
+經典的依賴順序題，每題一張 problem card，放在它歸約到的
+[topology_sorting.md](./topology_sorting.md) 模板底下。排序本身幾乎從來不是難處，
+難處是決定節點和邊**是什麼**：課程、字母、序列裡的數字、樹的葉子。[topology_sorting.md](./topology_sorting.md)
+放模板；這份放題目。
 
-<!-- 513973d6b59f -->
-### 關鍵性質
-- **複雜度**：以下每個解法都是 O(V + E)，除非該解自己的註解另有說明
-- **核心想法**：難的幾乎從來不是排序本身，而是決定節點與邊到底是什麼；這也是為什麼這裡按相依關係的形狀分組
-- **什麼時候用**：等母頁的決策框架告訴你這題要用哪個模板之後
+<!-- f1269ad9c3fc -->
+## 索引
 
-<!-- 2fa8c6980a47 -->
-## 課程排程與排序
+| LC | 題目 | 歸約到 | 難度 |
+|---|---|---|---|
+| 210 | [Course Schedule II](#course-schedule-ii--lc-210-) | [Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) — Kahn 演算法，回傳順序 | Medium |
+| 444 | [Sequence Reconstruction](#sequence-reconstruction--lc-444) | [Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) — Kahn 演算法，佇列永遠不會同時有兩個 | Medium |
+| 269 | [Alien Dictionary](#alien-dictionary--lc-269-) | [Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) — 對相鄰單字讀出的邊跑 Kahn | Hard |
+| 1136 | [Parallel Courses](#parallel-courses--lc-1136) | [Template 6](./topology_sorting.md#template-6-parallel-task-scheduling) — Kahn 的一層 = 一個學期 | Medium |
+| 310 | [Minimum Height Trees](#minimum-height-trees--lc-310-) | [Template 7](./topology_sorting.md#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees-) — 剝葉子 | Medium |
 
-<!-- a702090ffa00 -->
-### 1) Course Schedule II — LC 210 ⭐⭐⭐⭐⭐
+**在別份解過** — 一題一個家，所以這些只是指標：
 
+| LC | 題目 | 解在 |
+|---|---|---|
+| 207 | Course Schedule | [graph.md § Template 4](./graph.md#template-4-topological-sort-kahns-bfs--lc-207-) |
+| 802 | Find Eventual Safe States | [graph.md § Template 5](./graph.md#template-5-three-state-dfs-cycle-detection--lc-802-) |
+| 547 | Number of Provinces | [graph.md § Template 1](./graph.md#template-1-connected-components-by-traversal--lc-547-)（走訪）；[union_find_examples.md](./union_find_examples.md)（union-find） |
+| 329 | Longest Increasing Path in a Matrix | [topology_sorting.md § Template 9](./topology_sorting.md#template-9-topological-sort--dp-on-an-implicit-dag-) |
 
-<!--CODE-->
+<!-- c1ebaf3f7e3f -->
+## Kahn 演算法範例
 
-<!--CODE-->
+<!-- 4312441843a7 -->
+### Course Schedule II — LC 210 ⭐⭐⭐⭐⭐
 
-<!-- 3ad00004a1e0 -->
-### 2) Course Schedule — LC 207 ⭐⭐⭐⭐⭐
+> **關鍵** — 一門課只有在它所有先修課都已經彈出之後才會彈出，所以彈出的順序**就是**合法的課表。
+> 環會讓其中的課入度永遠大於 0，所以順序會變短：`len(order) < numCourses` 代表排不出課表。
 
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- fe210e75ae52 -->
-### 3) Alien Dictionary — LC 269 ⭐⭐⭐⭐
-
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 333f47d0c122 -->
-### 4) Sequence Reconstruction — LC 444
-
-
-<!--CODE-->
-
-<!-- 197a91d8afbc -->
-## 分層與平行排程
-
-<!-- e80926ca5726 -->
-### 5) Parallel Courses — LC 1136
-
-<!--CODE-->
-
-<!-- a237f44ca27e -->
-## 環偵測與安全狀態
-
-<!-- 0023405b4c52 -->
-### 6) Find Eventual Safe States — LC 802
-
-<!--CODE-->
-
-<!-- 7f0839742018 -->
-## 無向圖 — 連通分量與重心
-
-<!-- 0c625fda0b21 -->
-### 7) Minimum Height Trees — LC 310
-
+**歸約到**：[Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) — 回傳順序而不是是／否的 Kahn 演算法（只問是／否的是 LC 207，見 [graph.md § Template 4](./graph.md#template-4-topological-sort-kahns-bfs--lc-207-)）。
 
 <!--CODE-->
 
 <!--CODE-->
 
-**核心邏輯說明：**
+**陷阱**
+- `[a, b]` 的意思是 *b 在 a 之前*：邊是 `b → a`。方向弄反會回傳反過來的順序，它照樣通過環檢查，
+  卻會讓每個順序測試失敗。
+- 沒有先修、也沒人依賴它的課仍然是節點：佇列要從 `range(numCourses)` 播種，不要從 `graph` 的 key。
+- DFS 的替代做法（沿 `course → prerequisite` 邊做後序）也行。它的三態環檢查見
+  [graph.md § Template 5](./graph.md#template-5-three-state-dfs-cycle-detection--lc-802-)。
 
-1. **剝葉子為什麼行得通：**
-   - 樹的重心當根時，會讓樹高最小
-   - 一層一層把外圍（葉子）拔掉，就會往中心收斂
-   - 就像從外往內剝洋蔥
+<!-- c367078d0ee0 -->
+### Sequence Reconstruction — LC 444
 
-2. **和標準拓撲排序的關鍵差異：**
-   - **圖的型態**：無向樹 vs 有向無環圖（DAG）
-   - **度數追蹤**：總度數 vs 入度
-   - **葉子的定義**：degree = 1 vs in-degree = 0
-   - **目標**：找中心 vs 找線性順序
-   - **結果**：1～2 個節點 vs 全部節點的排列
+> **關鍵** — `nums` 是**唯一**最短超序列，恰好等於拓撲順序唯一；而順序唯一，恰好等於 Kahn 的佇列
+> **從來不會同時有超過一個節點**。兩個節點同時就緒，就代表有兩種合法順序。
 
-3. **為什麼重心最多只有 2 個：**
-   - 樹的直徑為偶數 → 2 個中心節點
-   - 樹的直徑為奇數 → 1 個中心節點
-   - 這些節點讓「到任一葉子的最大距離」最小
-
-**核心想法 — BFS／逐層剝除（剝洋蔥）：**
-- 把樹想成一顆洋蔥，MHT 的根就在**最內層**
-- 從最外圈的葉子（degree = 1）開始，一層一層剝掉
-- 每剝掉一層，就會露出新的葉子（度數掉到 1 的鄰居）
-- 剩下 ≤ 2 個節點時停下 — 那就是**重心**
-- 這是**從葉子往內的多源 BFS**，不是從單一根節點出發的 BFS
+**歸約到**：[Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) — Kahn 演算法，外加檢查佇列是否唯一，並在每次彈出時和 `nums` 比對。
 
 <!--CODE-->
 
-**模式辨識 — 什麼時候用剝葉子：**
+**陷阱**
+- 同一條邊只算一次。否則 `[[1,2],[1,2]]` 會把 `in_degree[2]` 加到 2，2 永遠不會被釋放。
+- 沒有出現在任何序列裡的值，一開始入度就是 0，所以它會和真正的第一個元素同時在佇列裡，檢查就失敗。
+  這正是對的答案：沒有任何資訊固定它的位置。
 
-| 訊號 | 例子 |
-|--------|---------|
-| 找樹的中心／重心 | LC 310 |
-| 讓根到任一葉子的最大距離最小 | LC 310 |
-| 無向樹 + 「最佳的根」 | LC 310、樹半徑 |
-| 從外往內一層層剝 | LC 310、洋蔥結構 |
-| 不是 DAG、不是有向邊 | 用這招取代標準拓撲排序 |
+<!-- bcfdbebfbf4a -->
+### Alien Dictionary — LC 269 ⭐⭐⭐⭐
 
-**幾個要記住的觀察：**
-- 一棵樹最多有 **2 個重心**：直徑為偶數 → 2 個中心，直徑為奇數 → 1 個中心
-- 暴力法（從每個節點跑 BFS）是 O(N²) — 輸入一大就 TLE
-- 剝葉子讓每個節點與每條邊都只處理一次，做到 O(N)
-- 鄰接表可以用 `Set<Integer>` 做到 O(1) 移除，或用 `int[] degree` 陣列（更單純，推薦）
+> **關鍵** — 一對相鄰單字唯一提供的順序資訊，在它們**第一個不同的字母**。後面的字母什麼都沒說。
+> 每對相鄰單字讀出一條邊，再對字母做拓撲排序。唯一沒有任何順序能解釋的輸入，是某個單字後面接著它自己的
+> 真前綴（`"abc"` 在 `"ab"` 之前）。
 
-**經典的相似題：**
+**歸約到**：[Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) — 先從單字列表建圖，再跑 Kahn 演算法。
 
-| LC # | 題目 | 關聯 |
-|------|---------|------------|
-| 310 | 最小高度樹 | 剝葉子的本體題 |
-| 207 | 課程表 | Kahn 演算法 — DAG 上同一套 BFS + 度數模式 |
-| 210 | 課程表 II | Kahn 演算法 — 額外輸出順序 |
-| 834 | 樹中距離之和 | 樹重心／換根 DP |
-| 1245 | 樹的直徑 | 找出直徑 → 重心就在中點 |
-| 2603 | 收集樹中金幣 | 用剝葉子移除不必要的節點 |
-| 1377 | T 秒後青蛙的位置 | 從根開始在樹上跑 BFS |
-| 863 | 二元樹中所有距離為 K 的節點 | 從樹中某個節點跑 BFS |
+<!--CODE-->
 
-<!-- d7731e1e1c48 -->
-### 8) Number of Provinces — LC 547
+**陷阱**
+- 在第一個不同的字母就停（`break`）。比較每個位置會加進假的邊。
+- 前綴的情況只有在迴圈**沒有**找到差異時才偵測得到；這就是 `for … else` 的用途。`["abc", "ab"]` 必須回傳 `""`。
+- 沒出現在任何邊裡的字母仍然屬於答案：讀邊之前，先為每個單字的每個字母建立節點。
 
+<!-- eeb7fece3b7a -->
+## 平行任務排程範例
+
+<!-- 4455dcc16bcc -->
+### Parallel Courses — LC 1136
+
+> **關鍵** — 每學期把所有能修的課都修掉是最佳的，所以 Kahn BFS 的一**層**就是一個學期，答案就是層數，
+> 也就是 DAG 裡最長的鏈。環會讓某些課修不到：回傳 −1。
+
+**歸約到**：[Template 6](./topology_sorting.md#template-6-parallel-task-scheduling) — 逐層的 Kahn 演算法，每個任務都花一單位時間。
+
+<!--CODE-->
+
+**陷阱**
+- 進入每層迴圈前先凍結 `len(queue)`。學期中解鎖的課會加到同一個 deque，必須等下一學期。
+- 若每學期最多只能修 `k` 門（LC 1494），逐層 greedy 就不再最佳；那題是 bitmask DP。
+
+<!-- 71c6c477786f -->
+## 剝葉子範例
+
+<!-- f487980b1937 -->
+### Minimum Height Trees — LC 310 ⭐⭐⭐⭐
+
+> **關鍵** — 高度最小的根，是樹上最長路徑的**中心**，所以一層一層剝掉葉子，直到剩下最多兩個節點。
+> 一條路徑的中心有一個或兩個，所以答案永遠是一個或兩個節點。每個節點只被剝一次，所以是 O(n)；
+> 從每個節點各跑一次 BFS 則是 O(n²)。
+
+**歸約到**：[Template 7](./topology_sorting.md#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees-) — 在無向樹上做 Kahn 式的剝除，以「度數為 1」作為就緒條件。
 
 <!--CODE-->
 
 <!--CODE-->
+
+**陷阱**
+- `n == 1` 沒有邊，也沒有度數為 1 的節點；少了這個防護，答案會是 `[]`。
+- 停在 `remaining > 2`，不是「佇列空了」。剝過兩個節點就把中心刪掉了。
+- 每輪剝掉一整層（凍結大小）。一次剝一片葉子，可能讓樹的一側比另一側剝得快，最後停在偏離中心的地方。
+
+**相似題** — LC 2603（先剝掉沒有硬幣的葉子）· LC 1245（樹的直徑：它的中點就是中心）

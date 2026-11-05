@@ -317,76 +317,10 @@ def detect_arbitrage(n, exchange_rates):
 
 ## Algorithm Comparison
 
-### Bellman-Ford vs Dijkstra vs Floyd-Warshall
-
-| Feature | Bellman-Ford | Dijkstra | Floyd-Warshall |
-|---------|--------------|----------|----------------|
-| **Problem Type** | Single-source | Single-source | All-pairs |
-| **Time Complexity** | O(V·E) | O((V+E) log V) | O(V³) |
-| **Space Complexity** | O(V) | O(V) | O(V²) |
-| **Negative Weights** | ✅ Yes | ❌ No | ✅ Yes |
-| **Negative Cycles** | ✅ Detects | N/A | ✅ Detects |
-| **Implementation** | Simple (2 loops) | Moderate (priority queue) | Very simple (3 loops) |
-| **Early Termination** | ✅ Possible | ✅ Can stop at target | ❌ Must complete |
-| **Average Performance** | Slow for dense graphs | Fast for sparse graphs | Good for small graphs |
-| **Best Graph Type** | Any (especially with negatives) | Sparse, non-negative | Dense, small |
-| **Optimization** | SPFA variant | A* with heuristic | None practical |
-
-### When to Use Each Algorithm
-
-```text
-Shortest Path Algorithm Selection:
-
-1. Does graph have negative edge weights?
-   ├── YES → Continue to 2
-   │   ├── Single-source? → Use Bellman-Ford
-   │   ├── All-pairs? → Use Floyd-Warshall
-   │   └── Need cycle detection? → Use Bellman-Ford
-   │
-   └── NO → Continue to 3
-
-2. Single-source or all-pairs?
-   ├── Single-source → Use Dijkstra
-   │   └── Very sparse graph? → Consider SPFA
-   │
-   └── All-pairs → Continue to 4
-
-3. What's the graph size?
-   ├── Small (V ≤ 400) → Floyd-Warshall
-   └── Large → Run Dijkstra V times
-
-4. Special considerations:
-   ├── Need to detect negative cycles? → Bellman-Ford or Floyd-Warshall
-   ├── Edge count constraint (K edges)? → Modified Bellman-Ford
-   ├── Unweighted graph? → BFS
-   └── Tree structure? → DFS/BFS
-```
-
-### Performance Comparison
-
-**Example: Graph with V=1000 vertices**
-
-| Graph Density | Edges | Bellman-Ford | Dijkstra | SPFA (avg) |
-|---------------|-------|--------------|----------|------------|
-| Sparse | 2,000 | 2,000,000 ops | ~20,000 ops ⚡ | ~40,000 ops |
-| Medium | 10,000 | 10,000,000 ops | ~100,000 ops ⚡ | ~200,000 ops |
-| Dense | 100,000 | 100,000,000 ops | ~1,000,000 ops ⚡ | ~2,000,000 ops |
-
-**Note**: Dijkstra is typically 50-100x faster than Bellman-Ford for non-negative weights.
-
-### Algorithm Selection Examples
-
-| Scenario | Best Algorithm | Why |
-|----------|----------------|-----|
-| GPS navigation (road network) | **Dijkstra** | Non-negative weights, sparse graph |
-| Currency exchange with fees | **Bellman-Ford** | Negative weights possible |
-| Arbitrage detection | **Bellman-Ford** | Need negative cycle detection |
-| Network delay time | **Dijkstra** | Non-negative, single-source |
-| Course prerequisites (all pairs) | **Floyd-Warshall** | Small graph, transitive closure |
-| Flight with at most K stops | **Bellman-Ford (K iterations)** | Edge count constraint |
-| Internet routing (OSPF) | **Dijkstra** | Non-negative costs |
-| Forex trading opportunities | **Bellman-Ford** | Detect arbitrage cycles |
-
+The comparison with the other shortest-path algorithms — complexity, negative weights, early exit,
+path reconstruction, and which one a given situation calls for — lives in one place:
+[shortest_path_comparison.md § Side-by-Side Comparison](./shortest_path_comparison.md#side-by-side-comparison)
+and [§ Scenario → Algorithm](./shortest_path_comparison.md#scenario--algorithm). The one-line version for this sheet: reach for Bellman-Ford when a weight can be negative, when the path may use at most K edges, or when you must detect a negative cycle; otherwise Dijkstra is faster.
 
 ## LC Examples
 
@@ -983,15 +917,6 @@ for each edge (u, v, w):
         return "Negative cycle exists"
 ```
 
-### Key Differences from Other Algorithms
-
-| Aspect | Bellman-Ford | Dijkstra | Floyd-Warshall |
-|--------|--------------|----------|----------------|
-| **Edge Relaxation** | All edges, V-1 times | Only shortest distance nodes | All pairs via intermediate |
-| **Data Structure** | Simple array | Priority queue | 2D matrix |
-| **Order Matters** | No (relaxes all edges) | Yes (greedy selection) | Yes (k loop outer) |
-| **Parallelizable** | ✅ Yes (within iteration) | ❌ No (sequential) | ✅ Yes (with modifications) |
-
 ### Common Patterns & Tricks
 
 #### **Pattern 1: Negative Cycle Detection**
@@ -1104,14 +1029,4 @@ for _ in range(n - 1):
 
 ### Quick Decision Matrix
 
-| Your Situation | Choose |
-|----------------|--------|
-| Single-source, no negative weights | **Dijkstra** ⚡ |
-| Single-source, negative weights | **Bellman-Ford** ✅ |
-| Need to detect negative cycles | **Bellman-Ford** ✅ |
-| At most K edges/hops | **Bellman-Ford (K iterations)** ✅ |
-| All-pairs, small graph | **Floyd-Warshall** |
-| All-pairs, large graph | **Dijkstra V times** or **Johnson's** |
-| Unweighted graph | **BFS** ⚡⚡ |
-| Currency arbitrage | **Bellman-Ford** ✅ |
-| Real-time navigation | **Dijkstra** or **A*** ⚡ |
+See [shortest_path_comparison.md § Scenario → Algorithm](./shortest_path_comparison.md#scenario--algorithm).

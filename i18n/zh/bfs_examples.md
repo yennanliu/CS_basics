@@ -1,8 +1,8 @@
-<!-- 6939ed594356 -->
+<!-- bd2f36166f98 -->
 # BFS — 實戰題解
 
-> **範圍** — BFS 的解題實作庫：網格、狀態空間、樹的改寫與剝葉子這幾類題目，每題一個標準解，另外附上 LC 994 關於「時間該在哪裡加一」的完整討論 —— 這裡不教任何新模板。
-> **另見**：[bfs.md](./bfs.md) — 這裡每個範例所實例化的標準模板，也是所有 `Pattern N` 引用的去處；[bfs_advanced.md](./bfs_advanced.md) — 比較少見的 BFS 變形（雙向、0-1 雙端佇列、路線層級、列舉所有最短路徑）。
+> **範圍** — BFS 的題目集：每一題經典的逐層、多源、狀態空間與「把樹當成圖」的題目各一張 problem card，各自歸在它所歸約到的 [bfs.md](./bfs.md) 模板之下 —— 這裡不教任何自己的模板。
+> **另見**：[bfs.md](./bfs.md) — 這裡每張 card 所歸約到的模板；[bfs_advanced.md](./bfs_advanced.md) — 比較少見的 BFS 變形（雙向、0-1 雙端佇列、以路線為節點、列舉所有最短路徑、擴充狀態）。
 
 <!-- c78b67f28ffa -->
 ## LeetCode 題目清單
@@ -10,434 +10,263 @@
 - [Breadth-First Search](https://leetcode.com/problem-list/breadth-first-search/)
 - [Graph Theory](https://leetcode.com/problem-list/graph/)
 
-<!-- 72a8f532678b -->
+<!-- 0664940a07b6 -->
 ## 總覽
 
-這是從 [bfs.md](./bfs.md) 拆出來的範例庫。章節編號（`§2-6` … `§2-18`）是主表和 [bfs_advanced.md](./bfs_advanced.md) 引用時用的編號，所以刻意維持不變、不重新編號 —— 中間有缺號代表那個範例已經升格成主表裡的模板。
+經典的 BFS 題目，依每題所歸約到的 [bfs.md](./bfs.md) 模板分組，順序和那份文件的模板順序相同。
+每張 card 只講它在模板之上多加的那一步；模板本身一點就到。在別份文件裡解過的題目，這裡只在
+Index 留一列指標。Template 3（帶方向陣列的格子 BFS）在這裡沒有自己的 card：它的格子題不是從
+很多格同時出發（Template 4），就是錨定題 LC 1091 本身。
 
-| 分組 | 題目 |
-|---|---|
-| 層序走訪的變形 | LC 662, LC 958 |
-| 層數計算與計時 | LC 994 |
-| 狀態空間 BFS | LC 752, LC 773, LC 909 |
-| 網格 BFS | LC 130, LC 286, LC 417 |
-| 圖 BFS | LC 207, LC 279, LC 310 |
-| 樹 BFS | LC 742, LC 116 / 117, LC 623, LC 863 |
+<!-- 23e39ab76a11 -->
+## 索引
 
-<!-- 1cac68010dbf -->
-## 層序走訪的變形
+| LC | 題目 | 歸約到 | 難度 |
+|---|---|---|---|
+| 116 / 117 | [Populating Next Right Pointers in Each Node](#populating-next-right-pointers-in-each-node--lc-116--117) | [bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) | Medium |
+| 958 | [Check Completeness of a Binary Tree](#check-completeness-of-a-binary-tree--lc-958) | [bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) | Medium |
+| 623 | [Add One Row to Tree](#add-one-row-to-tree--lc-623) | [bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) | Medium |
+| 662 | [Maximum Width of Binary Tree](#maximum-width-of-binary-tree--lc-662) | [bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) | Medium |
+| 909 | [Snakes and Ladders](#snakes-and-ladders--lc-909) | [bfs § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-) | Medium |
+| 207 | Course Schedule | [graph § Template 4](./graph.md#template-4-topological-sort-kahns-bfs--lc-207-) — 在那裡解 | Medium |
+| 286 | [Walls and Gates](#walls-and-gates--lc-286) | [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) | Medium |
+| 130 | [Surrounded Regions](#surrounded-regions--lc-130) | [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) | Medium |
+| 994 | Rotting Oranges | [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) — 錨定題，在那裡解 | Medium |
+| 417 | Pacific Atlantic Water Flow | 在 [dfs_examples.md](./dfs_examples.md) 解 | Medium |
+| 310 | Minimum Height Trees | 在 [topology_sorting_examples.md](./topology_sorting_examples.md) 解（剝葉子） | Medium |
+| 752 | [Open the Lock](#open-the-lock--lc-752) | [bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) | Medium |
+| 279 | [Perfect Squares](#perfect-squares--lc-279) | [bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) | Medium |
+| 773 | [Sliding Puzzle](#sliding-puzzle--lc-773) | [bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) | Hard |
+| 742 | [Closest Leaf in a Binary Tree](#closest-leaf-in-a-binary-tree--lc-742) | [bfs § Template 6](./bfs.md#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) | Medium |
+| 863 | All Nodes Distance K in Binary Tree | [bfs § Template 6](./bfs.md#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) — 錨定題，在那裡解 | Medium |
 
-> 兩者都是 [bfs.md](./bfs.md) 裡 **Pattern 2**（逐層 BFS）的延伸。
+<!-- 5af2ef82078d -->
+## 逐層 BFS 的題目
 
-<!-- 251dd8061b43 -->
-### 變形 A：讓每個節點帶著**堆積索引** —— LC 662（Maximum Width of Binary Tree）
+<!-- 3513cef84f17 -->
+### Populating Next Right Pointers in Each Node — LC 116 / 117
 
-> **變化點**：佇列裡放的是 `(node, index)`，索引為 `i` 的節點，子節點是 `2i` / `2i+1`。一層的寬度 = `lastIndex - firstIndex + 1`，這樣就把中間 `null` 的空隙一起算進去，卻不用真的存它們。每一層都要減掉該層第一個索引做**正規化**，否則深度約 60 的歪斜樹會讓索引把 `int` 撐爆。
+> **關鍵** — `next` 是「同一層裡在我右邊的節點」，正好就是逐層 BFS 彈出一層的順序：把每個彈出的
+> 節點接到下一個彈出的節點，一層的最後一個節點維持 `next = None`。完全沒用到樹的形狀，所以同一份
+> 程式碼同時解 LC 116（完美二元樹）與 LC 117（任意樹）。
+
+**歸約到**：[bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) — 在一層之內多帶一個 `prev` 指標。
+
+<!--CODE-->
+
+追問要 O(1) 額外空間。在**完美**二元樹（LC 116）上，剛接好的那一層本身就是一條鏈結串列，所以
+順著 `next` 走它，就能接好下一層 —— 複雜度不同，所以保留：
+
+<!--CODE-->
+
+**陷阱**
+- O(1) 版本假設每個節點都有兩個子節點；在 LC 117 上會去存取不存在的子節點。LC 117 的 O(1) 版本
+  要改成每層一個 dummy head。
+- `prev` 每一層開頭都要重設，否則上一層的最後一個節點會接到下一層的第一個節點。
+
+**相似題** — LC 199（每層最後一個節點） · LC 102（基本迴圈）
+
+<!-- 8255d4da9400 -->
+### Check Completeness of a Binary Tree — LC 958
+
+> **關鍵** — 連 `None` 子節點也入列。佇列這時讀出來就是樹的陣列表示法，而完全二元樹的所有 `None`
+> 都在尾端：一旦彈出過 `None`，之後再出現任何真的節點就代表中間有洞。
+
+**歸約到**：[bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) — 不需要逐層迴圈，而且 `None` 子節點留在佇列裡。
+
+<!--CODE-->
+
+**陷阱**
+- 只檢查「除了最後一層都是滿的」會漏掉 `[1,2,3,4,5,null,7]`：最後一層中間有洞。
+- 逐層序列化（LC 297）寫出 `null` 標記也是同樣的理由；這裡就是把那個佇列讀回來。
+
+**相似題** — LC 297（用 `null` 標記序列化） · LC 222（計算完全二元樹的節點數）
+
+<!-- ecfe13a8587d -->
+### Add One Row to Tree — LC 623
+
+> **關鍵** — 要改的是第 `depth - 1` 層，也就是子指標會變的那個**父層**。逐層 BFS 走到佇列剛好裝著
+> 那一層，就幫其中每個節點掛兩個新子節點，並把舊的子樹掛在**外側**。`depth == 1` 沒有父層，所以
+> 新節點直接當根。
+
+**歸約到**：[bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) — 停在某一層把它重接，而不是繼續往下走。
+
+<!--CODE-->
+
+帶著深度往下走的 DFS 比較短，空間是 O(h) 而不是 O(w) —— 因為這點而保留：
+
+<!--CODE-->
+
+**陷阱**
+- 停在 `cur_depth == depth` 已經晚了一層：要改的指標在父層上。
+- 把舊子樹掛在內側（`new_left.right = old_left`）會讓子樹左右鏡像。
+- 重接之後還繼續 BFS，會走進新建的 `val` 節點。
+- 歪斜樹上 `depth` 可達 10⁴，超過 Python 預設的遞迴上限；BFS 寫法沒有這個限制。
+
+**相似題** — LC 199（同樣的逐層迴圈） · LC 226（先存再換子指標）
+
+<!-- 3f65cc2022f4 -->
+### Maximum Width of Binary Tree — LC 662
+
+> **關鍵** — 給每個節點它的 heap 索引（`i` 的子節點是 `2i` 與 `2i + 1`）；一層的寬度是
+> `last - first + 1`，這樣就把 `None` 的空隙算進去卻不用存它們。每一層的索引都要減掉該層第一個
+> 索引，否則深度約 60 的歪斜樹會讓 `int` 溢位。
+
+**歸約到**：[bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) — 佇列裡放 `(node, index)`。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- fd61464f5bf6 -->
-### 變形 C：連 `null` 子節點也放進佇列 —— LC 958（Check Completeness of a Binary Tree）
-
-> **變化點**：把 `null` 也 push 進去，佇列就成了這棵樹如假包換的陣列表示法。完全二元樹的 `null` 全部集中在尾端，所以規則是：一旦 pop 到 `null`，後面就不可以再出現非 `null`。這也正是層序**序列化**的形狀（LC 297 / LC 449 寫出 `null` 標記就是為了這個原因）。
+前序 DFS 不需要佇列：它最先碰到每一層最左邊的節點，所以記住那個索引，之後同一層的節點都從它
+量起 —— 空間是 O(h) 而不是 O(w)：
 
 <!--CODE-->
 
-<!-- b935708af543 -->
-## 層數計算與計時
+**陷阱**
+- 沒有重新歸零，Java 在 3,000 個節點的鋸齒鏈上會溢位；Python 不會溢位，但整數會長到幾千個位元。
+  DFS 寫法沒辦法每層歸零，所以在 Java 裡要用 `long`，或減掉該深度的第一個索引。
+- 只數每層非空節點，得到的是該層的節點數，不是寬度。
 
-<!-- 396939dc78de -->
-### 時間／距離該在哪裡加一：BFS 這一層的開頭還是結尾
+**相似題** — LC 958（同樣用 heap 索引看樹） · LC 102
 
-逐層 BFS 常見的 bug 來源就是**時間／距離的遞增放在哪裡**。兩種寫法都對，但取捨不同。
+<!-- 695b4c939044 -->
+## 圖 BFS 的題目
 
-<!-- 9bdce0d7fde5 -->
-#### 兩種寫法
+<!-- 5ca41e38698e -->
+### Snakes and Ladders — LC 909
 
-**寫法 A：在這一層的開頭遞增（處理之前）**
-<!--CODE-->
+> **關鍵** — 棋盤就是格子 `1 … n²` 上的一張圖：從格子 `s` 各有一條邊連到 `s + 1 … s + 6`，若落點
+> 有蛇或梯子就改道。每擲一次都是一步，所以普通 BFS 給出最少擲骰次數。唯一的功夫是把格子編號轉成
+> 蛇行排列的 `(row, col)`。
 
-**寫法 B：在這一層的結尾遞增（而且只在真的做了事情時）**
-<!--CODE-->
-
-<!-- e3f8edf21026 -->
-#### 詳細比較
-
-| 面向 | 寫法 A（開頭） | 寫法 B（結尾 + 旗標） |
-|--------|------------------------|---------------------------|
-| **何時遞增** | 處理這一層之前 | 處理完之後，且只在做了事情時 |
-| **要多加 while 條件嗎？** | 要：`freshOrange > 0` | 不用，旗標會處理掉邊界情況 |
-| **風險** | 漏了條件就會多算 | 旗標用對就沒有 |
-| **程式複雜度** | 迴圈本體比較單純 | 要多維護一個布林旗標 |
-| **什麼時候回傳 0？** | 沒有新鮮橘子時自然回 0 | 自然而然：沒做事就不遞增 |
-
-<!-- b3d7d24416b0 -->
-#### 為什麼寫法 A 的 while 條件需要 `freshOrange > 0`
-
-**問題出在哪：** 如果只檢查 `!queue.isEmpty()`，那些已經腐爛、身邊也沒東西可感染的格子也會被處理，時間就多加了。
-
-<!--CODE-->
-
-**關鍵洞見：** 當 `freshOrange == 0`，代表所有橘子**早就**被感染（標記成 2）了。佇列裡可能還留著腐爛的格子，但它們身邊沒有新鮮的鄰居可以感染。處理它們只是白做工，還會多算時間。
-
-<!--CODE-->
-
-<!-- 8d0004fa18aa -->
-#### 為什麼寫法 B 天生就處理好了邊界情況
-
-<!--CODE-->
-
-**為什麼有效：**
-- 就算佇列裡還有東西（先前被感染的格子）
-- 只要它們沒有感染到任何**新**格子 → `rottedThisMinute = false`
-- 不遞增 → 不會多算
-
-<!-- 599ee8a30329 -->
-#### 具體例子：LC 994 Rotting Oranges —— 時間該在哪裡加一
-
-<!--CODE-->
-
-**寫法 A 的追蹤（在開頭 time++，並帶 `freshOrange > 0`）：**
-
-<!--CODE-->
-
-**如果把 while 條件裡的 `freshOrange > 0` 拿掉會怎樣？**
-
-<!--CODE-->
-
-<!-- 06b37e8b8f67 -->
-#### 決策指南：該用哪一種寫法？
-
-**以下情況用寫法 A（開頭 time++）：**
-- ✅ 你有一個明確的「完成」條件（例如 `freshOrange == 0`）
-- ✅ 你想要迴圈本體單純一點，不想多維護旗標
-- ✅ 題目語意是：「時間先過，然後感染才擴散」
-- ⚠️ while 迴圈裡**一定**要加上完成條件！
-
-**以下情況用寫法 B（結尾 time++ + 旗標）：**
-- ✅ 沒有明確的完成條件可用
-- ✅ 想確保絕對不會多算
-- ✅ 題目語意是：「感染先擴散，然後時間才過」
-- ✅ 有多種不同的「做了事情」需要追蹤
-
-<!-- 923eb75a702f -->
-#### Rotting Oranges 解法的常見寫法
-
-| 版本 | 策略 | 關鍵程式碼 |
-|---------|----------|----------|
-| V0, V0-0-1 | 開頭 time++ | `while (!q.isEmpty() && freshOrange > 0) { time++; ... }` |
-| V0-0-2, V0-1, V0-4 | 結尾 time++ + 旗標 | `if (rottedThisMinute) time++;` |
-| V1-1 | 結尾 time++（不用旗標） | `while (fresh > 0 && !q.isEmpty()) { ... } time++;` |
-
-<!-- 75a95d7204d6 -->
-#### 小結 —— 時間加在一層的開頭還是結尾
-
-| 情境 | 建議寫法 |
-|----------|---------------------|
-| 有完成計數器（新鮮橘子、收集到的鑰匙） | 寫法 A，把計數器放進 while 條件 |
-| 沒有完成計數器 | 寫法 B，用布林旗標 |
-| 想要最不容易寫錯的程式碼 | 寫法 B（比較難搞砸） |
-| 想要效率最好的程式碼 | 寫法 A（沒有旗標的額外負擔） |
-
-> **經驗法則：** 如果你把 `time++` 放在**開頭**，while 迴圈裡就**必須**有提早離開的條件。否則就把 `time++` 放在**結尾**並搭配旗標。
-
----
-
-<!-- 598a9bfd2a3c -->
-## LC 範例
-
-<!-- 2f89a1d6aed6 -->
-### 2-6) Open the Lock（LC 752）—— 在狀態空間上做 BFS
-> 把每一種鎖的組合當成一個節點；用 BFS 找出轉到目標所需的最少次數。
-
-<!--CODE-->
-
-<!-- c8296788b7a2 -->
-#### 變形：Sliding Puzzle（LC 773）—— 同樣的狀態空間 BFS，只是把盤面壓平成字串
-
-> **變化點**：骨架跟 LC 752 一模一樣 —— 只有*狀態編碼*和*鄰居規則*不同。把 2×3 的盤面序列化成 `"123450"`，並預先算好空格（`'0'`）可以跟哪些索引交換，這樣「產生鄰居」就變成查表，而不是二維邊界計算。目標是 `"123450"`；到不了就回傳 `-1`（6! = 720 種排列裡只有一半可達）。
+**歸約到**：[bfs § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-) — 邊由骰子算出來，而不是來自鄰接串列。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!--CODE-->
+**陷阱**
+- 要標記的是走完蛇或梯子之後**停下來**的格子，不是骰子顯示的格子；梯子的起點不是你會停留的地方。
+- 每擲一次只走一段蛇或梯子：落在一條梯子的終點、而那裡剛好是另一條梯子的起點，並不會連著走。
 
-**帶走的重點**：LC 752、LC 773 和 LC 433 是同一個模板 —— *把狀態雜湊起來、定義一個 `neighbors(state)` 函式、數 BFS 的層數*。面試的價值在於看出「一個拼圖／單字／密碼鎖其實是一張隱含的圖」。
+**相似題** — LC 1971（模板的錨定題） · LC 1306（把 jump game 當成圖）
 
-<!-- ef9b568dc681 -->
-### 2-7) Surrounded Regions（LC 130）—— 從邊界開始 BFS
-> 從所有邊界上的 'O' 開始 BFS；把碰得到的標成安全，其餘的翻掉。
+<!-- 8b1ada0b3e68 -->
+## 多源 BFS 的題目
 
-<!--CODE-->
+<!-- 1b2593ecdb84 -->
+### Walls and Gates — LC 286
 
-<!-- 5f367dac42d3 -->
-### 2-8) Course Schedule（LC 207）—— BFS 拓撲排序（Kahn）
-> 建入度陣列；BFS 迭代地處理入度為零的節點。
+> **關鍵** — 「每個房間到**最近**的門的距離」就是一次 BFS，把每扇門都放在距離 0 當起點。最先抵達
+> 某個房間的門走的是最短路徑，所以房間在第一次入列時就寫好；`INF` 同時代表「還沒到過」。
 
-<!--CODE-->
-
-<!-- 6e9878894fe5 -->
-### 2-9) Walls and Gates（LC 286）—— 多源 BFS
-> 從所有的門（0）同時開始 BFS；用最短距離填滿每個房間。
-
-<!--CODE-->
-
-<!-- 2400c3d52ff0 -->
-### 2-10) Minimum Height Trees（LC 310）—— BFS 剝葉子
-> 反覆移除葉節點；最後剩下的 1～2 個節點就是 MHT 的根。
-
-**核心想法 —— BFS／逐層剝除（剝洋蔥）：**
-- 把樹想成一顆**洋蔥**。MHT 的根在最內層
-- 這是**從葉子往內的多源 BFS** —— 不是從單一根節點出發的 BFS
-- 葉子 = 度數為 1 的節點。同時移除所有葉子 → 它們的鄰居可能變成新的葉子
-- 重複到剩下 ≤ 2 個節點為止。這些就是**重心**（MHT 的根）
-- 為什麼是 ≤ 2？一棵樹最多有 2 個重心（直徑為偶數 → 2 個，奇數 → 1 個）
-
-<!--CODE-->
-
-**為什麼不用暴力解？**
-- 從每個節點各跑一次 BFS 算高度 → O(N²) → TLE
-- 剝葉子 → O(N) —— 每個節點和每條邊只處理一次
-
-**模式 —— 什麼時候該想到它：**
-
-| 訊號 | 含意 |
-|--------|---------|
-| 無向樹 + 找最佳的根 | 剝葉子 |
-| 最小化「到任一葉子的最大距離」 | 找重心 |
-| 「由外往內一層一層剝」 | 多源 BFS |
-| 在樹上依度數處理 | 跟 DAG 上的 Kahn 演算法類似 |
-
-**兩種實作風格：**
-
-風格 1 —— `int[] degree` 陣列（比較單純，建議用這個）：
-<!--CODE-->
-
-風格 2 —— `Set<Integer>` 鄰接表（O(1) 移除，真的維護邊）：
-<!--CODE-->
-
-**經典的相似題：**
-
-| LC # | 題目 | 關聯 |
-|------|---------|------------|
-| 310 | Minimum Height Trees | 剝葉子的核心題 |
-| 207 | Course Schedule | Kahn 演算法 —— DAG 上同樣的 BFS + 度數模式 |
-| 210 | Course Schedule II | Kahn 演算法，還要輸出順序 |
-| 834 | Sum of Distances in Tree | 樹重心／換根 DP |
-| 1245 | Tree Diameter | 直徑 → 重心在中點 |
-| 2603 | Collect Coins in a Tree | 用剝葉子剪掉不必要的節點 |
-| 863 | All Nodes Distance K in Binary Tree | 在樹的結構上做 BFS |
-| 994 | Rotting Oranges | 多源 BFS（同樣的逐層模式） |
-| 542 | 01 Matrix | 從所有 0 出發的多源 BFS |
-
-<!-- 4d1c2a9f9cd1 -->
-### 2-11) Snakes and Ladders（LC 909）—— 在棋盤上做 BFS
-> 把棋盤建模成圖；BFS 找出到終點格所需的最少擲骰次數。
-
-<!--CODE-->
-
-<!-- f718658753fd -->
-### 2-13) Pacific Atlantic Water Flow（LC 417）—— 從兩個大洋各做一次 BFS
-> 從太平洋和大西洋的邊界反向 BFS；同時落在兩個集合裡的格子就能流向兩邊。
-
-<!--CODE-->
-
-<!-- 3d996d1c2ed2 -->
-### 2-14) Perfect Squares（LC 279）—— 在抽象圖上做 BFS（數字分解）
-> 從 `n` 往 `0` 做 BFS；每一層減掉一個完全平方數。第一次抵達 0 就是最少個數。
-
-<!--CODE-->
-
-<!-- ee2ef69409a4 -->
-### 2-15) Closest Leaf in a Binary Tree（LC 742）—— 樹 → 圖 + BFS ⭐⭐⭐⭐
-> 「最近」指的是二元樹上**邊**最少。麻煩的地方在於：從目標出發，除了往下走（到子節點），可能還得**往上走**（到父節點）。單純的樹只有指向子節點的指標，所以要先**把樹轉成無向圖**（每個節點 ↔ 它的父節點和子節點），再從目標跑一次普通的 BFS —— **第一個被 pop 出來的葉子就是答案**（無權圖上的 BFS 給的就是最少邊數）。
-
-**1）核心想法**
-
-- **用 DFS 建出無向圖** + 記下 `target` 節點 + 收集 `leaves`。
-  - 對每個節點，*雙向*加邊：`graph[node]→parent` 和 `graph[parent]→node`。
-  - 這是關鍵那一步 —— 它讓父節點變成可達的，於是「往上走」就成了普通的一條邊。
-- **從目標節點做 BFS**；第一個被 pop 出來、且沒有子節點的節點就是最近的葉子。
-  - 邊權重都相同 ⇒ BFS 保證邊數最少；不需要另外記距離。
-
-<!--CODE-->
-
-**2）為什麼用 BFS（而不是 DFS）？**
-
-| | |
-|---|---|
-| 目標 | target → 任一葉子的**最少邊數** |
-| 邊權重 | 全部相同（1）⇒ BFS 的層數就是精確距離 |
-| 為什麼要轉成圖而不是留在樹 | 答案的葉子可能在目標*上方* → 需要指向父節點的邊 |
-| 為什麼「第一個葉子就贏」 | BFS pop 出節點的順序，距離是非遞減的 |
-
-<!--CODE-->
-
-**3）相似的 LC**
-
-| LC | 題目 | 關聯 |
-|----|---------|----------|
-| 742 | Closest Leaf in a Binary Tree | 就是本題 —— 樹→圖，BFS 找最近的葉子 |
-| 863 | All Nodes Distance K in Binary Tree | 同樣的樹→圖手法，往外 BFS K 層 —— Pattern 11／§2-18 |
-| 1192 | Critical Connections | 把樹／圖視為無向，走訪邊 |
-| 994 | Rotting Oranges | 多源 BFS，「第一次抵達 = 最短距離」的想法 |
-| 542 | 01 Matrix | 無權網格上的 BFS 最短距離 |
-
-> **模式重點**：只要一道*樹*的題目需要**往上（朝父節點）**移動，就把它轉成**無向圖**（用 DFS 補上指向父節點的邊），改用圖的 BFS／DFS。這個「樹 → 圖」的重新框架，就是 LC 742 和 LC 863 的關鍵。
-
-<!-- 0d1522b4af27 -->
-### 2-16) Populating Next Right Pointers（LC 116 / 117）—— 用層序 BFS 接好 `next` 指標 ⭐⭐⭐⭐
-
-> 每個節點都有一個 `next` 指標，要指向**同一層中緊鄰它右邊**的節點（最右邊的節點則指 `NULL`）。這就只是一個**層序 BFS**：處理某一層時，把每個節點接到它之後出隊的那個節點。追問（「額外空間 O(1)」）的做法是把剛接好的 `next` 指標當成**上一層的鏈結串列**，用它來接好下一層 —— 不需要佇列。
-
-**1）核心想法**
-
-- **`next` = 「同一層中我右邊的那個節點」。** 所以要**逐層**處理這棵樹，而且在每一層內部，隨著節點從佇列 pop 出來就接上 `prev.next = cur`。
-- **每一層的最後一個節點**的 `next` 是 `None`（每層都會把佇列清空，所以它絕不會指到下一層去）。
-- LC 116（完美二元樹）和 LC 117（任意二元樹）都適用 —— BFS 不在乎樹的形狀，子節點存在就放進佇列。
-- **O(1) 空間的追問**：第 *L* 層完全接好之後，就把它當成鏈結串列沿著 `next` 走，順手設定第 *L+1* 層的 `next` —— 回收利用你已經建好的結構，取代佇列。
-
-**2）模式**
-
-<!--CODE-->
-
-**另一種寫法（改成偷看佇列最前端，不維護 `prev`）：**
-
-<!--CODE-->
-
-**追問 —— O(1) 空間（完美二元樹，LC 116）：** 重複利用 `next` 指標，不用佇列。
+**歸約到**：[bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) — 距離直接存在格子裡。
 
 <!--CODE-->
 
 <!--CODE-->
 
-**3）相似的 LC**
+**陷阱**
+- 每扇門各跑一次 BFS 再取最小值是對的，但慢了 k 倍。
+- 牆是 `-1`，永遠不是 `INF`，所以 `== INF` 的判斷已經跳過牆和每一扇門。
 
-| LC | 題目 | 關聯 |
-|----|---------|----------|
-| 116 | Populating Next Right Pointers in Each Node | 就是本題 —— **完美**二元樹，BFS 或 O(1) 的 `next` 重用 |
-| 117 | Populating Next Right Pointers II | 同樣的 BFS；樹**不是**完美的，所以 O(1) 版本每層需要一個 dummy head |
-| 102 | Binary Tree Level Order Traversal | 這一切建立在其上的基本層序 BFS |
-| 199 | Binary Tree Right Side View | 每層最右邊的節點 = `next = None` 之前的最後一個節點 |
-| 314 | Binary Tree Vertical Order Traversal | 同樣是層序 BFS 分組，但鍵是欄位而不是 `next` |
+**相似題** — LC 542（最近的 0，在 [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) 解） · LC 1162 · LC 994
 
-> **模式重點**：「指向我右邊的節點」⇒ **層序 BFS**，依出隊順序把節點串起來，每層結尾用 `next = None` 收尾。要 O(1) 空間，就把已經串好的那一層當成鏈結串列，用它來建下一層。
+<!-- 3f3d1f3383eb -->
+### Surrounded Regions — LC 130
 
-<!-- 762090ce1e7f -->
-### 2-17) Add One Row to Tree（LC 623）—— 層序 BFS 停在 `depth - 1` 再重接指標 ⭐⭐⭐⭐
+> **關鍵** — 把問題反過來。一個 `'O'` 會留下來，若且唯若它和邊界上的某個 `'O'` 相連，所以用每個
+> 邊界 `'O'` 當 BFS 起點，把走得到的都標成安全，再把沒走到的 `'O'` 全部翻掉。
 
-> 在 `depth` 這一層插入一整排值為 `val` 的節點。訣竅是：你動手的地方不是 `depth`，而是 **`depth - 1`** —— 那是*父節點*那一排，指標要重接的是它們。所以就跑一個普通的層序 BFS，一邊數層數，**一數到 `cur_depth == depth - 1` 就停**；對那一層的每個節點插入兩個新節點，並**把原本的子樹重新接回去**（`old_left` 掛在 `new_left.left`、`old_right` 掛在 `new_right.right`）。
-
-**1）核心想法**
-
-- **BFS 很自然合用**，因為這個操作是*以層為單位*定義的 —— 逐層 BFS（`size = len(q)`）給的正是這個。不需要父指標，也不用擔心遞迴深度。
-- **先處理邊界情況：`depth == 1`。** 沒有第 0 層可以重接，所以要建一個新的根，把整棵原樹掛成它的**左**子樹，然後回傳新的根。
-- **覆寫前先暫存。** `node.left = TreeNode(val)` 會毀掉原本的指標，所以要*先*把 `old_left`／`old_right` 存起來。這一行漏了，整個解就壞了。
-- **不對稱地重接**：原本的左子樹接到 `new_left.left`，原本的右子樹接到 `new_right.right` —— 都是外側 —— 這樣樹才能保持原來的左右形狀。
-- 重接完那一層之後要**立刻 return／break**。繼續 BFS 會走進剛建出來的新節點，而且（更糟的是）佇列已經不再對應插入前的那棵樹。
-- 子節點是 `None` 的節點一樣要長出**兩個**新的子節點（新節點自己的子節點是 `None`）—— 規則適用於 `depth - 1` 上每個非空的節點，不是只有原本有子節點的那些。
-
-**2）模式**
-
-<!--CODE-->
-
-**變化版 —— 單一迴圈，裡面用 `if/else`**（邏輯相同，這一層只掃一趟）：
-
-<!--CODE-->
-
-**另一種寫法 —— DFS 遞迴**（比較短，但要 O(h) 的堆疊 —— 完整討論在 [dfs.md §2-31](./dfs.md)）：
+**歸約到**：[bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) — 起點是邊界上的格子，而且只保留可達性。
 
 <!--CODE-->
 
 <!--CODE-->
 
-**常見陷阱**
+**陷阱**
+- 對每個內部區域做 flood fill 再檢查有沒有碰到邊界也行，但猜錯的區域要復原；從邊界出發就不用猜。
+- 需要第三種標記（`'S'`）：把連到邊界的格子直接翻回 `'O'`，會和還沒走訪的格子分不出來。
 
-| 陷阱 | 為什麼會壞 |
-|---|---|
-| 停在 `cur_depth == depth` | 太晚了 —— 要重接的指標在**父節點**那一排 |
-| 沒暫存就覆寫 `node.left` | 原本的子樹永遠遺失（再也走不到） |
-| 寫成 `new_left.right = old_left`（內側） | 樹被鏡射了；必須是 `new_left.left`／`new_right.right` |
-| 忘了 `depth == 1` | `depth - 1 == 0` 永遠不會碰到，於是什麼都沒插入 |
-| 重接完沒有 break | BFS 會往下走進剛建出來的 `val` 節點 |
-| `cur_depth` 從 0 開始 | 差一錯誤 —— 題目定義**根是第 1 層** |
+**相似題** — LC 1020 Number of Enclaves · LC 1254（DFS 寫法，[dfs § Template 7](./dfs.md#template-7-2-pass-dfs-boundary-elimination--lc-1254)） · LC 417
 
-**3）相似的 LC**
+<!-- 0caff9c8e9fd -->
+## 即時產生鄰居的 BFS 題目
 
-| LC | 題目 | 關聯 |
-|----|---------|----------|
-| 623 | Add One Row to Tree | 就是本題 —— 層序 BFS 走到 `depth - 1`，再重接指標 |
-| 102 | Binary Tree Level Order Traversal | 基本的層序 BFS 迴圈（`size = len(q)`） |
-| 199 | Binary Tree Right Side View | 同樣的逐層迴圈，取每層最後一個節點 |
-| 116 / 117 | Populating Next Right Pointers | §2-16 —— 同樣會**改寫指標**的層序 BFS |
-| 971 | Flip Binary Tree To Match Preorder | 走訪的同時交換左右子節點 |
-| 226 | Invert Binary Tree | 先暫存再交換子指標（同樣的別名危險） |
+<!-- fd9230cd42b5 -->
+### Open the Lock — LC 752
 
-> **模式重點**：當一道樹的題目說「在深度 `d` 做 X」，你實際上要**改動的是 `d - 1` 那一排** —— 在那裡做層序 BFS，賦值前先暫存舊的子節點，再把它們接到**外側**，然後立刻停手，這樣才不會走進自己剛造出來的新節點。
+> **關鍵** — 每個 4 位數組合是一個節點，鄰居是轉動一個轉輪一格得到的 8 個組合，需要時才產生。
+> deadend 是從圖上拿掉的節點。BFS 的層數就是轉動次數，所以目標第一次被彈出時就是最小值。
 
-<!-- e8ea1f1a2bde -->
-### 2-18) All Nodes Distance K in Binary Tree（LC 863）—— 父節點對照表 + 往外擴散的 BFS ⭐⭐⭐⭐⭐
-
-> 距離是從 **`target`** 算起，不是從根算起，所以答案可能在目標的**下方**、**上方**，或**兄弟子樹**裡。先用一次 DFS 記下 `{node: parent}`，補上缺的那條「往上」的邊，然後從 `target` 做 BFS，此時每個節點有 **3 個鄰居：`left`、`right`、`parent`**。每條邊成本都是 1 ⇒ BFS 的層數就是樹上的距離。
-> 完整說明：[bfs.md](./bfs.md) 裡的 **Pattern 11**。
-
-**形狀 B —— 剛好往外擴 `k` 層，此時佇列本身就是答案**
-
-> 形狀 A（在佇列裡帶著 `(node, dist)`）是 [bfs.md](./bfs.md) → **Pattern 11** 的標準模板。
+**歸約到**：[bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) — 字母表是 10 個數字，每個位置可以往兩個方向轉。
 
 <!--CODE-->
 
 <!--CODE-->
 
-| | 形狀 A `(node, dist)` | 形狀 B 擴展 `k` 層 |
-|---|---|---|
-| 距離怎麼記 | 存在每一筆佇列資料裡 | 隱含在迴圈計數器裡 |
-| 怎麼收答案 | `dist == k` 的時候 | 佇列裡剩下的就是 |
-| `k = 0` | 回傳 `[target.val]` ✅ | 迴圈跳過，佇列 = `[target]` ✅ |
-| `k >` 樹高 | 自然回 `[]` ✅ | 佇列被清空 → `[]` ✅ |
-| 什麼時候比較好用 | 順便需要距離／要提早離開 | 精簡，貼合「層數 = 距離」的直覺 |
+**陷阱**
+- `"0000"` 本身可能就是 deadend：在 BFS 開始前就回傳 -1。
+- `(digit - 1) % 10` 在 Python 是 `9`，在 Java 是 `-1`；Java 需要 `+ 10`。
 
-**常見陷阱**
+**相似題** — LC 127（錨定題） · LC 433 Minimum Genetic Mutation · LC 773
 
-| 陷阱 | 為什麼會壞 |
-|---|---|
-| 沒有 `visited` 集合 | 父邊讓圖變成無向 → `5 → 3 → 5 → 3 …` 無限來回 |
-| 在 **pop 時**才標記走訪過，而不是入隊時 | 同一個節點可能經由 2 條路徑入隊 ⇒ 答案出現重複 |
-| `dist == k` 之後還繼續擴展 | 白做工；`visited` 寫得不嚴謹的話還會撈到距離 `k+1` 的節點 |
-| 用 `node.val` 當對照表／`visited` 的鍵 | 這題沒問題（限制保證值唯一），但**值有重複時就會壞** —— 建議用節點本身的識別 |
-| 對沒被 DFS 走過的節點取 `parents[node]` | `KeyError` —— 父對照表要從 `root` 建，不是從 `target` |
-| 忘了 `k = 0` | 答案是 `[target.val]`，不是 `[]` |
-| 在層迴圈裡重新算 `len(q)`（形狀 B） | 佇列在該層中途變長 → 把距離 `k` 和 `k+1` 混在一起 |
+<!-- 475aaa14096d -->
+### Perfect Squares — LC 279
 
-**相似的 LC**
+> **關鍵** — 把每個剩餘的數當節點，「減掉一個完全平方數」當邊。加總為 `n` 的最少平方數個數，就是
+> 從 `n` 到 0 的最少邊數，所以從 `n` 出發的 BFS 回傳某次相減第一次碰到 0 的那一層。
 
-| LC | 題目 | 關聯 |
-|----|---------|----------|
-| 863 | All Nodes Distance K in Binary Tree | 就是本題 —— 父對照表 + 往外走 `k` 步的 BFS |
-| 2385 | Amount of Time for Binary Tree to Be Infected | 設定完全相同；答案 = BFS 的層數（最大距離） |
-| 742 | Closest Leaf in a Binary Tree | §2-15 —— 從目標往外 BFS，第一個 pop 出來的葉子獲勝 |
-| 1740 | Find Distance in a Binary Tree | 從節點 `p` 開始 BFS，直到 `q` 被 pop 出來 |
-| 1530 | Number of Good Leaf Nodes Pairs | Pattern 10 —— 從每個葉子出發、有距離上限的 BFS |
-| 993 | Cousins in Binary Tree | 每個節點記父節點 + 深度（不需要往外擴散） |
-| 236 | LCA of a Binary Tree | LCA 就是「先上後下」那條路徑轉折的地方 |
-| 542 / 994 | 01 Matrix / Rotting Oranges | 網格上同一套「BFS 層數 == 距離」的引擎 |
+**歸約到**：[bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) — 鄰居是 `remaining - k²`。
 
-<!-- 2f5e6eaf705e -->
-## 總結
+<!--CODE-->
 
-| 題目要是說… | 就拿出 | 這裡的實作 |
-|---|---|---|
-| 「拼圖或密碼鎖的最少轉動／移動次數」 | 把狀態雜湊起來、`neighbors(state)`、數 BFS 層數 | §2-6（LC 752／LC 773）、§2-11（LC 909） |
-| 「**沒有**碰到邊界的區域」 | **從邊界往內** BFS，把碰不到的翻掉 | §2-7（LC 130） |
-| 「到每個門／大洋／零的距離」 | 把所有源點一起放進去的多源 BFS | §2-9（LC 286）、§2-13（LC 417） |
-| 「所有課程修得完嗎」 | Kahn 的入度 BFS | §2-8（LC 207） |
-| 「湊出 n 所需最少的完全平方數／硬幣」 | 在抽象數字圖上做 BFS | §2-14（LC 279） |
-| 「讓樹高最小的那個根」 | 往內剝葉子，直到剩下 ≤ 2 個節點 | §2-10（LC 310） |
-| 「**從某個節點**算起最近的葉子／距離 k」 | 樹 → 無向圖（補上父邊），再往外 BFS | §2-15（LC 742）、§2-18（LC 863） |
-| 「把整層樹接起來／插入／改寫」 | 層序 BFS，在 `for _ in range(len(q))` 本體裡動手 | §2-16（LC 116/117）、§2-17（LC 623） |
-| 「還要幾分鐘全部才會變成 X」 | 一層 = 一個時間單位 —— 注意 `time++` 放哪裡 | *層數計算與計時*（LC 994） |
+**陷阱**
+- 沒有 `seen`，同一個數會被很多種順序走到（`12 - 4 - 1` 與 `12 - 1 - 4`），佇列會爆掉。
+- DP `dp[i] = 1 + min(dp[i - k²])` 有同樣的上界，也是面試官期待的另一種答案；BFS 可以提早結束，DP 不行。
 
-這些範例實例化的每個模板都在 [bfs.md](./bfs.md)；比較少見的變形在 [bfs_advanced.md](./bfs_advanced.md)。
+**相似題** — LC 322 Coin Change（同一張圖，硬幣有權重） · LC 127
+
+<!-- ab9383393999 -->
+### Sliding Puzzle — LC 773
+
+> **關鍵** — 和 LC 752 同一個骨架；只有狀態編碼和鄰居規則不同。把 2×3 的盤面攤平成像 `"123450"`
+> 的字串，並預先算好空格可以和哪些索引交換，這樣產生鄰居就是查表，而不是做邊界檢查。720 種排列
+> 只有一半走得到，所以 `-1` 是真的會出現的答案。
+
+**歸約到**：[bfs § Template 5](./bfs.md#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) — 狀態是整個盤面。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 換成別的盤面形狀時，手寫交換表最容易出錯；盤面不是 2×3 時，從 `(r ± 1, c)` / `(r, c ± 1)` 推出來。
+- 在各個鄰居之間共用同一個 list 做交換（而不是每次複製一份），會弄壞同一個狀態之後的每個鄰居。
+
+**相似題** — LC 752 · LC 854 K-Similar Strings
+
+<!-- 74f18d22b540 -->
+## 父節點表 + 向外輻射的題目
+
+<!-- 0abb37cc3610 -->
+### Closest Leaf in a Binary Tree — LC 742
+
+> **關鍵** — 最近的葉節點可能在目標的**上方**，所以光有子指標不夠。補上父節點的邊（這裡是建一張
+> 無向鄰接表），再從值為 `k` 的節點向外 BFS：每條邊成本都是 1，所以第一個彈出的葉節點就是最近的。
+
+**歸約到**：[bfs § Template 6](./bfs.md#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) — 停在第一個葉節點，而不是停在距離 `k`。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**陷阱**
+- 「葉節點」要用樹的子節點判斷，不能用圖上的度數：圖上每個非根節點都有父節點這個鄰居，所以度數
+  為 1 也會配到只有一個子節點的根。
+- 只有根（`[1]`，k = 1）時根就是葉節點，答案是它自己。
+
+**相似題** — LC 863（錨定題） · LC 2385 Amount of Time for Binary Tree to Be Infected

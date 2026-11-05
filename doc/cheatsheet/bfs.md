@@ -1,7 +1,7 @@
 # BFS (Breadth-First Search)
 
 > **Scope** — The main BFS reference: the queue templates, level-by-level expansion, grid and multi-source BFS, and why first visit equals shortest path on an unweighted graph; the heavier variants and the long tail of worked problems live in their own sheets.
-> **See also** — *deep dives split out of this file*: [bfs_advanced.md](./bfs_advanced.md) — bidirectional BFS, 0-1 BFS with a deque, state-space / implicit-graph BFS, all-shortest-path DAG enumeration, and the multi-source vs independent-runs distinction; [bfs_examples.md](./bfs_examples.md) — the worked-solution archive (LC 130 / 207 / 279 / 286 / 310 / 417 / 623 / 742 / 752 / 909 / 116-117 …) plus the LC 994 timing walkthrough.
+> **See also** — *deep dives split out of this file*: [bfs_advanced.md](./bfs_advanced.md) — bidirectional BFS, 0-1 BFS with a deque, state-space / implicit-graph BFS, all-shortest-path DAG enumeration, and the multi-source vs independent-runs distinction; [bfs_examples.md](./bfs_examples.md) — the classic problems (LC 116-117 / 130 / 279 / 286 / 623 / 662 / 742 / 752 / 773 / 909 / 958), grouped by this sheet's templates.
 > *Neighbouring sheets*: [dfs.md](./dfs.md) — the depth-first counterpart and how to choose; [graph.md](./graph.md) — representation and the graph catalogue; [Dijkstra.md](./Dijkstra.md) — once edges have weights; [topology_sorting.md](./topology_sorting.md) — Kahn's algorithm is BFS.
 
 ## LeetCode Problem Lists
@@ -65,7 +65,7 @@ BFS is O(V + E), so it fits any graph or grid up to about 10⁶ cells.
 | "rotting", "spreads from every source at once", "distance to the nearest 0 / gate" | grid ≤ 10⁵ cells | [Template 4](#template-4-multi-source-bfs--lc-994-) — multi-source BFS | each source's distances are **summed** → independent runs (LC 317, [bfs_advanced.md](./bfs_advanced.md)) |
 | "transform one word / lock state into another, one change per step" | L ≤ 10, N ≤ 5,000 | [Template 5](#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) — BFS over generated neighbours | every shortest sequence is wanted → BFS + DFS (LC 126) |
 | "nodes at distance k from `target`", "time to infect the tree from `start`" | nodes ≤ 10⁵ | [Template 6](#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) — parent map, then BFS | distance from the **root** → Template 1 |
-| "split into two groups", "is it bipartite" | n ≤ 100 | [Template 7](#template-7-bfs-2-colouring-bipartite-check--lc-785-) — BFS 2-colouring | three or more groups → backtracking colouring |
+| "split into two groups", "is it bipartite" | n ≤ 100 | [graph.md § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) — BFS 2-colouring | three or more groups → backtracking colouring |
 | "shortest path with at most k obstacles removed", "collect all keys" | state ≤ 10⁶ | Template 2 over `(cell, resource)` states ([bfs_advanced.md](./bfs_advanced.md) Pattern 16) | the resource is unlimited → plain grid BFS |
 
 ## Time & Space Complexity
@@ -152,7 +152,7 @@ def bfs_analysis(graph, start):
 
 ## Implementation Patterns
 
-> The two satellite sheets keep their own `Pattern N` numbers: **Patterns 4.5, 4.6, 6, 8, 8.5, 9, 10, 12, 14, 15 and 16** are deep dives in [bfs_advanced.md](./bfs_advanced.md), and the `§2-N` worked examples are in [bfs_examples.md](./bfs_examples.md). When either sheet cites a pattern that lives here, it uses this sheet's old numbering:
+> The two satellite sheets keep their own `Pattern N` numbers: **Patterns 4.5, 4.6, 6, 8, 8.5, 9, 12, 15 and 16** are deep dives in [bfs_advanced.md](./bfs_advanced.md), and the worked examples are in [bfs_examples.md](./bfs_examples.md), grouped by the templates below. When either sheet cites a pattern that lives here, it uses this sheet's old numbering:
 >
 > | Old name | Card here |
 > |---|---|
@@ -162,7 +162,7 @@ def bfs_analysis(graph, start):
 > | Pattern 4 (multi-source) | [Template 4](#template-4-multi-source-bfs--lc-994-) |
 > | Pattern 7 (word ladder) | [Template 5](#template-5-word-ladder-bfs-over-generated-neighbours--lc-127-) |
 > | Pattern 11 (parent map, radiate from a target) | [Template 6](#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) |
-> | Pattern 13 (2-colouring) | [Template 7](#template-7-bfs-2-colouring-bipartite-check--lc-785-) |
+> | Pattern 13 (2-colouring) | [graph.md § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) |
 
 ### Template 1: Level-Order BFS — LC 102 ⭐⭐⭐⭐⭐
 
@@ -261,9 +261,14 @@ LC 104 Maximum Depth works as a level count, but recursion is shorter.
 **Drill** — LC 102 ⭐ · LC 111 *(return at the first leaf: variation below)* · LC 199 *(keep the
 last node of each level)* · LC 103 *(reverse every other level)* · LC 662 *(carry a heap index)*
 
-#### Variation: **return at the first leaf popped** — LC 111 (Minimum Depth of Binary Tree)
+#### Minimum Depth of Binary Tree — LC 111
 
-> **Twist**: don't traverse the whole tree — BFS reaches the shallowest leaf first, so return the moment a node with no children is dequeued. On a long left-skewed spine DFS visits every node; BFS quits at the first leaf. (Contrast with LC 104 Maximum Depth, where you *must* see every level, so DFS recursion is the cleaner tool.)
+> **Key point** — levels come out of the queue in depth order, so the **first leaf dequeued is
+> the shallowest leaf**: return its depth on the spot. A DFS has to visit every node before it
+> knows the minimum; BFS stops at the first leaf.
+
+**Reduces to**: [Template 1](#template-1-level-order-bfs--lc-102-) — with an early return at the
+first node that has no children.
 
 ```python
 # python
@@ -287,6 +292,11 @@ def minDepth(root):
         depth += 1
     return depth
 ```
+
+**Traps**
+- A node with one child is **not** a leaf: `[1, 2]` has minimum depth 2, not 1. The test is
+  "no left **and** no right".
+- LC 104 Maximum Depth is the opposite case: every level must be seen, so recursion is shorter.
 
 > Two further level-BFS variations — carrying a **heap index** (LC 662) and **enqueuing the `null` children** (LC 958) — are in [bfs_examples.md](./bfs_examples.md).
 
@@ -625,9 +635,9 @@ minute 4: rot (2,2)                fresh 0  -> loop stops, answer 4
 
 **Traps**
 - `minutes += 1` at the start of a level needs `fresh > 0` in the `while`: without it the last
-  level, whose cells rot nothing, adds a minute and the example above returns 5. The
-  increment-at-the-end form has the same off-by-one; the full walkthrough is in
-  [bfs_examples.md](./bfs_examples.md) → *When to Increment Time/Distance*.
+  level, whose cells rot nothing, adds a minute and the example above returns 5. The other
+  correct form increments at the **end** of a level, and only when something rotted in it (a
+  `rotted_this_minute` flag). Mixing the two, or using neither, counts the final empty level.
 - No fresh orange at all: `[[0,2]]` returns 0, not -1 — the `while` never runs.
 - One BFS per rotten orange, keeping the minimum, gives the right numbers k times slower and times
   out once there are many sources.
@@ -642,8 +652,14 @@ every source.
 **Drill** — LC 994 ⭐ · LC 542 *(distance variant below)* · LC 286 · LC 1162 · LC 417 ⭐ *(one
 multi-source BFS per ocean, then intersect)* · LC 934 *(DFS one island, then BFS from all of it)*
 
-#### Distance variant: 01 Matrix — distance to the nearest source
-> Start BFS from all 0-cells simultaneously; distance propagates outward.
+#### 01 Matrix — LC 542
+
+> **Key point** — "distance from every 1 to its nearest 0" is the same as "how far every 0 can
+> reach": seed **all** 0-cells at distance 0 and run one BFS. The first time a cell is reached is
+> its distance, so each cell is written once — O(m·n) instead of one BFS per 1-cell.
+
+**Reduces to**: [Template 4](#template-4-multi-source-bfs--lc-994-) — with a `dist` grid instead
+of a minute counter: the distance is written per cell, not per level.
 
 ```python
 # python
@@ -701,16 +717,11 @@ public int[][] updateMatrix(int[][] mat) {
 }
 ```
 
-**Why This Pattern Works:**
-1. **Simultaneous Expansion**: All sources expand at same rate → layer by layer
-2. **First Visit = Shortest**: In unweighted BFS, first arrival guarantees shortest path
-3. **No Backtracking**: Once a cell is visited, we've found its shortest distance
-4. **Linear Time**: Each cell visited exactly once → O(m×n) total
-
-**Key Insight - Why Start from 0s, Not 1s?**
-- ❌ Starting from each 1 → O(m×n) BFS calls → O(m²×n²) total time
-- ✅ Starting from all 0s → Single BFS pass → O(m×n) total time
-- **Principle**: Flip the problem - instead of "how far is this 1 from any 0?", ask "how far can all 0s reach?"
+**Traps**
+- One BFS per 1-cell is O((m·n)²): it times out at m·n = 10⁴. Flip the direction and start from
+  the 0s.
+- Mark a cell when it is **enqueued** (`dist[nr][nc] == -1` → write it), not when it is popped,
+  or the same cell is queued by several neighbours.
 
 ### Template 5: Word Ladder BFS over Generated Neighbours — LC 127 ⭐⭐⭐⭐⭐
 
@@ -820,8 +831,6 @@ large → bidirectional BFS ([bfs_advanced.md](./bfs_advanced.md)).
 **Drill** — LC 127 ⭐ · LC 433 *(4 letters, 8 positions)* · LC 752 *(a lock: each wheel ±1,
 deadends are walls)* · LC 126 *(all shortest sequences)* · LC 854 *(neighbours by swapping two
 letters)*
-
-> The line-by-line walkthrough of this template — the execution trace, why the restore step is mandatory, and how it compares with the other BFS shapes — is in [bfs_advanced.md](./bfs_advanced.md).
 
 ### Template 6: Parent Map + BFS Radiating from a Target — LC 863 ⭐⭐⭐⭐⭐
 
@@ -957,8 +966,8 @@ private void buildParents(TreeNode node, TreeNode parent, Map<TreeNode, TreeNode
 is a post-order DFS returning the depth of `target` in each subtree; at the node `d` edges above
 the target you collect nodes `k - d` levels down the *other* child. Also O(n), but far easier to
 get wrong — BFS + parent map is the interview-safe answer. When the nodes are values rather than
-`TreeNode` objects, build a full adjacency map instead ([bfs_advanced.md](./bfs_advanced.md)
-Pattern 10):
+`TreeNode` objects, build a full adjacency map instead (LC 1530 needs one; its answer is the
+post-order bucket DFS in [dfs_advanced.md](./dfs_advanced.md)):
 
 | | Parent map `{node: parent}` | Adjacency map `{node: [neighbors]}` |
 |---|---|---|
@@ -975,15 +984,50 @@ path, reconstructed)*
 |---------|------|----------------------|
 | All Nodes Distance K in Binary Tree | 863 | **canonical** — parent map + BFS `k` steps outward |
 | Amount of Time for Binary Tree to Be Infected | 2385 | same parent-map BFS; answer = **max** distance (last BFS level) |
-| Closest Leaf in a Binary Tree | 742 | BFS out from target, stop at **first leaf** popped (§2-15) |
+| Closest Leaf in a Binary Tree | 742 | BFS out from target, stop at **first leaf** popped ([bfs_examples.md](./bfs_examples.md)) |
 | Find Distance in a Binary Tree | 1740 | distance between 2 nodes = BFS from one until the other pops (or LCA) |
-| Number of Good Leaf Nodes Pairs | 1530 | bfs_advanced Pattern 10 — bounded BFS out from *every* leaf |
+| Number of Good Leaf Nodes Pairs | 1530 | per-leaf bounded BFS works, but the answer is the post-order distance buckets in [dfs_advanced.md](./dfs_advanced.md) |
 | Step-By-Step Directions From a Binary Tree Node | 2096 | same up-then-down insight, path reconstruction instead of distance |
 | Cousins in Binary Tree | 993 | needs `parent` + `depth` per node — parent map, no BFS radiation |
 | Lowest Common Ancestor of a Binary Tree | 236 | LCA is the "turning point" of the up-then-down path |
-| Minimum Height Trees | 310 | undirected-tree BFS, trimming inward instead of radiating out (§2-10) |
+| Minimum Height Trees | 310 | undirected-tree BFS, trimming inward instead of radiating out ([topology_sorting_examples.md](./topology_sorting_examples.md)) |
 
-**Variant: level-BFS `k` times, then dump the queue** — no `dist` in the tuple; after `k` expansions the queue *is* the answer set. Full code, an A-vs-B comparison and the pitfall table: [bfs_examples.md](./bfs_examples.md) §2-18.
+#### Second solution: expand exactly `k` levels, then the queue is the answer
+
+No `dist` in the queue entry: run `k` full level expansions (snapshot `len(q)` first), and whatever
+is left in the queue is exactly the set at distance `k`. Same O(n); `k = 0` returns `[target]` and
+`k` larger than the tree drains the queue to `[]` without a special case. Prefer the `(node, dist)`
+form above when the distances themselves are also needed.
+
+```python
+# python
+# LC 863 - All Nodes Distance K in Binary Tree (k level expansions)
+# IDEA: no distance stored; after exactly k level expansions the queue IS the answer set
+# time = O(n), space = O(n)
+import collections
+
+class Solution(object):
+    def distanceK(self, root, target, k):
+        parents = {}
+        def add_parents(node, parent):
+            if not node:
+                return
+            parents[node] = parent
+            add_parents(node.left, node)
+            add_parents(node.right, node)
+        add_parents(root, None)
+
+        q = collections.deque([target])
+        visited = {target}
+        for _ in range(k):                     # k full level expansions
+            for _ in range(len(q)):            # snapshot the level size FIRST
+                node = q.popleft()
+                for nxt in (node.left, node.right, parents[node]):
+                    if nxt and nxt not in visited:
+                        visited.add(nxt)
+                        q.append(nxt)
+        return [node.val for node in q]        # everything left is exactly k away
+```
 
 > **Pattern takeaway**: the instant a tree problem measures something **from a node other than
 > the root**, stop thinking "tree recursion" and think **"undirected graph"** — add parent links
@@ -992,91 +1036,14 @@ path, reconstructed)*
 
 ---
 
-### Template 7: BFS 2-Colouring (Bipartite Check) — LC 785 ⭐⭐⭐⭐
+### Bipartite Check (2-Colouring) — lives in graph.md
 
-**Recognise** — "can the nodes be split into two groups with every edge between the groups", "is
-the graph bipartite", "people who dislike each other". n ≤ 100 (LC 785) → O(V + E).
-
-**Key point** — BFS does not have to carry a distance; it can carry a **label**. Paint the start
-`0` and every neighbour the opposite colour (`color ^ 1`): each node then differs from the node
-that painted it, so an edge with the same colour at both ends closes an odd cycle, and the graph
-is not bipartite.
-
-```python
-# python
-# LC 785 - Is Graph Bipartite?
-# IDEA: color -1 = unvisited; BFS flips the colour; equal colours on an edge => not bipartite
-# time = O(V + E), space = O(V)
-from collections import deque
-
-def isBipartite(graph):
-    n = len(graph)
-    color = [-1] * n
-    for s in range(n):
-        if color[s] != -1:
-            continue                  # component already done
-        color[s] = 0
-        q = deque([s])
-        while q:
-            cur = q.popleft()
-            for nxt in graph[cur]:
-                if color[nxt] == -1:
-                    color[nxt] = color[cur] ^ 1
-                    q.append(nxt)
-                elif color[nxt] == color[cur]:
-                    return False
-    return True
-```
-
-```java
-// java
-// LC 785 - Is Graph Bipartite?
-// IDEA: BFS paints alternating colors; same-color neighbor => odd cycle => false
-// time = O(V + E), space = O(V)
-public boolean isBipartite(int[][] graph) {
-    int n = graph.length;
-    int[] color = new int[n];
-    Arrays.fill(color, -1);              // -1 = uncolored (doubles as "unvisited")
-    for (int s = 0; s < n; s++) {
-        if (color[s] != -1) continue;    // must restart per component
-        color[s] = 0;
-        Queue<Integer> q = new LinkedList<>();
-        q.offer(s);
-        while (!q.isEmpty()) {
-            int cur = q.poll();
-            for (int nxt : graph[cur]) {
-                if (color[nxt] == -1) {
-                    color[nxt] = color[cur] ^ 1;   // flip 0 <-> 1
-                    q.offer(nxt);
-                } else if (color[nxt] == color[cur]) {
-                    return false;                  // conflict
-                }
-            }
-        }
-    }
-    return true;
-}
-```
-
-**Complexity**
-- **Time O(V + E)**: each node is coloured and enqueued once, and `for nxt in graph[cur]` reads
-  each adjacency list once.
-- **Space O(V)**: `color` and the queue.
-
-**Traps**
-- **Disconnected graph** — one BFS covers one component. Loop `for s in range(n)` and start a
-  fresh BFS on every uncoloured node, or `[[],[2,3],[1,3],[1,2]]` (an isolated node 0 beside a
-  triangle) returns True.
-- **No separate `visited` boolean** — `color` with `-1 = unvisited` is both the visited marker
-  *and* the answer; two arrays can disagree.
-
-**Not this if** — the pairs come as a list ("split people who dislike each other", LC 886) →
-build the adjacency list first, then run this code unchanged. Three or more groups → k-colouring
-([graph_advanced.md](./graph_advanced.md)). The DFS form and the full write-up are in
-[graph.md § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-).
-
-**Drill** — LC 785 ⭐ · LC 886 *(edges from dislike pairs)* · LC 1042 *(four colours, greedy)* ·
-LC 2493 *(bipartite check, then the longest BFS per component)*
+BFS does not have to carry a distance; it can carry a **label**. The one classic case is
+2-colouring: paint each neighbour the opposite colour, and an edge with the same colour at both
+ends is an odd cycle. That card — BFS and DFS forms, Python and Java, the disconnected-graph and
+self-loop traps — is
+[graph.md § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-), the one home of
+LC 785; LC 886 is worked in [graph_examples.md](./graph_examples.md).
 
 
 ## Drill Path
@@ -1091,7 +1058,7 @@ LC 2493 *(bipartite check, then the longest BFS per component)*
 
 ## Summary & Quick Reference
 
-> `Pattern 4.5 / 4.6 / 6 / 8 / 8.5 / 9 / 10 / 12 / 14 / 15 / 16` below live in [bfs_advanced.md](./bfs_advanced.md); `§2-N` references live in [bfs_examples.md](./bfs_examples.md).
+> `Pattern 4.5 / 4.6 / 6 / 8 / 8.5 / 9 / 12 / 15 / 16` below live in [bfs_advanced.md](./bfs_advanced.md); the problems marked *bfs_examples* are worked in [bfs_examples.md](./bfs_examples.md).
 
 ### When to Use BFS
 - Finding shortest path in unweighted graphs
@@ -1191,9 +1158,9 @@ LC 2493 *(bipartite check, then the longest BFS per component)*
 | Easy | LC 102 | Level-order traversal | Template 1 (Level-by-Level) |
 | **Medium** | **LC 127** | **Shortest path transformation - Word Ladder** | **Template 5 (Unweighted Shortest Path)** |
 | Medium | LC 200 | Connected components | Template 2 (Graph BFS) |
-| Medium | LC 742 | Closest leaf (tree → undirected graph) | `bfs_examples.md` §2-15 (Tree → Graph + BFS) |
-| Medium | LC 863 | Distance `k` from a **target node** (parent map, 3 neighbors) | Template 6 (Radiate Outward); shape B in `bfs_examples.md` §2-18 |
-| Medium | LC 623 | Level BFS to `depth - 1`, rewire child pointers | `bfs_examples.md` §2-17 (Add One Row to Tree) |
+| Medium | LC 742 | Closest leaf (tree → undirected graph) | [bfs_examples.md](./bfs_examples.md#closest-leaf-in-a-binary-tree--lc-742) (Tree → Graph + BFS) |
+| Medium | LC 863 | Distance `k` from a **target node** (parent map, 3 neighbors) | Template 6 (Radiate Outward), both shapes |
+| Medium | LC 623 | Level BFS to `depth - 1`, rewire child pointers | [bfs_examples.md](./bfs_examples.md#add-one-row-to-tree--lc-623) |
 | **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Template 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
 | Medium | LC 1162 | As Far from Land as Possible | Template 4 (Simultaneous Multi-Source) |
@@ -1201,7 +1168,7 @@ LC 2493 *(bipartite check, then the longest BFS per component)*
 | Hard | LC 286 | Walls and Gates | Template 4 (Simultaneous Multi-Source) |
 | **Hard** | **LC 317** | **Independent BFS runs (sum of distances)** | **Pattern 4.6 (Independent BFS Runs)** |
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
-| **Hard** | **LC 752** | **BFS on state space - Open the Lock** | **Template 5 (Unweighted Shortest Path); worked in `bfs_examples.md` §2-6** |
+| **Hard** | **LC 752** | **BFS on state space - Open the Lock** | **Template 5 (Unweighted Shortest Path); worked in [bfs_examples.md](./bfs_examples.md#open-the-lock--lc-752)** |
 | **Hard** | **LC 815** | **Route-level BFS (minimum buses)** | **Pattern 8 (Route-Level BFS)** |
 | Hard | LC 864 | BFS with state (key collection) | Template 2 + State ([bfs_advanced.md](./bfs_advanced.md) Pattern 16) |
 | Hard | LC 1293 | BFS with state (obstacle elimination) | Template 2 + State ([bfs_advanced.md](./bfs_advanced.md) Pattern 16) |
@@ -1210,7 +1177,7 @@ LC 2493 *(bipartite check, then the longest BFS per component)*
 
 | LC | Problem | Which template it reuses |
 |----|---------|--------------------------|
-| 297 / 449 | Serialize and Deserialize Binary Tree / BST | Template 1 level BFS writing `null` markers; deserialize = same queue read back (see Variation C in [bfs_examples.md](./bfs_examples.md)) |
+| 297 / 449 | Serialize and Deserialize Binary Tree / BST | Template 1 level BFS writing `null` markers; deserialize = same queue read back (see [LC 958 in bfs_examples.md](./bfs_examples.md#check-completeness-of-a-binary-tree--lc-958)) |
 | 104 | Maximum Depth of Binary Tree | Template 1 — count levels; DFS recursion is shorter here, BFS wins only for LC 111 |
 | 101 | Symmetric Tree | Template 1 with a **pair queue** — enqueue `(left, right)` mirrored and compare on pop |
 | 637 / 515 | Average of Levels / Largest Value in Each Tree Row | Template 1 — swap "collect the level" for "aggregate the level" (avg / max) |
