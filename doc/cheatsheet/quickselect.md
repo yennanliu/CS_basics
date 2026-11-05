@@ -107,6 +107,8 @@ def findKthLargest(nums, k):
 // LC 215 - Kth Largest Element in an Array
 // IDEA: random pivot + 3-way partition; keep only the band that holds index n-k
 // time = O(N) average, O(N^2) worst (vanishingly unlikely with a random pivot), space = O(1)
+import java.util.*;
+
 class Solution {
     private final Random rand = new Random();
 
@@ -228,6 +230,8 @@ def kClosest(points, k):
 // LC 973 - K Closest Points to Origin
 // IDEA: 3-way quickselect on the squared distance; once index k-1 is settled, points[0..k-1] is the answer
 // time = O(N) average, space = O(1) extra
+import java.util.*;
+
 class Solution {
     private final Random rand = new Random();
 
@@ -363,6 +367,8 @@ def kth_smallest_hoare(nums, target):
 // IDEA: hoare() only guarantees a[lo..j] <= pivot <= a[j+1..hi], so narrow with target <= j
 //       until lo == hi; never test p == target
 // time = O(N) expected, space = O(1)
+import java.util.*;
+
 class Solution {
     private final Random rnd = new Random();
 
