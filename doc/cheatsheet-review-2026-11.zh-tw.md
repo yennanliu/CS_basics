@@ -2,7 +2,7 @@
 
 這份審查讀過 [`doc/cheatsheet/`](cheatsheet/) 底下全部 135 份 markdown（共 150,285 行），問一個前兩次審查都沒問過的問題：**這份 cheatsheet 能不能讓你在 FAANG coding 面試中更快？** 目標是 Google L3，Python 為主、Java 為輔。
 
-> English version: [`cheatsheet-review-2026-11.md`](cheatsheet-review-2026-11.md)
+> English version: [`cheatsheet-review-2026-11.md`](cheatsheet-review-2026-11.md) · 執行進度：[`cheatsheet-review-2026-11-progress.md`](cheatsheet-review-2026-11-progress.md)
 
 | 審查 | 問的問題 | 現況 |
 |---|---|---|
