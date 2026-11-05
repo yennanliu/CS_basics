@@ -605,7 +605,8 @@ if (faqFiles.length > 0) {
   const faqCategoryMap = {
     'java': 'Java', 'backend': 'Backend', 'db': 'Database',
     'redis': 'Redis', 'kafka': 'Kafka', 'spark': 'Spark & Hadoop',
-    'flink': 'Flink', 'stream': 'Streaming', 'sql': 'SQL'
+    'flink': 'Flink', 'stream': 'Streaming', 'sql': 'SQL',
+    'de': 'Data Engineering'
   };
 
   for (const filePath of faqFiles) {
@@ -690,7 +691,7 @@ const FAQ_ZH = {
   categories: {
     General: '綜合', Java: 'Java', Backend: '後端', Database: '資料庫', SQL: 'SQL',
     Redis: 'Redis', Kafka: 'Kafka', 'Spark & Hadoop': 'Spark 與 Hadoop',
-    Flink: 'Flink', Streaming: '串流處理'
+    Flink: 'Flink', Streaming: '串流處理', 'Data Engineering': '資料工程'
   }
 };
 
@@ -1194,7 +1195,7 @@ if (zhSheets.length > 0) {
   console.log(`✓ Created ${zhSheets.length} 繁體中文 cheatsheet pages`);
 }
 
-const knownFaqCategoryOrder = ['General', 'Java', 'Backend', 'Database', 'SQL', 'Redis', 'Kafka', 'Spark & Hadoop', 'Flink', 'Streaming'];
+const knownFaqCategoryOrder = ['General', 'Data Engineering', 'Java', 'Backend', 'Database', 'SQL', 'Redis', 'Kafka', 'Spark & Hadoop', 'Flink', 'Streaming'];
 const faqGrouped = groupByCategory(faqs);
 const faqCategoryOrder = [
   ...knownFaqCategoryOrder,

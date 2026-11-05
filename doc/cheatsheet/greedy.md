@@ -81,10 +81,11 @@ def interval_scheduling(intervals):
 
 ### Template 2: Activity Selection with Heap — LC 621 ⭐⭐⭐⭐
 ```python
-# LC 621 - Task Scheduler
-# IDEA: each cycle of n+1 slots, run the n+1 most frequent remaining tasks (max-heap);
-#       slots left empty in a cycle are idle, except in the very last cycle
+# python
+# IDEA: each window of n+1 slots runs the n+1 most frequent remaining tasks (max-heap)
 # time = O(T log 26) = O(T), space = O(26)
+# Slots a window leaves empty are idle, except in the very last window.
+# LC 621 - Task Scheduler
 import heapq
 import collections
 
