@@ -1049,7 +1049,10 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 ```
 
 ### 6-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths
-> Track lengths with positive and negative product separately; swap on negative number.
+> **Key point** — the sign of a product is all that matters, so keep two run lengths ending here, one
+> positive and one negative; a negative number swaps them and a zero resets both.
+
+**Reduces to**: [0-2) Kadane](./kadane_algorithm.md#0-2-algorithm-pattern--template) — best run ending here, with two states instead of one.
 
 ```python
 # python

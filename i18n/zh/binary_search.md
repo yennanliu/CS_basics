@@ -533,7 +533,7 @@ LC 34 找的是一段相等值的區塊**從哪裡**開始、到哪裡結束。�
 **練習** — LC 153 ⭐ · LC 154 *（有重複值：相等時 `right -= 1`）* · LC 33 → 模板 4 ·
 LC 81 *（有重複值的搜尋）*
 
-<!-- 5edc6388ec11 -->
+<!-- d2e650b5d038 -->
 #### 旋轉陣列最小值 — 閉區間的替代寫法
 
 同一個搜尋，改寫成 `while l <= r` 並維護一個 `ans`。只有在你想到處都用閉區間時才保留它；
@@ -545,7 +545,7 @@ LC 81 *（有重複值的搜尋）*
 
 | 模板 | 迴圈條件 | 更新方式 | 回傳 | 適用時機 |
 |----------|---------------|--------|--------|-----------|
-| 半開 `left < right` | `left < right` | `right = mid` / `left = mid + 1` | `nums[left]` | 標準寫法：收斂到索引 |
+| 閉區間、停在單一候選 | `left < right` | `right = mid` / `left = mid + 1` | `nums[left]` | 標準寫法：收斂到索引 |
 | 閉區間 `l <= r` + `ans` | `l <= r` | `l = mid + 1` / `r = mid - 1` | `ans` | 你想到處都用閉區間時 |
 
 | LC # | 題目 | 關鍵差異 |
@@ -863,7 +863,7 @@ patience sorting 是同一個動作：把每張牌放到「牌頂 `>= num` 的�
 **練習** — LC 74 ⭐ · LC 240 *（階梯搜尋，不是二分搜尋）* · LC 378 *（對值域做二分搜尋，
 [binary_search_on_answer.md](./binary_search_on_answer.md)）*
 
-<!-- 0435d3eebd45 -->
+<!-- 2e9389c0fd1a -->
 ### 模板 7：順著斜率找峰值 — LC 162 ⭐⭐⭐⭐
 
 **辨識** — 「找出**一個**峰值元素」、「山脈陣列」、「`nums[i] != nums[i + 1]`」、
@@ -879,7 +879,7 @@ patience sorting 是同一個動作：把每張牌放到「牌頂 `>= num` 的�
 <!--CODE-->
 
 **複雜度**
-- **時間 O(log n)**：半開的 `while left < right` 把視窗砍半，而 `right = mid`
+- **時間 O(log n)**：在閉區間 `[left, right]` 上跑 `while left < right`，把視窗砍半，而 `right = mid`
   仍會縮小視窗，因為 `mid < right`。
 - **空間 O(1)**：兩個指標。
 
@@ -1034,7 +1034,7 @@ CtCI 10.5：一個排序好的字串陣列，隨機位置塞了 `""`。`mid` 可
 - 要找邊界或插入位置
 - 具備二元性質的最佳化問題
 
-<!-- 4512264bdfe4 -->
+<!-- 479ceeb86890 -->
 ### 3.2) 模板選擇指南
 
 整份文件用這一張表就夠了：看輸入的形狀，決定該拿哪個模板。
@@ -1046,7 +1046,7 @@ CtCI 10.5：一個排序好的字串陣列，隨機位置塞了 `""`。`mid` 可
 | **右邊界**（最後一個 `<= target` 的索引） | Upper bound − 1 — [模板 2](#template-2-lower-and-upper-bound--lc-34-) | LC 34、LC 981 |
 | **插入位置** | Lower bound，回傳 `l` 不做驗證 — [模板 2](#template-2-lower-and-upper-bound--lc-34-) | LC 35 |
 | 值 `v` 在 `arr[l..r]` 中出現**幾次**，陣列未排序 | 每個值一份索引清單，`bisect_right(r) - bisect_left(l)` — [模板 2](#template-2-lower-and-upper-bound--lc-34-) | LC 2080 |
-| **峰 / 谷**，沒有目標值 | 半開區間 `while l < r`、`r = mid` — [模板 7](#template-7-peak-finding-by-slope--lc-162-) | LC 162、LC 852 |
+| **峰 / 谷**，沒有目標值 | 閉區間、停在單一候選：`while l < r`、`r = mid` — [模板 7](#template-7-peak-finding-by-slope--lc-162-) | LC 162、LC 852 |
 | **旋轉**排序陣列 | 找出有序的那一半 — [模板 3](#template-3-rotated-array-minimum--lc-153-)、[模板 4](#template-4-search-a-rotated-array--lc-33-) | LC 33、LC 81、LC 153、LC 154 |
 | 陣列**先升後降**（山脈 / 雙調） | 找峰值 + 兩次有序搜尋，其中一次**遞減** — [模板 7](#template-7-peak-finding-by-slope--lc-162-) | LC 1095 |
 | 輸入**沒有長度**（reader / 串流 / 分頁式 API） | 把索引加倍找出右端點，再搜尋 — [模板 8](#template-8-exponential-galloping-search--lc-702-) | LC 702 |

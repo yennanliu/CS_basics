@@ -794,9 +794,12 @@
 
 **相關：** LC 1008（Construct BST from Preorder Traversal）用的是鏡像的想法 — 遞增堆疊，較大的值成為最後一個被彈出節點的右子節點。
 
-<!-- 4219a8b039ff -->
+<!-- c85bd14d6c38 -->
 ### 2-16) Min Stack (LC 155) — 輔助的非遞增堆疊 ⭐⭐⭐⭐
-> 完整解在 [stack.md § 模板 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-)，它是那個模板的錨點題。輔助的非遞增最小值堆疊，連同它的 `<=` 陷阱，就是那裡的[省空間變形](./stack.md#space-saving-variant--a-second-stack-of-minima-only)。
+> **關鍵** — 第二個堆疊記下每一層的最小值，所以 `getMin` 就是它的頂端；只推入 `<=` 目前最小值的值，
+> 讓它保持非遞增、也比較小。
+
+**歸約到**：[stack.md § 模板 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-)，它是那個模板的錨點題，完整解在那裡。輔助的非遞增最小值堆疊，連同它的 `<=` 陷阱，就是那裡的[省空間變形](./stack.md#space-saving-variant--a-second-stack-of-minima-only)。
 
 <!-- 974bdd4ee317 -->
 ### 2-17) 既有模板的各種變形

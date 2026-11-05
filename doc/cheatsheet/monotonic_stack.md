@@ -850,6 +850,24 @@ public int trap(int[] height) {
 ### 2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack
 > Process array twice (or use modulo) to handle circular next-greater queries.
 
+```python
+# python
+# LC 503 - Next Greater Element II (circular array)
+# IDEA: walk 2n indices with i % n; only the first lap pushes, the second lap only answers
+# time = O(n), space = O(n)
+def nextGreaterElements(nums):
+    n = len(nums)
+    res = [-1] * n                    # -1 = no greater element anywhere around the circle
+    stack = []                        # indices still waiting, values strictly decreasing
+    for i in range(2 * n):            # the second lap lets an element find an answer that wraps
+        val = nums[i % n]
+        while stack and nums[stack[-1]] < val:
+            res[stack.pop()] = val
+        if i < n:
+            stack.append(i)           # only the first lap pushes; the second only answers
+    return res
+```
+
 ```java
 // LC 503 - Next Greater Element II (circular array)
 // IDEA: Monotonic stack — traverse 2n indices with modulo for circular effect
@@ -867,24 +885,6 @@ public int[] nextGreaterElements(int[] nums) {
     }
     return ans;
 }
-```
-
-```python
-# python
-# LC 503 - Next Greater Element II (circular array)
-# IDEA: walk 2n indices with i % n; only the first lap pushes, the second lap only answers
-# time = O(n), space = O(n)
-def nextGreaterElements(nums):
-    n = len(nums)
-    res = [-1] * n                    # -1 = no greater element anywhere around the circle
-    stack = []                        # indices still waiting, values strictly decreasing
-    for i in range(2 * n):            # the second lap lets an element find an answer that wraps
-        val = nums[i % n]
-        while stack and nums[stack[-1]] < val:
-            res[stack.pop()] = val
-        if i < n:
-            stack.append(i)           # only the first lap pushes; the second only answers
-    return res
 ```
 
 **Variant — right to left, read the answer off the top.** Walk the doubled array backwards and
@@ -920,23 +920,6 @@ def nextGreaterElements(nums):
 ### 2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack
 > Pop all previous prices <= current; span = days since last greater price.
 
-```java
-// LC 901 - Online Stock Span
-// IDEA: Monotonic decreasing stack storing [price, span] pairs
-// time = O(1) amortized per call, space = O(N)
-class StockSpanner {
-    Deque<int[]> stack = new ArrayDeque<>(); // [price, span]
-    public int next(int price) {
-        int span = 1;
-        while (!stack.isEmpty() && stack.peek()[0] <= price) {
-            span += stack.pop()[1];
-        }
-        stack.push(new int[]{price, span});
-        return span;
-    }
-}
-```
-
 ```python
 # python
 # LC 901 - Online Stock Span
@@ -952,6 +935,23 @@ class StockSpanner(object):
             span += self.stack.pop()[1]   # absorb a whole block of days at once
         self.stack.append([price, span])
         return span
+```
+
+```java
+// LC 901 - Online Stock Span
+// IDEA: Monotonic decreasing stack storing [price, span] pairs
+// time = O(1) amortized per call, space = O(N)
+class StockSpanner {
+    Deque<int[]> stack = new ArrayDeque<>(); // [price, span]
+    public int next(int price) {
+        int span = 1;
+        while (!stack.isEmpty() && stack.peek()[0] <= price) {
+            span += stack.pop()[1];
+        }
+        stack.push(new int[]{price, span});
+        return span;
+    }
+}
 ```
 
 **Dry run** — each entry carries the span it already absorbed, so one pop adds a whole block of days:
@@ -1154,9 +1154,10 @@ def removeKdigits(num, k):
 ```
 
 ```java
-// LC 402 - Remove K Digits
-// IDEA: Greedy + monotonic increasing stack — remove larger digits greedily
+// java
+// IDEA: greedy + monotonic increasing stack: a larger digit before a smaller one is removed first
 // time = O(N), space = O(N)
+// LC 402 - Remove K Digits
 public String removeKdigits(String num, int k) {
     Deque<Character> stack = new ArrayDeque<>();
     for (char c : num.toCharArray()) {
@@ -1166,12 +1167,11 @@ public String removeKdigits(String num, int k) {
         stack.push(c);
     }
     while (k-- > 0) stack.pop(); // remove from top if k still > 0
-    // reconstruct result in correct order (bottom to top of stack)
-    Deque<Character> result = new ArrayDeque<>(stack);
+    // push() adds at the front, so the bottom of the stack (the first digit kept) is the LAST element
     StringBuilder sb = new StringBuilder();
     boolean leadingZero = true;
-    while (!result.isEmpty()) {
-        char c = result.pollFirst();
+    while (!stack.isEmpty()) {
+        char c = stack.pollLast();
         if (leadingZero && c == '0') continue;
         leadingZero = false;
         sb.append(c);
@@ -1735,6 +1735,24 @@ nums = [3,2,1,6,0,5]
 5 → pop 0 → 5.left = 0; top 6 → 6.right = 5   stack[6,5]
 ```
 
+```python
+# python
+# LC 654 - Maximum Binary Tree
+# IDEA: monotonic decreasing stack of nodes; popped nodes chain into cur.left,
+#       remaining top takes cur as its right child; stack[0] is the root
+# time = O(N), space = O(N)
+def constructMaximumBinaryTree(nums):
+    stack = []                      # node values decreasing
+    for num in nums:
+        cur = TreeNode(num)
+        while stack and stack[-1].val < num:
+            cur.left = stack.pop()  # overwritten each pop -> keeps the LAST popped
+        if stack:
+            stack[-1].right = cur
+        stack.append(cur)
+    return stack[0] if stack else None
+```
+
 ```java
 // java
 // LC 654 - Maximum Binary Tree
@@ -1755,30 +1773,15 @@ public TreeNode constructMaximumBinaryTree(int[] nums) {
 }
 ```
 
-```python
-# python
-# LC 654 - Maximum Binary Tree
-# IDEA: monotonic decreasing stack of nodes; popped nodes chain into cur.left,
-#       remaining top takes cur as its right child; stack[0] is the root
-# time = O(N), space = O(N)
-def constructMaximumBinaryTree(nums):
-    stack = []                      # node values decreasing
-    for num in nums:
-        cur = TreeNode(num)
-        while stack and stack[-1].val < num:
-            cur.left = stack.pop()  # overwritten each pop -> keeps the LAST popped
-        if stack:
-            stack[-1].right = cur
-        stack.append(cur)
-    return stack[0] if stack else None
-```
-
 **Why `cur.left` may be overwritten:** each pop re-assigns `cur.left`, and the popped nodes are already linked to each other (an earlier pop is the previous node's right child), so after the loop `cur.left` correctly points at the root of the whole popped block.
 
 **Related:** LC 1008 (Construct BST from Preorder Traversal) uses the mirror idea — a decreasing stack where a larger value becomes the right child of the last popped node.
 
 ### 2-16) Min Stack (LC 155) — Auxiliary Non-Increasing Stack ⭐⭐⭐⭐
-> Worked in [stack.md § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-), whose anchor it is. The auxiliary non-increasing stack of minima, with its `<=` trap, is the [space-saving variant](./stack.md#space-saving-variant--a-second-stack-of-minima-only) there.
+> **Key point** — a second stack holds the minimum at every layer, so `getMin` is its top; pushing
+> only values `<=` the current minimum keeps it non-increasing and smaller.
+
+**Reduces to**: [stack.md § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-), whose anchor it is and where it is worked. The auxiliary non-increasing stack of minima, with its `<=` trap, is the [space-saving variant](./stack.md#space-saving-variant--a-second-stack-of-minima-only) there.
 
 ### 2-17) Variations of Existing Templates
 
@@ -1792,27 +1795,6 @@ def constructMaximumBinaryTree(nums):
 | 4054 | Count Shadow Pairs I | Template 2 (next smaller) | Next **strictly** smaller — pop on `>=`, then subtract the equal values inside the window, since the pair test is strict too ([§2-19](#2-19-count-shadow-pairs-i-lc-4054--template-2-variant-next-strictly-smaller-)) |
 
 **Max Chunks To Make Sorted II (LC 768) — chunk-maxima stack**
-
-```java
-// java
-// LC 768 - Max Chunks To Make Sorted II
-// IDEA: monotonic increasing stack of chunk MAXIMA. A value smaller than the top must
-//       merge every chunk it is smaller than; the merged chunk keeps the largest max
-// time = O(N), space = O(N)
-public int maxChunksToSorted(int[] arr) {
-    Deque<Integer> stack = new ArrayDeque<>(); // chunk maxima, increasing bottom -> top
-    for (int num : arr) {
-        if (!stack.isEmpty() && num < stack.peek()) {
-            int maxOfMerged = stack.pop();
-            while (!stack.isEmpty() && num < stack.peek()) stack.pop();
-            stack.push(maxOfMerged);           // merged chunk keeps the old max
-        } else {
-            stack.push(num);                   // starts a new chunk
-        }
-    }
-    return stack.size();
-}
-```
 
 ```python
 # python
@@ -1840,6 +1822,27 @@ def maxChunksToSortedI(arr):
         if running_max == i:         # prefix holds exactly the values 0..i
             chunks += 1
     return chunks
+```
+
+```java
+// java
+// LC 768 - Max Chunks To Make Sorted II
+// IDEA: monotonic increasing stack of chunk MAXIMA. A value smaller than the top must
+//       merge every chunk it is smaller than; the merged chunk keeps the largest max
+// time = O(N), space = O(N)
+public int maxChunksToSorted(int[] arr) {
+    Deque<Integer> stack = new ArrayDeque<>(); // chunk maxima, increasing bottom -> top
+    for (int num : arr) {
+        if (!stack.isEmpty() && num < stack.peek()) {
+            int maxOfMerged = stack.pop();
+            while (!stack.isEmpty() && num < stack.peek()) stack.pop();
+            stack.push(maxOfMerged);           // merged chunk keeps the old max
+        } else {
+            stack.push(num);                   // starts a new chunk
+        }
+    }
+    return stack.size();
+}
 ```
 
 ### 2-18) Steps to Make Array Non-decreasing (LC 2289) — Monotonic Stack Carrying a DP Value ⭐⭐⭐⭐
