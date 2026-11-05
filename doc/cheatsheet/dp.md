@@ -1505,8 +1505,8 @@ Backward (RIGHT):  w=6: dp[6] = dp[3] + 5 = 5    <- dp[3] is still 0, "without t
 - **Forward inner loop.** It turns 0/1 into unbounded knapsack: the single item above is taken twice.
 - **Inner loop running below the weight.** `range(capacity, -1, -1)` reads `dp[w - weight]` at a
   negative index, which in Python is the **end** of the array, not an error.
-- **The wrong transition for the question.** A `max` on a boolean table or `or` on a count table
-  compiles and is wrong.
+- **The wrong transition for the question.** Using `or` on a count table loses the number of ways.
+  On a boolean table, `max` equals `or`, but `or` makes the intent clearer.
 
 **Not this if** — an item may be **reused** (coins, unlimited supply) → unbounded knapsack, inner
 loop forward, and the loop nesting depends on whether order matters → [knapsack.md](./knapsack.md).

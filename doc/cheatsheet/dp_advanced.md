@@ -2562,7 +2562,7 @@ they need it. Reach for the advanced technique only when the right-hand column h
 | Interval DP deep dives | [dp.md § Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) Order A, when the transition moves only the two ends | the transition needs a split point `k` strictly inside the range |
 | Grid DP variants | [dp.md § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) and one rolling row | two walkers must be coordinated (LC 741) |
 | State machine, extended | [dp.md § Template 5](./dp.md#template-5-state-machine-dp--lc-309) and [stock_trading.md](./stock_trading.md) | the state needs a count (k transactions) or a last-move dimension |
-| String DP deep dives | [dp.md § Template 8](./dp.md#template-8-edit-distance--lc-72-) / [§ Template 9](./dp.md#template-9-longest-common-subsequence--lc-1143) | the follow-up asks for O(n) space with the path, or exactly one edit (LC 161: two pointers) |
+| String DP deep dives | [dp.md § Template 8](./dp.md#template-8-edit-distance--lc-72-) / [§ Template 9](./dp.md#template-9-longest-common-subsequence--lc-1143) | the follow-up asks for O(n) space when only the value is needed, or exactly one edit (LC 161: two pointers) |
 | Manacher's algorithm | expand around the centre, O(n²): [dp.md § Template 10](./dp.md#template-10-palindrome-substring-dp--lc-5-) | n ≥ 10⁵ and O(n²) is explicitly too slow |
 | Bitmask TSP | BFS over `(node, mask)` for unweighted LC 847 | weighted edges, n ≤ 20 |
 | Chaining DP | sort, then [dp.md § Template 7a](./dp.md#template-7a-value-keyed-dp-dp--hash-map--lc-1218-) value-keyed DP | the chain order is not a sort order and needs DFS + memo |
