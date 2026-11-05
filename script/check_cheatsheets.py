@@ -51,7 +51,16 @@ BLOG = re.compile(r"csdn\.net|cnblogs\.com|bilibili\.com|itdaan\.com", re.I)
 GPT = re.compile(r"\bgpt\b", re.I)
 IPYTHON = re.compile(r"^\s*(In|Out)\s*\[\d+\]:")
 # A Java lambda comparator whose body subtracts: (a, b) -> a[0] - b[0]
-JAVA_LAMBDA = re.compile(r"\(\s*(\w+)\s*,\s*(\w+)\s*\)\s*->\s*([^;{]*)")
+# A Java comparator, in the three shapes the sheets use: an expression lambda
+# `(a, b) -> a[0] - b[0]`, a block lambda `(a, b) -> { return a - b; }` (on one
+# line or several), and an anonymous class's `int compare(T o1, T o2) {…}`.
+# Parameters may be typed: `(int[] a, int[] b) ->`.
+_PARAM = r"(?:[\w<>\[\],.?]+\s+)?(\w+)"
+JAVA_LAMBDA = re.compile(r"\(\s*" + _PARAM + r"\s*,\s*" + _PARAM + r"\s*\)\s*->\s*(.*)")
+JAVA_COMPARE = re.compile(r"\bint\s+compare\s*\(\s*" + _PARAM + r"\s*,\s*" + _PARAM + r"\s*\)")
+JAVA_RETURN = re.compile(r"\breturn\b([^;]*);")
+# How many lines a block comparator's `return` may sit below its signature.
+COMPARATOR_SPAN = 6
 # Python midpoint by true division, used as an index: (l + r) / 2
 PY_FLOAT_MID = re.compile(r"\(\s*\w+\s*\+\s*\w+\s*\)\s*/(?!/)\s*2\b(?!\.)")
 RECOGNITION = re.compile(r"recogni(?:s|z|tion)|when to use|how to (identify|spot|recogni)|signal", re.I)
@@ -109,7 +118,8 @@ def scan(lines):
 def java_subtracts(body, a, b):
     """True when a lambda body compares by subtraction: a[0] - b[0], b - a, x.v - y.v."""
     for term in re.split(r"[?:]", body):
-        m = re.search(r"([\w.\[\]()/% ]+?)\s-\s*([\w.\[\]()/% ]+)", term)
+        # a binary minus, spaced or not; never the `->` arrow or a `--`
+        m = re.search(r"([\w.\[\]()/% ]+?)\s*(?<![-<>=])-(?![->=-])\s*([\w.\[\]()/% ]+)", term)
         if not m:
             continue
         left, right = m.group(1), m.group(2)
@@ -126,6 +136,7 @@ def count_file(name, text, tier):
     lines = text.split("\n")
     h2 = []
     prev_lc_heading = None    # index of an `### … LC n` heading awaiting its first content line
+    pending = None            # a block comparator whose `return` is still to come
     for i, line, lang in scan(lines):
         # line rules, prose, headings and code alike
         if lang not in ("!open", "!close"):
@@ -156,9 +167,38 @@ def count_file(name, text, tier):
                 counts["code-first-example"] += 1
                 prev_lc_heading = None
         if lang == "java":
-            m = JAVA_LAMBDA.search(line)
-            if m and java_subtracts(m.group(3), m.group(1), m.group(2)):
+            code = line.split("//")[0]
+            found = False
+            m = JAVA_LAMBDA.search(code)
+            c = JAVA_COMPARE.search(code)
+            if m:
+                a, b, body = m.group(1), m.group(2), m.group(3).strip()
+                if body.startswith("{") or not body:
+                    # block lambda, or an expression continued on the next line
+                    pending = (a, b, COMPARATOR_SPAN, not body)
+                    r = JAVA_RETURN.search(body)
+                    found = bool(r and java_subtracts(r.group(1), a, b))
+                else:
+                    found = java_subtracts(body.split(";")[0], a, b)
+                    pending = None
+            elif c:
+                pending = (c.group(1), c.group(2), COMPARATOR_SPAN, False)
+            elif pending:
+                a, b, left, expression = pending
+                r = JAVA_RETURN.search(code)
+                if expression:
+                    found = java_subtracts(code.split(";")[0], a, b)
+                    pending = None
+                elif r:
+                    found = java_subtracts(r.group(1), a, b)
+                    pending = None if found else (a, b, left - 1, False)
+                else:
+                    pending = (a, b, left - 1, False) if left > 1 else None
+            if found:
                 counts["java-sub-comparator"] += 1
+                pending = None
+        else:
+            pending = None
         if lang in ("python", "py") and not line.lstrip().startswith("#"):
             if PY_FLOAT_MID.search(line.split("#")[0]):
                 counts["py-float-mid"] += 1
