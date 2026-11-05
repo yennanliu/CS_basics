@@ -59,12 +59,12 @@
 | 「環」、「環的起點」、「中間節點」、「倒數第 k 個」 | O(1) 空間 | 快慢指標 | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-lc-142-) | 1..n 陣列裡找重複 → 把同一招用在索引上（LC 287） |
 | 「合併 k 條已排序串列」 | k ≤ 10⁴ | 用堆積做 k 路合併 | [heap § Template 2](./heap.md#template-2-k-way-merge-pattern--lc-23) | 只有兩條 → 用 dummy head 直接合併（LC 21） |
 
-<!-- 8803782d20e1 -->
+<!-- 27aa78ff63c6 -->
 ### 樹
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
-| 「一層一層」、「右側視角」、「之字形」、「最小深度」 | 節點 ≤ 10⁴ | 帶層迴圈的 BFS | [bfs § Pattern 2](./bfs.md#pattern-2-level-by-level-bfs--lc-102-) | 由葉子往上彙總的值 → 後序 DFS |
+| 「一層一層」、「右側視角」、「之字形」、「最小深度」 | 節點 ≤ 10⁴ | 帶層迴圈的 BFS | [bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) | 由葉子往上彙總的值 → 後序 DFS |
 | 「直徑」、「平衡嗎？」、「最大路徑和」，任何節點要從子節點算出來的東西 | 遞迴深度 = 樹高 | 回傳值的後序 DFS | [dfs § Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-) | 答案取決於從根下來的路徑 → 當參數往下傳（LC 112） |
 | 「從根到葉、總和為 x 的路徑」、「所有路徑」 | 節點 ≤ 5,000 | 帶著路徑的前序 DFS | [tree_lca_distance § 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | 任何往下的路徑、不只從根出發 → 路徑上的前綴和（LC 437） |
 | 「最低共同祖先」 | 節點 ≤ 10⁵ | 用回傳值表示「找到了沒」的 LCA | [tree_lca_distance § 1](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | 是 **BST** → 依值往下走，O(h)（LC 235） |
@@ -72,14 +72,14 @@
 | 「由前序與中序建樹」 | 節點 ≤ 3,000 | 分治 + 索引 map | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | 序列化／反序列化 → 帶 null 標記的前序（[tree_codec](./tree_codec.md)） |
 | 「前綴搜尋」、「支援 `.` 的單字字典」、「網格裡找很多個字」 | 單字 ≤ 3·10⁴ | trie | [trie](./trie.md#templates--algorithms) | 一次只拿一個字比對一個集合 → hash set 就夠 |
 
-<!-- db5efcac28b9 -->
+<!-- bf377faa31c6 -->
 ### 圖
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
 | 「島嶼數量」、「連通區域」、「flood fill」 | 網格 ≤ 300 × 300 | 網格 DFS／BFS，標記已走過 | [dfs § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-) | 邊一條一條進來、要問連通性 → 併查集 |
-| 「最短路徑／最少步數」，每一步成本都是 1 | V + E ≤ 10⁵ | BFS（入隊時就標記） | [bfs § Pattern 3](./bfs.md#pattern-3-graph-bfs-with-visited-set--lc-200) | 每一步成本不同 → Dijkstra；成本只有 0 或 1 → [0-1 BFS](./shortest_path_comparison.md#variant-0-1-bfs) |
-| 「橘子腐爛」、「到最近的 0／門的距離」 | 網格 ≤ 10⁵ 格 | 多源 BFS | [bfs § Pattern 4](./bfs.md#pattern-4-multi-source-bfs-distance-calculation--lc-542--lc-994-) | 只要從一個源點出發的距離 → 一般 BFS |
+| 「最短路徑／最少步數」，每一步成本都是 1 | V + E ≤ 10⁵ | BFS（入隊時就標記） | [bfs § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-) | 每一步成本不同 → Dijkstra；成本只有 0 或 1 → [0-1 BFS](./shortest_path_comparison.md#variant-0-1-bfs) |
+| 「橘子腐爛」、「到最近的 0／門的距離」 | 網格 ≤ 10⁵ 格 | 多源 BFS | [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) | 只要從一個源點出發的距離 → 一般 BFS |
 | 「帶權最短路徑」、「網路延遲」、「最小體力路徑」 | E ≤ 10⁵，權重 ≥ 0 | Dijkstra | [Dijkstra § Template 1](./Dijkstra.md#template-1-basic-dijkstra)（成本相加）、[§ LC 1631](./Dijkstra.md#1-is-the-cost-additive-and-can-you-order-the-cells--lc-64-vs-lc-1631-)（體力：取路徑上最大的邊，不是相加） | 有負權重或「最多 k 站」 → [Bellman-Ford](./Bellman-Ford.md)（LC 787）；全點對且 n ≤ 400 → [Floyd-Warshall](./Floyd-Warshall.md) |
 | 「課程表」、「有先修條件的任務順序」、「外星字典」 | V + E ≤ 10⁵ | 拓撲排序（Kahn 的 BFS） | [topology_sorting § Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) | 無向圖 → 根本沒有順序；用併查集檢查環 |
 | 「多餘的連線」、「省份數量」、「合併帳號」 | n ≤ 10⁵ | 併查集 | [union_find § 0-3](./union_find.md#0-3-algorithm-pattern--template-) | 還需要路徑長度 → BFS／DFS |

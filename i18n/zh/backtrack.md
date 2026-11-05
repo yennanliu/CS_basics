@@ -329,7 +329,7 @@ LC 40 還額外需要同一層的重複跳過。
 
 <!--CODE-->
 
-<!-- 9d6a0265c544 -->
+<!-- 4fd07581e103 -->
 #### 標記能維持多久 — 它底下的每一個呼叫都看得到，旁邊的都看不到（LC 1219） ⭐⭐⭐⭐
 
 執行 `grid[y][x] = -1` 之後，**誰會看到這個 `-1`，又會看到什麼時候？** 把這件事搞清楚，
@@ -381,7 +381,7 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 > 標記**一次**，在第一個遞迴呼叫之前；還原**一次**，在最後一個之後。任何在中間就返回的寫法
 > —— 例如上面的 `return (dfs(...) or dfs(...))` —— 一樣會跳過還原。這題完整的三種寫法比較
 > （在哪裡檢查、在哪裡累加）在
-> [dfs.md Template 9](./dfs.md#template-9-grid-dfs--backtracking--3-styles-compared-lc-1219-path-with-maximum-gold)。
+> [dfs.md Template 9](./dfs.md#template-9-grid-dfs-with-restore-backtracking--lc-1219)。
 
 <!-- 6da5f131a07a -->
 ### Template 10: N-Queens — LC 51

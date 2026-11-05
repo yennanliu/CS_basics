@@ -24,23 +24,25 @@
 - [DFS vs BFS Comparison](https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_vs_bfs.png)
 - [Tree Traversal Animations](https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dfs_2.png)
 
-## Problem Categories
+## Recognition
 
-Each pattern below is presented **exactly once** — as a template in the next section. This table is
-the index into them: match the recognition keywords, then jump to the template.
+Each pattern below is presented **exactly once**, as a card under Templates & Algorithms. Match the
+wording in the statement, check the constraint against the
+[constraint ruler](./complexity_cheatsheet.md#6-interview-decision-guide), then read the last column
+before you code.
 
-| # | Pattern | Recognition keywords | Template | Canonical LC | Also |
-|---|---------|----------------------|----------|--------------|------|
-| 1 | Tree traversal, paired DFS | "traverse", "visit all", "print tree", "serialize", "is it a mirror", "are two trees the same" | [T1](#template-1-tree-traversal--lc-94-) | LC 94 | 144, 145, 297, 449, 100, 101, 951 |
-| 2 | Graph / grid traversal, components | "connected components", "islands", "cycle detection" | [T2](#template-2-graph--grid-dfs-flood-fill--lc-200-) | LC 200 | 695, 133, 207, 210, 419 |
-| 3 | Path problems | "path sum", "root to leaf", "all paths", "does a path exist" | [T3](#template-3-path-finding--lc-112-) | LC 112 | 113, 257, 129, 1971 |
-| 4 | Backtracking | "all combinations", "permutations", "subsets" | [T4](#template-4-backtracking--lc-46) | LC 46 | 78, 39, 17, 22, 51, 79 |
-| 5 | Tree modification | "delete", "insert", "trim", "convert" | [T5](#template-5-tree-modification--lc-450) | LC 450 | 701, 669, 538, 226, 114 |
-| 6 | Subtree aggregation & LCA | "subtree sum", "duplicate subtrees", "LCA", "deepest leaves", "minimum moves between adjacent nodes" | [T6](#template-6-bottom-up-post-order-dfs--lc-543-) | LC 543 | 124, 236, 508, 652, 663, 979, 2049 |
-| 7 | Boundary elimination (2 passes) | "closed islands", "surrounded regions", "captured" | [T7](#template-7-2-pass-dfs-boundary-elimination--lc-1254) | LC 1254 | 130, 417, 1020 |
-| 8 | Path signatures (shape encoding) | "distinct islands", "unique shapes", "same shape after translation" | [T8](#template-8-path-signature-shape-encoding--lc-694) | LC 694 | 711, 652 |
-| 9 | Grid DFS + backtracking | "one path", "collect the most", "cannot revisit a cell" | [T9](#template-9-grid-dfs--backtracking--3-styles-compared-lc-1219-path-with-maximum-gold) | LC 1219 | 79, 329, 980 |
-| 10 | Weighted-edge DFS (ratio queries) | "evaluate division", "exchange rates", "transitive ratios" | [T10](#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | LC 399 | 721, 1101, 737 |
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "inorder / preorder / postorder", "visit all", "serialize", "is it a mirror", "are two trees the same" | nodes ≤ 10⁴ | [Template 1](#template-1-tree-traversal--lc-94-) — tree traversal; two trees → its [paired-DFS variation](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree) | level by level → [bfs.md § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) |
+| "number of islands", "connected regions", "flood fill", "clone the graph" | grid ≤ 300 × 300 | [Template 2](#template-2-graph--grid-dfs-flood-fill--lc-200-) — flood fill, count launches | the shortest route between two cells → [bfs.md § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-) |
+| "root-to-leaf path with sum", "does a path exist", "all paths" | nodes ≤ 5,000 | [Template 3](#template-3-path-finding--lc-112-) — state passed down, early return | the path may start below the root → prefix sum on the path (LC 437) |
+| "all permutations / combinations / subsets" | n ≤ 10 (n!) or n ≤ 20 (2ⁿ) | [Template 4](#template-4-backtracking--lc-46) — choose, recurse, un-choose | only the count, with repeated states → DP |
+| "delete / insert / trim a node and return the root" | BST, O(h) | [Template 5](#template-5-tree-modification--lc-450) — reassign the returned subtree | a property of a whole subtree decides the cut → Template 6 |
+| "diameter", "balanced?", "subtree sum", "lowest common ancestor", "minimum moves between adjacent nodes" | nodes ≤ 10⁴ | [Template 6](#template-6-bottom-up-post-order-dfs--lc-543-) — post-order, return one value, record another | the answer depends on the path from the root → Template 3 |
+| "closed islands", "surrounded regions", "enclaves" | grid ≤ 200 × 200 | [Template 7](#template-7-2-pass-dfs-boundary-elimination--lc-1254) — flood the border first | the distance to the border → multi-source BFS |
+| "distinct islands", "same shape after translation" | grid ≤ 50 × 50 | [Template 8](#template-8-path-signature-shape-encoding--lc-694) — path signature | rotations and reflections count as equal → normalise over 8 transforms (LC 711) |
+| "one path, collect the most, never revisit a cell", "word search" | grid ≤ 15 × 15, ≤ 25 useful cells | [Template 9](#template-9-grid-dfs-with-restore-backtracking--lc-1219) — mark, recurse, **restore** | cells may be revisited, or the grid is large → DP or BFS |
+| "evaluate division", "exchange rates", "transitive ratios" | variables ≤ 40 | [Template 10](#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) — weighted DFS, multiply along the path | many queries on a fixed graph → weighted union-find |
 
 **Not on this sheet** — these live in [dfs_advanced.md](./dfs_advanced.md): two-grid validation (LC 1905),
 edge-direction tracking (LC 1466), component pair counting (LC 2316), Euler paths (LC 332, 753), Tarjan
@@ -65,75 +67,90 @@ difficulty is in [dfs_examples.md → Problems by Pattern](./dfs_examples.md#pro
 | **9. Grid DFS + Backtrack** | One best path in a grid | Mark, recurse, **restore** | O(4^k) | O(k) | Overlapping paths from many starts |
 | **10. Weighted Graph DFS** | Ratio/division queries | Product accumulation | O(Q·(V+E)) | O(V+E) | Transitive ratio computation |
 
-### Universal DFS Template
-```python
-def dfs(node, visited=None):
-    """
-    Universal DFS template for trees and graphs
-    Can be adapted for various problems
-    """
-    # Base case
-    if not node or (visited and node in visited):
-        return
-    
-    # Mark as visited (for graphs)
-    if visited is not None:
-        visited.add(node)
-    
-    # Process current node (pre-order position)
-    process(node)
-    
-    # Recursive calls
-    for neighbor in get_neighbors(node):
-        dfs(neighbor, visited)
-    
-    # Post-order processing if needed
-    # process_after(node)
-```
-
 ### Template 1: Tree Traversal — LC 94 ⭐⭐⭐⭐⭐
-- **Description**: Visit all nodes in specific order (preorder, inorder, postorder)
-- **Recognition**: "Traverse", "visit all", "print tree", "serialize"
-- **Examples**: LC 94, LC 144, LC 145, LC 297, LC 449; paired DFS — LC 100, LC 101 (see the [variation](#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree) below)
+
+**Recognise** — "inorder / preorder / postorder traversal", "visit every node", "serialize", "print
+the tree", and in a BST "in sorted order" (a BST's inorder is sorted). Nodes ≤ 10⁴; the recursion is
+as deep as the tree is tall.
+
+**Key point** — the three orders are one recursion with the *visit* line in a different place:
+before the children (pre), between them (in), after them (post). Each node is entered once,
+whichever order you pick.
 
 ```python
-# Preorder: Root -> Left -> Right
-def preorder(root):
-    if not root:
-        return []
-    return [root.val] + preorder(root.left) + preorder(root.right)
-
-# Inorder: Left -> Root -> Right  
-def inorder(root):
-    if not root:
-        return []
-    return inorder(root.left) + [root.val] + inorder(root.right)
-
-# Postorder: Left -> Right -> Root
-def postorder(root):
-    if not root:
-        return []
-    return postorder(root.left) + postorder(root.right) + [root.val]
-
-# Iterative with Stack
-def dfs_iterative(root):
-    if not root:
-        return []
-    
-    stack = [root]
+# python
+# LC 94 - Binary Tree Inorder Traversal
+# IDEA: recurse left, visit, recurse right; move `result.append` to get pre- or post-order
+# time = O(n), space = O(h)   h = tree height, the recursion depth
+def inorderTraversal(root):
     result = []
-    
-    while stack:
-        node = stack.pop()
+
+    def dfs(node):
+        if not node:
+            return
+        dfs(node.left)
+        result.append(node.val)          # inorder: between the two children
+        dfs(node.right)
+
+    dfs(root)
+    return result
+
+
+def inorderTraversal_iterative(root):
+    # the problem's follow-up: an explicit stack replaces the call stack
+    result, stack = [], []
+    node = root
+    while node or stack:
+        while node:                      # walk as far left as possible
+            stack.append(node)
+            node = node.left
+        node = stack.pop()               # the leftmost node not yet visited
         result.append(node.val)
-        # Add right first so left is processed first (LIFO)
-        if node.right:
-            stack.append(node.right)
-        if node.left:
-            stack.append(node.left)
-    
+        node = node.right                # then its right subtree
     return result
 ```
+
+```java
+// java
+// LC 94 - Binary Tree Inorder Traversal
+// IDEA: recurse left, visit, recurse right; move `result.add` to get pre- or post-order
+// time = O(n), space = O(h)
+public List<Integer> inorderTraversal(TreeNode root) {
+    List<Integer> result = new ArrayList<>();
+    dfs(root, result);
+    return result;
+}
+
+private void dfs(TreeNode node, List<Integer> result) {
+    if (node == null) {
+        return;
+    }
+    dfs(node.left, result);
+    result.add(node.val);                // inorder: between the two children
+    dfs(node.right, result);
+}
+```
+
+**Complexity**
+- **Time O(n)**: `dfs` runs once per node and once per empty child (n + 1 of them), each in O(1).
+- **Space O(h)**: the recursion (or `stack`) holds one root-to-node path — O(log n) when balanced,
+  O(n) for a chain.
+
+**Traps**
+- `return inorder(node.left) + [node.val] + inorder(node.right)` copies lists at every level: O(n·h),
+  which is O(n²) on a skewed tree. Append to one shared list.
+- Iterative **preorder** pushes the right child before the left, so the left pops first; pushing
+  left first returns `[1,3,2]` for `[1,2,3]`.
+- A 10⁵-deep chain overflows Python's recursion limit; the iterative form has no limit.
+
+**Not this if** — the order is level by level → BFS
+([bfs.md § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-)). A node's answer is computed
+from its children's answers → [Template 6](#template-6-bottom-up-post-order-dfs--lc-543-). The
+predicate needs two nodes at once → the paired-DFS variation below.
+
+**Drill** — LC 94 · LC 144 · LC 145 *(iterative postorder = a reversed root-right-left preorder)* ·
+LC 100 ⭐ *(paired DFS)* · LC 101 *(paired DFS, mirrored: below)* · LC 297 ⭐ *(preorder with null
+markers)*
 
 #### Variation: paired (dual-pointer) DFS — LC 101 Symmetric Tree
 
@@ -282,56 +299,92 @@ def isSymmetric(root):
     sequences are compared afterwards, because the trees' shapes are allowed to differ)
 
 ### Template 2: Graph / Grid DFS (Flood Fill) — LC 200 ⭐⭐⭐⭐⭐
-- **Description**: Explore graphs, find components, detect cycles
-- **Recognition**: "Connected components", "islands", "cycle detection"
-- **Examples**: LC 200, LC 695, LC 133, LC 207, LC 210
+
+**Recognise** — "number of islands", "connected regions", "flood fill", "max area of an island",
+"clone the graph". A grid ≤ 300 × 300, or V + E ≤ 10⁵ → one O(V + E) pass.
+
+**Key point** — the outer scan meets each island first at one cell, and that cell's DFS sinks every
+land cell connected to it. So each island is counted exactly once, at its first cell, and every
+cell is entered a constant number of times.
 
 ```python
-def dfs_graph(graph, start):
-    """
-    DFS for graph with cycle handling
-    """
-    visited = set()
-    result = []
-    
-    def dfs(node):
-        if node in visited:
-            return
-        
-        visited.add(node)
-        result.append(node)
-        
-        for neighbor in graph[node]:
-            dfs(neighbor)
-    
-    dfs(start)
-    return result
+# python
+# LC 200 - Number of Islands
+# IDEA: scan the grid; each '1' still standing starts a DFS that sinks its island -> count the launches
+# time = O(m * n), space = O(m * n)   the recursion is as deep as the largest island
+def numIslands(grid):
+    rows, cols = len(grid), len(grid[0])
 
-# For detecting cycles
-def has_cycle(graph):
-    visited = set()
-    rec_stack = set()
-    
-    def dfs(node):
-        visited.add(node)
-        rec_stack.add(node)
-        
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                if dfs(neighbor):
-                    return True
-            elif neighbor in rec_stack:
-                return True
-        
-        rec_stack.remove(node)
-        return False
-    
-    for node in graph:
-        if node not in visited:
-            if dfs(node):
-                return True
-    return False
+    def sink(r, c):
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != '1':
+            return                        # off the grid, water, or already sunk
+        grid[r][c] = '0'                  # mark BEFORE recursing, so no cell is entered twice
+        sink(r + 1, c)
+        sink(r - 1, c)
+        sink(r, c + 1)
+        sink(r, c - 1)
+
+    islands = 0
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':
+                islands += 1              # the first cell of a new island
+                sink(r, c)
+    return islands
 ```
+
+```java
+// java
+// LC 200 - Number of Islands
+// IDEA: scan the grid; each '1' still standing starts a DFS that sinks its island -> count the launches
+// time = O(m * n), space = O(m * n)
+public int numIslands(char[][] grid) {
+    int islands = 0;
+    for (int r = 0; r < grid.length; r++) {
+        for (int c = 0; c < grid[0].length; c++) {
+            if (grid[r][c] == '1') {
+                islands++;                // the first cell of a new island
+                sink(grid, r, c);
+            }
+        }
+    }
+    return islands;
+}
+
+private void sink(char[][] grid, int r, int c) {
+    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] != '1') {
+        return;
+    }
+    grid[r][c] = '0';                     // mark BEFORE recursing
+    sink(grid, r + 1, c);
+    sink(grid, r - 1, c);
+    sink(grid, r, c + 1);
+    sink(grid, r, c - 1);
+}
+```
+
+**Complexity**
+- **Time O(m·n)**: the outer scan reads every cell once, and `sink` turns a `'1'` into `'0'` before
+  recursing, so it enters each land cell once; the four neighbour checks are O(1).
+- **Space O(m·n)**: an all-land grid is one island, and the recursion can be that deep.
+
+**Traps**
+- Marking after the four recursive calls: two land cells recurse into each other for ever —
+  `[["1","1"]]` overflows the stack.
+- LC 200's grid holds the **characters** `'1'` and `'0'`; comparing with the integer `1` finds no
+  islands at all.
+- 300 × 300 of land is a 9·10⁴-deep recursion: Python needs `sys.setrecursionlimit`, or the BFS form
+  ([bfs.md § Template 3](./bfs.md#template-3-grid-bfs-with-a-direction-array--lc-1091-)).
+- Sinking the grid destroys the input. Say so in the interview, or keep a `visited` set.
+
+**Not this if** — a directed graph and "is there a cycle" → three-state DFS
+([graph.md § Template 5](./graph.md#template-5-three-state-dfs-cycle-detection--lc-802-)); a plain
+`visited` set reports false cycles. The shortest route between two cells → BFS. Edges arrive one at
+a time → union-find.
+
+**Drill** — LC 200 ⭐ · LC 733 *(flood one region)* · LC 695 *(return the size from `sink`)* ·
+LC 133 ⭐ *(visited is the `{original: copy}` map)* · LC 417 ⭐ *(flood inward from each ocean,
+then intersect)* · LC 419 *(no DFS at all: the variation below)*
 
 #### Variation: count components **without** flood fill — LC 419 Battleships in a Board
 
@@ -339,25 +392,6 @@ def has_cycle(graph):
 all — count only the cells that are the **top-left end** of a ship, which makes it `O(1)` extra space
 (no `visited` set, no in-place mutation). Good answer to the classic follow-up *"can you do it in one
 pass, O(1) space, without modifying the board?"* on top of the LC 200 flood-fill baseline.
-
-```java
-// java
-// LC 419 - Battleships in a Board
-// IDEA: a cell starts a NEW ship iff it is 'X' and has no 'X' above and no 'X' to its left
-// time = O(M*N), space = O(1)
-public int countBattleships(char[][] board) {
-    int count = 0;
-    for (int r = 0; r < board.length; r++) {
-        for (int c = 0; c < board[0].length; c++) {
-            if (board[r][c] != 'X') continue;
-            if (r > 0 && board[r - 1][c] == 'X') continue;   // continuation of a vertical ship
-            if (c > 0 && board[r][c - 1] == 'X') continue;   // continuation of a horizontal ship
-            count++;
-        }
-    }
-    return count;
-}
-```
 
 ```python
 # python
@@ -378,372 +412,433 @@ def countBattleships(board):
     return count
 ```
 
+```java
+// java
+// LC 419 - Battleships in a Board
+// IDEA: a cell starts a NEW ship iff it is 'X' and has no 'X' above and no 'X' to its left
+// time = O(M*N), space = O(1)
+public int countBattleships(char[][] board) {
+    int count = 0;
+    for (int r = 0; r < board.length; r++) {
+        for (int c = 0; c < board[0].length; c++) {
+            if (board[r][c] != 'X') continue;
+            if (r > 0 && board[r - 1][c] == 'X') continue;   // continuation of a vertical ship
+            if (c > 0 && board[r][c - 1] == 'X') continue;   // continuation of a horizontal ship
+            count++;
+        }
+    }
+    return count;
+}
+```
+
 > If the "ships are straight lines" guarantee is dropped, fall back to the plain LC 200 grid DFS above.
 
 ### Template 3: Path Finding — LC 112 ⭐⭐⭐⭐⭐
-- **Description**: Find paths with specific properties in trees/graphs
-- **Recognition**: "Path sum", "root to leaf", "all paths", "longest path"
-- **Examples**: LC 112, LC 113, LC 257, LC 124, LC 543
 
-**📚 Related Patterns**: For comprehensive path problem patterns with multiple variations (path sum, max path, consecutive sequences, prefix sum technique), see **bst.md Template 7 (Path Problems)** which provides 7 detailed path patterns with full implementations.
+**Recognise** — "root-to-leaf path with sum", "does a path exist", "all paths", "a path from a to
+b". Nodes ≤ 5,000.
 
-```python
-def find_paths(root, target):
-    """
-    Find all root-to-leaf paths with sum = target
-    """
-    def dfs(node, curr_sum, path, result):
-        if not node:
-            return
-        
-        # Update current state
-        curr_sum += node.val
-        path.append(node.val)
-        
-        # Check if leaf and target met
-        if not node.left and not node.right:
-            if curr_sum == target:
-                result.append(path[:])
-        
-        # Explore children
-        dfs(node.left, curr_sum, path, result)
-        dfs(node.right, curr_sum, path, result)
-        
-        # Backtrack
-        path.pop()
-    
-    result = []
-    dfs(root, 0, [], result)
-    return result
-```
-
-### DFS Early Return Pattern — return TRUE eagerly, FALSE lazily
-**Problem**: When searching for a path in DFS, what's the difference between these two approaches?
-
-#### ❌ WRONG Approach: Not Checking Return Value
-```java
-private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Integer>> map, boolean[] visited) {
-    if (node == destination) return true;
-
-    visited[node] = true;
-
-    for (int next : map.get(node)) {
-        if (!visited[next]) {
-            // ❌ WRONG: Ignoring return value - continues searching even after path found!
-            dfsPathVisitor(next, destination, map, visited);
-        }
-    }
-
-    return false;  // Will ALWAYS return false (except for direct hits)
-}
-```
-
-#### ✅ CORRECT Approach: Early Return on Success
-```java
-private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Integer>> map, boolean[] visited) {
-    if (node == destination) return true;
-
-    visited[node] = true;
-
-    for (int next : map.get(node)) {
-        if (!visited[next]) {
-            // ✅ CORRECT: Return immediately when path found!
-            if (dfsPathVisitor(next, destination, map, visited)) {
-                return true;
-            }
-        }
-    }
-
-    return false;  // Only return false if ALL paths explored
-}
-```
-
----
-
-#### 📊 Concrete Example: Why Early Return Matters
-
-**Test Case:**
-```text
-Graph: 0 -- 1 -- 2 -- 3
-       |         |
-       4 -------- 5
-
-Adjacency List:
-0: [1, 4]
-1: [0, 2]
-2: [1, 3, 5]
-3: [2]
-4: [0, 5]
-5: [2, 4]
-
-Task: Find path from 0 to 3
-```
-
----
-
-##### Scenario 1: ❌ WRONG (Without Early Return)
-
-**Call Stack Trace:**
-```text
-1. dfsPathVisitor(0, 3, ..., visited=[])
-   → visited = [0]
-   → Loop neighbors: [1, 4]
-
-   2. dfsPathVisitor(1, 3, ..., visited=[0])  // First neighbor
-      → visited = [0, 1]
-      → Loop neighbors: [0, 2]  (skip 0, already visited)
-
-      3. dfsPathVisitor(2, 3, ..., visited=[0,1])
-         → visited = [0, 1, 2]
-         → Loop neighbors: [1, 3, 5]  (skip 1)
-
-         4. dfsPathVisitor(3, 3, ..., visited=[0,1,2])
-            → ✅ Found! Returns TRUE
-
-         ← Returns TRUE to level 3
-
-      ← But level 2 IGNORES the return value!
-      ← Continues checking neighbor 5
-
-      5. dfsPathVisitor(5, 3, ..., visited=[0,1,2])
-         → visited = [0, 1, 2, 5]
-         → Loop neighbors: [2, 4]  (both visited)
-         ← Returns FALSE
-
-      ← Level 2 finishes loop, returns FALSE
-
-   ← Level 1 receives FALSE from neighbor 1
-
-   6. dfsPathVisitor(4, 3, ..., visited=[0,1,2,5])  // Second neighbor
-      → visited = [0, 1, 2, 5, 4]
-      → Loop neighbors: [0, 5]  (both visited)
-      ← Returns FALSE
-
-   ← Level 0 finishes loop, returns FALSE
-
-❌ FINAL RESULT: FALSE (Path exists but not detected!)
-```
-
-**Why it fails:**
-- Found destination at step 4 (returned TRUE)
-- But parent call at step 3 **ignored** the TRUE result
-- Continued exploring other neighbors unnecessarily
-- Eventually returned FALSE because other paths didn't reach destination
-
----
-
-##### Scenario 2: ✅ CORRECT (With Early Return)
-
-**Call Stack Trace:**
-```text
-1. dfsPathVisitor(0, 3, ..., visited=[])
-   → visited = [0]
-   → Loop neighbors: [1, 4]
-
-   2. dfsPathVisitor(1, 3, ..., visited=[0])  // First neighbor
-      → visited = [0, 1]
-      → Loop neighbors: [0, 2]  (skip 0)
-
-      3. dfsPathVisitor(2, 3, ..., visited=[0,1])
-         → visited = [0, 1, 2]
-         → Loop neighbors: [1, 3, 5]  (skip 1)
-
-         4. dfsPathVisitor(3, 3, ..., visited=[0,1,2])
-            → ✅ Found! Returns TRUE
-
-         ← Returns TRUE to level 3
-
-      ← Level 2 checks: if (TRUE) return true;  ✅
-      ← Returns TRUE immediately (skips remaining neighbors!)
-
-   ← Level 1 checks: if (TRUE) return true;  ✅
-   ← Returns TRUE immediately (skips neighbor 4!)
-
-✅ FINAL RESULT: TRUE (Correct!)
-```
-
-**Why it works:**
-- Found destination at step 4 (returned TRUE)
-- Parent call at step 3 **checked** the return value
-- Immediately returned TRUE without exploring other paths
-- Propagated TRUE all the way back to the root
-
----
-
-#### 🎯 Key Insights
-
-| Aspect | ❌ Without Early Return | ✅ With Early Return |
-|--------|------------------------|---------------------|
-| **Correctness** | ❌ Returns FALSE even when path exists | ✅ Returns TRUE when path found |
-| **Efficiency** | Explores ALL paths unnecessarily | Stops immediately upon finding path |
-| **Time Complexity** | O(V + E) always (full traversal) | O(V + E) worst case, but often much better |
-| **Use Case** | Collecting ALL paths/results | Finding ANY path (exists/not exists) |
-
----
-
-#### 📝 When to Use Each Pattern
-
-##### Pattern 1: Early Return (Path Existence Check)
-```java
-// Use when: "Does path exist?" "Can we reach?" "Is there a route?"
-if (dfs(next)) {
-    return true;  // Found one path - that's enough!
-}
-```
-**Examples:** LC 1971 (Path Exists), LC 797 (All Paths), LC 79 (Word Search)
-
-##### Pattern 2: Continue Without Return (Collecting All Results)
-```java
-// Use when: "Find ALL paths" "Count all solutions" "Collect all combinations"
-dfs(next);  // Don't return early - need to explore all branches
-```
-**Examples:** LC 257 (All Root-to-Leaf Paths), LC 113 (Path Sum II), LC 22 (Generate Parentheses)
-
----
-
-### Template 4: Backtracking — LC 46
-- **Description**: Try all possibilities, undo choices
-- **Recognition**: "All combinations", "permutations", "subsets"
-- **Examples**: LC 46, LC 78, LC 39, LC 17
+**Key point** — the path state (here the sum still needed) is passed **down** as an argument, so each
+call sees exactly the path from the root to itself. The answer is checked only at a leaf, and a
+True from either child is returned at once.
 
 ```python
-def backtrack_template(candidates, target):
-    """
-    General backtracking template
-    """
-    def backtrack(start, path, remaining):
-        # Base case - found solution
-        if remaining == 0:
-            result.append(path[:])
-            return
-        
-        # Try all possibilities
-        for i in range(start, len(candidates)):
-            if candidates[i] > remaining:
-                continue
-            
-            # Make choice
-            path.append(candidates[i])
-            
-            # Recurse
-            backtrack(i, path, remaining - candidates[i])
-            
-            # Undo choice (backtrack)
-            path.pop()
-    
-    result = []
-    backtrack(0, [], target)
-    return result
-```
-
-### Template 5: Tree Modification — LC 450
-- **Description**: Modify tree structure or values during traversal
-- **Recognition**: "Delete", "insert", "trim", "convert"
-- **Examples**: LC 450, LC 701, LC 669, LC 538
-
-```python
-def modify_tree(root, condition):
-    """
-    Modify tree structure based on condition
-    """
+# python
+# LC 112 - Path Sum
+# IDEA: pass the remaining sum down; at a leaf it must be exactly 0; return True as soon as a child does
+# time = O(n), space = O(h)
+def hasPathSum(root, targetSum):
     if not root:
-        return None
-    
-    # Recursively modify subtrees first
-    root.left = modify_tree(root.left, condition)
-    root.right = modify_tree(root.right, condition)
-    
-    # Modify current node based on condition
-    if not condition(root):
-        # Example: delete node, return child
-        if not root.left:
-            return root.right
-        if not root.right:
-            return root.left
-        # Handle two children case
-        # ... (find successor/predecessor)
-    
-    return root
+        return False
+    remaining = targetSum - root.val
+    if not root.left and not root.right:      # a leaf: the path ends here
+        return remaining == 0
+    return hasPathSum(root.left, remaining) or hasPathSum(root.right, remaining)
 ```
-
-#### Idiom: reassign the subtree, then return the node
-- Assign sub tree to node, then return updated node at final stage (Important !!!!)
 
 ```java
 // java
-// LC 199
-private TreeNode _dfs(TreeNode node){
-
-    if (node == null){
-        return null;
+// LC 112 - Path Sum
+// IDEA: pass the remaining sum down; at a leaf it must be exactly 0; return true as soon as a child does
+// time = O(n), space = O(h)
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    if (root == null) {
+        return false;
     }
-
-    /** NOTE !!! no need to create global node, but can define inside the method */
-    TreeNode root2 = node;
-    root2.left = this._dfs(node.left);
-    root2.right = this._dfs(node.right);
-
-    /** NOTE !!! we need to return root as final step */
-    return root2;
+    int remaining = targetSum - root.val;
+    if (root.left == null && root.right == null) {   // a leaf: the path ends here
+        return remaining == 0;
+    }
+    return hasPathSum(root.left, remaining) || hasPathSum(root.right, remaining);
 }
 ```
 
-### Template 6: Bottom-up (Post-Order) DFS — LC 543 ⭐⭐⭐⭐⭐
-- **Description**: Process subtrees and aggregate results bottom-up; find the lowest common ancestor of target nodes
-- **Recognition**: "Subtree sum", "duplicate subtrees", "LCA", "smallest subtree containing", "lowest common ancestor", "deepest leaves", "minimum moves between adjacent nodes"
-- **Examples**: LC 508, LC 652, LC 236, LC 663, LC 865, LC 979, LC 1123
-- **When to Use LCA Approach**:
-  - Two (or more) target nodes exist in different subtrees and you need the first node that "sees" both sides
-  - "Smallest subtree that contains [condition X]" — this is LCA in disguise
-  - Targets may be **given** (LC 236: find LCA of p, q) or **implicit** (LC 865/1123: all nodes at max depth)
-- **Core Idea (Post-Order / Bottom-Up)**:
-  1. Recurse left and right subtrees first (post-order)
-  2. Each subtree returns a `(node, depth/info)` pair upward
-  3. At each node, compare left vs right results (the depth-based form, LC 865/1123 — for LC 236, check which sides found a target instead):
-     - **Left deeper** → answer is in the left subtree, propagate left result up
-     - **Right deeper** → answer is in the right subtree, propagate right result up
-     - **Equal depth** → current node is the LCA (deepest paths meet here), return current node
-  4. The root of the recursion holds the final answer
-- **Key Variants**:
-  - **Standard LCA (LC 236)**: Targets p, q are given; return first node that sees both in different subtrees
-  - **Depth-Based LCA (LC 865/1123)**: Targets are discovered (deepest nodes); use depth comparison to find where deepest paths converge
-  - **Paint + Answer (LC 865 Editorial V1)**: Two-pass — first DFS computes all depths, second DFS finds the subtree containing all max-depth nodes
-  - **BFS + Parent Map (LC 865 V0-4)**: BFS to find deepest level, then walk parents upward until all converge to one node
-- **Similar Classic LC Problems**:
-  - LC 236 - Lowest Common Ancestor of a Binary Tree (standard LCA)
-  - LC 235 - Lowest Common Ancestor of a Binary Search Tree (BST property optimization)
-  - LC 865 - Smallest Subtree with all the Deepest Nodes (depth-based LCA)
-  - LC 1123 - Lowest Common Ancestor of Deepest Leaves (same as LC 865)
-  - LC 1644 - Lowest Common Ancestor of a Binary Tree II (nodes may not exist)
-  - LC 1650 - Lowest Common Ancestor of a Binary Tree III (with parent pointers)
-  - LC 1676 - Lowest Common Ancestor of a Binary Tree IV (multiple target nodes)
+**Complexity**
+- **Time O(n)**: each node is visited at most once, and `or` stops at the first True.
+- **Space O(h)**: one call per node on the current root-to-node path.
+
+**Traps**
+- Checking `remaining == 0` at an empty child instead of at a leaf: `[1,2]` with target 1 returns
+  True through the missing right child of 1, though the only root-to-leaf path sums to 3.
+- An empty tree has no path, even for target 0: `hasPathSum(None, 0)` is False.
+- In a graph search, calling `dfs(next)` without returning its result: the True is found and then
+  thrown away (the early-return section below).
+
+**Not this if** — the path may start and end anywhere going down → prefix sums along the path
+(LC 437). The **shortest** path is wanted → BFS. The path may turn at a node (max path sum) →
+[Template 6](#template-6-bottom-up-post-order-dfs--lc-543-).
+
+**Drill** — LC 112 · LC 257 *(collect the paths as strings)* · LC 113 *(collect the paths with the
+sum: below)* · LC 1971 *(in a graph: return early)* · LC 437 *(any downward path: prefix sums)*
+
+For the full family of tree path problems (max path, consecutive sequences, the prefix-sum
+technique), see [tree_lca_distance.md § 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113).
+
+#### Variation: collect every path (push, recurse, pop)
 
 ```python
-def bottom_up_dfs(root):
-    """
-    Process subtrees first, then current node
-    Useful for subtree problems
-    """
-    def dfs(node):
+# python
+# LC 113 - Path Sum II
+# IDEA: carry the path down; copy it at a matching leaf; pop on the way back up
+# time = O(n * h), space = O(h)   copying a path of length h at each matching leaf
+def pathSum(root, targetSum):
+    result, path = [], []
+
+    def dfs(node, remaining):
         if not node:
-            return 0  # or base value
+            return
+        path.append(node.val)
+        remaining -= node.val
+        if not node.left and not node.right and remaining == 0:
+            result.append(path[:])               # a copy: path keeps changing
+        dfs(node.left, remaining)
+        dfs(node.right, remaining)
+        path.pop()                               # undo before returning to the parent
 
-        # Process subtrees first
-        left_result = dfs(node.left)
-        right_result = dfs(node.right)
-
-        # Process current node using subtree results
-        current_result = process(node, left_result, right_result)
-
-        # Update global result if needed
-        self.global_result = max(self.global_result, current_result)
-
-        return current_result
-
-    self.global_result = 0
-    dfs(root)
-    return self.global_result
+    dfs(root, targetSum)
+    return result
 ```
+
+#### DFS Early Return Pattern — return TRUE eagerly, FALSE lazily
+
+When a DFS looks for **one** path, a child's `true` must be returned the moment it arrives. Ignoring
+it keeps searching, and the function still falls through to the `return false` at its end.
+
+```java
+// java
+// IDEA: WRONG — the child's result is ignored, so a path that was found is thrown away
+// time = O(V + E), space = O(V)
+private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Integer>> map, boolean[] visited) {
+    if (node == destination) return true;
+    visited[node] = true;
+    for (int next : map.get(node)) {
+        if (!visited[next]) {
+            dfsPathVisitor(next, destination, map, visited);   // result dropped
+        }
+    }
+    return false;   // false for every node except the destination itself
+}
+```
+
+```java
+// java
+// IDEA: RIGHT — return true as soon as any child reaches the destination
+// time = O(V + E), space = O(V)
+private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Integer>> map, boolean[] visited) {
+    if (node == destination) return true;
+    visited[node] = true;
+    for (int next : map.get(node)) {
+        if (!visited[next] && dfsPathVisitor(next, destination, map, visited)) {
+            return true;    // found one path - that is enough
+        }
+    }
+    return false;           // only after every neighbour has failed
+}
+```
+
+```text
+Graph: 0 -- 1 -- 2 -- 3        find a path 0 -> 3
+       |         |
+       4 ------- 5
+
+dfs(0) -> dfs(1) -> dfs(2) -> dfs(3) returns TRUE
+WRONG: dfs(2) ignores it, tries 5 (a dead end), returns FALSE; so do dfs(1) and dfs(0)
+RIGHT: dfs(2), dfs(1) and dfs(0) each return TRUE at once; 5 and 4 are never tried
+```
+
+| | Ignore the child's result | Return on `true` |
+|---|---|---|
+| Correctness | false even when a path exists | true when one is found |
+| Work | explores every branch | stops at the first path |
+| Use for | collecting or counting **all** results (LC 257, 113, 22) | existence (LC 1971, 79, 112) |
+
+### Template 4: Backtracking — LC 46
+
+**Recognise** — "all permutations / combinations / subsets", "generate every valid …", "return all
+ways". n ≤ 10 (n! ≈ 3.6·10⁶) or n ≤ 20 (2ⁿ ≈ 10⁶) → an exponential search is the intended answer.
+
+**Key point** — `path` always holds the choices on the way from the root of the decision tree to the
+current call, and every choice is undone (`pop`, `used[i] = False`) before the next one is tried, so
+sibling branches all start from the same state.
+
+```python
+# python
+# LC 46 - Permutations
+# IDEA: choose an unused number, recurse, un-choose; a full-length path is one permutation
+# time = O(n * n!), space = O(n)   n! leaves, each copied in O(n); output not counted
+def permute(nums):
+    result, path = [], []
+    used = [False] * len(nums)
+
+    def backtrack():
+        if len(path) == len(nums):
+            result.append(path[:])            # copy: path is undone afterwards
+            return
+        for i in range(len(nums)):
+            if used[i]:
+                continue
+            used[i] = True                    # choose
+            path.append(nums[i])
+            backtrack()
+            path.pop()                        # un-choose, so the next i starts clean
+            used[i] = False
+
+    backtrack()
+    return result
+```
+
+```java
+// java
+// LC 46 - Permutations
+// IDEA: choose an unused number, recurse, un-choose; a full-length path is one permutation
+// time = O(n * n!), space = O(n)
+public List<List<Integer>> permute(int[] nums) {
+    List<List<Integer>> result = new ArrayList<>();
+    backtrack(nums, new boolean[nums.length], new ArrayList<>(), result);
+    return result;
+}
+
+private void backtrack(int[] nums, boolean[] used, List<Integer> path, List<List<Integer>> result) {
+    if (path.size() == nums.length) {
+        result.add(new ArrayList<>(path));    // copy: path is undone afterwards
+        return;
+    }
+    for (int i = 0; i < nums.length; i++) {
+        if (used[i]) {
+            continue;
+        }
+        used[i] = true;                       // choose
+        path.add(nums[i]);
+        backtrack(nums, used, path, result);
+        path.remove(path.size() - 1);         // un-choose
+        used[i] = false;
+    }
+}
+```
+
+**Complexity**
+- **Time O(n · n!)**: the decision tree has n! leaves, each copied in O(n); the internal nodes
+  above them add no more than that.
+- **Space O(n)**: `path`, `used` and the recursion depth, not counting the output.
+
+**Traps**
+- `result.append(path)` stores the same list n! times, and it is empty once the search has unwound:
+  `[1,2]` returns `[[], []]`.
+- Combinations (LC 39, LC 77) pass a `start` index so that `[1,2]` and `[2,1]` are not both produced;
+  permutations loop from 0 and skip `used`. Swapping the two gives duplicates or missing orders.
+- Duplicates in the input (LC 47): sort, then skip `nums[i] == nums[i-1]` while `nums[i-1]` is unused.
+
+**Not this if** — only the **number** of arrangements is asked and sub-states repeat → DP. The full
+family (subsets, combination sum, N-Queens, pruning) is in [backtrack.md](./backtrack.md).
+
+**Drill** — LC 46 ⭐ · LC 78 ⭐ *(subsets: record every node, not only leaves)* · LC 39 ⭐ *(start
+index, reuse allowed)* · LC 17 ⭐ *(one digit per level)* · LC 51 *(prune with column and diagonal
+sets)*
+
+### Template 5: Tree Modification — LC 450
+
+**Recognise** — "delete / insert / trim / prune a node", "return the root of the modified tree",
+"convert the tree". Nodes ≤ 10⁴; in a BST the work is O(h).
+
+**Key point** — the function returns the (possibly new) root of the subtree it was given, and every
+caller writes that back: `node.left = f(node.left)`. A deleted or replaced node is then unlinked by
+its own parent's assignment, with no parent pointers and no special case for the root.
+
+```python
+# python
+# LC 450 - Delete Node in a BST
+# IDEA: return the new subtree root and let the parent reassign it; two children -> copy the successor in
+# time = O(h), space = O(h)
+def deleteNode(root, key):
+    if not root:
+        return None
+    if key < root.val:
+        root.left = deleteNode(root.left, key)     # reassign: that subtree's root may change
+    elif key > root.val:
+        root.right = deleteNode(root.right, key)
+    else:
+        if not root.left:
+            return root.right                      # 0 or 1 child: lift the other side
+        if not root.right:
+            return root.left
+        successor = root.right                     # 2 children: smallest node on the right
+        while successor.left:
+            successor = successor.left
+        root.val = successor.val
+        root.right = deleteNode(root.right, successor.val)
+    return root
+```
+
+```java
+// java
+// LC 450 - Delete Node in a BST
+// IDEA: return the new subtree root and let the parent reassign it; two children -> copy the successor in
+// time = O(h), space = O(h)
+public TreeNode deleteNode(TreeNode root, int key) {
+    if (root == null) {
+        return null;
+    }
+    if (key < root.val) {
+        root.left = deleteNode(root.left, key);    // reassign: that subtree's root may change
+    } else if (key > root.val) {
+        root.right = deleteNode(root.right, key);
+    } else {
+        if (root.left == null) {
+            return root.right;
+        }
+        if (root.right == null) {
+            return root.left;
+        }
+        TreeNode successor = root.right;
+        while (successor.left != null) {
+            successor = successor.left;
+        }
+        root.val = successor.val;
+        root.right = deleteNode(root.right, successor.val);
+    }
+    return root;
+}
+```
+
+**Complexity**
+- **Time O(h)**: one root-to-node walk, plus one more down the right subtree to the successor —
+  O(log n) balanced, O(n) for a chain.
+- **Space O(h)**: the recursion follows that same path.
+
+**Traps**
+- Calling `deleteNode(root.left, key)` without assigning the result: the parent keeps pointing at the
+  old child, and `[5,3,6]` with key 3 still contains 3.
+- Deleting the root: the caller must use the returned value. `[5]` with key 5 returns `None`.
+- After copying the successor's value up, delete **the successor's value** from the right subtree,
+  not `key` — `key` is no longer in the tree.
+
+**Not this if** — the tree is not a BST → search both sides, O(n). The cut depends on a property of a
+whole subtree ("remove subtrees with no 1", LC 814) → post-order
+([Template 6](#template-6-bottom-up-post-order-dfs--lc-543-)), still returning the pruned subtree.
+
+**Drill** — LC 450 · LC 226 ⭐ *(invert: reassign swapped children)* · LC 701 *(insert: the same
+reassignment)* · LC 669 *(trim to a range)* · LC 814 *(prune post-order)*
+
+### Template 6: Bottom-up (Post-Order) DFS — LC 543 ⭐⭐⭐⭐⭐
+
+**Recognise** — "diameter", "height", "is it balanced", "subtree sum", "lowest common ancestor",
+"smallest subtree containing …", "minimum moves between adjacent nodes": a node's answer needs its
+children's answers first. Nodes ≤ 10⁴.
+
+**Key point** — each call returns **one** value to its parent (here the height), while the answer the
+problem asks for (here `left + right`, the longest path that turns at this node) is a **different**
+value, recorded in an outer variable and never returned.
+
+```python
+# python
+# LC 543 - Diameter of Binary Tree
+# IDEA: post-order; return the height upward, record left + right (the path through this node) globally
+# time = O(n), space = O(h)
+def diameterOfBinaryTree(root):
+    best = 0
+
+    def height(node):
+        nonlocal best
+        if not node:
+            return 0
+        left = height(node.left)
+        right = height(node.right)
+        best = max(best, left + right)        # edges on the longest path that turns here
+        return 1 + max(left, right)           # what the parent needs: one side only
+
+    height(root)
+    return best
+```
+
+```java
+// java
+// LC 543 - Diameter of Binary Tree
+// IDEA: post-order; return the height upward, record left + right (the path through this node) globally
+// time = O(n), space = O(h)
+private int best = 0;
+
+public int diameterOfBinaryTree(TreeNode root) {
+    best = 0;
+    height(root);
+    return best;
+}
+
+private int height(TreeNode node) {
+    if (node == null) {
+        return 0;
+    }
+    int left = height(node.left);
+    int right = height(node.right);
+    best = Math.max(best, left + right);      // edges on the longest path that turns here
+    return 1 + Math.max(left, right);         // what the parent needs: one side only
+}
+```
+
+**Complexity**
+- **Time O(n)**: `height` runs once per node and does O(1) work after its two children return.
+- **Space O(h)**: the recursion depth.
+
+**Dry run**
+
+```text
+root = [1,2,3,4,5]          1
+                           / \
+                          2   3
+                         / \
+                        4   5
+height(4) = 1, height(5) = 1     at 2: best = 1 + 1 = 2, return 2
+height(3) = 1                    at 1: best = max(2, 2 + 1) = 3, return 3
+answer 3   (the path 4-2-1-3 has 3 edges)
+```
+
+**Traps**
+- Returning `left + right` upward instead of `1 + max(left, right)`: the parent then joins two forks
+  into a shape that is not a path. LC 124 below is the same trap with values.
+- Counting nodes instead of edges: LC 543 wants edges, so `[1,2]` is 1, not 2.
+- Calling a separate `height(node.left)` from every ancestor (top-down) is O(n²) on a chain; one
+  post-order pass returns each height once.
+
+**Not this if** — the value depends on the path from the root (depth, sum so far) → pass it **down**
+([Template 3](#template-3-path-finding--lc-112-)). The lowest common ancestor of two given nodes has
+its own sheet: [tree_lca_distance.md](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236).
+
+**Drill** — LC 543 ⭐ · LC 104 ⭐ · LC 110 ⭐ *(return -1 for "unbalanced")* · LC 236 *(return which
+targets a subtree holds)* · LC 979 *(a signed balance: below)* · LC 124 ⭐ *(LC 543 with values
+and a clamp: below)*
+
+#### Variation: lowest common ancestor, found bottom-up
+
+LCA is post-order in disguise: the answer is the first node, on the way up, that sees targets on
+**both** sides.
+
+- **Standard LCA (LC 236)**: each call returns the target it found in its subtree, or `None`; the
+  first node whose left and right calls are both non-empty is the LCA.
+- **Depth-based LCA (LC 865, LC 1123)**: the targets are implicit — every deepest leaf. Return
+  `(node, depth)`; the deeper side wins, and **equal depth** means the deepest paths meet here.
+- **"Smallest subtree that contains every X"** is the same question as LCA of all the X nodes.
+- Related: LC 235 (a BST: walk down by value, O(h)), LC 1644 (targets may be missing), LC 1650
+  (parent pointers: two-pointer walk up), LC 1676 (many targets). The worked solutions are in
+  [tree_lca_distance.md](./tree_lca_distance.md).
 
 #### Global-accumulator form — LC 124 Binary Tree Maximum Path Sum
 
@@ -949,70 +1044,82 @@ private int dfs(TreeNode node) {
   - LC 834 - Sum of Distances in Tree (subtree size + reroot DP, advanced follow-up)
 
 ### Template 7: 2-Pass DFS (Boundary Elimination) — LC 1254
-- **Description**: Eliminate boundary-connected cells first, then process interior
-- **Recognition**: "Closed islands", "surrounded regions", "captured pieces"
-- **Examples**: LC 1254, LC 130, LC 417
+
+**Recognise** — "closed islands", "surrounded regions", "enclaves", "captured": land connected to the
+border does not count. Grid ≤ 100 × 100 (LC 1254) or 200 × 200 (LC 130).
+
+**Key point** — land that touches the border can never be closed, so pass 1 floods every
+border-connected cell away; whatever land survives pass 1 is exactly the closed land, and pass 2
+counts it the way LC 200 counts islands.
+
+```python
+# python
+# LC 1254 - Number of Closed Islands
+# IDEA: pass 1 floods every island touching the border; pass 2 counts the islands left (0 = land here)
+# time = O(m * n), space = O(m * n)
+def closedIsland(grid):
+    rows, cols = len(grid), len(grid[0])
+
+    def flood(r, c):
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] == 1:
+            return
+        grid[r][c] = 1                        # land -> water, which also marks it visited
+        flood(r + 1, c)
+        flood(r - 1, c)
+        flood(r, c + 1)
+        flood(r, c - 1)
+
+    # pass 1: remove every island that touches the border
+    for c in range(cols):
+        flood(0, c)
+        flood(rows - 1, c)
+    for r in range(rows):
+        flood(r, 0)
+        flood(r, cols - 1)
+
+    # pass 2: every island still standing is closed
+    count = 0
+    for r in range(1, rows - 1):
+        for c in range(1, cols - 1):
+            if grid[r][c] == 0:
+                count += 1
+                flood(r, c)
+    return count
+```
 
 ```java
 // java
-// LC 1254
-// V0
-// IDEA: 2-Pass DFS (Boundary Elimination)
-/**
- * Algorithm:
- * Pass 1: Start from all boundary cells and flood-fill to eliminate
- *         all islands connected to the boundary (these cannot be closed)
- * Pass 2: Count remaining land cells as closed islands
- *
- * Time: O(m×n), Space: O(m×n) for recursion stack
- */
+// LC 1254 - Number of Closed Islands
+// IDEA: pass 1 floods every island touching the border; pass 2 counts the islands left (0 = land here)
+// time = O(m * n), space = O(m * n)
 public int closedIsland(int[][] grid) {
-    if (grid == null || grid.length == 0) {
-        return 0;
-    }
-
     int rows = grid.length;
     int cols = grid[0].length;
-
-    // Pass 1: Eliminate boundary-connected islands
-    // Flood top and bottom borders
-    for (int c = 0; c < cols; c++) {
-        flood(grid, 0, c);           // Top border
-        flood(grid, rows - 1, c);    // Bottom border
+    for (int c = 0; c < cols; c++) {          // pass 1: top and bottom borders
+        flood(grid, 0, c);
+        flood(grid, rows - 1, c);
     }
-
-    // Flood left and right borders
-    for (int r = 0; r < rows; r++) {
-        flood(grid, r, 0);           // Left border
-        flood(grid, r, cols - 1);    // Right border
+    for (int r = 0; r < rows; r++) {          // pass 1: left and right borders
+        flood(grid, r, 0);
+        flood(grid, r, cols - 1);
     }
-
-    // Pass 2: Count closed islands
-    int count = 0;
+    int count = 0;                            // pass 2: every island left is closed
     for (int r = 1; r < rows - 1; r++) {
         for (int c = 1; c < cols - 1; c++) {
             if (grid[r][c] == 0) {
                 count++;
-                flood(grid, r, c);  // Mark entire island
+                flood(grid, r, c);
             }
         }
     }
-
     return count;
 }
 
 private void flood(int[][] grid, int r, int c) {
-    int rows = grid.length;
-    int cols = grid[0].length;
-
-    // Base case: out of bounds or water
-    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 1) {
+    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] == 1) {
         return;
     }
-
-    grid[r][c] = 1;  // Mark land as water (visited)
-
-    // Flood 4-directionally
+    grid[r][c] = 1;                           // land -> water, which also marks it visited
     flood(grid, r + 1, c);
     flood(grid, r - 1, c);
     flood(grid, r, c + 1);
@@ -1020,208 +1127,236 @@ private void flood(int[][] grid, int r, int c) {
 }
 ```
 
-```python
-# python
-# LC 1254
-def closedIsland(grid):
-    """
-    2-Pass DFS approach
-    """
-    if not grid or not grid[0]:
-        return 0
+**Complexity**
+- **Time O(m·n)**: both passes together flood each land cell once, because `flood` turns a 0 into
+  a 1 before recursing; the scans read every cell a constant number of times.
+- **Space O(m·n)**: the recursion depth of one flood, in the worst case the whole grid.
 
-    rows, cols = len(grid), len(grid[0])
+**Traps**
+- Deciding "closed" inside a single DFS and returning as soon as it touches the border: the rest of
+  that island is left unflooded and is counted again from another cell. If you do it in one pass,
+  the DFS must finish the whole island before it reports.
+- LC 1254 uses `0` for land and `1` for water — the reverse of LC 200.
+- LC 130 marks border regions with a third value (`'E'`), then flips `'O' → 'X'` and `'E' → 'O'`
+  in a separate sweep; flipping during the flood rewrites cells it still has to read.
 
-    def flood(r, c):
-        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] == 1:
-            return
-        grid[r][c] = 1
-        flood(r + 1, c)
-        flood(r - 1, c)
-        flood(r, c + 1)
-        flood(r, c - 1)
+**Not this if** — the question is the **distance** to the border, not whether a cell reaches it →
+multi-source BFS from the border cells
+([bfs.md § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-)).
 
-    # Pass 1: Eliminate boundary islands
-    for c in range(cols):
-        flood(0, c)
-        flood(rows - 1, c)
-
-    for r in range(rows):
-        flood(r, 0)
-        flood(r, cols - 1)
-
-    # Pass 2: Count closed islands
-    count = 0
-    for r in range(1, rows - 1):
-        for c in range(1, cols - 1):
-            if grid[r][c] == 0:
-                count += 1
-                flood(r, c)
-
-    return count
-```
+**Drill** — LC 1254 · LC 1020 *(count cells instead of islands)* · LC 130 *(flip what is left)* ·
+LC 417 ⭐ *(two floods, one inward from each ocean, then intersect)*
 
 ### Template 8: Path Signature (Shape Encoding) — LC 694
-- **Description**: Encode the shape/structure of islands or subtrees using unique path signatures
-- **Recognition**: "Distinct islands", "unique shapes", "count different structures", "same shape after translation"
-- **Key Technique**: Record directional movements during DFS traversal to create a canonical signature
-- **Examples**: LC 694, LC 711, LC 652
 
-```java
-// Java implementation with directional encoding
-public int numDistinctIslands(int[][] grid) {
-    if (grid == null || grid.length == 0 || grid[0].length == 0) {
-        return 0;
-    }
+**Recognise** — "number of distinct islands", "same shape after translation", "unique shapes",
+"duplicate subtrees". Grid ≤ 50 × 50.
 
-    Set<String> uniqueIslandShapes = new HashSet<>();
-    int rows = grid.length;
-    int cols = grid[0].length;
-
-    // Iterate through every cell in the grid
-    for (int r = 0; r < rows; r++) {
-        for (int c = 0; c < cols; c++) {
-            // Start DFS only on unvisited land cells
-            if (grid[r][c] == 1) {
-                StringBuilder pathSignature = new StringBuilder();
-                // Start DFS from (r, c). 'S' marks the start
-                dfs(grid, r, c, pathSignature, 'S');
-
-                if (pathSignature.length() > 0) {
-                    uniqueIslandShapes.add(pathSignature.toString());
-                }
-            }
-        }
-    }
-
-    return uniqueIslandShapes.size();
-}
-
-/**
- * DFS with directional encoding
- * Records the direction taken to reach each cell
- * Uses 'O' delimiter when backtracking
- */
-private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction) {
-    int rows = grid.length;
-    int cols = grid[0].length;
-
-    // Base cases: Out of bounds or water/visited
-    if (r < 0 || r >= rows || c < 0 || c >= cols || grid[r][c] == 0) {
-        return;
-    }
-
-    // 1. Mark as visited by setting to 0
-    grid[r][c] = 0;
-
-    // 2. Record the direction taken to reach this cell
-    path.append(direction);
-
-    // 3. Recurse in FIXED order (Down, Up, Right, Left)
-    dfs(grid, r + 1, c, path, 'D');  // Down
-    dfs(grid, r - 1, c, path, 'U');  // Up
-    dfs(grid, r, c + 1, path, 'R');  // Right
-    dfs(grid, r, c - 1, path, 'L');  // Left
-
-    // 4. Add delimiter when backtracking
-    // This distinguishes different branch structures
-    path.append('O');
-}
-```
-
-> **Two interchangeable encodings.** The Java block above records the **direction taken** into each
-> cell (`D/U/R/L` + an `O` delimiter on the way back up); the Python block below records the
-> **relative coordinate** `(r-r0, c-c0)` of each cell instead. Both are translation-invariant and
-> rotation-sensitive — pick either, but never mix them inside one signature.
+**Key point** — a DFS that always tries the four directions in the same order walks two islands of
+the same shape in the same order. So the string of moves, with a back marker each time it returns,
+is identical for equal shapes and different for different ones, and a set of those strings counts
+the shapes.
 
 ```python
-def count_distinct_shapes(grid):
-    """
-    Count distinct island shapes using path signatures
-    Key: Encode each island's shape as a unique string
-    """
-    if not grid or not grid[0]:
-        return 0
-
+# python
+# LC 694 - Number of Distinct Islands
+# IDEA: record the move into each cell and a 'B' on the way back; equal shapes give equal strings
+# time = O(m * n), space = O(m * n)
+def numDistinctIslands(grid):
     rows, cols = len(grid), len(grid[0])
-    unique_shapes = set()
+    shapes = set()
 
-    def dfs(r, c, r0, c0, path):
-        """
-        DFS with path signature encoding
-        r0, c0: Starting position for relative encoding
-        path: StringBuilder to record the shape signature
-        """
+    def dfs(r, c, move, path):
         if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != 1:
             return
+        grid[r][c] = 0                        # mark visited
+        path.append(move)
+        dfs(r + 1, c, 'D', path)              # a FIXED order: down, up, right, left
+        dfs(r - 1, c, 'U', path)
+        dfs(r, c + 1, 'R', path)
+        dfs(r, c - 1, 'L', path)
+        path.append('B')                      # back marker: this cell's branch is finished
 
-        # Mark as visited
-        grid[r][c] = 0
-
-        # Encode relative position
-        path.append(f"({r - r0},{c - c0})")
-
-        # Visit neighbors in FIXED order (critical for consistency)
-        dfs(r + 1, c, r0, c0, path)  # Down
-        dfs(r - 1, c, r0, c0, path)  # Up
-        dfs(r, c + 1, r0, c0, path)  # Right
-        dfs(r, c - 1, r0, c0, path)  # Left
-
-    # Iterate through grid in fixed order (top-left to bottom-right)
     for r in range(rows):
         for c in range(cols):
             if grid[r][c] == 1:
                 path = []
-                dfs(r, c, r, c, path)  # Start with (r, c) as origin
-                unique_shapes.add(tuple(path))
-
-    return len(unique_shapes)
+                dfs(r, c, 'S', path)          # 'S' = the start cell
+                shapes.add(''.join(path))
+    return len(shapes)
 ```
 
-**Key Concepts for Path Signatures:**
+```java
+// java
+// LC 694 - Number of Distinct Islands
+// IDEA: record the move into each cell and a 'B' on the way back; equal shapes give equal strings
+// time = O(m * n), space = O(m * n)
+public int numDistinctIslands(int[][] grid) {
+    Set<String> shapes = new HashSet<>();
+    for (int r = 0; r < grid.length; r++) {
+        for (int c = 0; c < grid[0].length; c++) {
+            if (grid[r][c] == 1) {
+                StringBuilder path = new StringBuilder();
+                dfs(grid, r, c, 'S', path);
+                shapes.add(path.toString());
+            }
+        }
+    }
+    return shapes.size();
+}
 
-1. **Canonical Traversal Order**
-   - Always check neighbors in the same fixed sequence (e.g., D, U, R, L)
-   - This ensures identical shapes produce identical signatures
+private void dfs(int[][] grid, int r, int c, char move, StringBuilder path) {
+    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] != 1) {
+        return;
+    }
+    grid[r][c] = 0;                           // mark visited
+    path.append(move);
+    dfs(grid, r + 1, c, 'D', path);           // a FIXED order: down, up, right, left
+    dfs(grid, r - 1, c, 'U', path);
+    dfs(grid, r, c + 1, 'R', path);
+    dfs(grid, r, c - 1, 'L', path);
+    path.append('B');                         // back marker
+}
+```
 
-2. **Starting Point Normalization**
-   - Grid traversal in fixed order (top-to-bottom, left-to-right)
-   - The first land cell encountered becomes the origin
-   - All coordinates are relative to this origin
+**Complexity**
+- **Time O(m·n)**: each land cell is entered once and appends two characters, so building and
+  hashing all the strings is linear in the total land.
+- **Space O(m·n)**: the strings in `shapes` plus the recursion depth.
 
-3. **Why Delimiters Matter**
-   ```text
-   Shape 1:  11      Shape 2:   1
-              1                11
+**Dry run** — why the back marker is needed
 
-   Without delimiter: "SDRO"  vs "SDRO"  (Same - Wrong!)
-   With delimiter:    "SDOO"  vs "SDRO"  (Different - Correct!)
-   ```
+```text
+Shape A   1 1        Shape B   1 .
+          1 .                  1 1
 
-4. **Consistency Guarantees**
-   - Same shape → Same signature (always)
-   - Different shapes → Different signatures
-   - Translation invariant (position doesn't matter)
-   - Rotation/reflection sensitive (as required)
+order D, U, R, L from the top-left cell
+A: S, D to (1,0), back, R to (0,1), back, back  ->  "SDBRBB"
+B: S, D to (1,0), R to (1,1), back, back, back  ->  "SDRBBB"
+without the 'B's both are "SDR"
+```
 
-### Template 9: Grid DFS + Backtracking — 3 Styles Compared (LC 1219 Path with Maximum Gold)
+**Traps**
+- No back marker: the two shapes above both encode as `"SDR"` and are counted as one.
+- The direction order must be the same for every island; looping over a `set` of directions does
+  not guarantee that.
+- Relative coordinates `(r - r0, c - c0)` in visiting order are an equally valid signature and need
+  no marker. Never mix the two encodings in one set.
 
-> **Problem**: In an `m x n` grid, collect the most gold on a single path. You may start/stop
-> at any gold cell, move up/down/left/right, never revisit a cell, and never step on a `0` cell.
-> Since a path can start anywhere, we launch a DFS from **every** gold cell.
-> Because paths overlap across different start cells, we **backtrack** (restore the cell) after
-> each DFS so the grid is clean for the next launch.
->
+**Not this if** — rotations and reflections count as the same shape (LC 711) → collect each island's
+cells and normalise them over the 8 transforms. Subtrees instead of islands (LC 652) → serialise
+each subtree post-order and count the strings in a map.
+
+**Drill** — LC 694 · LC 652 *(serialise every subtree)* · LC 711 *(8 transforms)*
+
+### Template 9: Grid DFS with Restore (Backtracking) — LC 1219
+
 > Source: [`path-with-maximum-gold.py`](../../leetcode_python/Backtracking/path-with-maximum-gold.py)
 
-All three versions are correct. They differ in **where** three decisions are made:
+**Recognise** — "collect the most gold on one path", "the longest path that never revisits a cell",
+"start and stop anywhere", "word search". A small grid (m, n ≤ 15, at most 25 useful cells) → an
+exponential search is the intended answer.
+
+**Key point** — a cell is marked when the path enters it and **restored** when the path leaves, so
+the grid always shows exactly the cells on the current path. That is what lets a later path — from
+another start, or down a sibling branch — use the cell again.
+
+```python
+# python
+# LC 1219 - Path with Maximum Gold
+# IDEA: DFS from every gold cell; mark on entry, restore on exit; the guard at the top of the child
+# time = O(k * 3^k), space = O(k)   k = number of gold cells (k <= 25)
+class Solution:
+    def getMaximumGold(self, grid):
+        self.max_gold = 0
+        rows, cols = len(grid), len(grid[0])
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] > 0:
+                    self.dfs(grid, r, c, 0)            # start value = 0
+        return self.max_gold
+
+    def dfs(self, grid, r, c, cur_gold):
+        rows, cols = len(grid), len(grid[0])
+        # GUARD: off the grid, empty (0) or on the current path (-1) -> stop
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] <= 0:
+            return
+        cache = grid[r][c]
+        cur_gold += cache                              # ACCUMULATE this cell
+        self.max_gold = max(self.max_gold, cur_gold)   # UPDATE MAX on every cell entry
+        grid[r][c] = -1                                # mark: on the current path
+        self.dfs(grid, r + 1, c, cur_gold)             # the guard filters every direction
+        self.dfs(grid, r - 1, c, cur_gold)
+        self.dfs(grid, r, c + 1, cur_gold)
+        self.dfs(grid, r, c - 1, cur_gold)
+        grid[r][c] = cache                             # RESTORE: off the path again
+```
+
+```java
+// java
+// LC 1219 - Path with Maximum Gold
+// IDEA: DFS from every gold cell; mark on entry, restore on exit; the guard at the top of the child
+// time = O(k * 3^k), space = O(k)
+private int maxGold = 0;
+
+public int getMaximumGold(int[][] grid) {
+    maxGold = 0;
+    for (int r = 0; r < grid.length; r++) {
+        for (int c = 0; c < grid[0].length; c++) {
+            if (grid[r][c] > 0) {
+                dfs(grid, r, c, 0);
+            }
+        }
+    }
+    return maxGold;
+}
+
+private void dfs(int[][] grid, int r, int c, int curGold) {
+    if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] <= 0) {
+        return;                                        // off the grid, empty, or on the path
+    }
+    int cache = grid[r][c];
+    curGold += cache;
+    maxGold = Math.max(maxGold, curGold);
+    grid[r][c] = -1;                                   // mark: on the current path
+    dfs(grid, r + 1, c, curGold);
+    dfs(grid, r - 1, c, curGold);
+    dfs(grid, r, c + 1, curGold);
+    dfs(grid, r, c - 1, curGold);
+    grid[r][c] = cache;                                // restore: off the path again
+}
+```
+
+**Complexity**
+- **Time O(k · 3^k)** worst case: one launch from each of the k gold cells, and after the first step
+  each cell on a path has at most 3 neighbours not already on it. With k ≤ 25 and real grids far
+  sparser, this runs fast.
+- **Space O(k)**: the recursion is as deep as the longest path; the marks live in the grid itself.
+
+**Traps**
+- No restore: cells stay `-1` after the first launch, so later launches and sibling branches cannot
+  use them. LC 1219's first example, `[[0,6,0],[5,8,7],[0,9,0]]`, returns 23 instead of 24.
+- Mark and unmark **once per frame**, around the four calls — never inside a neighbour loop, where the
+  same cell is re-marked for every branch of the frame.
+- Where the max is updated decides whether you need a seed: on cell entry (above, and V0-2 below)
+  every cell counts for free; per neighbour (V0-3) the start cell is never scored unless the caller
+  seeds it.
+
+**Not this if** — the path may revisit cells, or the grid is large (10⁵ cells) → not a search; DP or
+BFS. Counting regions (LC 200) → mark and **never** restore
+([Template 2](#template-2-graph--grid-dfs-flood-fill--lc-200-)).
+
+**Drill** — LC 1219 · LC 79 ⭐ *(word search: restore the letter)* · LC 980 *(the path must cover
+every empty cell)* · LC 212 ⭐ *(many words: a trie prunes the DFS)*
+
+All three versions below are correct. They differ in **where** three decisions are made:
 1. **Guard** — is the neighbor valid (in-bounds + gold + not visited)?
 2. **Accumulate** — where does `cur_gold` get the current cell added?
 3. **Update max** — where do we record `self.max_gold`?
 
 #### Quick Comparison
 
-| | **V0-1** — validate in child | **V0-2** — validate before call | **V0-3** — update max in loop |
+| | **V0-1** — validate in child (the template above) | **V0-2** — validate before call | **V0-3** — update max in loop |
 |---|---|---|---|
 | **Neighbor loop** | 4 explicit recursive calls | `for m in moves:` | `for m in moves:` |
 | **Guard location** | **top of child** (base case) | **before** the recursive call | **before** the recursive call |
@@ -1237,50 +1372,14 @@ child decides if it should exist") — so the base case doubles as the guard. V0
 *up* into the caller ("the parent only calls valid children") — so there is no wasted stack frame,
 but the start cell must be validated separately (done by `if grid[y][x] > 0` in the launch loop).
 
-#### V0-1 — Validate inside the child (recommended default)
-
-```python
-# python — LC 1219
-# GUARD lives at the top of the child → doubles as the recursion base case.
-# Cleanest to reason about: you may call dfs() on ANY coordinate (even off-grid);
-# the child rejects itself. Cost: every invalid neighbor still spends one call frame.
-class Solution:
-    def getMaximumGold(self, grid):
-        self.max_gold = 0
-        rows, cols = len(grid), len(grid[0])
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] > 0:
-                    self.dfs(grid, r, c, 0)   # start value = 0
-        return self.max_gold
-
-    def dfs(self, grid, r, c, cur_gold):
-        rows, cols = len(grid), len(grid[0])
-        # (1) GUARD: out of bounds OR empty(0) OR visited(-1) → stop
-        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] <= 0:
-            return
-        cache = grid[r][c]
-        cur_gold += cache                                  # (2) ACCUMULATE here
-        self.max_gold = max(self.max_gold, cur_gold)       # (3) UPDATE MAX per cell entry
-        grid[r][c] = -1                                    # mark visited
-        # recurse into ALL 4 dirs unconditionally — guard filters at the top
-        self.dfs(grid, r + 1, c, cur_gold)
-        self.dfs(grid, r - 1, c, cur_gold)
-        self.dfs(grid, r, c + 1, cur_gold)
-        self.dfs(grid, r, c - 1, cur_gold)
-        grid[r][c] = cache                                 # BACKTRACK: restore
-```
-
-**When to use:** your **default** for grid DFS. Fewest ways to get it wrong — the start cell and
-neighbors go through the *same* guard, so there is no special-casing. Prefer it when clarity matters
-or when the start cell might itself be invalid.
-
 #### V0-2 — Validate before the call, accumulate at the call site
 
 ```python
-# python — LC 1219
-# GUARD is inline BEFORE each recursive call → no wasted frames on invalid neighbors.
-# The launch loop's `if grid[y][x] > 0` validates the START cell (child no longer does).
+# python
+# LC 1219 - Path with Maximum Gold (V0-2)
+# IDEA: guard BEFORE each recursive call, so no frame is spent on an invalid neighbour;
+#       the launch loop's `if grid[y][x] > 0` validates the START cell
+# time = O(k * 3^k), space = O(k)
 class Solution:
     def getMaximumGold(self, grid):
         self.max_gold = 0
@@ -1313,11 +1412,11 @@ correctly with no extra code. This is the version to reach for once you're comfo
 #### V0-3 — Update max inside the loop (works, but fragile — avoid)
 
 ```python
-# python — LC 1219
-# Same structure as V0-2, BUT max_gold is updated INSIDE the loop (on `next_gold`),
-# not at cell entry. Consequence: the entry cell is never scored by the DFS itself,
-# so a lone gold cell with no gold neighbors would be missed → the launch loop must
-# SEED max_gold with grid[y][x]. That extra dependency is exactly what makes it fragile.
+# python
+# LC 1219 - Path with Maximum Gold (V0-3)
+# IDEA: same as V0-2, but max_gold is updated INSIDE the loop (on next_gold), so the entry cell is
+#       never scored by the DFS itself and the launch loop must SEED max_gold with grid[y][x]
+# time = O(k * 3^k), space = O(k)
 class Solution:
     def getMaximumGold(self, grid):
         self.max_gold = 0
@@ -1325,7 +1424,7 @@ class Solution:
         for y in range(L):
             for x in range(W):
                 if grid[y][x] > 0:
-                    self.max_gold = max(self.max_gold, grid[y][x])  # ⚠️ REQUIRED seed
+                    self.max_gold = max(self.max_gold, grid[y][x])  # REQUIRED seed
                     self.dfs(grid, x, y, grid[y][x])
         return self.max_gold
 
@@ -1337,10 +1436,7 @@ class Solution:
         for dx, dy in moves:
             x_, y_ = x + dx, y + dy
             if 0 <= x_ < W and 0 <= y_ < L and grid[y_][x_] > 0:
-                # NOTE: do NOT mark/unmark grid[y][x] here inside the loop.
-                # Marking is per-cell-entry, not per-neighbor: the same cell is
-                # explored by all 4 branches of THIS frame; re-marking each
-                # iteration would corrupt the shared state.
+                # mark/unmark is per cell entry, not per neighbour: do not touch grid[y][x] here
                 next_gold = cur_gold + grid[y_][x_]
                 self.max_gold = max(self.max_gold, next_gold)   # (3) UPDATE MAX in loop
                 self.dfs(grid, x_, y_, next_gold)
@@ -1351,163 +1447,120 @@ class Solution:
 max-update into the loop makes the entry cell invisible to the DFS, forcing the caller-side seed.
 Miss that one line and single-cell (or fully-isolated) inputs silently return `0`. Prefer V0-1 / V0-2.
 
-#### Things to note (all versions)
-
-- **Backtracking is mandatory here**, not optional. A path may start from many cells and paths
-  overlap; restoring `grid[r][c] = cache` after the recursion lets later launches reuse the cell.
-  Contrast with plain "count islands" (LC 200) where you mark-and-never-restore.
-- **In-place visited marking** (`-1` / `0`) avoids an extra `visited` set — fine because we undo it.
-  The guard treats *empty* and *visited* uniformly (`<= 0`), so no separate visited check is needed.
-- **Mark/unmark exactly once per frame**, wrapping the neighbor exploration — never per neighbor.
-- **Where you update max determines whether you need a seed**: update at *cell entry* (V0-1/V0-2) and
-  every cell (including isolated ones) is counted for free; update *per neighbor* (V0-3) and you owe
-  the caller a seed for the start cell.
-- **Complexity** (all three): `time = O(4^k)` worst case where `k ≤ 25` is the number of gold cells
-  (each cell branches into ≤3 unvisited neighbors after the first); `space = O(k)` recursion depth.
-
 ### Template 10: Weighted Graph DFS (Division/Ratio Queries) — LC 399
-- **Description**: Build a weighted directed graph where edge weights represent ratios/division results, then DFS to compute transitive ratios between any two connected nodes
-- **Recognition**: "Evaluate division", "exchange rates", "currency conversion", "ratio queries", "transitive relationships with weights"
-- **Key Technique**: Model equations as a bidirectional weighted graph (`Map<String, Map<String, Double>>`), DFS with accumulated product along the path
-- **Examples**: LC 399 (Evaluate Division), LC 1101 (The Earliest Moment When Everyone Become Friends - variant), LC 721 (Accounts Merge - graph grouping variant)
-- **Core Algorithm Idea**:
-  1. **Graph Construction**: For each equation `a / b = val`, add edge `a → b` with weight `val` and edge `b → a` with weight `1/val`
-  2. **Query Processing**: For query `c / d`, DFS from `c` to `d`, multiplying edge weights along the path
-  3. **Product Accumulation**: Pass a running product through DFS; when target is reached, the product is the answer
-  4. **Alternative**: Union-Find with ratio tracking (store `node → root` ratio for O(α(n)) queries)
-- **Important Notes**:
-  - **Bidirectional Edges**: Always store both `a→b` and `b→a` with reciprocal weights
-  - **Visited Set**: Reset per query to allow independent path exploration
-  - **Early Termination**: If either node not in graph, return -1.0 immediately
-  - **Self-Division**: If `start == end` and node exists in graph, return 1.0
-  - **Product vs Additive**: Unlike shortest-path problems, this uses multiplicative accumulation
-- **Similar Classic LC Problems**:
-  - LC 399 - Evaluate Division (canonical weighted graph DFS)
-  - LC 1976 - Number of Ways to Arrive at Destination (weighted graph traversal)
-  - LC 787 - Cheapest Flights Within K Stops (weighted graph with constraints)
-  - LC 743 - Network Delay Time (weighted graph exploration)
-  - LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance
+
+**Recognise** — "evaluate division", "given a / b = 2.0 and b / c = 3.0, what is a / c", "exchange
+rates", "unit conversion", "transitive ratios". Variables ≤ 40, queries ≤ 20 → one DFS per query is
+plenty.
+
+**Key point** — `a / b = v` is an edge a → b of weight v **and** an edge b → a of weight 1/v. Along any
+path the weights multiply and the middle terms cancel (a/b · b/c = a/c), so the product of the
+weights from x to y is x / y; any path will do, because the equations are consistent.
 
 ```python
-# 399 Evaluate Division
-# there is also an "union find" solution
-class Solution:
-    def calcEquation(self, equations, values, queries):
-        from collections import defaultdict
-        # build graph
-        graph = defaultdict(dict)
-        for (x, y), v in zip(equations, values):
-            graph[x][y] = v
-            graph[y][x] = 1.0/v
-        ans = [self.dfs(x, y, graph, set()) for (x, y) in queries]
-        return ans
+# python
+# LC 399 - Evaluate Division
+# IDEA: weighted graph a -> b (v) and b -> a (1/v); a DFS multiplies the weights along one path
+# time = O(Q * (V + E)), space = O(V + E)
+from collections import defaultdict
 
-    def dfs(self, x, y, graph, visited):
-        if not graph:
-            return
-        if x not in graph or y not in graph:
-            return -1
-        if x == y:
-            return 1
-        visited.add(x)
-        for n in graph[x]:
-            if n in visited:
-                continue
-            visited.add(n)
-            d = self.dfs(n, y, graph, visited)
-            if d > 0:
-                return d * graph[x][n]
+def calcEquation(equations, values, queries):
+    graph = defaultdict(dict)
+    for (a, b), value in zip(equations, values):
+        graph[a][b] = value
+        graph[b][a] = 1.0 / value               # the reverse edge, reciprocal weight
+
+    def dfs(node, target, visited):
+        if node == target:
+            return 1.0
+        visited.add(node)
+        for nxt, weight in graph[node].items():
+            if nxt not in visited:
+                rest = dfs(nxt, target, visited)
+                if rest != -1.0:
+                    return weight * rest        # node/nxt * nxt/target = node/target
         return -1.0
+
+    answers = []
+    for x, y in queries:
+        if x not in graph or y not in graph:
+            answers.append(-1.0)                # an unknown variable, even for x / x
+        else:
+            answers.append(dfs(x, y, set()))    # a fresh visited set per query
+    return answers
 ```
 
 ```java
 // java
-// V1
-// IDEA: DFS
-// https://leetcode.com/problems/evaluate-division/solutions/3543256/image-explanation-easiest-concise-comple-okpu/
-public double[] calcEquation_1(List<List<String>> equations, double[] values, List<List<String>> queries) {
-    HashMap<String, HashMap<String, Double>> gr = buildGraph(equations, values);
-    double[] finalAns = new double[queries.size()];
-
+// LC 399 - Evaluate Division
+// IDEA: weighted graph a -> b (v) and b -> a (1/v); a DFS multiplies the weights along one path
+// time = O(Q * (V + E)), space = O(V + E)
+public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    Map<String, Map<String, Double>> graph = new HashMap<>();
+    for (int i = 0; i < equations.size(); i++) {
+        String a = equations.get(i).get(0);
+        String b = equations.get(i).get(1);
+        graph.computeIfAbsent(a, k -> new HashMap<>()).put(b, values[i]);
+        graph.computeIfAbsent(b, k -> new HashMap<>()).put(a, 1.0 / values[i]);
+    }
+    double[] answers = new double[queries.size()];
     for (int i = 0; i < queries.size(); i++) {
-        String dividend = queries.get(i).get(0);
-        String divisor = queries.get(i).get(1);
-
-        /** NOTE !!!
-         *
-         *  either dividend nor divisor NOT in graph, return -1.0 directly
-         */
-        if (!gr.containsKey(dividend) || !gr.containsKey(divisor)) {
-            finalAns[i] = -1.0;
+        String x = queries.get(i).get(0);
+        String y = queries.get(i).get(1);
+        if (!graph.containsKey(x) || !graph.containsKey(y)) {
+            answers[i] = -1.0;                  // an unknown variable, even for x / x
         } else {
-
-            /** NOTE !!!
-             *
-             *  we use `vis` to check if element already visited
-             *  (to avoid repeat accessing)
-             *  `vis` init again in every loop
-             */
-
-            HashSet<String> vis = new HashSet<>();
-            /**
-             *  NOTE !!!
-             *
-             *   we init `ans` and pass it to dfs method
-             *   (but dfs method return NOTHING)
-             *   -> `ans` is init, and pass into dfs,
-             *   -> so `ans` value is updated during dfs recursion run
-             *   -> and after dfs run completed, we get the result `ans` value
-             */
-            double[] ans = { -1.0 };
-            double temp = 1.0;
-            dfs(dividend, divisor, gr, vis, ans, temp);
-            finalAns[i] = ans[0];
+            answers[i] = dfs(graph, x, y, new HashSet<>());   // a fresh visited set per query
         }
     }
-
-    return finalAns;
+    return answers;
 }
 
-/** NOTE !!! below dfs method */
-public void dfs(String node, String dest, HashMap<String, HashMap<String, Double>> gr, HashSet<String> vis,
-                double[] ans, double temp) {
-
-    /** NOTE !!! we use `vis` to check if element already visited */
-    if (vis.contains(node))
-        return;
-
-    vis.add(node);
-    if (node.equals(dest)) {
-        ans[0] = temp;
-        return;
+private double dfs(Map<String, Map<String, Double>> graph, String node, String target, Set<String> visited) {
+    if (node.equals(target)) {
+        return 1.0;
     }
-
-    for (Map.Entry<String, Double> entry : gr.get(node).entrySet()) {
-        String ne = entry.getKey();
-        double val = entry.getValue();
-        /** NOTE !!! update temp as `temp * val` */
-        dfs(ne, dest, gr, vis, ans, temp * val);
+    visited.add(node);
+    for (Map.Entry<String, Double> edge : graph.get(node).entrySet()) {
+        if (!visited.contains(edge.getKey())) {
+            double rest = dfs(graph, edge.getKey(), target, visited);
+            if (rest != -1.0) {
+                return edge.getValue() * rest;  // node/next * next/target
+            }
+        }
     }
-}
-
-public HashMap<String, HashMap<String, Double>> buildGraph(List<List<String>> equations, double[] values) {
-    HashMap<String, HashMap<String, Double>> gr = new HashMap<>();
-
-    for (int i = 0; i < equations.size(); i++) {
-        String dividend = equations.get(i).get(0);
-        String divisor = equations.get(i).get(1);
-        double value = values[i];
-
-        gr.putIfAbsent(dividend, new HashMap<>());
-        gr.putIfAbsent(divisor, new HashMap<>());
-
-        gr.get(dividend).put(divisor, value);
-        gr.get(divisor).put(dividend, 1.0 / value);
-    }
-
-    return gr;
+    return -1.0;
 }
 ```
+
+**Complexity**
+- **Time O(Q · (V + E))**: each query's DFS visits each variable at most once (`visited`) and reads
+  each of its edges once.
+- **Space O(V + E)**: the graph, plus O(V) for `visited` and the recursion.
+
+**Traps**
+- `x / x` for a variable that never appears is -1.0, not 1.0: LC 399's query `["x","x"]`. Check
+  membership before the `node == target` shortcut.
+- One `visited` set shared by every query: the second query finds the nodes already visited and
+  returns -1.0.
+- Storing only `a → b`: a query in the other direction (`b / a`) finds no path.
+- Testing `rest > 0` instead of `rest != -1.0` leans on LC 399's guarantee that values are positive;
+  the sentinel test does not.
+
+**Not this if** — many queries on a fixed graph, or equations arriving one at a time → weighted
+union-find (store each node's ratio to its root). Costs **add** along a path and you want the
+cheapest → shortest path ([Dijkstra.md](./Dijkstra.md)).
+
+**Drill** — LC 399 · LC 990 *(equal / not-equal constraints: union-find, no weights)* · LC 2307
+*(check the equations for a contradiction)*
+
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 100 · LC 543 · LC 200 · LC 417 · LC 124 | paired DFS, a post-order return value, flood fill, reachability from a border, a global accumulator |
+| **Practice** | LC 94 · LC 112 · LC 101 · LC 695 · LC 113 · LC 46 · LC 450 · LC 1254 · LC 694 · LC 1219 · LC 399 | each remaining template once, in the order the cards teach them |
+| **Stretch** | LC 979 · LC 2049 · LC 711 · LC 980 | a signed flow per edge, subtree sizes on removal, shapes up to rotation, covering every cell |
 
 ## Summary & Quick Reference
 
@@ -1564,7 +1617,7 @@ DFS Problem Analysis Flowchart:
 - **Wrong traversal order**: Using preorder when postorder needed
 - **Modifying while traversing**: Can break iteration
 - **Not handling null**: NullPointerException
-- **⚠️ CRITICAL: Not returning immediately when path found**: When searching for a path in DFS, must return true immediately when found (see detailed explanation below)
+- **⚠️ CRITICAL: Not returning immediately when path found**: When searching for a path in DFS, must return true immediately when found (see the early-return section under Template 3)
 
 **✅ Best Practices:**
 - **Use visited set for graphs**: Prevent cycles
