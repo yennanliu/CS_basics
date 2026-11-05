@@ -1,631 +1,149 @@
 # LeetCode Pattern Guide
 
-> **Scope** — The top-level map: given a problem, which pattern (and therefore which cheatsheet) does it want. Index and triage only — no templates here.
-> **See also**: [lc_category.md](./lc_category.md) — the wisdompeak taxonomy, and which sheet here covers each of its categories; [complexity_cheatsheet.md](./complexity_cheatsheet.md) — the complexity you will be asked to state.
+> **Scope** — The front door: from a problem statement to the card that solves it — the signal in the wording, the constraint cue, the pattern, a link to its card, and the look-alike that is not it. A router only: every template lives in the card a row links to.
+> **See also**: [complexity_cheatsheet.md § 6](./complexity_cheatsheet.md#6-interview-decision-guide) — the constraint ruler the "constraint cue" column reads from; [lc_category.md](./lc_category.md) — the wisdompeak taxonomy, and which sheet covers each of its categories.
 
-⸻
+---
 
-## 🔹 0. Before you pick a pattern — the six-step loop
+## How to use this page
+
+1. **Read `n` first.** The constraints usually name the complexity before the statement names the pattern: `n ≤ 20` invites O(2ⁿ), `n ≤ 10⁵` invites O(n log n) or O(n), and a value range of 10⁹ invites a binary search on the answer. The full ruler is [complexity_cheatsheet.md § 6](./complexity_cheatsheet.md#6-interview-decision-guide).
+2. **Find the row whose signal matches the wording**, in the family table below. The signal is the phrase in the statement, not the topic name.
+3. **Open the card, then read the last column before you code.** "Looks like it, but is not" is the mistake the row exists to stop: the problem that matches the signal and still wants a different card.
+
+---
+
+## Recognition — signal → pattern → card ⭐⭐⭐⭐⭐
+
+One row per pattern. The **Card** column links to the template that solves the anchor problem; the problems themselves live in that sheet's examples.
+
+### Arrays & strings
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "longest / shortest contiguous subarray or substring", "at most k distinct" | n ≤ 10⁵ | variable sliding window | [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) (longest), [Template 4](./sliding_window.md#template-4-shortest-window-satisfying-p--lc-209-) (shortest) | an exact sum, `sum == k`, where values can be negative → prefix sum + hash map (LC 560) |
+| "smallest substring containing all of t", anagram / permutation of t in s | n ≤ 10⁵, alphabet 26–128 | char-count window | [sliding_window § Template 5](./sliding_window.md#template-5-char-count-window-with-the-haveneed-counter--lc-76-) | a subsequence, not a substring → two pointers (LC 392) |
+| "number of subarrays with exactly k …" | n ≤ 10⁵ | exactly k = at most k − at most (k−1) | [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) | the "exactly k" is a **sum** (`sum == k`) and values can be negative → prefix sum + hash map; an exact count of *distinct* values stays here, since signs do not matter to a counter |
+| "count subarrays whose sum is k / divisible by k" | n ≤ 10⁵, negatives allowed | prefix sum + count map | [prefix_sum § Template 2](./prefix_sum.md#template-2-hashmap--prefix-sum-subarray-target-sum--lc-560) (sum), [Template 3](./prefix_sum.md#template-3-modulo-prefix-sum-divisibility-problems--lc-974) (divisible: count equal remainders) | all values positive and you want the longest / shortest → sliding window |
+| "many range-sum queries" | q ≤ 10⁵ | prefix sum array | [prefix_sum § Template 1](./prefix_sum.md#template-1-basic-prefix-sum-range-queries--lc-303) | the array changes between queries → Fenwick / segment tree (LC 307) |
+| "add v to every element in [l, r]", many times | n, updates ≤ 10⁵ | difference array | [difference_array § Template 1](./difference_array.md#template-1-basic-difference-array) | you must read a max after each update → segment tree with lazy propagation |
+| "pair / triplet with sum target" on a **sorted** array, "container", "palindrome check" | n ≤ 10⁵ | converging two pointers | [2_pointers § Template 2](./2_pointers.md#template-2-converging-bidirectional-pointers-) | unsorted and you need indices → hash map (LC 1) |
+| "remove / deduplicate in place", "move zeros" | O(1) extra space | read/write two pointers | [2_pointers § Template 1](./2_pointers.md#template-1-fastslow-read-write-compaction--lc-26-lc-27-) | order does not matter → swap with the last element |
+| "sort 0s, 1s and 2s in one pass" | O(1) space | three-way partition | [2_pointers § Template 6](./2_pointers.md#template-6-three-way-partition-dutch-national-flag--lc-75-) | more than three keys → counting sort |
+| "longest palindromic substring", "count palindromic substrings" | n ≤ 1,000 | expand from centre | [2_pointers § Template 3](./2_pointers.md#template-3-expand-from-centre--lc-5-lc-647-) | palindromic **subsequence** → interval DP (LC 516) |
+| "two sum" on an unsorted array, "seen before?" | n ≤ 10⁵ | complement lookup | [hash_map § Template 2](./hash_map.md#template-2-seen-before-index-map-two-sum-shape) | sorted input and O(1) space wanted → two pointers (LC 167) |
+| "group anagrams", "count frequencies", "first unique" | n ≤ 10⁴ | grouping / counting by a computed key | [hash_map § Template 3](./hash_map.md#template-3-grouping-by-a-computed-key), [Template 1](./hash_map.md#template-1-frequency-counter) | top-k by frequency → heap or bucket sort (LC 347) |
+| "maximum subarray sum / product" | n ≤ 10⁵ | Kadane: best run ending here | [kadane_algorithm § 0-2](./kadane_algorithm.md#0-2-algorithm-pattern--template) (sum), [§ 1-3](./kadane_algorithm.md#1-3-maximum-product-subarray-lc-152) (product: keep the min as well as the max) | a subarray of length ≥ k, or a sum = k → prefix sums |
+| "merge / insert intervals", "minimum rooms", "remove fewest to stop overlap" | n ≤ 10⁴ | sort by start (merge) or by end (schedule) | [intervals § Pattern 1](./intervals.md#pattern-1-interval-merging--lc-56-), [Pattern 2](./intervals.md#pattern-2-interval-scheduling-greedy--lc-435-) | many overlapping events at a time → sweep line (LC 253, [scanning_line](./scanning_line.md#template-1-basic-interval-overlap--lc-253)) |
+| "kth largest / smallest", "k closest" | n ≤ 10⁵, one shot | quickselect | [2_pointers_quickselect § Template 1](./2_pointers_quickselect.md#template-1-kth-largest-element--lc-215-) | a stream, or you need all k in order → size-k heap |
+
+### Binary search
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "sorted array", "find target / first position / insert position" | n ≤ 10⁵, O(log n) asked | classic binary search (exact match), lower / upper bound (first position, insert position) | [binary_search § 2.1](./binary_search.md#21-standard-binary-search-template--lc-704) (exact), [§ 1.3](./binary_search.md#13-find-boundaries--lower-and-upper-bound-lc-34-) (bounds) | unsorted but you need a count → sort first, or a hash map |
+| "minimum capacity / speed / largest-sum so that it fits in k", "maximize the minimum distance" | values up to 10⁹ | binary search on the answer | [binary_search_on_answer § The Unified Template](./binary_search_on_answer.md#the-unified-template) | feasibility flips more than once as the answer grows (not a single true → false or false → true switch) → DP or greedy |
+| "rotated sorted array" | n ≤ 5,000, O(log n) asked | binary search, one half is always sorted | [binary_search](./binary_search.md) | duplicates allowed → worst case O(n) (LC 81) |
+
+### Linked list
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "reverse the list / a sublist / k-group", "reorder" | O(1) space | pointer reversal, dummy head | [linked_list § 0-2](./linked_list.md#0-2-pattern) | you may use O(n) space → push to a list, rebuild |
+| "cycle", "start of the cycle", "middle node", "kth from the end" | O(1) space | fast / slow pointers | [2_pointers § Template 7](./2_pointers.md#template-7-fastslow-cycle-detection--lc-141-lc-142-) | duplicates in an array of 1..n → the same trick on indices (LC 287) |
+| "merge k sorted lists" | k ≤ 10⁴ | k-way merge with a heap | [heap § Template 2](./heap.md#template-2-k-way-merge-pattern--lc-23) | only two lists → a plain merge with a dummy head (LC 21) |
+
+### Trees
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "level by level", "right side view", "zigzag", "minimum depth" | nodes ≤ 10⁴ | BFS with a level loop | [bfs § Pattern 2](./bfs.md#pattern-2-level-by-level-bfs--lc-102-) | a value aggregated up from the leaves → post-order DFS |
+| "diameter", "balanced?", "max path sum", anything a node computes from its children | recursion depth = height | post-order DFS returning a value | [dfs § Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-) | the answer depends on the path from the root → pass it down as an argument (LC 112) |
+| "root-to-leaf path with sum", "all paths" | nodes ≤ 5,000 | pre-order DFS carrying the path | [tree_lca_distance § 4](./tree_lca_distance.md#4-root-to-leaf-path-templates) | any downward path, not only from the root → prefix sum on the path (LC 437) |
+| "lowest common ancestor" | nodes ≤ 10⁵ | LCA by returned presence | [tree_lca_distance § 1](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236) | it is a **BST** → walk down by value, O(h) (LC 235) |
+| "valid BST", "kth smallest in a BST", "BST iterator" | nodes ≤ 10⁴ | in-order is sorted | [bst § Template 4](./bst.md#template-4-bst-validation), [Template 5](./bst.md#template-5-bst-inorder-operations) | a plain binary tree → no ordering to lean on |
+| "build the tree from preorder and inorder" | nodes ≤ 3,000 | divide and conquer with an index map | [binary_tree § Template 3](./binary_tree.md#template-3-tree-construction) | serialize / deserialize → pre-order with null markers ([tree_codec](./tree_codec.md)) |
+| "prefix search", "word dictionary with `.`", "many words in a grid" | words ≤ 3·10⁴ | trie | [trie](./trie.md#templates--algorithms) | one word at a time against a set → a hash set is enough |
+
+### Graphs
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "number of islands", "connected regions", "flood fill" | grid ≤ 300 × 300 | grid DFS / BFS, mark visited | [dfs § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-) | edges arrive one at a time and you query connectivity → union-find |
+| "shortest path / minimum steps", every move costs 1 | V + E ≤ 10⁵ | BFS (mark when enqueued) | [bfs § Pattern 3](./bfs.md#pattern-3-graph-bfs-with-visited-set--lc-200) | moves have different costs → Dijkstra; costs are 0 or 1 → [0-1 BFS](./shortest_path_comparison.md#variant-0-1-bfs) |
+| "rotting oranges", "distance to the nearest 0 / gate" | grid ≤ 10⁵ cells | multi-source BFS | [bfs § Pattern 4](./bfs.md#pattern-4-multi-source-bfs-distance-calculation--lc-542--lc-994-) | the distance from one source only → plain BFS |
+| "weighted shortest path", "network delay", "minimum effort path" | E ≤ 10⁵, weights ≥ 0 | Dijkstra | [Dijkstra § Template 1](./Dijkstra.md#template-1-basic-dijkstra) (additive cost), [§ LC 1631](./Dijkstra.md#1-is-the-cost-additive-and-can-you-order-the-cells--lc-64-vs-lc-1631-) (effort: the max edge on the path, not the sum) | negative weights or "at most k stops" → [Bellman-Ford](./Bellman-Ford.md) (LC 787); all pairs with n ≤ 400 → [Floyd-Warshall](./Floyd-Warshall.md) |
+| "course schedule", "order of tasks with prerequisites", "alien dictionary" | V + E ≤ 10⁵ | topological sort (Kahn's BFS) | [topology_sorting § Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) | an undirected graph → there is no order; check for a cycle with union-find |
+| "redundant connection", "number of provinces", "accounts merge" | n ≤ 10⁵ | union-find | [union_find § 0-3](./union_find.md#0-3-algorithm-pattern--template-) | you also need path lengths → BFS / DFS |
+| "can it be split into two groups", "is it bipartite" | n ≤ 100 | BFS 2-colouring | [graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) | three or more groups → backtracking colouring |
+| "evaluate division", ratio queries | V ≤ 100 | DFS over weighted edges, multiplying along the path | [dfs § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | many queries on a fixed graph → union-find with weights |
+
+### Dynamic programming
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "how many ways to climb / decode", "rob houses that are not adjacent" | n ≤ 10⁵ | 1-D DP, rolling variables | [dp § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables---lc-198) | choices form a tree with no overlap → plain recursion or backtracking |
+| "can the string be segmented into words" | n ≤ 300 | prefix partition DP | [dp § Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139) | you must list every segmentation → backtracking with memo (LC 140) |
+| "unique paths", "minimum path sum" in a grid | m, n ≤ 200 | 2-D grid DP | [dp § Template 2](./dp.md#template-2-2-d-grid-dp---lc-64) | the path can go in any direction → shortest path (Dijkstra / BFS) |
+| "subset with sum target", "partition into equal sums", "target sum" | n ≤ 200, sum ≤ 10⁴ | 0/1 knapsack | [dp § Template 4](./dp.md#template-4-01-knapsack---lc-416) | items can be reused (coin change, LC 322 / 518) → unbounded knapsack, loop order flips ([dp_loop_order](./dp_loop_order.md)) |
+| "longest increasing subsequence", "Russian dolls" | n ≤ 10⁵ | LIS: O(n²) DP, or O(n log n) with tails (the one n ≤ 10⁵ needs) | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence---lc-300) (O(n²)), [patience_sorting § 1-1](./patience_sorting.md#1-1-basic-op--the-tails-scan-) (O(n log n)) | contiguous → sliding window or Kadane |
+| "longest common subsequence", "edit distance", "interleaving" | m, n ≤ 1,000 | 2-D string DP over prefixes | [dp_string § LCS deep dive](./dp_string.md#deep-dive-the-prefix-based-indexing-pattern-lcs--variants--) | a common **substring** → reset to 0 on a mismatch |
+| "buy and sell stock with cooldown / fee / k transactions" | n ≤ 10⁵ | state machine DP | [dp § Template 5](./dp.md#template-5-state-machine-dp--lc-121--lc-309) | one transaction → track the running minimum (LC 121) |
+| "burst balloons", "minimum cost to merge stones" | n ≤ 300 | interval DP | [dp § Template 3](./dp.md#template-3-interval-dp--lc-312) | the order of operations does not matter → greedy |
+| "assign n ≤ 16 items to k groups", "visit all nodes" | n ≤ 16–20 | bitmask DP over the used set; with a current node, BFS over (node, mask) | [bit_manipulation § 2-3](./bit_manipulation.md#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-) (assign), [shortest_path_comparison § LC 847](./shortest_path_comparison.md#variant-1--bfs-over-node-bitmask--lc-847) (visit all) | n in the thousands → it is not bitmask; look for a greedy or a DP on values |
+
+### Backtracking
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "all subsets", "all combinations of k" | n ≤ 10–20 | backtracking with `start_idx` | [backtrack § Template 3](./backtrack.md#template-3-subsets--lc-78-), [Template 6](./backtrack.md#template-6-combinations--lc-77) | only the **count** is asked → DP |
+| "all permutations" | n ≤ 8 | backtracking with `used[]` | [backtrack § Template 5](./backtrack.md#template-5-permutations--lc-46-) | the next permutation only → a two-pass scan (LC 31) |
+| "combinations summing to target", reuse allowed or not | candidates ≤ 30 | pass `i` or `i + 1` | [backtrack § Template 7](./backtrack.md#template-7-combination-sum--lc-39--lc-40-) | order matters and you only count → DP (LC 377) |
+| "word search in a grid", "N-Queens", "sudoku" | board ≤ 9 × 9 or m·n ≤ 36 | backtracking on a board | [backtrack § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-), [Template 10](./backtrack.md#template-10-n-queens--lc-51) | many words in one grid → trie + backtracking (LC 212) |
+| "partition the string into palindromes" | n ≤ 16 | backtracking over cut points | [backtrack § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) | the **minimum** number of cuts → DP (LC 132) |
+
+### Heaps and greedy
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "top k frequent", "k closest", "kth largest in a stream" | n ≤ 10⁵ | size-k heap | [heap § Template 1](./heap.md#template-1-top-k-elements-pattern--lc-215) | one shot over a fixed array → quickselect, O(n) average |
+| "median of a data stream" | 5 · 10⁴ calls | two heaps | [heap § Template 3](./heap.md#template-3-two-heaps-pattern-median-finding--lc-295) | a sliding window median → also delete from the window ([monotonic_queue § Template 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-)) |
+| "task scheduler with cooldown", "reorganize the string so no two are adjacent" | n ≤ 10⁴, 26 kinds | greedy on the most frequent | [greedy § Template 2](./greedy.md#template-2-cooldown-windows-with-a-max-heap--lc-621-), [Template 5](./greedy.md#template-5-string-reorganization--lc-767-) | the order of the input must be kept → a queue simulation |
+| "can you reach the end", "minimum jumps" | n ≤ 10⁴ | greedy farthest reach | [greedy § Template 4](./greedy.md#template-4-jump-game-pattern--lc-55-) | each jump has a cost → DP or Dijkstra |
+
+### Stacks and design
+
+| Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
+|---|---|---|---|---|
+| "valid parentheses", "decode string", "simplify path" | n ≤ 10⁴ | stack of open items | [stack § Template 2](./stack.md#template-2-bracket-matching--lc-20-) (brackets), [stack_expression_parsing § 3](./stack_expression_parsing.md#3-decode-string--lc-394-) (decode string), [stack § Template 6](./stack.md#template-6-scope--context-ledger--lc-388-lc-636-) (simplify path) | only one bracket type → a counter is enough |
+| "next greater / warmer day", "stock span" | n ≤ 10⁵ | monotonic stack | [stack § Template 3](./stack.md#template-3-monotonic-stack--next-greater--smaller--lc-739-) | max of every window of size k → monotonic deque (LC 239) |
+| "largest rectangle in histogram", "maximal rectangle" | n ≤ 10⁵ | monotonic stack, left and right bounds | [monotonic_stack § Template 3](./monotonic_stack.md#template-3-largest-rectangle-in-histogram--lc-84) | trapped water → two pointers is simpler (LC 42) |
+| "max / min of every window of size k" | n ≤ 10⁵ | monotonic deque | [monotonic_queue § Template 1](./monotonic_queue.md#template-1-sliding-window-maximum-decreasing-deque--lc-239) | a sum, not a max → a plain sliding window |
+| "min stack", "LRU cache", "O(1) get and put" | O(1) per op | one structure per query, kept in step | [stack § Template 4](./stack.md#template-4-min-stack--o1-getmin--lc-155-), [design § 0-2](./design.md#0-2-pattern) | eviction by frequency, not recency → LFU, two maps (LC 460) |
+| "range sum with point updates" | n, q ≤ 3 · 10⁴ | Fenwick tree / segment tree | [segment_tree § Template 1](./segment_tree.md#template-1-binary-indexed-tree-fenwick-tree) | no updates → a prefix sum array |
+| "single number", "count bits", "subsets as masks" | values fit in 32 bits | bit tricks | [bit_manipulation § 1-2](./bit_manipulation.md#1-2-single-bit-tricks-with-code) | values unbounded → a hash map |
+
+---
+
+## Before you pick a pattern — the six-step loop
 
 > Picking the right pattern is step 3 of six. The five around it are what an interviewer is
 > actually grading, and they are the same for every question on this page. Read this once
 > before your first mock, not during revision.
 
- 
-- 1) Understand the questions (requirement, IO, accepted form)
-- 2) Ask the 
-	- scope 
-		- scale of data
-		- range of number
-	- limitation
-		- boundary of the questions
-		- expected space & time complexity
-- 3) Come up with V1 approaches
-	- Algorithm ideas 
-	- brute force is fine, but explain the ideas
-	- come up with V2 solutions, explain the ideas, the Algorithm & data structure
-	- Write pseudo code 
-	- Discuss the edge cases
-	- Discuss with interviewer, if OK, start coding 
-- 4) Write the code
-	- clean code, explain, easy-to-understand variable names
-	- write `test cases`
-- 5) Run the code 
-	- solve bugs
-	- Explain time & space complexity
-	- validate the test cases
-- 6) Following up session 
-	- optimize time & space complexity
-	- if input is scalable
-	- if input is in stream (rather than batch)
-	- if input can not fit the server memory 
+1. **Understand the question**: requirement, input and output, the accepted form of the answer.
+2. **Ask about scope and limits**: the scale of the data and the range of the numbers (this is the constraint cue above), the boundaries, the expected time and space.
+3. **Come up with approaches**: say a brute force out loud, then a better one with its algorithm and data structure. Write pseudocode, name the edge cases, and agree on it before coding.
+4. **Write the code**: clean, with names that say what they hold, and with test cases written down.
+5. **Run it**: walk the tests, fix bugs, state the time and space complexity and the line that sets each.
+6. **Follow-ups**: a better bound; input that scales, arrives as a stream, or does not fit in memory.
 
-⸻
+---
 
-## 🔹 1. Arrays & Strings
+## Drill Path
 
-### **Two Pointers** — LC 167 ⭐⭐⭐⭐⭐
-- **Opposite Ends**: Move from both ends toward center
-  - LC 1: Two Sum (sorted), LC 15: 3Sum, LC 42: Trapping Rain Water
-  - LC 125: Valid Palindrome, LC 167: Two Sum II
-- **Fast/Slow Pointers**: Different speeds for cycle detection
-  - LC 141: Linked List Cycle, LC 142: Cycle II, LC 287: Find Duplicate
-  - LC 26: Remove Duplicates, LC 80: Remove Duplicates II
-- **Same Direction**: Both pointers move in same direction
-  - LC 283: Move Zeros, LC 75: Sort Colors, LC 11: Container With Water
+One anchor problem per family, so a first pass touches every family above. ⭐ marks the [L3 core set](https://github.com/yennanliu/CS_basics/blob/master/data/l3_core.json). Each list runs easy → hard.
 
-### **Sliding Window** — LC 3 ⭐⭐⭐⭐⭐
-- **Fixed Size Window**: Constant window size
-  - LC 643: Max Average Subarray, LC 1456: Max Vowels in Substring
-  - LC 424: Longest Repeating Character Replacement
-- **Variable Size Window**: Expand/shrink based on conditions
-  - LC 3: Longest Substring Without Repeating, LC 76: Minimum Window Substring
-  - LC 209: Minimum Size Subarray Sum, LC 904: Fruit Into Baskets
-- **Template**: Expand right, shrink left when invalid
-
-### **Prefix Sum & Difference Array** — LC 560 ⭐⭐⭐⭐
-- **Prefix Sum**: Efficient subarray sum calculations
-  - LC 560: Subarray Sum Equals K, LC 523: Continuous Subarray Sum
-  - LC 325: Maximum Size Subarray Sum Equals K
-- **2D Prefix Sum**: Matrix range sum queries
-  - LC 304: Range Sum Query 2D, LC 1314: Matrix Block Sum
-- **Difference Array**: Range updates in O(1)
-  - LC 1109: Corporate Flight Bookings, LC 370: Range Addition
-
-### **Binary Search** — LC 704 ⭐⭐⭐⭐⭐
-- **Classic Search**: Find target in sorted array
-  - LC 704: Binary Search, LC 35: Search Insert Position
-  - LC 34: Find First/Last Position, LC 33: Search in Rotated Array
-- **Binary Search on Answer**: Search answer space
-  - LC 875: Koko Eating Bananas, LC 1011: Ship Packages in D Days
-  - LC 410: Split Array Largest Sum, LC 774: Minimize Max Distance
-- **Matrix Binary Search**: 2D sorted matrix
-  - LC 74: Search 2D Matrix, LC 240: Search 2D Matrix II
-
-### **Sorting + Greedy** — LC 56
-- **Intervals**: Merge, schedule, non-overlapping
-  - LC 56: Merge Intervals, LC 57: Insert Interval
-  - LC 435: Non-overlapping Intervals, LC 252: Meeting Rooms
-- **Array Pairing**: Optimal matching strategies
-  - LC 455: Assign Cookies, LC 881: Boats to Save People
-  - LC 870: Advantage Shuffle, LC 976: Largest Perimeter Triangle
-
-### **String Algorithms** — LC 28
-- **Pattern Matching**: KMP, Rabin-Karp, Z-algorithm
-  - LC 28: Implement strStr(), LC 214: Shortest Palindrome
-- **Palindromes**: Center expansion, Manacher's algorithm
-  - LC 5: Longest Palindromic Substring, LC 647: Palindromic Substrings
-
-⸻
-
-## 🔹 2. Linked List
-
-### **Reversal Patterns** — LC 206
-- **Basic Reversal**: Iterative and recursive approaches
-  - LC 206: Reverse Linked List, LC 92: Reverse Linked List II
-- **Group Reversal**: Reverse in groups of k
-  - LC 25: Reverse Nodes in k-Group, LC 24: Swap Nodes in Pairs
-- **Conditional Reversal**: Reverse based on conditions
-  - LC 2130: Maximum Twin Sum, LC 143: Reorder List
-
-### **Cycle Detection & Fast/Slow Pointers** — LC 141 ⭐⭐⭐⭐
-- **Floyd's Algorithm**: Detect cycle and find cycle start
-  - LC 141: Linked List Cycle, LC 142: Linked List Cycle II
-- **Middle Element**: Find middle using fast/slow pointers
-  - LC 876: Middle of Linked List, LC 234: Palindrome Linked List
-- **Remove Nth Node**: Use gap between fast/slow pointers
-  - LC 19: Remove Nth Node from End
-
-### **Merge & Sort** — LC 21
-- **Two List Merge**: Merge two sorted lists
-  - LC 21: Merge Two Sorted Lists, LC 1669: Merge In Between
-- **Multiple List Merge**: Use heap or divide & conquer
-  - LC 23: Merge k Sorted Lists
-- **List Sorting**: Sort linked list efficiently
-  - LC 148: Sort List (merge sort), LC 147: Insertion Sort List
-
-### **Dummy Head Technique** — LC 203
-- **Node Removal**: Easier deletion with dummy head
-  - LC 203: Remove Linked List Elements, LC 83: Remove Duplicates
-- **List Construction**: Build result list with dummy head
-  - LC 2: Add Two Numbers, LC 445: Add Two Numbers II
-- **Partition**: Split list based on criteria
-  - LC 86: Partition List, LC 725: Split Linked List in Parts
-
-### **Advanced Operations** — LC 138
-- **Deep Copy**: Clone complex linked structures
-  - LC 138: Copy List with Random Pointer
-- **Intersection**: Find intersection of two lists
-  - LC 160: Intersection of Two Linked Lists
-- **Design**: Implement linked list based structures
-  - LC 146: LRU Cache, LC 460: LFU Cache
-
-⸻
-
-## 🔹 3. Binary Trees
-
-### **DFS Traversal Patterns** — LC 94 ⭐⭐⭐⭐⭐
-- **Preorder**: Root → Left → Right (top-down)
-  - LC 144: Binary Tree Preorder, LC 257: Binary Tree Paths
-  - LC 112: Path Sum, LC 113: Path Sum II
-- **Inorder**: Left → Root → Right (BST sorted order)
-  - LC 94: Binary Tree Inorder, LC 98: Validate BST
-  - LC 230: Kth Smallest in BST, LC 285: Inorder Successor
-- **Postorder**: Left → Right → Root (bottom-up)
-  - LC 145: Binary Tree Postorder, LC 543: Diameter of Tree
-  - LC 124: Binary Tree Maximum Path Sum
-
-### **BFS / Level Order Patterns** — LC 102 ⭐⭐⭐⭐⭐
-- **Level-by-Level**: Process nodes level by level
-  - LC 102: Level Order Traversal, LC 107: Level Order II
-  - LC 199: Right Side View, LC 515: Find Largest Value
-- **Zigzag Traversal**: Alternate left-right, right-left
-  - LC 103: Binary Tree Zigzag Traversal
-- **Connect Pointers**: Link nodes at same level
-  - LC 116: Populating Next Right Pointers, LC 117: Populating Next Right II
-
-### **Tree Construction (Divide & Conquer)** — LC 105
-- **From Traversals**: Build tree from inorder/preorder/postorder
-  - LC 105: Construct from Preorder/Inorder, LC 106: Construct from Inorder/Postorder
-  - LC 889: Construct from Preorder/Postorder
-- **From Special Arrays**: Build tree from other representations
-  - LC 108: Convert Sorted Array to BST, LC 109: Convert Sorted List to BST
-  - LC 297: Serialize/Deserialize Binary Tree
-
-### **Binary Search Tree Patterns** — LC 98
-- **BST Validation**: Check BST property
-  - LC 98: Validate BST, LC 99: Recover BST
-- **BST Search & Insert**: Utilize BST property
-  - LC 700: Search in BST, LC 701: Insert into BST
-  - LC 450: Delete Node in BST
-- **BST Statistics**: Find kth element, closest value
-  - LC 230: Kth Smallest, LC 272: Closest BST Values
-- **LCA in BST**: Leverage BST ordering
-  - LC 235: LCA in BST, LC 270: Closest BST Value
-
-### **Tree DP (Bottom-Up)** — LC 543
-- **Subtree Properties**: Calculate properties from children
-  - LC 543: Diameter of Tree, LC 124: Maximum Path Sum
-  - LC 687: Longest Univalue Path, LC 968: Binary Tree Cameras
-- **House Robber**: Optimal selection with constraints
-  - LC 337: House Robber III
-- **Tree Coloring**: Assign colors/states optimally
-  - LC 979: Distribute Coins, LC 1145: Binary Tree Coloring Game
-
-### **Path & Ancestor Problems** — LC 236 ⭐⭐⭐⭐
-- **Root to Leaf Paths**: All paths from root to leaves
-  - LC 257: Binary Tree Paths, LC 113: Path Sum II
-- **Any Path**: Paths between any two nodes
-  - LC 124: Binary Tree Maximum Path Sum, LC 687: Longest Univalue Path
-- **Lowest Common Ancestor**: Find LCA of two nodes
-  - LC 236: LCA of Binary Tree, LC 1644: LCA II, LC 1650: LCA III
-
-### **Tree Modification** — LC 226
-- **Tree Flattening**: Convert tree to linked list structure
-  - LC 114: Flatten Binary Tree, LC 430: Flatten Multilevel List
-- **Tree Mirroring**: Mirror or invert tree
-  - LC 226: Invert Binary Tree, LC 951: Flip Equivalent Trees
-- **Pruning**: Remove subtrees based on conditions
-  - LC 814: Binary Tree Pruning, LC 1325: Delete Leaves with Given Value
-
-⸻
-
-## 🔹 4. Graphs
-
-### **Graph Traversal** — LC 200 ⭐⭐⭐⭐⭐
-- **BFS (Breadth-First Search)**: Level-by-level exploration
-  - LC 200: Number of Islands, LC 994: Rotting Oranges
-  - LC 127: Word Ladder, LC 815: Bus Routes
-  - **Shortest Path** (unweighted): LC 1091: Shortest Path in Binary Matrix
-- **DFS (Depth-First Search)**: Go deep then backtrack
-  - LC 695: Max Area of Island, LC 130: Surrounded Regions
-  - LC 417: Pacific Atlantic Water Flow, LC 79: Word Search
-  - **Connected Components**: LC 323: Number of Connected Components
-
-### **Union-Find (Disjoint Set Union)** — LC 547
-- **Basic Union-Find**: Connect components dynamically
-  - LC 200: Number of Islands, LC 547: Number of Provinces
-  - LC 684: Redundant Connection, LC 685: Redundant Connection II
-- **Union by Rank + Path Compression**: Optimized operations
-  - LC 721: Accounts Merge, LC 990: Satisfiability of Equality Equations
-- **Applications**: Minimum Spanning Tree, cycle detection
-  - LC 1135: Connecting Cities, LC 1584: Min Cost to Connect Points
-
-### **Topological Sort** — LC 207 ⭐⭐⭐⭐
-- **Kahn's Algorithm (BFS)**: Indegree-based approach
-  - LC 207: Course Schedule, LC 210: Course Schedule II
-  - LC 269: Alien Dictionary, LC 1136: Parallel Courses
-- **DFS-based**: Detect cycles and generate topological order
-  - LC 802: Find Eventual Safe States
-- **Applications**: Task scheduling, dependency resolution
-
-### **Shortest Path Algorithms** — LC 743
-- **Dijkstra's Algorithm**: Single-source shortest path (non-negative weights)
-  - LC 743: Network Delay Time, LC 787: Cheapest Flights Within K Stops
-  - LC 1631: Path With Minimum Effort, LC 1514: Path with Maximum Probability
-- **Bellman-Ford**: Handle negative edge weights
-  - Detect negative cycles, shortest path with constraints
-- **Floyd-Warshall**: All-pairs shortest paths
-  - LC 1334: Find City With Smallest Number of Neighbors
-
-### **Advanced Graph Patterns** — LC 785
-- **Bipartite Graph**: Two-coloring using BFS/DFS
-  - LC 785: Is Graph Bipartite, LC 886: Possible Bipartition
-- **Minimum Spanning Tree**: Kruskal's and Prim's algorithms
-  - LC 1135: Connecting Cities, LC 1584: Min Cost to Connect All Points
-- **Strongly Connected Components**: Tarjan's and Kosaraju's algorithms
-  - Find bridges and articulation points
-- **Maximum Flow**: Ford-Fulkerson, Edmonds-Karp
-  - Network flow problems, bipartite matching
-
-### **Grid-Based Graph Problems** — LC 200
-- **Island Problems**: Connected components in 2D grid
-  - LC 200: Number of Islands, LC 695: Max Area of Island
-  - LC 305: Number of Islands II (Union-Find)
-- **Path Finding in Grid**: BFS for shortest path
-  - LC 1091: Shortest Path in Binary Matrix, LC 542: 01 Matrix
-  - LC 934: Shortest Bridge, LC 1293: Shortest Path in Grid with Obstacles
-
-### **Special Graph Types** — LC 310
-- **Tree Graphs**: No cycles, n-1 edges for n nodes
-  - LC 310: Minimum Height Trees, LC 1245: Tree Diameter
-- **DAG (Directed Acyclic Graph)**: Topological sort possible
-  - LC 329: Longest Increasing Path in Matrix
-- **Complete Graphs**: Every pair of vertices connected
-  - Traveling salesman variants, Hamiltonian paths
-
-⸻
-
-## 🔹 5. Dynamic Programming (DP)
-
-### **1D Linear DP** — LC 70 ⭐⭐⭐⭐⭐
-- **Fibonacci Variants**: Classic sequence problems
-  - LC 70: Climbing Stairs, LC 198: House Robber, LC 213: House Robber II
-  - LC 91: Decode Ways, LC 264: Ugly Number II
-- **Decision DP**: Include/exclude current element
-  - LC 198: House Robber, LC 152: Maximum Product Subarray
-  - LC 53: Maximum Subarray (Kadane's Algorithm)
-- **Counting DP**: Count ways to achieve target
-  - LC 62: Unique Paths, LC 70: Climbing Stairs, LC 96: Unique BSTs
-
-### **2D Grid DP** — LC 62 ⭐⭐⭐⭐
-- **Path Counting**: Count paths in matrix
-  - LC 62: Unique Paths, LC 63: Unique Paths II
-  - LC 64: Minimum Path Sum, LC 120: Triangle
-- **Matrix Optimization**: Find optimal submatrix
-  - LC 221: Maximal Square, LC 85: Maximal Rectangle
-  - LC 1277: Count Square Submatrices with All Ones
-- **2D Decision**: DP on 2D state space
-  - LC 174: Dungeon Game, LC 741: Cherry Pickup
-
-### **Knapsack Patterns** — LC 416 ⭐⭐⭐⭐
-- **0/1 Knapsack**: Each item used once
-  - LC 416: Partition Equal Subset Sum, LC 494: Target Sum
-  - LC 1049: Last Stone Weight II
-- **Unbounded Knapsack**: Items can be reused
-  - LC 322: Coin Change, LC 518: Coin Change II
-  - LC 279: Perfect Squares, LC 377: Combination Sum IV
-- **Multi-dimensional Knapsack**: Multiple constraints
-  - LC 474: Ones and Zeroes, LC 879: Profitable Schemes
-
-### **String DP** — LC 72
-- **Edit Distance**: String transformation
-  - LC 72: Edit Distance, LC 583: Delete Operation for Two Strings
-  - LC 712: Minimum ASCII Delete Sum, LC 97: Interleaving String
-- **Longest Common Subsequence (LCS)**:
-  - LC 1143: Longest Common Subsequence, LC 1035: Uncrossed Lines
-  - LC 300: Longest Increasing Subsequence
-- **Palindromes**: Palindromic substrings and subsequences
-  - LC 5: Longest Palindromic Substring, LC 516: Longest Palindromic Subsequence
-  - LC 131: Palindrome Partitioning, LC 132: Palindrome Partitioning II
-- **Word Break**: String segmentation
-  - LC 139: Word Break, LC 140: Word Break II
-
-### **Interval DP** — LC 312
-- **Matrix Chain**: Optimal parenthesization
-  - LC 312: Burst Balloons, LC 1000: Minimum Cost to Merge Stones
-- **Range Queries**: Optimize over intervals
-  - LC 877: Stone Game, LC 1039: Minimum Score Triangulation
-- **Palindromic Ranges**: Check palindromes in ranges
-  - LC 1312: Minimum Insertion Steps to Make String Palindrome
-
-### **State Compression DP (Bitmask)** — LC 847
-- **Traveling Salesman**: Visit all states
-  - LC 943: Find Shortest Superstring, LC 980: Unique Paths III
-- **Subset DP**: Track which elements are used
-  - LC 691: Stickers to Spell Word, LC 1125: Smallest Sufficient Team
-- **Graph State**: Track visited nodes
-  - LC 847: Shortest Path Visiting All Nodes
-
-### **Advanced DP Patterns** — LC 337
-- **Tree DP**: DP on tree structures
-  - LC 337: House Robber III, LC 968: Binary Tree Cameras
-  - LC 124: Binary Tree Maximum Path Sum
-- **Digit DP**: DP on number digits
-  - Count numbers with certain properties
-- **Probability DP**: Expected value calculations
-  - LC 808: Soup Servings, LC 837: New 21 Game
-- **Game Theory DP**: Minimax with optimal play
-  - LC 292: Nim Game, LC 464: Can I Win, LC 486: Predict the Winner
-
-### **DP Optimization Techniques**
-- **Space Optimization**: Reduce from 2D to 1D
-  - Rolling array, only keep necessary states
-- **Monotonic Queue/Stack**: Optimize range queries
-  - LC 239: Sliding Window Maximum with DP
-- **Matrix Exponentiation**: Fast computation of recurrence
-  - For large Fibonacci-like sequences
-
-⸻
-
-## 🔹 6. Backtracking
-
-### **Subsets & Combinations** — LC 78 ⭐⭐⭐⭐
-- **Subsets**: Generate all possible subsets
-  - LC 78: Subsets, LC 90: Subsets II (with duplicates)
-  - LC 320: Generalized Abbreviation
-- **Combinations**: Choose k elements from n
-  - LC 77: Combinations, LC 39: Combination Sum
-  - LC 40: Combination Sum II, LC 216: Combination Sum III
-- **Template**: Use start index to avoid duplicates
-
-### **Permutations** — LC 46
-- **Basic Permutations**: All arrangements
-  - LC 46: Permutations, LC 47: Permutations II (with duplicates)
-  - LC 31: Next Permutation, LC 60: Permutation Sequence
-- **Conditional Permutations**: With constraints
-  - LC 996: Number of Squareful Arrays
-- **No start index needed** - use visited array
-
-### **Grid & Board Problems** — LC 51
-- **N-Queens**: Place queens without conflicts
-  - LC 51: N-Queens, LC 52: N-Queens II
-- **Word Search**: Find words in grid
-  - LC 79: Word Search, LC 212: Word Search II (Trie)
-- **Path Finding**: Explore all paths
-  - LC 980: Unique Paths III, LC 1219: Path with Maximum Gold
-
-### **String Partitioning** — LC 131
-- **Palindrome Partitioning**: Split into palindromes
-  - LC 131: Palindrome Partitioning, LC 132: Palindrome Partitioning II
-- **IP Address**: Generate valid IP addresses
-  - LC 93: Restore IP Addresses
-- **Word Break**: Split string using dictionary
-  - LC 140: Word Break II
-
-### **Constraint Satisfaction** — LC 37
-- **Sudoku**: Fill grid with constraints
-  - LC 37: Sudoku Solver
-- **Expression**: Generate target expressions
-  - LC 282: Expression Add Operators, LC 241: Different Ways to Add Parentheses
-- **Parentheses**: Generate valid combinations
-  - LC 22: Generate Parentheses
-
-### **Advanced Backtracking** — LC 698
-- **Game Playing**: Optimal strategy
-  - LC 464: Can I Win, LC 294: Flip Game II
-- **Scheduling**: Assign tasks optimally
-  - LC 698: Partition to K Equal Sum Subsets
-- **Graph Coloring**: Color nodes without conflicts
-  - Extension of N-Queens concept
-
-### **Pruning Techniques**
-- **Constraint Pruning**: Early termination on invalid states
-  - Check bounds before recursive calls
-- **Bound Pruning**: Use upper/lower bounds
-  - LC 39: Combination Sum (sort + break when sum exceeds)
-- **Symmetry Pruning**: Skip equivalent states
-  - LC 40: Combination Sum II (skip duplicates at same level)
-- **Memoization**: Cache results for repeated states
-  - Convert backtracking to dynamic programming
-
-### **Backtracking Templates**
-- **Choice-based**: Make choice → recurse → undo
-- **Index-based**: Process each position sequentially
-- **State-based**: Track current state and modify it
-
-⸻
-
-## 🔹 7. Heaps & Priority Queues
-
-### **Top-K Problems** — LC 215 ⭐⭐⭐⭐
-- **Kth Largest/Smallest**: Use heap to maintain k elements
-  - LC 215: Kth Largest Element, LC 703: Kth Largest in Stream
-  - LC 973: K Closest Points to Origin, LC 692: Top K Frequent Words
-- **Frequency-based**: Combine counting with heap
-  - LC 347: Top K Frequent Elements, LC 451: Sort Characters by Frequency
-- **Min-heap for largest, max-heap for smallest**
-
-### **Merge Multiple Sorted Structures** — LC 23
-- **Merge k Sorted Lists**: Use heap to track current minimums
-  - LC 23: Merge k Sorted Lists, LC 378: Kth Smallest in Sorted Matrix
-- **Merge Intervals**: Sort + heap for overlapping intervals
-  - LC 253: Meeting Rooms II, LC 1229: Meeting Scheduler
-- **Merge k Arrays**: Extension of merge k lists
-  - LC 632: Smallest Range Covering Elements
-
-### **Data Stream & Online Algorithms** — LC 295
-- **Median Maintenance**: Two heaps (max-heap + min-heap)
-  - LC 295: Find Median from Data Stream
-  - LC 480: Sliding Window Median
-- **Running Statistics**: Maintain statistics as data arrives
-  - Running kth largest, running average
-- **Stream Processing**: Handle infinite data streams
-
-### **Scheduling & Intervals** — LC 621
-- **Task Scheduling**: Optimize task execution
-  - LC 621: Task Scheduler, LC 358: Rearrange String k Distance Apart
-- **Meeting Rooms**: Schedule meetings optimally
-  - LC 252: Meeting Rooms, LC 253: Meeting Rooms II
-- **CPU Scheduling**: Process scheduling algorithms
-  - LC 1834: Single-Threaded CPU
-
-### **Graph Algorithms with Heaps** — LC 743
-- **Dijkstra's Algorithm**: Shortest path using min-heap
-  - LC 743: Network Delay Time, LC 787: Cheapest Flights
-- **A* Search**: Heuristic search with priority queue
-- **MST (Prim's Algorithm)**: Minimum spanning tree
-  - LC 1584: Min Cost to Connect All Points
-
-### **Advanced Heap Techniques**
-- **Lazy Deletion**: Mark elements as deleted instead of removing
-- **Multi-level Heaps**: Heap of heaps for complex structures
-- **Custom Comparators**: Define custom ordering rules
-  - Lambda functions, custom objects
-- **Heap + Hash Map**: Combine for O(log n) updates
-  - LC 355: Design Twitter, LC 146: LRU Cache with heap
-
-⸻
-
-## 🔹 8. Hashing & Counting
-
-### **Frequency Maps** — LC 242 ⭐⭐⭐⭐⭐
-- **Character/Element Counting**: Count occurrences for analysis
-  - LC 242: Valid Anagram, LC 383: Ransom Note, LC 387: First Unique Character
-  - LC 169: Majority Element, LC 229: Majority Element II
-- **Group by Frequency**: Categorize elements by count
-  - LC 49: Group Anagrams, LC 347: Top K Frequent Elements
-  - LC 451: Sort Characters by Frequency
-- **Anagram Detection**: Use frequency maps or sorted strings
-  - LC 438: Find All Anagrams in a String, LC 567: Permutation in String
-- **Template**: `Counter()` or manual dictionary counting
-
-### **Prefix Hash / Rolling Hash** — LC 28
-- **String Pattern Matching**: Rabin-Karp algorithm
-  - LC 28: Find the Index of First Occurrence, LC 459: Repeated Substring Pattern
-- **Substring Problems**: Efficient hash-based comparison
-  - LC 187: Repeated DNA Sequences, LC 1044: Longest Duplicate Substring
-- **Rolling Window Hash**: Update hash incrementally
-  - LC 1316: Distinct Echo Substrings, LC 1554: Strings Differ by One Character
-- **Polynomial Hash**: Base-power hashing for strings
-  - Use prime modulus to reduce collisions
-
-### **HashSet for Seen States** — LC 217
-- **Cycle Detection**: Track visited states
-  - LC 202: Happy Number, LC 141: Linked List Cycle
-  - LC 287: Find the Duplicate Number
-- **Duplicate Detection**: Fast O(1) lookups
-  - LC 217: Contains Duplicate, LC 219: Contains Duplicate II
-  - LC 128: Longest Consecutive Sequence
-- **Path Tracking**: Remember visited positions
-  - LC 36: Valid Sudoku, LC 694: Number of Distinct Islands
-- **State Space Search**: Avoid revisiting states
-  - LC 127: Word Ladder, LC 752: Open the Lock
-
-### **Hash-based Data Structures** — LC 1
-- **HashMap for Relationships**: Key-value mappings
-  - LC 1: Two Sum, LC 454: 4Sum II, LC 525: Contiguous Array
-  - LC 560: Subarray Sum Equals K, LC 523: Continuous Subarray Sum
-- **Hash + Index Tracking**: Position-based problems
-  - LC 409: Longest Palindrome, LC 290: Word Pattern
-  - LC 205: Isomorphic Strings, LC 890: Find and Replace Pattern
-- **Prefix Sum + Hash**: Cumulative sum with frequency
-  - LC 930: Binary Subarrays with Sum, LC 974: Subarray Sums Divisible by K
-
-### **Advanced Hashing Techniques**
-- **Multi-key Hashing**: Combine multiple attributes
-  - LC 356: Line Reflection, LC 447: Number of Boomerangs
-- **Custom Hash Functions**: Problem-specific hashing
-  - Coordinate hashing for 2D problems
-  - String normalization for pattern matching
-- **Hash Collision Handling**: Manage hash conflicts
-  - Double hashing, separate chaining considerations
-
-⸻
-
-## 🔹 9. Advanced Patterns
-
-### **Monotonic Stack / Queue** — LC 496
-- **Next Greater/Smaller Element**: Stack-based pattern
-  - LC 496: Next Greater Element I, LC 503: Next Greater Element II
-  - LC 739: Daily Temperatures, LC 901: Online Stock Span
-- **Largest Rectangle**: Stack for histogram problems
-  - LC 84: Largest Rectangle in Histogram, LC 85: Maximal Rectangle
-- **Sliding Window Maximum**: Deque-based pattern
-  - LC 239: Sliding Window Maximum, LC 1438: Longest Subarray with Difference ≤ K
-- **Monotonic Property**: Maintain increasing/decreasing order
-  - LC 402: Remove K Digits, LC 321: Create Maximum Number
-
-### **Greedy Algorithms with Sorting** — LC 435
-- **Interval Scheduling**: Sort by end time for optimal selection
-  - LC 435: Non-overlapping Intervals, LC 452: Minimum Number of Arrows
-  - LC 253: Meeting Rooms II, LC 1024: Video Stitching
-- **Fractional Knapsack**: Sort by value-to-weight ratio
-  - LC 134: Gas Station, LC 135: Candy
-- **Activity Selection**: Choose maximum non-overlapping activities
-  - LC 646: Maximum Length of Pair Chain
-- **Lexicographic Ordering**: String/array construction
-  - LC 316: Remove Duplicate Letters, LC 1081: Smallest Subsequence
-
-### **Binary Indexed Tree (BIT) / Segment Tree** — LC 307
-- **Range Sum Queries**: Efficient prefix sums
-  - LC 307: Range Sum Query - Mutable, LC 308: Range Sum Query 2D
-- **Inversion Count**: Count inversions in array
-  - LC 315: Count of Smaller Numbers After Self
-  - LC 493: Reverse Pairs, LC 327: Count of Range Sum
-- **Coordinate Compression**: Handle large coordinate ranges
-  - LC 218: The Skyline Problem (with Fenwick Tree)
-- **Range Updates**: Lazy propagation for updates
-  - Segment tree with range increment/decrement
-
-### **Union-Find (Disjoint Set Union)** — LC 200
-- **Connected Components**: Group elements into components
-  - LC 200: Number of Islands, LC 305: Number of Islands II
-  - LC 547: Number of Provinces, LC 684: Redundant Connection
-- **Path Compression**: Optimize find operations
-  - LC 721: Accounts Merge, LC 737: Sentence Similarity II
-- **Union by Rank**: Balance tree height
-  - LC 1101: The Earliest Moment When Everyone Become Friends
-- **Minimum Spanning Tree**: Kruskal's algorithm
-  - LC 1135: Connecting Cities, LC 1584: Min Cost to Connect All Points
-
-### **Trie (Prefix Tree)** — LC 208
-- **Word Search & Storage**: Efficient prefix operations
-  - LC 208: Implement Trie, LC 211: Design Add and Search Words
-  - LC 212: Word Search II, LC 472: Concatenated Words
-- **Prefix Matching**: Find words with common prefixes
-  - LC 14: Longest Common Prefix, LC 421: Maximum XOR
-- **Autocomplete**: Suggest completions
-  - LC 642: Design Search Autocomplete System
-- **XOR Trie**: Binary trie for XOR problems
-  - LC 421: Maximum XOR of Two Numbers
-  - LC 1707: Maximum XOR With an Element From Array
-
-### **Advanced Graph Algorithms** — LC 207
-- **Topological Sort**: Order nodes in DAG
-  - LC 207: Course Schedule, LC 210: Course Schedule II
-  - LC 269: Alien Dictionary, LC 329: Longest Increasing Path
-- **Tarjan's Algorithm**: Find strongly connected components
-  - LC 1192: Critical Connections in a Network
-- **Bipartite Matching**: Maximum matching in bipartite graphs
-  - Hungarian algorithm, König's theorem applications
-- **Network Flow**: Max flow min cut problems
-  - Ford-Fulkerson, Edmonds-Karp algorithms
-
-### **String Algorithms (advanced)** — LC 28
-- **KMP (Knuth-Morris-Pratt)**: Pattern matching with failure function
-  - LC 28: Find Index of First Occurrence
-- **Manacher's Algorithm**: Find all palindromes in O(n)
-  - LC 5: Longest Palindromic Substring optimization
-- **Z-Algorithm**: String matching and pattern finding
-  - Linear time string matching
-- **Suffix Arrays**: Advanced string processing
-  - LC 1044: Longest Duplicate Substring (advanced approach)
-
-### **Mathematical & Number Theory** — LC 204
-- **Fast Exponentiation**: Compute powers efficiently
-  - LC 50: Pow(x, n), LC 372: Super Pow
-- **Extended Euclidean Algorithm**: Solve Diophantine equations
-  - LC 365: Water and Jug Problem
-- **Sieve of Eratosthenes**: Prime number generation
-  - LC 204: Count Primes, LC 279: Perfect Squares
-- **Matrix Exponentiation**: Fast computation of recurrences
-  - Fibonacci sequence, linear recurrence relations
-
-### **Game Theory** — LC 292
-- **Minimax Algorithm**: Optimal strategy in zero-sum games
-  - LC 464: Can I Win, LC 486: Predict the Winner
-- **Nim Game**: XOR-based winning strategy
-  - LC 292: Nim Game, LC 294: Flip Game II
-- **Dynamic Programming on Games**: Game state analysis
-  - LC 877: Stone Game, LC 1140: Stone Game II
+- **Core ⭐**: LC 1 Two Sum · LC 20 Valid Parentheses · LC 206 Reverse Linked List · LC 121 Best Time to Buy and Sell Stock · LC 3 Longest Substring Without Repeating Characters · LC 102 Level Order Traversal · LC 200 Number of Islands · LC 322 Coin Change · LC 207 Course Schedule · LC 78 Subsets · LC 347 Top K Frequent Elements · LC 739 Daily Temperatures · LC 875 Koko Eating Bananas · LC 76 Minimum Window Substring
+- **Practice**: LC 167 Two Sum II · LC 560 Subarray Sum Equals K · LC 236 Lowest Common Ancestor · LC 994 Rotting Oranges · LC 743 Network Delay Time · LC 416 Partition Equal Subset Sum · LC 1143 Longest Common Subsequence · LC 295 Find Median from Data Stream
+- **Stretch**: LC 787 Cheapest Flights Within K Stops · LC 239 Sliding Window Maximum · LC 84 Largest Rectangle in Histogram · LC 212 Word Search II · LC 312 Burst Balloons

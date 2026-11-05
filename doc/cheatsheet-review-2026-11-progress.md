@@ -12,7 +12,7 @@
 | — | 這份進度文件 | `doc/cheatsheet-review-2026-11-progress.md` | [#301](https://github.com/yennanliu/CS_basics/pull/301) | 🔄 |
 | 2 | **P0** 修 bug | §9 的 9 個 verified + 11 個 reported、Java 減法 comparator | [#302](https://github.com/yennanliu/CS_basics/pull/302) | 🔄 |
 | 3 | **P7** lint + baseline | `script/check_cheatsheets.py` + baseline + workflow | [#303](https://github.com/yennanliu/CS_basics/pull/303) | 🔄 |
-| 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | | ⬜ |
+| 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | [#305](https://github.com/yennanliu/CS_basics/pull/305) | 🔄 |
 | 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | | ⬜ |
 | 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | | ⬜ |
 | 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | | ⬜ |
@@ -61,7 +61,7 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 
 執行中發現、但不屬於當下那個 PR 的事。
 
-- [ ] `lc_pattern.md` 的錯誤歸類（§9 最後一列 reported）：P1 會整份改寫成 router，在那裡修（步驟 4）
+- [x] `lc_pattern.md` 的錯誤歸類（§9 最後一列 reported）：P1 整份改寫成 router 時一起解決
 
 ## 紀錄
 
@@ -70,3 +70,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 | 2026-11-05 | 1 | #290 合併：pattern card / problem card、Skeleton A–D、card gate 與 Claude Code hook |
 | 2026-11-05 | 2 | P0：9 個 verified + 10 個 reported 修好並用題目 example 跑過（`lc_pattern` 移到 P1）；comparator 改成 `Integer.compare`；改到 prose 的 8 個段落中文 overlay 同步 |
 | 2026-11-05 | 3 | P7：`check_cheatsheets.py` 14 條規則、每檔每規則計數的 baseline（1,672 筆）、CI job；第一次跑就抓到 P0 漏掉的一個 comparator（已補進 #302） |
+| 2026-11-05 | 4 | P1：`lc_pattern.md` 改寫成 router（10 個家族表、69 列，每列都連到實際存在的 card anchor）；constraint ruler 合併到 `complexity_cheatsheet` §6，`time_space_complexity` 留指標；中文 overlay 全部重寫 |

@@ -667,6 +667,8 @@ KMP vs Naive search     | O(M)        | —               | O(N+M) vs O(N·M)
 
 ## 6. Interview Decision Guide
 
+The constraint ruler: read `n` off the problem's constraints, and it tells you the complexity the setter is inviting. This is the one copy; [time_space_complexity.md](./time_space_complexity.md) and the router in [lc_pattern.md](./lc_pattern.md) point here.
+
 ```text
 Input Size → Reasonable Complexity:
 
@@ -675,9 +677,11 @@ N ≤ 20        → O(2^N)              bitmask DP, subsets
 N ≤ 100       → O(N³)               Floyd-Warshall, 3-loop DP
 N ≤ 1,000     → O(N²)               nested loops, naive DP
 N ≤ 100,000   → O(N log N)          sorting, heap, balanced BST
-N ≤ 1,000,000 → O(N) or O(N log N) single/two pass, sliding window
+N ≤ 1,000,000 → O(N) or O(N log N) single/two pass, sliding window, hashmap
 N ≤ 10^9      → O(log N) or O(√N)  binary search, math tricks
 ```
+
+> Rule: a machine does ~10^8 simple ops/sec. If `N × (per-op work) > 10^8`, expect TLE.
 
 ---
 
