@@ -18,15 +18,16 @@ BST 題組，依各題歸約到的 [bst.md](./bst.md) 模板分組，順序與�
 在索引裡只是一列指向它的家，不會再抄一份。原本放在這裡的路徑和家族在任何二元樹上都成立，所以它們在
 [tree_lca_distance.md](./tree_lca_distance.md)。
 
-<!-- 72178203350c -->
+<!-- 8d6ddc660412 -->
 ## 索引
 
 | LC | 題目 | 歸約到 | 難度 |
 |---|---|---|---|
 | 776 | [Split BST](#split-bst--lc-776) | [bst § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — 兩邊都留下，而不是丟掉一邊 | Medium |
+| 938 | [Range Sum of BST](#range-sum-of-bst--lc-938) | [bst § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — 把範圍內的值加總，而不是把子節點接回去 | Easy |
 | 98 | Validate Binary Search Tree — 在 [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) 寫出，含迭代版 | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) | Medium |
 | 449 | [Serialize and Deserialize BST](#serialize-and-deserialize-bst--lc-449) | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) — 由上下界決定每個前序值放哪裡 | Medium |
-| 538 | Convert BST to Greater Tree — 在 [bst § Template 5](./bst.md#pattern-reverse-inorder-for-descending) 寫出 | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，反向 | Medium |
+| 538 | [Convert BST to Greater Tree](#convert-bst-to-greater-tree--lc-538) | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，反向 | Medium |
 | 1038 | Binary Search Tree to Greater Sum Tree — 與 LC 538 同一題、同一份程式碼 | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，反向 | Medium |
 | 173 | Binary Search Tree Iterator — 在 [bst_advanced § Template 1](./bst_advanced.md#template-1-lazy-in-order-iterator--lc-173-) 寫出 | [bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，在兩次呼叫之間暫停 | Medium |
 
@@ -59,6 +60,16 @@ BST 題組，依各題歸約到的 [bst.md](./bst.md) 模板分組，順序與�
 | Trim | 669 | 所有在 `[low, high]` 之外的節點 | 一個 root |
 | Split | 776 | 沒有 | 兩個 root |
 
+<!-- 02e22dae6e9e -->
+### Range Sum of BST — LC 938
+
+> **關鍵** — 跟 `trimBST` 一樣的三路剪枝：範圍外的 root 會排除整整一邊，
+> 所以只有合併那一步改變，從把子節點接回去，變成把值加起來。
+
+**歸約到**：[bst § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — 求和，而不是重組結構。
+
+<!--CODE-->
+
 <!-- 15eec8bab463 -->
 ## 用上下界驗證的例題
 
@@ -80,3 +91,16 @@ BST 題組，依各題歸約到的 [bst.md](./bst.md) 模板分組，順序與�
   要能說出為什麼有了上下界就不需要標記。
 
 **相似題** — LC 1008（只做反序列化那一半，[bst_advanced § Template 4](./bst_advanced.md#template-4-preorder-build-with-bounds--lc-1008)） · LC 297（任意二元樹：一定要標記）
+
+<!-- 3622c6e3540e -->
+## 中序走訪的例題
+
+<!-- 2900a874ad63 -->
+### Convert BST to Greater Tree — LC 538
+
+> **關鍵** — 右 → 節點 → 左依遞減走訪各個值，所以一個累加和就能把每個節點換成
+> 所有大於等於它的值的總和。LC 1038 是同一題。
+
+**歸約到**：[bst § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，反過來走（[Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending)）。
+
+<!--CODE-->
