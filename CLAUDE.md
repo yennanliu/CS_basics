@@ -558,8 +558,9 @@ own yet.
 ## Updating a cheatsheet — `/lc-cheatsheet`
 
 `.claude/skills/lc-cheatsheet/` is `/lc-python`'s counterpart for the notes rather than
-the solutions: it files what a problem taught you into `doc/cheatsheet/`, in the shape
-the ~130 existing sheets use. One argument decides everything:
+the solutions: it files what a problem taught you into `doc/cheatsheet/`, as a pattern card
+or a problem card (see [What goes inside a section](#what-goes-inside-a-section--the-two-cards)),
+never in the shape of the older section next to it. One argument decides everything:
 
 ```text
 /lc-cheatsheet 1650 into binary_tree as variation
@@ -571,14 +572,20 @@ add LC 1650 to the LCA part of binary_tree.md   # the plain-English form works t
 
 | `as <mode>` | Lands as |
 |---|---|
-| `example` *(default)* | a worked LC example under the template that already solves it |
+| `example` *(default)* | a problem card under the template that already solves it — in the topic's `X_examples.md`, under that template's `##` section, when the topic has one |
 | `variation` | a variant section under the template it varies — name **which** precondition differs |
 | `pattern` | a new pattern section, plus its row in the sheet's category and selection tables |
-| `sheet` | a new `doc/cheatsheet/<slug>.md` **and** its [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json) entry |
+| `sheet` | a new `doc/cheatsheet/<slug>.md` (core, `_examples` or `_advanced`, each with its own skeleton) **and** its [`data/cheatsheet_meta.json`](data/cheatsheet_meta.json) entry |
 
 **The steps live in `SKILL.md`, not here** — the [style guide below](#cheatsheet-style-guide)
 is what it applies, so the rules have one home. What the skill adds on top of them is the
-four things an edit drags behind it, each of which has actually been got wrong here:
+five things an edit drags behind it, each of which has actually been got wrong here:
+
+- **the card shape, not the neighbour's.** Most sections predate the cards, and an agent
+  writing a new one copies the section next to it. So every section written **or rewritten**
+  is a pattern card or a problem card, a section whose approach is rewritten is brought to
+  card shape in the same edit, and [`script/check_cheatsheet_cards.py`](script/check_cheatsheet_cards.py)
+  makes it hold (below);
 
 - **the sheet is chosen by its Scope line**, not by the topic name — that block exists to
   stop two files growing into the same document, and two sheets can both plausibly own
@@ -595,7 +602,24 @@ four things an edit drags behind it, each of which has actually been got wrong h
   that had been fully translated (see [Traditional Chinese docs](#traditional-chinese-docs)).
 
 Like `/lc-python` it never touches `data/progress.txt`, and it stops at the gates rather than
-committing: `bash site/build.sh`, `node site/e2e-check.js _site`, `npm test --prefix site`.
+committing: `python3 script/check_cheatsheet_cards.py`, `bash site/build.sh`,
+`node site/e2e-check.js _site`, `npm test --prefix site`.
+
+**The card gate.** `script/check_cheatsheet_cards.py` judges the **diff** against
+`origin/master`, not the tree, because most of the 135 sheets predate the cards. A section
+whose heading is added or changed is new or rewritten work, and must be a full card: a
+`Template N: <Pattern> — LC <n>` heading with **Recognise → Key point → python (then java) →
+Complexity → [Dry run] → Traps → [Not this if] → Drill** in that order, or an LC-titled
+heading that opens with `> **Key point** —` and has `**Reduces to**:` before its code. Every
+added line is held to the line rules (no `NOTE !!!`), a new sheet to the sheet rules (no
+`1-1)` numbering), and an `_examples` sheet may hold no pattern card and no
+`## Other Examples`. `.github/workflows/cheatsheet-cards.yml` runs it on every change to
+`doc/cheatsheet/`, and a project hook in `.claude/settings.json`
+(`.claude/hooks/check_cheatsheet_cards.py`, PostToolUse on `Edit|Write|MultiEdit`) runs it the
+moment Claude Code edits a sheet, handing that file's problems straight back to the agent, so a
+section is fixed in the turn it was written rather than after a red CI run. Its tests run the
+two sample cards in `00_template.md` through it, so the template and the checker cannot disagree. **Fix the section, never the checker**; `--all
+<file>` audits a whole sheet before a P2-style rewrite.
 
 `site/pages/lc-cheatsheet.html` is its page on the site — the three ways an edit rots, the
 four modes as a selector, the anchor and translation commands, per-agent install. It is
@@ -668,15 +692,65 @@ Cheatsheets live in `doc/cheatsheet/`. [`doc/cheatsheet/00_template.md`](doc/che
 
 ### Which skeleton
 
-Two skeletons are in use. **Pick by size, not by topic**, and never mix them in one file:
+**Pick the sheet's role first, then its skeleton.** A topic has up to three sheets, each with
+one job, and never mix two skeletons in one file:
 
-| | **Skeleton A — short doc** | **Skeleton B — reference doc** |
-|---|---|---|
-| Use when | < ~800 lines; one technique | > ~800 lines; a data structure or pattern family |
-| Shape | `0) Concept` → `1) General form` → `2) LC Example` | `Overview` → `Problem Categories` → `Templates & Algorithms` → `LC Examples` → `Problems by Pattern` → `Pattern Selection Strategy` → `Summary` |
-| Examples | `kadane_algorithm.md`, `n_sum.md`, `iterator.md` | `heap.md`, `dp.md`, `bfs.md`, `graph.md` |
+| Role | File | Owns | Skeleton |
+|---|---|---|---|
+| **Core** | `X.md` (`hash_map.md`, `binary_search.md`, `array.md`) | the concept, every template, the Recognition table and the Drill Path | **A** (< ~800 lines, one technique) or **B** (larger) |
+| **Examples** | `X_examples.md` (27 today) | the topic's classic LC problems, grouped by the core sheet's templates, as problem cards. No templates of its own | **C** |
+| **Advanced** | `X_advanced.md` (9 today) | techniques the core templates cannot do, with *when not to use* each | **D** |
 
-If a Skeleton A doc grows past ~800 lines, convert it to B rather than appending B's sections to the end.
+| | **A — short core** | **B — reference core** | **C — examples** | **D — advanced** |
+|---|---|---|---|---|
+| Shape | `0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path` | `Overview` → `Recognition` → `Templates & Algorithms` → `LC Examples` → `Pattern Selection Strategy` → `Drill Path` → `Summary` | `Overview` → `Index` → one `## <Pattern> Examples` per core template, in the core sheet's order | `Overview` (+ `Prerequisites`) → `Recognition` → one `##` per technique family → `When Not to Use` → `Summary` |
+| Examples | `patience_sorting.md`, `kadane_algorithm.md`, `n_sum.md` | `heap.md`, `dp.md`, `bfs.md`, `minimum_spanning_tree.md` | `tree_examples.md` (closest today) | `prefix_sum_advanced.md` (closest today) |
+
+A standalone technique with no family (`patience_sorting`, `iterator`) is a core sheet on
+Skeleton A. If a Skeleton A doc grows past ~800 lines, convert it to B rather than appending B's
+sections to the end; past ~1,500, move its worked examples out into an `X_examples.md`. A core
+sheet that has an examples sheet keeps no `LC Examples` section of its own.
+
+The examples sheet is the one that needs the rule most: in Nov 2026 the `_examples` files were
+most of the lowest-scoring sheets, because nothing said what shape they should have and they
+grew as append-logs. Skeleton C's `##` sections mirror the core sheet's templates, every problem
+**reduces to** a core card, and a problem that fits none means the core sheet is missing a
+template, so there is no `## Other Examples`.
+
+### What goes inside a section — the two cards
+
+The skeleton decides where sections sit; **what goes inside one is the same in both**. Since
+the [Nov 2026 review](doc/cheatsheet-review-2026-11.md), which measured how well each sheet
+works as interview material, there are two shapes. Full rules and a worked sample of each are
+in `00_template.md`:
+
+- **Pattern card** (every template section): a heading that names the **pattern** and its
+  **anchor problem** (`### Template 2: Variable-Size Window — LC 3`; a pattern, not a topic) →
+  **Recognise** (the statement wording, plus a constraint cue like n ≤ 10⁵) → **Key point** (one
+  line, before the code: why it works, as a fact the code keeps true) → **Template** (Python,
+  then Java, `time =` in the code) → **Complexity** (time and space, each naming the line that
+  sets it) → *Dry run* (a ` ```text ` table on the smallest input) → **Traps** (each names the
+  input that springs it) → *Not this if* (the look-alike and its tell) → **Drill** (3–6 LC
+  numbers, easy → hard). The slots are always in this order; the two in italics are optional.
+- **Problem card** (every worked example): a `> **Key point** —` line **before any code**,
+  `**Reduces to**:` a link to the card it is a case of, then one canonical solution. V0 is
+  the answer to give in the interview, not the first one written.
+
+On top of the cards, every tier ≥ 4 main sheet has a `## Recognition` table (signal →
+constraint cue → card → not-this-if) after the Overview (Skeleton A: at the end of `0) Concept`),
+and a Drill Path (Core ⭐ from [`data/l3_core.json`](data/l3_core.json) → Practice → Stretch)
+before `Summary` (Skeleton A: `3) Drill Path`). The canonical
+template sits in the first ~300 lines; the best section goes first, not last.
+
+**This applies to every edit, not only new sheets.** A section written or rewritten in an
+older sheet is still a card, even when nothing around it is; `script/check_cheatsheet_cards.py`
+fails CI otherwise (see [`/lc-cheatsheet`](#updating-a-cheatsheet--lc-cheatsheet)).
+
+**One home per problem.** A worked LC problem lives in exactly one sheet: a template's anchor
+problem in the core sheet's card, any other in the examples sheet (or the advanced sheet, when
+it needs an advanced technique). Every other mention is a one-row pointer. Scope lines say who owns a *topic*. This rule says who owns a *problem*,
+and in Nov 2026 LC 200 was being worked out in six sheets. Check with `grep -rn "LC <n>\b"
+doc/cheatsheet/` before adding a worked example.
 
 ### Mandatory header
 
@@ -803,7 +877,7 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 - **Bold** key terms: `**Pattern**`, `**Key Idea**`, `**Recurrence**`
 - Category headers: `#### **Category Name**`
 - Code blocks: **always** tag the language — `java`, `python`, or `text` for ASCII traces, diagrams and program output. Never a bare ` ``` `.
-- Complexity: inside code as first comment — `// time = O(...), space = O(...)`
+- Complexity: inside code, on the line right after `IDEA`: `# time = O(...), space = O(...)` in Python, `// time = O(...), space = O(...)` in Java. The order is always the language label, then `IDEA`, then `time`
 - Images: `<p align="center"><img src="../pic/filename.png"></p>`
 - Priority markers: a trailing `⭐`…`⭐⭐⭐⭐⭐` run on a heading marks how interview-critical that section is (5 = memorise it). The site strips the run out of the heading, renders it as a star badge, weights the heading's left rule by it, and surfaces 4★/5★ sections in the page's table of contents — so put the run **on the heading**, not in the prose under it. Leave ordinary background sections unmarked; if everything is starred, nothing is.
   **Adding or changing a run moves the heading's anchor** — the stars are stripped from the slug but the space before them is not, so the id gains a trailing `-`. Every link aimed at that heading has to move with it, in the same commit; `e2e-check.js`'s dangling-`#fragment` rule is what catches it if you forget. Sections are also the unit the 繁體中文 overlay is keyed on, so re-key the translation rather than letting `sync` park it (see [Traditional Chinese docs](#traditional-chinese-docs)).
@@ -814,10 +888,12 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 ### Code Conventions
 
 - Open with `// IDEA: brief description` (Java) or `# IDEA: ...` (Python)
-- Provide both Java and Python implementations when applicable
+- **Python first, then Java**, in every pair. A template has both; for a worked example Java is the optional second block. (Nov 2026: `dp_string` was 1 Python block against 12 Java; `n_sum`'s general form was C++.)
 - Label each block: `// java` / `# python`
 - Include `// LC <number> - Problem Name` above the class/function
 - **One canonical solution per problem.** A second variant needs a stated reason (different complexity, different language idiom, distinct trick) — not just a different spelling of the same loop.
+- **Every snippet runs**, and is smoke-tested against the problem's own examples. The Nov 2026 review found nine verified bugs in templates readers memorise, including `dp.md`'s first one.
+- Java comparators use `Integer.compare`, never `a - b`; Python index arithmetic uses `//`, never `/`.
 
 ### Anti-patterns (these caused the Aug 2026 cleanup — see [`doc/cheatsheet-review-2026-08.md`](doc/cheatsheet-review-2026-08.md))
 
@@ -826,12 +902,25 @@ The build fails on a taxonomy key that is missing, points at an unknown topic, o
 - ❌ Duplicate heading text under the same parent (`Summary`, `Core Idea`) — qualify them
 - ❌ Splitting one topic across two files without a Scope line saying which owns what
 
+### Anti-patterns found in Nov 2026 (counted in [`doc/cheatsheet-review-2026-11.md`](doc/cheatsheet-review-2026-11.md))
+
+- ❌ A worked example that is a heading over code: no key point, no link to its template (30% of 1,330 went straight to code)
+- ❌ `NOTE !!!` comment walls inside code (583 lines in 69 files); write a **Traps** bullet instead
+- ❌ IPython `In [n]:` transcripts as a template; "Universal Template" pseudocode with undefined names; proofs whose code is `pass`
+- ❌ Emoji in headings, other than the trailing `⭐` run the site renders; `1-1-3)`-style numbering in a **new** sheet (an existing sheet keeps its style: renumbering moves every anchor)
+- ❌ Generic filler ("Common Mistakes: forgetting edge cases"), invented numbers (benchmarks, hand-typed problem counts), pasted chat, "fixed by gpt", blog URLs inside code
+- ❌ Inline 中文 prose in an English sheet. Write it as an English section and put the Chinese in the `i18n/zh/` overlay, where the zh gate can see it. A standalone Chinese sheet with its own Scope line (`knapsack_01_zh.md`) is a different thing and is fine
+- ❌ `LC Examples` after `Summary`, or the canonical template a thousand lines down
+
 ### Common Section Patterns
 
 | Pattern | Use |
 |---------|-----|
 | Quick Decision Table | At section start — maps goal → template → examples |
+| Recognition Table | After the Overview — signal in the statement → constraint cue → card → not-this-if |
 | Template Comparison Table | Side-by-side comparison of loop conditions / update rules |
+| Family Table | One row per variant — what changed vs the baseline → template → complexity (`tree_lca_distance.md`'s LCA family) |
+| Trap → Fix Table | Each trap with the input that springs it (`stack_expression_parsing.md`) |
 | Similar Problems Table | Group related LC numbers with key differences |
 | Visual Trace | ASCII walkthrough of algorithm steps (tag it ` ```text `) |
 | Decision Matrix | `Minimize vs Maximize`, `Memoization vs Tabulation`, etc. |

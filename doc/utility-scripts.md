@@ -604,6 +604,46 @@ is a finding that genuinely cannot be fixed yet. `test_check_readme.py`
 fails if the committed baseline no longer matches what the README produces, in either
 direction.
 
+## check_cheatsheet_cards.py
+
+The gate for the **card shape** of `doc/cheatsheet/` sections (see
+[`00_template.md`](cheatsheet/00_template.md) and the [Nov 2026 review](cheatsheet-review-2026-11.md)).
+`.github/workflows/cheatsheet-cards.yml` runs it on every change to `doc/cheatsheet/`.
+
+```bash
+python3 script/check_cheatsheet_cards.py                     # sections changed vs origin/master
+python3 script/check_cheatsheet_cards.py --base HEAD~1       # vs another ref
+python3 script/check_cheatsheet_cards.py --all doc/cheatsheet/heap.md   # audit a whole sheet
+python3 script/test_check_cheatsheet_cards.py                # the gate's own tests
+```
+
+Why it exists: the card rules were prose in `00_template.md`, `CLAUDE.md` and
+`/lc-cheatsheet`, and an agent writing a section still copied the older section next to it.
+
+**It judges the diff, not the tree.** Most of the 135 sheets predate the cards, so a
+whole-tree check would fail everywhere, and a ratchet baseline of hundreds of entries would
+excuse the wrong things. `--all heap_examples.md` alone reports 95 problems.
+
+| Scope | Rule |
+|---|---|
+| a section whose **heading** is added or changed | `Template N: …` heading → full **pattern card**: `Template N: <Pattern> — LC <n>`, then **Recognise → Key point → a `python` block (then `java`) → Complexity → [Dry run] → Traps → [Not this if] → Drill** in that order |
+| | LC-titled `###`+ heading → **problem card**: first line `> **Key point** —`, `**Reduces to**:` before the first fence |
+| | every python/java block of ≥ 4 lines carries `IDEA` and `time = O(...)`; Python before Java; no emoji in the heading but a `⭐` run |
+| | in an `X_examples.md`: no pattern card, no `## Other Examples` |
+| every **added line** | no `NOTE !!!` |
+| a **new sheet** | no `1-1)`-style numbered headings |
+
+**The hook.** `.claude/settings.json` registers `.claude/hooks/check_cheatsheet_cards.py` as a
+`PostToolUse` hook on `Edit|Write|MultiEdit`. After Claude Code edits `doc/cheatsheet/<sheet>.md`
+it runs this checker and, if that file has problems, exits 2 with them on stderr, which Claude
+Code feeds back to the agent. Every other file, `00_template.md`, and a missing base ref pass
+silently: CI stays the gate, the hook is the early warning. Disable it in `/hooks`.
+
+Retitling a heading is how a rewrite is detected, so a retitled section must pass in full; a
+body-only fix to an old section is held to the line rules only. The tests run the two sample
+cards in `00_template.md` through the checker, so the template and the gate cannot drift, and
+assert each rule against a bad section as well as a good one.
+
 ## prune_branches.sh
 
 Deletes the remote branches `origin/master` already contains, and lists the rest.

@@ -6,9 +6,11 @@ allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 
 # Add a LeetCode problem to a cheatsheet
 
-Turn a problem (or a pattern just learned) into a cheatsheet section in the shape the other
-~130 sheets under `doc/cheatsheet/` already use — filed under the pattern that owns it, with
-every snippet run, every moved anchor followed, and the 繁體中文 overlay kept level.
+Turn a problem (or a pattern just learned) into a cheatsheet section in the **card shape**
+`doc/cheatsheet/00_template.md` defines — a pattern card or a problem card, filed in the sheet
+whose role and Scope line own it, with every snippet run, every moved anchor followed, and the
+繁體中文 overlay kept level. Most existing sections predate the cards; this skill never copies
+their shape.
 
 **Invocation**: `/lc-cheatsheet <LC number> [into <sheet-slug>] [as <mode>]`
 
@@ -22,10 +24,10 @@ add LC 1650 to the LCA part of binary_tree.md   # the plain-English form works t
 
 | `as <mode>` | Use when | Lands as |
 |---|---|---|
-| `example` *(default)* | the sheet has the template; this problem is another instance of it | a worked LC example **under that template's section** |
+| `example` *(default)* | the sheet has the template; this problem is another instance of it | a problem card **under that template's section**: in the topic's `X_examples.md` when it has one (Skeleton C), else in the core sheet |
 | `variation` | the sheet's template does not quite solve it — one precondition differs | a `#### <X> Variant — <what changed> (LC n)` under the template it varies |
 | `pattern` | the sheet has no template for this technique at all | a new pattern/template section, plus its row in the sheet's category table |
-| `sheet` | no sheet owns the topic | a new `doc/cheatsheet/<slug>.md` **and** its `data/cheatsheet_meta.json` entry |
+| `sheet` | no sheet owns the topic, or a core sheet needs its `_examples` / `_advanced` satellite | a new `doc/cheatsheet/<slug>.md` **and** its `data/cheatsheet_meta.json` entry |
 
 Missing arguments are inferred, not asked about: the sheet from the technique the solution
 uses and from `README.md`'s topic heading for that LC number, the mode from what the sheet
@@ -38,7 +40,7 @@ where the depth lives:
 
 | | |
 |---|---|
-| `into <slug>` | **always edited.** It is where you said you were working, so it gets the entry point: the row in its own table, the code a reader of *that* sheet needs, and the link onward |
+| `into <slug>` | **always edited.** It is where you said you were working, so it gets the entry point: the row in its own table and the link onward to the owner's section. A **pointer, not a second copy of the code**: one home per problem (CLAUDE.md § What goes inside a section) |
 | the Scope owner | **gets the full section**, if it is a different sheet. Depth belongs to the file whose Scope line claims the topic, or the two sheets grow into one document |
 
 So `/lc-cheatsheet 1650 into binary_tree` edits `binary_tree.md` **and**
@@ -65,6 +67,11 @@ the two collapse into one edit.
 5. **An English edit parks its Chinese translation.** The 中文 overlay is keyed per section,
    so an edited section silently falls back to English. Re-key it (step 7); do not leave the
    gap.
+6. **Write the card, not the neighbour's shape.** Every section this skill writes or rewrites
+   is a **pattern card** or a **problem card** (step 4), even when every section around it is
+   older and shaped differently. Most sheets predate the cards, so copying the section next
+   door copies exactly the shape the Nov 2026 review retired. `script/check_cheatsheet_cards.py`
+   fails CI on a new or rewritten section that is not card-shaped (step 8).
 
 ## The steps
 
@@ -82,10 +89,15 @@ Read out of that:
   state flows, plus the structural templates"; `tree_lca_distance.md` owns "LCA, distance and
   path problems". An LCA variation's depth belongs to the second. A sheet named by `into`
   that is not the owner still gets its entry point (the precedence table above) — here
-  `binary_tree.md`'s Template 6 gained the variations table, the LC 1650 code and the link
-  onward.
+  `binary_tree.md`'s Template 6 gets a variations-table row for LC 1650 and the link onward;
+  the code lives only in `tree_lca_distance.md`.
 - **Whether the problem is already there.** If it is, the job is `variation` or a correction,
   never a second copy — one canonical solution per problem.
+- **Whether the topic has satellites.** `ls doc/cheatsheet/<topic>_examples.md
+  doc/cheatsheet/<topic>_advanced.md`. The core sheet owns the templates; a worked `example`
+  goes to `_examples` under the `##` section of the template it reduces to, and a problem that
+  needs an advanced technique goes to `_advanced`. The core sheet then gets at most a Drill
+  line entry, never the code.
 - **Whether a mention is wrong.** A sheet claiming LC 1650 is solved by the LC 236 post-order
   template is a bug in the sheet: 1650 has no `root` to pass it. Fix what you find.
 
@@ -108,14 +120,30 @@ grep -n "^### \|^#### " doc/cheatsheet/<slug>.md | head -40   # the sheet's own 
 sed -n '<start>,<end>p' doc/cheatsheet/<slug>.md              # the sibling section, whole
 ```
 
-The sibling section **is** the template: its heading depth, whether it labels fences
-`# python` / `// java`, whether complexity sits in a table or a comment, how it writes a
-pitfall list. Match it. `doc/cheatsheet/00_template.md` is the authority when the sheet has
-drifted or when the mode is `sheet`.
+Read the sibling for the sheet's **conventions** only: heading depth, `# python` / `// java`
+labels, how it links onward. The **section's shape** comes from the cards in
+`doc/cheatsheet/00_template.md`, never from the sibling — a sibling with `Core Idea` /
+`Pitfalls` headings or code straight under its heading is the old shape, and is not copied.
 
-For mode `sheet`, pick the skeleton by **size, not topic** (CLAUDE.md § Which skeleton):
-Skeleton A (`0) Concept` → `1) General form` → `2) LC Example`) under ~800 lines, Skeleton B
-(`Overview` → `Problem Categories` → `Templates & Algorithms` → …) above it. Never mix them.
+**Modifying** an existing section is writing it. When the job rewrites a section (a
+correction to its approach, a new variation under it, a retitle), bring **that** section to
+card shape in the same edit: the heading, the missing slots in order, `NOTE !!!` turned into
+**Traps** bullets. Leave the rest of the sheet alone; a one-line typo fix is not a rewrite.
+Retitling a heading is what tells the checker the section was rewritten, so a retitled
+section must pass it in full.
+
+For mode `sheet`, pick the **role** first, then the skeleton (CLAUDE.md § Which skeleton):
+
+| Role | Skeleton | Shape |
+|---|---|---|
+| core `X.md`, under ~800 lines | A | `0) Concept` → `1) General form` → `2) LC Example` → `3) Drill Path` |
+| core `X.md`, larger | B | `Overview` → `Recognition` → `Templates & Algorithms` → `LC Examples` → `Pattern Selection Strategy` → `Drill Path` → `Summary` |
+| examples `X_examples.md` | C | `Overview` → `Index` → one `## <Pattern> Examples` per core template, in the core sheet's order |
+| advanced `X_advanced.md` | D | `Overview` (+ `Prerequisites`) → `Recognition` → one `##` per technique family → `When Not to Use` → `Summary` |
+
+Never mix them. A tier ≥ 4 core sheet also needs the Recognition table and the Drill Path
+(`00_template.md` has both). An examples sheet holds no templates: a problem that fits none
+means the core sheet needs a `pattern` first.
 
 ### 4. Write the section
 
@@ -123,8 +151,10 @@ House rules that are not negotiable:
 
 - **Every fence is tagged** — ` ```python `, ` ```java `, ` ```text ` for traces, diagrams and
   program output. Never a bare ` ``` `.
-- **`# IDEA: <one line>`** opens a snippet; complexity is the first comment,
-  `# time = O(...), space = O(...)`, and `// LC <n> - <Problem Name>` sits above the class.
+- **`IDEA: <one line>`** opens a snippet; complexity goes on the next line, and the LC
+  line sits above the class or function, each in the language's own comment syntax:
+  `# IDEA:` / `# time = O(...), space = O(...)` / `# LC <n> - <Problem Name>` in Python,
+  `// IDEA:` / `// time = ...` / `// LC <n> - <Problem Name>` in Java.
 - **State each LC number once** per heading — not `... (LC 1650) — LC 1650`.
 - **Heading levels never skip** (`h3` → `h4`, never `h3` → `h5`).
 - **A `⭐`…`⭐⭐⭐⭐⭐` run goes on the heading**, not in the prose under it, and only where the
@@ -132,15 +162,52 @@ House rules that are not negotiable:
 - **One canonical solution per problem.** A second variant needs a stated reason — different
   complexity, a distinct trick, a different language idiom — not a different spelling of the
   same loop.
+- **A `pattern` is a pattern card; an `example` or `variation` is a problem card**
+  (`doc/cheatsheet/00_template.md` has both in full). A pattern card's heading names the
+  pattern and its anchor problem (`### Template N: <Pattern name> — LC <n>`), then runs
+  **Recognise** (the statement wording, plus a constraint cue where one exists) → **Key point**
+  (why it works, before the code) → template (Python, then Java) → **Complexity** (time and
+  space, each naming the line that sets it) → *Dry run* (when a step is non-obvious) →
+  **Traps** (each names the input that springs it and what goes wrong) → *Not this if* (when
+  a look-alike exists) → **Drill**. Optional slots are left out only when empty; the rest keep
+  their order. A problem card opens with a `> **Key point** —` line and a `**Reduces to**:`
+  link **before any code**, so it never starts with a fence.
+- **Python first, then Java.** No emoji in headings other than the `⭐` run, and no `NOTE !!!`
+  walls inside code. A trap is written as a **Traps** bullet.
+- **The sheet's role decides where a section may go.** A pattern card lives in a core sheet
+  (`X.md`) or an advanced one (`X_advanced.md`), never in `X_examples.md`. A problem card for a
+  topic with an examples sheet goes there, under the `## <Pattern> Examples` section of the
+  template it reduces to.
+
+Check the card against this before moving on — it is the order the checker enforces:
+
+```text
+pattern card                                   problem card
+[ ] ### Template N: <Pattern name> — LC <n>    [ ] ### <Problem Name> — LC <n>
+[ ] **Recognise**  wording + constraint cue    [ ] > **Key point** —   first line, prose
+[ ] **Key point**  before the code             [ ] **Reduces to**:     a link, before code
+[ ] ```python, then ```java; IDEA, then time   [ ] one canonical solution; IDEA, then time
+[ ] **Complexity** names the line per bound    [ ] **Dry run** / **Traps** where needed
+[ ] **Dry run**     (when a step is non-obvious)
+[ ] **Traps**       each with the input that springs it
+[ ] **Not this if** (when a look-alike exists)
+[ ] **Drill**       3–6 LC, easy -> hard, core ⭐
+```
+
+The ⭐ on a Drill entry marks the L3 core set:
+
+```bash
+python3 -c "import json; print(1650 in json.load(open('data/l3_core.json'))['ids'])"
+```
 
 Then make it **reachable**, which is the half that gets forgotten:
 
 | Mode | Also update, in the same sheet |
 |---|---|
-| `example` | the pattern's similar-problems / problem-list table |
-| `variation` | the parent template's variations table, and the `Problem Categories` row if it now names a shape the variation does not use |
-| `pattern` | `Problem Categories`, `Pattern Selection Strategy` and the decision tree at the end |
-| `sheet` | the H1, the Scope line, `## LeetCode Problem Lists`, **and** a `data/cheatsheet_meta.json` entry (`category` from that file's `categoryOrder`, `tier` 2–5) — the build fails without it, on purpose |
+| `example` | the `## Index` row in `X_examples.md` (or the sheet's problem-list table), and the template card's **Drill** line if it belongs in the practice set |
+| `variation` | the parent template's variations table, its **Drill** line, and the `Problem Categories` row if it now names a shape the variation does not use |
+| `pattern` | the sheet's `## Recognition` row, `Pattern Selection Strategy`, the `## Drill Path`; and, when the topic has an examples sheet, a new `## <Pattern> Examples` section and `## Index` row there |
+| `sheet` | the H1, the Scope line, `## LeetCode Problem Lists`, **and** a `data/cheatsheet_meta.json` entry (`category` from that file's `categoryOrder`, `tier` 2–5) — the build fails without it, on purpose. A new `_examples` / `_advanced` sheet is also linked from its core sheet's **See also** line |
 
 A pointer from a second sheet is one table row plus a link, not a copy of the section.
 
@@ -194,6 +261,7 @@ rule, so an LC-titled heading's correct translation is the English text.
 ### 8. Verify the way CI does
 
 ```bash
+python3 script/check_cheatsheet_cards.py  # every new or rewritten section is card-shaped
 python3 script/check_skills.py            # only if a skill or its page changed
 SKIP_FONTS=1 bash site/build.sh           # the whole _site tree, offline
 node site/e2e-check.js _site              # the gate: anchors, links, descriptions, tables
@@ -201,18 +269,29 @@ npm test --prefix site                    # the unit tests over the built artefa
 ```
 
 A build failure on a new sheet is usually the missing `cheatsheet_meta.json` entry; an
-`e2e-check` failure after a heading edit is usually step 5.
+`e2e-check` failure after a heading edit is usually step 5. A `check_cheatsheet_cards.py`
+failure names the section and the missing or misplaced slot; fix the section, never the
+checker. `.github/workflows/cheatsheet-cards.yml` runs it on every change to
+`doc/cheatsheet/`, so a section that is not card-shaped does not merge. In Claude Code the
+project hook in `.claude/settings.json` also runs it after every edit to a sheet; its message
+is this checker's output for that file, and it means the same thing.
 
 ### 9. Report what was assumed
 
 Close with: **every sheet edited** and the heading it landed under in each — naming both when
 the precedence rule split the work, so the reader never has to go looking for where a section
-went — the mode and **why that mode**, the snippets run and their output, every anchor that
+went — the card written (pattern or problem) and **any optional slot left out, with why**, any
+existing section brought to card shape, the mode and **why that mode**, the snippets run and their output, every anchor that
 moved, the zh sections re-translated, and each inference (the sheet chosen when two could have
 owned it, a complexity stated for a snippet whose bound was not in the source).
 
 ## Do not
 
+- ❌ copy the neighbouring section's shape when it is not a card (`Core Idea` / `Pitfalls`
+  headings, code straight under the heading)
+- ❌ write a section the checker rejects, or edit `check_cheatsheet_cards.py` to let it pass
+- ❌ put a pattern card in an `X_examples.md`, or open an `## Other Examples` section there
+- ❌ `NOTE !!!` inside code, an emoji in a heading, or `1-1)` numbering in a new sheet
 - ❌ append an `LC Examples` section that re-solves what the templates above already solve
 - ❌ open a catch-all section instead of filing under the pattern it belongs to
 - ❌ add a second solution for a problem already in the sheet without a stated reason
@@ -229,9 +308,9 @@ owned it, a complexity stated for a snippet whose bound was not in the source).
 
 | Step | What it produced |
 |---|---|
-| 1 | **both sheets**, per the precedence rule: `binary_tree.md` was named, so it gets the entry point (Template 6's variations table, the LC 1650 code, the link onward); `tree_lca_distance.md`'s Scope line owns LCA, so the full section lands there. Found a bug on the way: the LC 236 template's header comment claimed it also solved 1650, which has no `root` |
+| 1 | **both sheets**, per the precedence rule: `binary_tree.md` was named, so it gets the entry point (Template 6's variations table, the link onward); `tree_lca_distance.md`'s Scope line owns LCA, so the full section and the only copy of the code land there. (This run predates the one-home rule and also put the LC 1650 code in `binary_tree.md`; today that copy would be a pointer.) Found a bug on the way: the LC 236 template's header comment claimed it also solved 1650, which has no `root` |
 | 2 | `variation` — 1650 breaks one precondition of the post-order template (no root, `parent` pointers instead) |
-| 3 | matched the sibling `#### LCA Variant — Smallest Subtree with All Deepest Nodes` — `##### **1. Core Idea**`, a `text` trace, a pitfalls list |
+| 3 | matched the sibling `#### LCA Variant — Smallest Subtree with All Deepest Nodes` — `##### **1. Core Idea**`, a `text` trace, a pitfalls list. (This run predates the cards. Today the sibling is read for conventions only, and the 1650 section is a problem card: `> **Key point** —`, `**Reduces to**:` the LCA family card, the solutions, a dry run and **Traps**.) |
 | 4 | wrote the family picker table (236/235/1644/1650/1676), the set-of-ancestors and two-pointer templates, the step trace, the pitfalls; split the `Problem Categories` LCA row, since 1650 and 235 do not use the post-order template it named |
 | 5 | `slugify` gave `#lca-variant--parent-pointers-no-root-lc-1650-` for the new cross-reference — trailing `-` from the star run |
 | 6 | ran all five snippets against the LC examples plus a cross-tree pair (both pointers hit `null` together → `None`) |

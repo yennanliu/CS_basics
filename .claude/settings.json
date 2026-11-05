@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/check_cheatsheet_cards.py\"",
+            "timeout": 30,
+            "statusMessage": "Checking cheatsheet card shape..."
+          }
+        ]
+      }
+    ]
+  }
+}

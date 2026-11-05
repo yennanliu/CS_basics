@@ -326,7 +326,7 @@
       <div class="rail" role="radiogroup" aria-label="Modes">
         <button class="step" role="radio" aria-checked="true" data-n="example"
           data-name="as example — the default"
-          data-body="The sheet already has the template and this problem is another instance of it. The section lands under that template, and the pattern's similar-problems table gains a row."
+          data-body="The sheet already has the template and this problem is another instance of it. It lands as a problem card under that template: in the topic's X_examples.md when it has one, under the section for the template it reduces to, otherwise in the core sheet."
           data-rule="If the sheet already solves the problem, this is not the mode — one canonical solution per problem."
           data-code="/lc-cheatsheet 239 into sliding_window">
           <span class="n">example</span><span class="bar" aria-hidden="true"></span><span class="tag">default</span>
@@ -349,7 +349,7 @@
         </button>
         <button class="step" role="radio" aria-checked="false" data-n="sheet"
           data-name="as sheet — nothing owns the topic"
-          data-body="A whole new doc/cheatsheet/<slug>.md: H1, the Scope line that claims the topic, the LeetCode problem lists, and Skeleton A or B chosen by size — under ~800 lines or over. Plus its entry in data/cheatsheet_meta.json."
+          data-body="A whole new doc/cheatsheet/<slug>.md: H1, the Scope line that claims the topic, the LeetCode problem lists, and the skeleton its role picks — a core sheet on A or B by size (under ~800 lines or over), an X_examples.md on C, an X_advanced.md on D. Plus its entry in data/cheatsheet_meta.json."
           data-rule="The build fails without the meta entry, on purpose, so nothing lands in an unsorted bucket."
           data-code="/lc-cheatsheet monotonic_queue as sheet
   -> data/cheatsheet_meta.json
@@ -442,7 +442,7 @@ node script/zh.js status --write</code></pre>
             <tr><td class="num">Levels never skip</td><td><code>h3</code> &rarr; <code>h4</code>, never <code>h3</code> &rarr; <code>h5</code>. The table of contents is built from the tree, not from the text.</td></tr>
             <tr><td class="num">Each LC number once</td><td>Per heading &mdash; not <code>&hellip; (LC 1650) &mdash; LC 1650</code>.</td></tr>
             <tr><td class="num">One canonical solution</td><td>A second variant needs a stated reason: different complexity, a distinct trick, a different language idiom. Not a different spelling of the same loop.</td></tr>
-            <tr><td class="num">Match the neighbour</td><td>The sibling section is the template &mdash; heading depth, fence labels, where complexity sits. <code>00_template.md</code> wins only where the sheet has drifted.</td></tr>
+            <tr><td class="num">Write the card</td><td>Every section written or rewritten is a pattern card or a problem card from <code>00_template.md</code>, even when the sections around it are older. The neighbour is read for conventions only &mdash; heading depth, fence labels &mdash; and <code>script/check_cheatsheet_cards.py</code> fails CI on a section that is not card-shaped.</td></tr>
           </tbody>
         </table>
       </div>
