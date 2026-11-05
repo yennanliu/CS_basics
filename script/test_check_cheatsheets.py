@@ -65,6 +65,10 @@ class CodeRules(unittest.TestCase):
         # only inside java fences
         self.assertNotIn("java-sub-comparator", counts("x.md", "(a, b) -> a - b\n"))
 
+    def test_java_sub_comparator_next_to_integer_compare(self):
+        code = "Arrays.sort(x, (a, b) -> { return a[0] - b[0] + Integer.compare(a[1], b[1]); });"
+        self.assertEqual(counts("x.md", F + "java\n" + code + "\n" + F + "\n").get("java-sub-comparator"), 1)
+
     def test_java_sub_comparator_every_shape(self):
         bad = {
             "no spaces": "Arrays.sort(x, (a, b) -> a[0]-b[0]);",
@@ -98,6 +102,12 @@ class SheetRules(unittest.TestCase):
     def test_examples_after_summary(self):
         self.assertEqual(counts("x.md", "## Summary\n## LC Examples\n").get("examples-after-summary"), 1)
         self.assertNotIn("examples-after-summary", counts("x.md", "## LC Examples\n## Summary\n"))
+
+    def test_numbered_summary_and_drill_path_level(self):
+        self.assertEqual(counts("x.md", "## 7) Summary\n## 8) LC Examples\n", tier=3).get("examples-after-summary"), 1)
+        # a Drill Path must be its own level-two section
+        self.assertEqual(counts("x.md", "## Recognition\n### Drill Path\n").get("no-drill-path"), 1)
+        self.assertNotIn("no-drill-path", counts("x.md", "## Recognition\n## 3) Drill Path\n"))
 
     def test_core_sheet_needs_recognition_and_drill_path(self):
         self.assertEqual(counts("x.md", "## Overview\n"), {"no-recognition": 1, "no-drill-path": 1})
@@ -143,6 +153,27 @@ class Ratchet(unittest.TestCase):
             with open(os.path.join(sheets, "x.md"), "a") as fh:
                 fh.write("# NOTE !!! two\n")
             self.assertEqual(c.main(argv), 1)
+
+
+class UpdateBaseline(unittest.TestCase):
+    def test_update_refuses_a_count_that_rose(self):
+        with tempfile.TemporaryDirectory() as d:
+            sheets = os.path.join(d, "s"); os.mkdir(sheets)
+            meta = os.path.join(d, "meta.json"); base = os.path.join(d, "base.json")
+            with open(meta, "w") as fh:
+                json.dump({"sheets": {}}, fh)
+            with open(os.path.join(sheets, "a.md"), "w") as fh:
+                fh.write("# NOTE !!! a\n# NOTE !!! a\n")
+            with open(os.path.join(sheets, "b.md"), "w") as fh:
+                fh.write("# NOTE !!! b\n")
+            argv = ["--sheets", sheets, "--meta", meta, "--baseline", base]
+            self.assertEqual(c.main(argv + ["--update-baseline"]), 0)        # first baseline
+            with open(os.path.join(sheets, "a.md"), "w") as fh:
+                fh.write("# NOTE !!! a\n")                                    # a fell ...
+            with open(os.path.join(sheets, "b.md"), "w") as fh:
+                fh.write("# NOTE !!! b\n# NOTE !!! b\n")                     # ... b rose
+            self.assertEqual(c.main(argv + ["--update-baseline"]), 1)
+            self.assertEqual(c.load_baseline(base)["note-wall"], {"a.md": 2, "b.md": 1})
 
 
 class RealTree(unittest.TestCase):

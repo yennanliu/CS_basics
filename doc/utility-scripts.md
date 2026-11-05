@@ -656,6 +656,7 @@ python3 script/check_cheatsheets.py                    # fail on any count above
 python3 script/check_cheatsheets.py --report           # totals per rule
 python3 script/check_cheatsheets.py --verbose          # also list counts that fell
 python3 script/check_cheatsheets.py --update-baseline  # after a fix: lower the floor
+python3 script/check_cheatsheets.py --update-baseline --allow-increase  # only when a rule itself changed
 python3 script/check_cheatsheets.py --strict           # ignore the baseline
 python3 script/test_check_cheatsheets.py               # the gate's own tests
 ```
@@ -675,7 +676,7 @@ python3 script/test_check_cheatsheets.py               # the gate's own tests
 per rule per file**, not one entry per finding as `check_readme.py`'s does: a rule like "heading
 over code" has no identity that survives an edit above it. A count can only go down — a rise
 fails, a file not listed is held to zero, and a fall is reported until `--update-baseline`
-records it. Some baselined findings are correct on purpose (a `(lo + hi) / 2` in a
+records it. `--update-baseline` refuses to record a count that rose, so a fix elsewhere cannot carry a regression into the floor; `--allow-increase` is for the one honest case, a rule that now sees more. Some baselined findings are correct on purpose (a `(lo + hi) / 2` in a
 floating-point search, the three overflow examples in `java_trick_strings_sorting`); they stay
 in the baseline rather than in an exemption list. `.github/workflows/cheatsheet-cards.yml` runs
 it as a second job. Judgement rules (one home per problem, V0 is canonical) stay review items.
