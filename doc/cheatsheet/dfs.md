@@ -492,7 +492,7 @@ public boolean hasPathSum(TreeNode root, int targetSum) {
 sum: below)* · LC 1971 *(in a graph: return early)* · LC 437 *(any downward path: prefix sums)*
 
 For the full family of tree path problems (max path, consecutive sequences, the prefix-sum
-technique), see [tree_lca_distance.md § 4](./tree_lca_distance.md#4-root-to-leaf-path-templates).
+technique), see [tree_lca_distance.md § 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113).
 
 #### Variation: collect every path (push, recurse, pop)
 
@@ -820,7 +820,7 @@ answer 3   (the path 4-2-1-3 has 3 edges)
 
 **Not this if** — the value depends on the path from the root (depth, sum so far) → pass it **down**
 ([Template 3](#template-3-path-finding--lc-112-)). The lowest common ancestor of two given nodes has
-its own sheet: [tree_lca_distance.md](./tree_lca_distance.md#1-lowest-common-ancestor-lca--lc-236).
+its own sheet: [tree_lca_distance.md](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236).
 
 **Drill** — LC 543 ⭐ · LC 104 ⭐ · LC 110 ⭐ *(return -1 for "unbalanced")* · LC 236 *(return which
 targets a subtree holds)* · LC 979 *(a signed balance: below)* · LC 124 ⭐ *(LC 543 with values
