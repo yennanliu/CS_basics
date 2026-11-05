@@ -42,7 +42,7 @@
     "tree_codec.md": 7,
     "trie.md": 5,
     "trie_examples.md": 5,
-    "union_find_examples.md": 8
+    "union_find_examples.md": 7
   },
   "ipython": {
     "Collection.md": 24,
@@ -160,6 +160,7 @@
   },
   "examples-after-summary": {
     "greedy.md": 1,
+    "intervals.md": 1,
     "kadane_algorithm.md": 1,
     "matrix.md": 1,
     "monotonic_stack.md": 1,

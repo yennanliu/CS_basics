@@ -220,39 +220,7 @@ class Solution {
 > is exactly "is the dislike graph bipartite?". Build the graph from the pairs first, then
 > 2-colour every component: an edge between two equal colours is an odd cycle, and no split exists.
 
-**Reduces to**: [graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) — the same BFS 2-colouring as LC 785, after building the graph from an edge list with 1-indexed people.
-
-```python
-# python
-# LC 886 - Possible Bipartition
-# IDEA: build the dislike graph; BFS-paint each component with alternating colours; equal colours on an edge -> False
-# time = O(n + d), space = O(n + d)   d = number of dislike pairs
-from collections import defaultdict, deque
-
-def possibleBipartition(n, dislikes):
-    graph = defaultdict(list)
-    for a, b in dislikes:
-        graph[a].append(b)
-        graph[b].append(a)
-    color = [-1] * (n + 1)                   # people are 1-indexed; -1 = not painted
-    for start in range(1, n + 1):
-        if color[start] != -1:
-            continue
-        color[start] = 0
-        queue = deque([start])
-        while queue:
-            person = queue.popleft()
-            for other in graph[person]:
-                if color[other] == -1:
-                    color[other] = 1 - color[person]
-                    queue.append(other)
-                elif color[other] == color[person]:
-                    return False             # an odd cycle of dislikes
-    return True
-
-# possibleBipartition(4, [[1,2],[1,3],[2,4]]) -> True
-# possibleBipartition(3, [[1,2],[1,3],[2,3]]) -> False
-```
+**Reduces to**: [graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) — the same BFS 2-colouring as LC 785, after building the graph from an edge list with 1-indexed people. The code is Template 6's, run on the dislike graph; the parity union-find form is [graph_advanced § Template 3](./graph_advanced.md#template-3-parity-union-find-bipartite-check--lc-886).
 
 **Traps**
 - The dislike graph is usually disconnected: launch from **every** unpainted person, or a

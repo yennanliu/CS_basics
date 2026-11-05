@@ -546,6 +546,7 @@ class Solution {
     private int pairs = 0;
 
     public int countPairs(TreeNode root, int distance) {
+        pairs = 0;                                        // a reused Solution must not carry counts over
         leavesByDepth(root, distance);
         return pairs;
     }

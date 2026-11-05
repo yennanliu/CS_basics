@@ -251,50 +251,9 @@ class Solution(object):
 | Passes over edges | 1 | 2 |
 ### 3) Satisfiability of Equality Equations — LC 990
 
-> Process '==' edges first; then check '!=' pairs for contradiction.
+> **Key point** — union every `==` first, then each `!=` must join two different components.
 
-```java
-// LC 990 - Satisfiability of Equality Equations
-// IDEA: Union-Find — union on ==, validate != pairs for contradiction
-// time = O(N), space = O(26)
-public boolean equationsPossible(String[] equations) {
-    int[] p = new int[26];
-    for (int i = 0; i < 26; i++) p[i] = i;
-    for (String eq : equations)
-        if (eq.charAt(1) == '=') union(p, eq.charAt(0)-'a', eq.charAt(3)-'a');
-    for (String eq : equations)
-        if (eq.charAt(1) == '!' && find(p, eq.charAt(0)-'a') == find(p, eq.charAt(3)-'a'))
-            return false;
-    return true;
-}
-private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
-private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
-```
-
-```python
-# python
-# LC 990 - Satisfiability of Equality Equations
-# IDEA: Union-Find — union all '==' pairs first, then verify no '!=' pair shares a root
-# time = O(N), space = O(26)
-class Solution(object):
-    def equationsPossible(self, equations):
-        parent = list(range(26))
-
-        def find(x):
-            if parent[x] != x:
-                parent[x] = find(parent[x])   # path compression
-            return parent[x]
-
-        # pass 1: union every equality
-        for eq in equations:
-            if eq[1] == '=':
-                parent[find(ord(eq[0]) - 97)] = find(ord(eq[3]) - 97)
-        # pass 2: any inequality inside one component => contradiction
-        for eq in equations:
-            if eq[1] == '!' and find(ord(eq[0]) - 97) == find(ord(eq[3]) - 97):
-                return False
-        return True
-```
+**Reduces to**: union-find on 26 letters. It is worked in one place, with the component-labelling DFS and this union-find form side by side: [dfs_examples.md § LC 990](./dfs_examples.md#satisfiability-of-equality-equations--lc-990).
 
 ## Component Counting & Connectivity
 
@@ -1445,52 +1404,9 @@ class Solution(object):
 
 ### 17) Most Stones Removed with Same Row or Column — LC 947
 
-> Union stones in the same row or column; answer = stones − number of components.
+> **Key point** — a component of `k` stones reduces to one stone, so the answer is `n − components`; union a stone's row with its column instead of comparing all pairs.
 
-```java
-// LC 947 - Most Stones Removed with Same Row or Column
-// IDEA: Union-Find — stones sharing row/column are in same component; remove all but one
-// time = O(N^2 * α(N)), space = O(N)
-public int removeStones(int[][] stones) {
-    int n = stones.length;
-    int[] p = new int[n];
-    for (int i = 0; i < n; i++) p[i] = i;
-    for (int i = 0; i < n; i++)
-        for (int j = i+1; j < n; j++)
-            if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
-                union(p, i, j);
-    Set<Integer> roots = new HashSet<>();
-    for (int i = 0; i < n; i++) roots.add(find(p, i));
-    return n - roots.size();
-}
-private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
-private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
-```
-```python
-# python
-# LC 947 - Most Stones Removed with Same Row or Column
-# IDEA: stones sharing a row or column are one component; a component of size k can be
-#       reduced to a single stone, so the answer is n - (number of components)
-# time = O(N^2 * alpha(N)), space = O(N)
-class Solution(object):
-    def removeStones(self, stones):
-        n = len(stones)
-        parent = list(range(n))
-
-        def find(x):
-            while parent[x] != x:
-                parent[x] = parent[parent[x]]
-                x = parent[x]
-            return x
-
-        for i in range(n):
-            for j in range(i + 1, n):
-                if stones[i][0] == stones[j][0] or stones[i][1] == stones[j][1]:
-                    parent[find(i)] = find(j)
-
-        ### NOTE !!! count ROOTS, not unions -- a component of any size contributes exactly 1
-        return n - len({find(i) for i in range(n)})
-```
+**Reduces to**: union-find over row and column values. It is worked in one place, in O(n · α(n)): [graph_examples.md § LC 947](./graph_examples.md#most-stones-removed-with-same-row-or-column--lc-947).
 
 ### 17-1) Couples Holding Hands — LC 765 — components → swaps
 
