@@ -390,38 +390,12 @@ LCA 其實是偽裝的後序：答案是往上走時，第一個在**兩側**都
   （有父指標：雙指標往上走）、LC 1676（多個目標）。完整解法在
   [tree_lca_distance.md](./tree_lca_distance.md)。
 
-<!-- dff905a3fa24 -->
+<!-- 32049fc8dd4f -->
 #### Binary Tree Maximum Path Sum — LC 124
 
-> **關鍵** — 每個節點會算出**兩個不同的值**。在這裡*轉彎*的路徑（`left + right + node.val`，用到
-> 兩個子節點）是答案候選，記進全域最大值、永遠不回傳。交給父節點的值
-> （`max(left, right) + node.val`）只能保留**一個**子節點，因為繼續往上的路徑不能分岔。負的子樹用
-> `max(0, …)` 丟掉。
+> **關鍵** — Template 6 加上數值：回傳最好的單邊路徑，並在每個節點用兩邊合起來的彎折路徑更新答案。
 
-**歸約到**：[Template 6](#template-6-bottom-up-post-order-dfs--lc-543-) — 直徑那張卡片，把邊數換成
-總和，負的分支夾到 0。來源：
-[`binary-tree-maximum-path-sum.py`](../../leetcode_python/Tree/binary-tree-maximum-path-sum.py)。
-
-**陷阱**
-- 把 `left + right + node.val` 往上回傳，等於交給父節點一條已分岔的路徑，父節點再分岔一次。這是
-  最常見的單一 bug。
-- 全域值要用 `float('-inf')` 起始，不是 `0`：路徑不能是空的，所以 `[-3]` 的答案是 `-3`。
-- 辨識訊號是「路徑不一定要經過根」：在地最佳答案不是父節點需要的那個值。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 25202195595b -->
-##### 變體：不夾到 0 —— 改成把節點帶進負的分支
-
-外面看得到的等價寫法：不把負的子節點夾到 `0`，而是讓分支從 `node.val` 重新開始。
-這樣兩個分支值各自都**已經包含** `node.val`，所以轉彎候選值必須把它扣回一次。
-
-<!--CODE-->
-
-> 優先用 `max(0, ...)` 的寫法。它比較短，`- node.val` 的修正很容易忘記，而且夾到 0
-> 直接讀起來就是不變量*「負的子樹永遠不值得接上」*。
+**歸約到**：[tree_lca_distance.md § LC 124](./tree_lca_distance.md#binary-tree-maximum-path-sum--lc-124)，完整解在那裡；這裡只是指標。
 
 <!-- c54e8cfd4cb7 -->
 #### Distribute Coins in Binary Tree — LC 979

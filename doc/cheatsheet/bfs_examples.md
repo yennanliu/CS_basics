@@ -759,62 +759,7 @@ public int slidingPuzzle(int[][] board) {
 
 ### Closest Leaf in a Binary Tree — LC 742
 
-> **Key point** — the nearest leaf may lie **above** the target, so child pointers are not enough.
-> Add the parent edge (here by building an undirected adjacency map), then BFS outward from the
-> node with value `k`: every edge costs 1, so the first leaf popped is the closest.
+> **Key point** — turn the tree into an undirected graph (a parent map), then BFS from node `k`; the first leaf popped is the closest.
 
-**Reduces to**: [bfs § Template 6](./bfs.md#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) — stop at the first leaf instead of at distance `k`.
+**Reduces to**: [tree_lca_distance.md § LC 742](./tree_lca_distance.md#closest-leaf-in-a-binary-tree--lc-742), where it is worked; this is a pointer.
 
-```python
-# python
-# LC 742 - Closest Leaf in a Binary Tree
-# IDEA: one pass builds an undirected graph and finds the target; BFS from it, first leaf wins
-# time = O(n), space = O(n)
-from collections import defaultdict, deque
-
-def findClosestLeaf(root, k):
-    graph = defaultdict(list)              # node -> neighbours, parent included
-    target = None
-    stack = [(root, None)]
-    while stack:
-        node, parent = stack.pop()
-        if node.val == k:
-            target = node
-        if parent:                         # connect BOTH directions
-            graph[node].append(parent)
-            graph[parent].append(node)
-        for child in (node.left, node.right):
-            if child:
-                stack.append((child, node))
-
-    queue = deque([target])
-    seen = {target}
-    while queue:
-        node = queue.popleft()
-        if not node.left and not node.right:
-            return node.val                # earliest pop = fewest edges
-        for nxt in graph[node]:
-            if nxt not in seen:
-                seen.add(nxt)
-                queue.append(nxt)
-```
-
-```text
-Tree (k = 2):              BFS from 2 over the undirected graph:
-       1                   dist 0: 2
-      / \                  dist 1: 4, 1
-     2   3   (leaf)        dist 2: 5, 3  <- 3 is a leaf: answer
-    /
-   4
-  /
- 5
-/
-6 (leaf)
-```
-
-**Traps**
-- Test "leaf" on the tree's children, not on the graph's degree: in the graph every non-root node
-  has its parent as a neighbour, so degree 1 also matches a root with one child.
-- The root alone (`[1]`, k = 1) is a leaf, and the answer is itself.
-
-**Similar** — LC 863 (the anchor) · LC 2385 Amount of Time for Binary Tree to Be Infected

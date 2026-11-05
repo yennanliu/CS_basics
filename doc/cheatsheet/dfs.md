@@ -842,92 +842,9 @@ LCA is post-order in disguise: the answer is the first node, on the way up, that
 
 #### Binary Tree Maximum Path Sum — LC 124
 
-> **Key point** — each node computes **two different values**. The path that *turns* here
-> (`left + right + node.val`, both children) is an answer candidate, recorded globally and never
-> returned. The value handed to the parent (`max(left, right) + node.val`) may keep only **one**
-> child, because a path continuing upward cannot fork. A negative child is dropped with `max(0, …)`.
+> **Key point** — Template 6 with values: return the best one-sided path, and update the answer with the two-sided bend at each node.
 
-**Reduces to**: [Template 6](#template-6-bottom-up-post-order-dfs--lc-543-) — the diameter card,
-with sums instead of edge counts and negative branches clamped to 0. Source:
-[`binary-tree-maximum-path-sum.py`](../../leetcode_python/Tree/binary-tree-maximum-path-sum.py).
-
-**Traps**
-- Returning `left + right + node.val` upward hands the parent a forked path, which it forks again.
-  This is the single most common bug.
-- Seed the global with `float('-inf')`, not `0`: the path must be non-empty, so `[-3]` answers `-3`.
-- Recognise it by "the path does not need to pass through the root": the best local answer is not
-  the value the parent needs.
-
-```python
-# python
-# LC 124 - Binary Tree Maximum Path Sum
-# IDEA: post-order DFS; record the `turning` path globally, return the best `straight` path upward
-# time = O(n), space = O(h)   # h = tree height, worst O(n)
-class Solution:
-    def maxPathSum(self, root):
-        self.max_sum = float('-inf')
-
-        def dfs(node):
-            if not node:
-                return 0
-            left = max(0, dfs(node.left))       # drop a negative subtree
-            right = max(0, dfs(node.right))     # drop a negative subtree
-            # (1) candidate: path TURNS here, uses BOTH children -> global only
-            self.max_sum = max(self.max_sum, left + right + node.val)
-            # (2) upward: path CONTINUES, so only ONE child may be kept
-            return max(left, right) + node.val
-
-        dfs(root)
-        return self.max_sum
-```
-
-```java
-// java
-// LC 124 - Binary Tree Maximum Path Sum
-// IDEA: post-order DFS; record the `turning` path globally, return the best `straight` path upward
-// time = O(n), space = O(h)
-private int maxSum = Integer.MIN_VALUE;
-
-public int maxPathSum(TreeNode root) {
-    maxSum = Integer.MIN_VALUE;
-    dfs(root);
-    return maxSum;
-}
-
-private int dfs(TreeNode node) {
-    if (node == null) {
-        return 0;
-    }
-    int left = Math.max(0, dfs(node.left));    // drop a negative subtree
-    int right = Math.max(0, dfs(node.right));  // drop a negative subtree
-    maxSum = Math.max(maxSum, left + right + node.val);  // turns here
-    return Math.max(left, right) + node.val;             // continues upward
-}
-```
-
-##### Variant: no clamp — carry the node into the negative branch instead
-
-Equivalent form that appears in the wild: rather than clamping a negative child to `0`, restart the
-branch at `node.val`. The two branch values then each **already include** `node.val`, so the turning
-candidate has to subtract it back out once.
-
-```python
-# python
-# LC 124 - Binary Tree Maximum Path Sum (no-clamp variant)
-# IDEA: a negative branch restarts at root.val, so both sides carry root.val -> subtract one copy
-# time = O(n), space = O(h)
-def dfs(node):
-    if not node:
-        return 0
-    l_max, r_max = dfs(node.left), dfs(node.right)
-    l_max = node.val if l_max < 0 else l_max + node.val
-    r_max = node.val if r_max < 0 else r_max + node.val
-    self.maximum = max(self.maximum, l_max + r_max - node.val)   # subtract the double-counted node.val
-    return max(l_max, r_max)
-```
-
-> Prefer the `max(0, ...)` form. It is shorter, the `- node.val` correction is easy to forget, and the
-> clamp reads directly as the invariant *"a negative subtree is never worth attaching"*.
+**Reduces to**: [tree_lca_distance.md § LC 124](./tree_lca_distance.md#binary-tree-maximum-path-sum--lc-124), where it is worked; this is a pointer.
 
 #### Distribute Coins in Binary Tree — LC 979
 

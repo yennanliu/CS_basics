@@ -252,21 +252,9 @@ Index 留一列指標。Template 3（帶方向陣列的格子 BFS）在這裡沒
 <!-- 74f18d22b540 -->
 ## 父節點表 + 向外輻射的題目
 
-<!-- 0abb37cc3610 -->
+<!-- 491fbbde7644 -->
 ### Closest Leaf in a Binary Tree — LC 742
 
-> **關鍵** — 最近的葉節點可能在目標的**上方**，所以光有子指標不夠。補上父節點的邊（這裡是建一張
-> 無向鄰接表），再從值為 `k` 的節點向外 BFS：每條邊成本都是 1，所以第一個彈出的葉節點就是最近的。
+> **關鍵** — 把樹轉成無向圖（parent map），從節點 `k` 開始 BFS；第一個彈出的葉節點就是最近的。
 
-**歸約到**：[bfs § Template 6](./bfs.md#template-6-parent-map--bfs-radiating-from-a-target--lc-863-) — 停在第一個葉節點，而不是停在距離 `k`。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**陷阱**
-- 「葉節點」要用樹的子節點判斷，不能用圖上的度數：圖上每個非根節點都有父節點這個鄰居，所以度數
-  為 1 也會配到只有一個子節點的根。
-- 只有根（`[1]`，k = 1）時根就是葉節點，答案是它自己。
-
-**相似題** — LC 863（錨定題） · LC 2385 Amount of Time for Binary Tree to Be Infected
+**歸約到**：[tree_lca_distance.md § LC 742](./tree_lca_distance.md#closest-leaf-in-a-binary-tree--lc-742)，完整解在那裡；這裡只是指標。
