@@ -25,37 +25,28 @@
 
 <p align="center"><img src="../pic/graph_processing_problem.png"></p>
 
-## Problem Categories
+## Recognition
 
-### **Category 1: Graph Traversal**
-- **Description**: Explore all nodes using BFS or DFS
-- **Examples**: LC 200 (Number of Islands), LC 133 (Clone Graph)
-- **Pattern**: Visit all connected components
+Read the statement for the wording in the first column, then the constraints against the
+[constraint ruler](./complexity_cheatsheet.md#6-interview-decision-guide). Several rows route
+out of this sheet: that is the right answer when the problem is weighted, ordered or advanced.
 
-### **Category 2: Shortest Path**
-- **Description**: Find minimum distance between nodes
-- **Examples**: LC 743 (Network Delay), LC 787 (Cheapest Flights)
-- **Pattern**: Dijkstra, Bellman-Ford, Floyd-Warshall
-
-### **Category 3: Union-Find (DSU)**
-- **Description**: Detect cycles, find connected components
-- **Examples**: LC 684 (Redundant Connection), LC 721 (Accounts Merge)
-- **Pattern**: Union by rank, path compression
-
-### **Category 4: Topological Sort**
-- **Description**: Order nodes with dependencies
-- **Examples**: LC 207 (Course Schedule), LC 210 (Course Schedule II)
-- **Pattern**: DFS or Kahn's algorithm (BFS)
-
-### **Category 5: Bipartite Graphs**
-- **Description**: Check if graph can be colored with 2 colors
-- **Examples**: LC 785 (Is Graph Bipartite), LC 886 (Possible Bipartition)
-- **Pattern**: BFS/DFS with coloring
-
-### **Category 6: Minimum Spanning Tree**
-- **Description**: Connect all nodes with minimum cost
-- **Examples**: LC 1135 (Connecting Cities), LC 1584 (Min Cost Connect Points)
-- **Pattern**: Kruskal's or Prim's algorithm — see [minimum_spanning_tree.md](./minimum_spanning_tree.md)
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "how many provinces / groups / connected components" | V + E ≤ 10⁵ | [Template 1](#template-1-connected-components-by-traversal--lc-547-) — one traversal per component | the input is a grid → [dfs.md § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-) |
+| "can every room be visited", "is there a path from a to b" | V + E ≤ 10⁵ | [Template 2](#template-2-dfs-reachability--lc-841-) — DFS reachability | "minimum steps" → [bfs.md](./bfs.md) |
+| "return every path from 0 to n − 1" | n ≤ 15 | [Template 2's LC 797 variation](#variation-enumerate-all-paths-backtracking-no-visited-set--lc-797) — backtracking, no shared `visited` | the graph has cycles → keep an on-path set |
+| "redundant connection", "edges added one at a time", "connected because they share an email / row" | n ≤ 10⁵ | [Template 3](#template-3-union-find-with-path-compression--lc-684-) — union-find (LC 721, 947: the shared attribute is a node) | a path or its length is wanted → BFS / DFS |
+| "prerequisites", "order of tasks", "alien dictionary" | directed, V + E ≤ 10⁵ | [Template 4](#template-4-topological-sort-kahns-bfs--lc-207-) — Kahn's BFS | undirected → there is no order to find |
+| "cycle in a directed graph", "deadlock", "eventual safe nodes" | directed, V ≤ 10⁴ | [Template 5](#template-5-three-state-dfs-cycle-detection--lc-802-) — three-state DFS | undirected → union-find |
+| "split into two groups", "is it bipartite", "dislike each other" | n ≤ 2,000 | [Template 6](#template-6-bipartite-check-2-coloring--lc-785-) — 2-colouring | three or more groups → backtracking colouring |
+| "shortest path" with weights, "network delay", "cheapest flight" | E ≤ 10⁵ | [Dijkstra.md](./Dijkstra.md), [Bellman-Ford.md](./Bellman-Ford.md), [Floyd-Warshall.md](./Floyd-Warshall.md) | every edge costs 1 → BFS |
+| "ratios", "exchange rates", "evaluate a / b" | V ≤ 40 | [dfs.md § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) — weighted DFS | many queries on a fixed graph → weighted union-find |
+| "longest path, moves strictly increasing" | grid ≤ 200 × 200 | implicit DAG, DFS + memo ([graph_examples.md](./graph_examples.md#2-10-longest-increasing-path-in-a-matrix--lc-329)) | moves may decrease → not a DAG, no memo |
+| "connect every node at minimum total cost" | V ≤ 1,000 | [minimum_spanning_tree.md](./minimum_spanning_tree.md) | a path between two nodes, not a tree → shortest path |
+| "removing this edge / node disconnects the graph", "critical connections" | V ≤ 10⁵ | Tarjan low-link ([graph_advanced.md](./graph_advanced.md#template-1-tarjans-low-link-dfs--scc-bridges-articulation-points--lc-1192-)) | only connectivity before / after → union-find |
+| "use every edge / ticket exactly once" | E ≤ 300 | Euler path, Hierholzer ([graph_advanced.md](./graph_advanced.md#template-2-euler-path--circuit-hierholzer--lc-753-)) | visit every **node** once → Hamiltonian, bitmask DP |
+| "max flow", "bipartite matching" | small V | Ford-Fulkerson / Edmonds-Karp ([graph_advanced.md](./graph_advanced.md)) | only a yes/no two-group split → Template 6 |
 
 ## Templates & Algorithms
 
@@ -68,8 +59,8 @@ rather than re-deriving it here.
 | Need | Template here | Owning sheet |
 |---|---|---|
 | Build a graph from an LC input format | Graph Representations, below | this sheet |
-| Visit every node, count components | Template 1 / Template 2 | [bfs.md](./bfs.md), [dfs.md](./dfs.md) |
-| Shortest path, **unweighted** | Template 1 (BFS) | [bfs.md](./bfs.md) |
+| Count components, test reachability | Template 1 / Template 2 | this sheet; traversal itself in [bfs.md](./bfs.md), [dfs.md](./dfs.md) |
+| Shortest path, **unweighted** | — | [bfs.md](./bfs.md) |
 | Shortest path, **weighted** | — | see the table below |
 | Order nodes with dependencies | Template 4 (Kahn) | [topology_sorting.md](./topology_sorting.md) |
 | Dynamic connectivity, merge sets | Template 3 (DSU) | [union_find.md](./union_find.md) |
@@ -188,38 +179,13 @@ for u, v in edges:
 
 <p align="center"><img src="../pic/graph_rep2.png"></p>
 
-### Universal Graph Template
-
-*An outline, not runnable code — `process_component` stands for whatever the problem asks you to do with each component (count it, collect it, aggregate over it):*
-
-```python
-def graph_algorithm(n, edges):
-    # Build adjacency list
-    graph = collections.defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)  # For undirected
-    
-    # Track visited nodes
-    visited = set()
-    
-    # Process each component
-    result = 0
-    for node in range(n):
-        if node not in visited:
-            # Process component
-            process_component(node, graph, visited)
-            result += 1
-    
-    return result
-```
-
 ### Visited-Set Discipline ⭐⭐⭐⭐
 
 *Where* you mark a node decides whether the traversal terminates and whether it is correct.
 
 - **Mark on enqueue, not on dequeue** (BFS). Marking on dequeue lets the same node enter
-  the queue many times — still correct, but quadratic in the worst case.
+  the queue many times — still correct for plain reachability, but quadratic in the worst case,
+  and wrong as soon as a counter or a distance is updated on visit (Template 1).
 - **Count or reach a node** → one shared `visited` set; each node is processed once.
 - **Enumerate paths** → no shared set; push on the way down and **pop on the way up**
   (Template 2's LC 797 variation).
@@ -240,88 +206,167 @@ state = [0] * n
 parent = {}
 ```
 
-### Template 1: BFS Traversal — LC 102
+### Template 1: Connected Components by Traversal — LC 547 ⭐⭐⭐⭐
+
+**Recognise** — "how many provinces / groups / connected components", "is every node connected",
+an edge list or adjacency matrix with no weights. V + E ≤ 10⁵ → one O(V + E) sweep is expected.
+
+**Key point** — every node is visited exactly once across **all** launches, so the number of
+launches from a still-unvisited node is the number of components.
+
 ```python
-def bfs_template(graph, start):
-    """Breadth-first search template"""
-    from collections import deque
-    
-    visited = set([start])
-    queue = deque([start])
-    level = 0
-    
-    while queue:
-        # Process level by level
-        size = len(queue)
-        for _ in range(size):
+# python
+# LC 547 - Number of Provinces
+# IDEA: launch a BFS from every node not yet visited; each launch covers exactly one component
+# time = O(n^2), space = O(n)   n^2 because the input is an adjacency matrix
+from collections import deque
+
+def findCircleNum(isConnected):
+    n = len(isConnected)
+    visited = [False] * n
+    components = 0
+    for start in range(n):
+        if visited[start]:
+            continue
+        components += 1                     # a new launch = a new component
+        visited[start] = True
+        queue = deque([start])
+        while queue:
             node = queue.popleft()
-            
-            # Process node
-            for neighbor in graph[node]:
-                if neighbor not in visited:
-                    visited.add(neighbor)
-                    queue.append(neighbor)
-        level += 1
-    
-    return level
+            for nxt in range(n):            # one matrix row = node's neighbours
+                if isConnected[node][nxt] == 1 and not visited[nxt]:
+                    visited[nxt] = True     # mark when enqueued
+                    queue.append(nxt)
+    return components
 ```
 
-### Template 2: DFS Traversal — LC 200 ⭐⭐⭐⭐⭐
-```python
-def dfs_template(graph, start):
-    """Depth-first search template"""
-    visited = set()
-    path = []
-    
-    def dfs(node):
-        visited.add(node)
-        path.append(node)
-        
-        for neighbor in graph[node]:
-            if neighbor not in visited:
-                dfs(neighbor)
-        
-        # Backtrack if needed
-        # path.pop()
-    
-    dfs(start)
-    return visited
+```java
+// java
+// LC 547 - Number of Provinces
+// IDEA: launch a BFS from every node not yet visited; each launch covers exactly one component
+// time = O(n^2), space = O(n)
+public int findCircleNum(int[][] isConnected) {
+    int n = isConnected.length;
+    boolean[] visited = new boolean[n];
+    int components = 0;
+    for (int start = 0; start < n; start++) {
+        if (visited[start]) {
+            continue;
+        }
+        components++;                        // a new launch = a new component
+        visited[start] = true;
+        Deque<Integer> queue = new ArrayDeque<>();
+        queue.offer(start);
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            for (int nxt = 0; nxt < n; nxt++) {
+                if (isConnected[node][nxt] == 1 && !visited[nxt]) {
+                    visited[nxt] = true;     // mark when enqueued
+                    queue.offer(nxt);
+                }
+            }
+        }
+    }
+    return components;
+}
 ```
+
+**Complexity**
+- **Time O(n²)**: the inner `for nxt in range(n)` scans a whole matrix row for each of the n
+  nodes. Given an adjacency list instead, the same loop reads each edge once: O(V + E).
+- **Space O(n)**: the `visited` array and the queue.
+
+**Traps**
+- Launching only from node 0 counts one component however many there are:
+  `[[1,0],[0,1]]` returns 1 instead of 2. The outer `for start` loop *is* the template.
+- An undirected edge list built in one direction only: LC 323 with `n = 2, edges = [[1,0]]`
+  launches from 0, never reaches 1, then counts 1 as a second component. Add both directions.
+- Isolated nodes are components too: `n = 3, edges = []` is 3. Looping over the keys of a
+  `defaultdict` adjacency list skips every node that has no edge.
+
+**Not this if** — edges arrive one at a time and you must answer "connected yet?" after each →
+union-find ([Template 3](#template-3-union-find-with-path-compression--lc-684-)). A grid of
+islands → [dfs.md § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-), where
+the cells are the nodes and there is no list to build.
+
+**Drill** — LC 547 · LC 1971 *(are two nodes in the same component?)* · LC 323 ⭐ *(edge list)* ·
+LC 261 ⭐ *(a tree = one component with exactly n − 1 edges)* · LC 1319 *(components − 1 cables)*
+
+### Template 2: DFS Reachability — LC 841 ⭐⭐⭐⭐
+
+**Recognise** — "can you visit every room", "is there a path from a to b", a graph handed as
+`graph[i] = [neighbours]`, and no "shortest" or "minimum" anywhere in the statement: any path
+will do. V + E ≤ 10⁵.
+
+**Key point** — a node joins `visited` the first time it is reached and never leaves, so each
+node is expanded once and each edge read once; when the stack empties, `visited` is exactly
+the set reachable from the start.
+
+```python
+# python
+# LC 841 - Keys and Rooms
+# IDEA: DFS from room 0 with an explicit stack; visited = every room reached so far
+# time = O(V + E), space = O(V)
+def canVisitAllRooms(rooms):
+    visited = {0}
+    stack = [0]
+    while stack:
+        room = stack.pop()
+        for key in rooms[room]:
+            if key not in visited:
+                visited.add(key)            # mark when pushed: each room is pushed once
+                stack.append(key)
+    return len(visited) == len(rooms)
+```
+
+```java
+// java
+// LC 841 - Keys and Rooms
+// IDEA: DFS from room 0 with an explicit stack; visited = every room reached so far
+// time = O(V + E), space = O(V)
+public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    boolean[] visited = new boolean[rooms.size()];
+    visited[0] = true;
+    int reached = 1;
+    Deque<Integer> stack = new ArrayDeque<>();
+    stack.push(0);
+    while (!stack.isEmpty()) {
+        int room = stack.pop();
+        for (int key : rooms.get(room)) {
+            if (!visited[key]) {
+                visited[key] = true;         // mark when pushed: each room is pushed once
+                reached++;
+                stack.push(key);
+            }
+        }
+    }
+    return reached == rooms.size();
+}
+```
+
+**Complexity**
+- **Time O(V + E)**: the `visited` guard lets each room onto the stack once, and
+  `for key in rooms[room]` reads each key once over the whole run.
+- **Space O(V)**: `visited` plus the stack, each holding at most V rooms.
+
+**Traps**
+- Recursive DFS in Python on a 10⁵-node chain raises `RecursionError` (the default limit is
+  1,000). The explicit stack has no depth limit; in Java the recursive form is fine to ~10⁴.
+- Checking `visited` on pop instead of on push lets a room be pushed once per key that opens
+  it: still correct, but the stack grows to O(E).
+
+**Not this if** — "minimum number of moves / steps" → BFS
+([bfs.md § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-)): the first
+time DFS reaches a node is not the shortest way there. "Return every path" → the LC 797
+variation below, which drops the shared `visited` set.
+
+**Drill** — LC 841 · LC 1971 *(edge list, both directions)* · LC 797 *(all paths: backtracking)*
+· LC 133 ⭐ *(visited is the `{original: copy}` map)* · LC 417 ⭐ *(reachability backwards from
+each ocean)*
 
 #### Variation: enumerate ALL paths (backtracking, no `visited` set) — LC 797
 
 *Twist*: the graph is a **DAG**, so there is no cycle to guard against — drop the `visited` set entirely and instead push/pop the current path (classic backtracking). A shared `visited` set would be **wrong** here: it would block a node from appearing in more than one path.
-
-```java
-// java
-// LC 797 - All Paths From Source to Target
-// IDEA: DFS + backtracking on a DAG. No visited set (DAG => no cycles),
-//       and a node may legitimately appear in many different paths.
-// time = O(2^n * n), space = O(n) excluding output
-import java.util.*;
-
-public class Solution {
-    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> path = new ArrayList<>();
-        path.add(0);                       // start node is always in the path
-        dfs(graph, 0, path, res);
-        return res;
-    }
-
-    private void dfs(int[][] graph, int u, List<Integer> path, List<List<Integer>> res) {
-        if (u == graph.length - 1) {
-            res.add(new ArrayList<>(path));   // NOTE: copy, not the live list
-            return;
-        }
-        for (int v : graph[u]) {
-            path.add(v);
-            dfs(graph, v, path, res);
-            path.remove(path.size() - 1);     // backtrack
-        }
-    }
-}
-```
 
 ```python
 # python
@@ -348,222 +393,495 @@ class Solution(object):
 # [[1,2],[3],[3],[]] -> [[0,1,3],[0,2,3]]
 ```
 
+```java
+// java
+// LC 797 - All Paths From Source to Target
+// IDEA: DFS + backtracking on a DAG. No visited set (DAG => no cycles),
+//       and a node may legitimately appear in many different paths.
+// time = O(2^n * n), space = O(n) excluding output
+import java.util.*;
+
+public class Solution {
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        path.add(0);                       // start node is always in the path
+        dfs(graph, 0, path, res);
+        return res;
+    }
+
+    private void dfs(int[][] graph, int u, List<Integer> path, List<List<Integer>> res) {
+        if (u == graph.length - 1) {
+            res.add(new ArrayList<>(path));   // copy, not the live list
+            return;
+        }
+        for (int v : graph[u]) {
+            path.add(v);
+            dfs(graph, v, path, res);
+            path.remove(path.size() - 1);     // backtrack
+        }
+    }
+}
+```
+
 **Rule of thumb**: *count / reach* a node → `visited` set (each node once). *Enumerate paths* → backtracking, mark on the way down and **unmark on the way up**.
 
-### Template 3: Union-Find (DSU) — LC 684 ⭐⭐⭐⭐
+### Template 3: Union-Find with Path Compression — LC 684 ⭐⭐⭐⭐
+
+**Recognise** — "redundant connection", "edges are added one at a time", "are a and b in the same
+group", "merge accounts that share an email". n ≤ 10⁵, and only connectivity is asked — never a
+path or a distance.
+
+**Key point** — every set is a tree whose root names it. `find(a) == find(b)` exactly when a and
+b are in the same set, so a `union` that finds both ends already sharing a root has found an edge
+that closes a cycle.
+
 ```python
+# python
+# LC 684 - Redundant Connection
+# IDEA: union every edge; the first edge whose two ends already share a root closes the cycle
+# time = O(E * α(n)), space = O(n)
 class UnionFind:
     def __init__(self, n):
         self.parent = list(range(n))
         self.rank = [0] * n
-        self.count = n
-    
+        self.count = n                       # number of components
+
     def find(self, x):
-        """Find with path compression"""
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])
-        return self.parent[x]
-    
+        root = x
+        while self.parent[root] != root:
+            root = self.parent[root]
+        while self.parent[x] != root:        # path compression: point each node at the root
+            next_node = self.parent[x]
+            self.parent[x] = root
+            x = next_node
+        return root
+
     def union(self, x, y):
-        """Union by rank"""
-        px, py = self.find(x), self.find(y)
-        if px == py:
-            return False
-        
-        if self.rank[px] < self.rank[py]:
-            px, py = py, px
-        self.parent[py] = px
-        if self.rank[px] == self.rank[py]:
-            self.rank[px] += 1
-        
+        root_x, root_y = self.find(x), self.find(y)
+        if root_x == root_y:
+            return False                     # already connected: this edge is a cycle
+        if self.rank[root_x] < self.rank[root_y]:
+            root_x, root_y = root_y, root_x  # hang the shorter tree under the taller
+        self.parent[root_y] = root_x
+        if self.rank[root_x] == self.rank[root_y]:
+            self.rank[root_x] += 1
         self.count -= 1
         return True
-    
-    def connected(self, x, y):
-        return self.find(x) == self.find(y)
+
+def findRedundantConnection(edges):
+    uf = UnionFind(len(edges) + 1)           # nodes are 1..n and n == len(edges)
+    for u, v in edges:
+        if not uf.union(u, v):
+            return [u, v]
+    return []
 ```
+
+```java
+// java
+// LC 684 - Redundant Connection
+// IDEA: union every edge; the first edge whose two ends already share a root closes the cycle
+// time = O(E * α(n)), space = O(n)
+class UnionFind {
+    private final int[] parent;
+    private final int[] rank;
+
+    UnionFind(int n) {
+        parent = new int[n];
+        rank = new int[n];
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int find(int x) {
+        int root = x;
+        while (parent[root] != root) {
+            root = parent[root];
+        }
+        while (parent[x] != root) {          // path compression
+            int next = parent[x];
+            parent[x] = root;
+            x = next;
+        }
+        return root;
+    }
+
+    boolean union(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+        if (rootX == rootY) {
+            return false;                    // already connected: this edge is a cycle
+        }
+        if (rank[rootX] < rank[rootY]) {
+            int tmp = rootX;
+            rootX = rootY;
+            rootY = tmp;
+        }
+        parent[rootY] = rootX;
+        if (rank[rootX] == rank[rootY]) {
+            rank[rootX]++;
+        }
+        return true;
+    }
+}
+
+public int[] findRedundantConnection(int[][] edges) {
+    UnionFind uf = new UnionFind(edges.length + 1);
+    for (int[] edge : edges) {
+        if (!uf.union(edge[0], edge[1])) {
+            return edge;
+        }
+    }
+    return new int[0];
+}
+```
+
+**Complexity**
+- **Time O(E · α(n))**: one `union` per edge; with path compression *and* union by rank each
+  `find` is amortised α(n), the inverse Ackermann function — under 5 for any real n.
+- **Space O(n)**: `parent` and `rank`.
+
+**Traps**
+- Nodes numbered 1..n: `UnionFind(n)` throws on LC 684's `[[1,2],[1,3],[2,3]]`, which touches
+  index 3. Size it `n + 1`.
+- `parent[a] == parent[b]` is not `find(a) == find(b)`: two nodes of one set can have different
+  direct parents until a `find` compresses the path between them.
+- Union-find answers nothing about **directed** cycles: LC 685 (directed redundant connection)
+  needs the in-degree-2 case handled before the union pass.
+
+**Not this if** — you need the path, its length, or the graph is directed → BFS / DFS. Edges are
+deleted over time → a DSU cannot split a set; process the deletions offline, in reverse.
+
+**Drill** — LC 684 ⭐ · LC 547 · LC 323 ⭐ · LC 261 ⭐ · LC 721 *(each email is a node)* ·
+LC 947 *(each row and each column is a node)*. Weighted DSU, rollback and the rest:
+[union_find.md](./union_find.md).
 
 ### Template 4: Topological Sort (Kahn's BFS) — LC 207 ⭐⭐⭐⭐⭐
 
 > Ordering variants — lexicographic order, all orders, parallel scheduling, tree centroid, DP on the DAG — live in [topology_sorting.md](./topology_sorting.md).
 
+**Recognise** — "prerequisites", "can you finish all courses", "an order of tasks in which each
+comes after its dependencies", "alien dictionary". Directed edges, V + E ≤ 10⁵.
+
+**Key point** — a node enters the queue only when its in-degree drops to 0, that is, once every
+prerequisite has been output. Nodes on a cycle never get there, so `taken < n` exactly when the
+graph has a cycle.
+
 ```python
-def topological_sort_bfs(n, edges):
-    """Kahn's algorithm for topological sort"""
-    from collections import deque
-    
-    graph = collections.defaultdict(list)
-    indegree = [0] * n
-    
-    for u, v in edges:
-        graph[u].append(v)
-        indegree[v] += 1
-    
-    queue = deque([i for i in range(n) if indegree[i] == 0])
-    result = []
-    
+# python
+# LC 207 - Course Schedule
+# IDEA: keep taking a course with no unmet prerequisite; a cycle leaves courses never taken
+# time = O(V + E), space = O(V + E)
+from collections import deque
+
+def canFinish(numCourses, prerequisites):
+    graph = [[] for _ in range(numCourses)]
+    indegree = [0] * numCourses
+    for course, pre in prerequisites:        # [a, b] means b must come before a
+        graph[pre].append(course)
+        indegree[course] += 1
+    queue = deque()
+    for course in range(numCourses):
+        if indegree[course] == 0:            # every source, not only node 0
+            queue.append(course)
+    taken = 0
     while queue:
         node = queue.popleft()
-        result.append(node)
-        
-        for neighbor in graph[node]:
-            indegree[neighbor] -= 1
-            if indegree[neighbor] == 0:
-                queue.append(neighbor)
-    
-    return result if len(result) == n else []
+        taken += 1
+        for nxt in graph[node]:
+            indegree[nxt] -= 1
+            if indegree[nxt] == 0:
+                queue.append(nxt)
+    return taken == numCourses
 ```
 
-### Template 5: Cycle Detection — Directed vs Undirected ⭐⭐⭐⭐
+```java
+// java
+// LC 207 - Course Schedule
+// IDEA: keep taking a course with no unmet prerequisite; a cycle leaves courses never taken
+// time = O(V + E), space = O(V + E)
+public boolean canFinish(int numCourses, int[][] prerequisites) {
+    List<List<Integer>> graph = new ArrayList<>();
+    for (int i = 0; i < numCourses; i++) {
+        graph.add(new ArrayList<>());
+    }
+    int[] indegree = new int[numCourses];
+    for (int[] p : prerequisites) {          // [a, b] means b must come before a
+        graph.get(p[1]).add(p[0]);
+        indegree[p[0]]++;
+    }
+    Deque<Integer> queue = new ArrayDeque<>();
+    for (int i = 0; i < numCourses; i++) {
+        if (indegree[i] == 0) {
+            queue.offer(i);
+        }
+    }
+    int taken = 0;
+    while (!queue.isEmpty()) {
+        int node = queue.poll();
+        taken++;
+        for (int nxt : graph.get(node)) {
+            indegree[nxt]--;
+            if (indegree[nxt] == 0) {
+                queue.offer(nxt);
+            }
+        }
+    }
+    return taken == numCourses;
+}
+```
 
-The directed case needs **three** states, because a node that already finished is not a cycle — only a node still on the current DFS path is. The undirected case needs no states at all: an edge joining two nodes already in the same component *is* the cycle.
+**Complexity**
+- **Time O(V + E)**: each node is dequeued once, and the inner `for nxt in graph[node]`
+  decrements each edge's target once over the whole run.
+- **Space O(V + E)**: the adjacency list; `indegree` and the queue are O(V).
 
-*Both are outlines — `n` and `graph` come from the enclosing solution, and the directed sketch shows only the recursive core:*
+**Dry run**
+
+```text
+numCourses = 2, prerequisites = [[1,0]]        edge 0 -> 1
+indegree = [0, 1]   queue = [0]
+pop 0  taken=1  indegree[1] -> 0, push 1
+pop 1  taken=2                                  2 == 2 -> True
+
+prerequisites = [[1,0],[0,1]]                  edges 0 -> 1, 1 -> 0
+indegree = [1, 1]   queue = []                  taken=0 -> False (the cycle never empties)
+```
+
+**Traps**
+- Edge direction: `[a, b]` means *b before a*. Building `a → b` still passes LC 207 (a reversed
+  graph has the same cycles) and then returns the order backwards on LC 210.
+- Seeding the queue with node 0 alone: a course with no edges at all, or a second source, is
+  never taken. Every node of in-degree 0 goes in.
+
+**Not this if** — the graph is undirected → there is no order to find; a cycle check is
+union-find ([Template 3](#template-3-union-find-with-path-compression--lc-684-)). The
+lexicographically smallest order is wanted → a min-heap replaces the queue
+([topology_sorting.md](./topology_sorting.md)).
+
+**Drill** — LC 207 ⭐ · LC 210 *(return the order)* · LC 1136 *(BFS levels = semesters)* ·
+LC 269 ⭐ *(edges come from adjacent words)* · LC 329 ⭐ *(Kahn on the implicit DAG of
+increasing cells)*
+
+### Template 5: Three-State DFS Cycle Detection — LC 802 ⭐⭐⭐⭐
+
+**Recognise** — "does this directed graph have a cycle", "deadlock", "eventual safe nodes",
+"every path from this node ends at a terminal node". Directed edges, V ≤ 10⁴, E ≤ 4·10⁴.
+
+**Key point** — a node is `ON_PATH` while its DFS is running and `SAFE` once it has finished
+cycle-free. Reaching an `ON_PATH` node means following an edge back up the current path, which
+is a cycle; a `SAFE` node is already proven and is never explored again.
 
 ```python
-# Directed graph - DFS with states
-def has_cycle_directed(graph):
-    # 0: unvisited, 1: visiting, 2: visited
-    state = [0] * n
-    
-    def dfs(node):
-        if state[node] == 1:  # Back edge
+# python
+# LC 802 - Find Eventual Safe States
+# IDEA: 3-state DFS; a node is unsafe iff its DFS meets a node still on the current path
+# time = O(V + E), space = O(V)
+def eventualSafeNodes(graph):
+    UNVISITED, ON_PATH, SAFE = 0, 1, 2
+    state = [UNVISITED] * len(graph)
+
+    def leads_to_cycle(node):
+        if state[node] == ON_PATH:          # back edge: node is on the path we came down
             return True
-        if state[node] == 2:
+        if state[node] == SAFE:             # finished earlier and proven cycle-free
             return False
-        
-        state[node] = 1
-        for neighbor in graph[node]:
-            if dfs(neighbor):
-                return True
-        state[node] = 2
+        state[node] = ON_PATH
+        for nxt in graph[node]:
+            if leads_to_cycle(nxt):
+                return True                 # leave node ON_PATH: it is unsafe for good
+        state[node] = SAFE
         return False
 
-# Undirected graph - Union-Find
-def has_cycle_undirected(edges):
-    uf = UnionFind(n)
-    for u, v in edges:
-        if not uf.union(u, v):
-            return True  # Already connected
-    return False
+    safe = []
+    for node in range(len(graph)):
+        if not leads_to_cycle(node):
+            safe.append(node)
+    return safe
 ```
 
-**Connected components** are the same walk, counted rather than searched — run the traversal from every still-unvisited node and increment a counter (the Universal Graph Template above is exactly this). Worked out for LC 323, LC 547 and LC 1319 in [graph_examples.md](./graph_examples.md).
+```java
+// java
+// LC 802 - Find Eventual Safe States
+// IDEA: 3-state DFS; a node is unsafe iff its DFS meets a node still on the current path
+// time = O(V + E), space = O(V)
+private static final int UNVISITED = 0, ON_PATH = 1, SAFE = 2;
+
+public List<Integer> eventualSafeNodes(int[][] graph) {
+    int[] state = new int[graph.length];
+    List<Integer> safe = new ArrayList<>();
+    for (int node = 0; node < graph.length; node++) {
+        if (!leadsToCycle(graph, node, state)) {
+            safe.add(node);
+        }
+    }
+    return safe;
+}
+
+private boolean leadsToCycle(int[][] graph, int node, int[] state) {
+    if (state[node] == ON_PATH) {
+        return true;                         // back edge
+    }
+    if (state[node] == SAFE) {
+        return false;
+    }
+    state[node] = ON_PATH;
+    for (int nxt : graph[node]) {
+        if (leadsToCycle(graph, nxt, state)) {
+            return true;                     // node stays ON_PATH: unsafe for good
+        }
+    }
+    state[node] = SAFE;
+    return false;
+}
+```
+
+**Complexity**
+- **Time O(V + E)**: a node leaves `UNVISITED` once; after that every call on it returns at one
+  of the first two `if`s, so each edge in `for nxt in graph[node]` is followed once.
+- **Space O(V)**: `state` plus the recursion stack, which is at most V deep.
+
+**Traps**
+- A boolean `visited` instead of three states reports a cycle in a diamond:
+  `[[1,2],[3],[3],[]]` reaches node 3 a second time through 2 and calls it a back edge.
+- Resetting a finished node to `UNVISITED` (backtracking) stays correct but re-explores it from
+  every path: exponential on a DAG with many paths. Mark it `SAFE`.
+- Python's default recursion limit is 1,000; a 10⁴-node chain needs
+  `sys.setrecursionlimit(20000)`, or Kahn's algorithm on the reversed graph, which has no
+  recursion at all.
+
+**Not this if** — the graph is **undirected**: the edge back to the parent looks like a back edge.
+Use union-find ([Template 3](#template-3-union-find-with-path-compression--lc-684-) — a `union`
+that returns False is the cycle) or pass the parent down. Only "is there a cycle" for a set of
+prerequisites → Kahn ([Template 4](#template-4-topological-sort-kahns-bfs--lc-207-)).
+
+**Drill** — LC 207 ⭐ *(a cycle means the courses cannot be finished)* · LC 802 · LC 1059 *(every
+path ends at the destination)* · LC 2360 *(longest cycle when out-degree ≤ 1)*
 
 ### Template 6: Bipartite Check (2-Coloring) — LC 785 ⭐⭐⭐⭐
 
-**Definition**: A graph is bipartite if its vertices can be colored using only two colors such that no two adjacent vertices have the same color. Equivalent to checking if the graph has no odd-length cycles.
+**Recognise** — "split the nodes into two groups so that every edge goes between the groups",
+"is the graph bipartite", "people who dislike each other must be apart". n ≤ 100 (LC 785) to
+2,000 (LC 886).
 
-**Time Complexity**: O(V + E) - visit each vertex and edge once
-**Space Complexity**: O(V) - for color array and queue/recursion stack
+**Key point** — every coloured node has the opposite colour of the node that coloured it, so an
+edge whose two ends share a colour closes an **odd** cycle — and an odd cycle is the one thing
+that makes a graph non-bipartite.
 
-**Use Cases**:
-- Graph coloring problems
-- Matching problems (assignment, scheduling)
-- Conflict detection
-- Resource allocation
-- Network flow problems
-
-**Key Properties**:
-- All trees are bipartite
-- Graphs with odd cycles are NOT bipartite
-- Complete bipartite graphs K(m,n) are bipartite
-- Can be solved using BFS or DFS with 2-coloring
-
-#### **Approach 1: BFS with Coloring**
 ```python
-def is_bipartite_bfs(graph):
-    """Check if graph is bipartite using BFS"""
-    from collections import deque
+# python
+# LC 785 - Is Graph Bipartite?
+# IDEA: BFS paints each neighbour the opposite colour; a same-colour edge means an odd cycle
+# time = O(V + E), space = O(V)
+from collections import deque
 
+def isBipartite(graph):
     n = len(graph)
-    colors = [-1] * n  # -1: uncolored, 0: color A, 1: color B
-
-    # Handle disconnected components
-    for start in range(n):
+    colors = [-1] * n                    # -1 = uncoloured, which also means unvisited
+    for start in range(n):               # one BFS per component
         if colors[start] != -1:
             continue
-
-        # BFS coloring
-        queue = deque([start])
         colors[start] = 0
-
+        queue = deque([start])
         while queue:
             node = queue.popleft()
-
             for neighbor in graph[node]:
                 if colors[neighbor] == -1:
-                    # Color with opposite color
                     colors[neighbor] = 1 - colors[node]
                     queue.append(neighbor)
                 elif colors[neighbor] == colors[node]:
-                    # Same color conflict - not bipartite
-                    return False
-
+                    return False         # same colour on both ends of an edge
     return True
 ```
 
+```java
+// java
+// LC 785 - Is Graph Bipartite?
+// IDEA: BFS paints each neighbour the opposite colour; a same-colour edge means an odd cycle
+// time = O(V + E), space = O(V)
+public boolean isBipartite(int[][] graph) {
+    int n = graph.length;
+    int[] colors = new int[n];
+    Arrays.fill(colors, -1);                 // -1 = uncoloured, which also means unvisited
+    for (int start = 0; start < n; start++) {
+        if (colors[start] != -1) {
+            continue;
+        }
+        colors[start] = 0;
+        Deque<Integer> queue = new ArrayDeque<>();
+        queue.offer(start);
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            for (int neighbor : graph[node]) {
+                if (colors[neighbor] == -1) {
+                    colors[neighbor] = 1 - colors[node];
+                    queue.offer(neighbor);
+                } else if (colors[neighbor] == colors[node]) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+```
+
+**Complexity**
+- **Time O(V + E)**: each node is coloured once, and each adjacency list is read once in
+  `for neighbor in graph[node]`.
+- **Space O(V)**: `colors` plus the queue.
+
+**Traps**
+- One BFS from node 0 checks node 0's component only: `[[],[2,3],[1,3],[1,2]]` has an isolated
+  node 0 and a triangle, and returns True without the outer loop.
+- A self-loop (`graph[0] = [0]`) is never bipartite. The same-colour check catches it, because the
+  node and its neighbour are the same node.
+- A separate `visited` array next to `colors` is two arrays that can disagree; `-1` already means
+  unvisited.
+
+**Not this if** — three or more groups → k-colouring is NP-hard in general; backtracking, or greedy
+when the degree is small ([graph_advanced.md](./graph_advanced.md)). The two groups must be the same
+size → a partition or matching problem, not a colouring.
+
+**Drill** — LC 785 ⭐ · LC 886 *(build the graph from the dislike pairs)* · LC 1042 *(four colours,
+degree ≤ 3: greedy)* · LC 2493 *(a bipartite check, then a BFS per component)*
+
 #### **Approach 2: DFS with Coloring**
 ```python
+# python
+# LC 785 - Is Graph Bipartite? (recursive form, same invariant)
+# IDEA: colour a node, recurse into neighbours with the opposite colour
+# time = O(V + E), space = O(V)
 def is_bipartite_dfs(graph):
-    """Check if graph is bipartite using DFS"""
     n = len(graph)
     colors = [-1] * n
 
     def dfs(node, color):
         colors[node] = color
-
         for neighbor in graph[node]:
             if colors[neighbor] == -1:
-                # Recursively color with opposite color
                 if not dfs(neighbor, 1 - color):
                     return False
             elif colors[neighbor] == colors[node]:
-                # Same color conflict
                 return False
-
         return True
 
-    # Check each component
     for i in range(n):
-        if colors[i] == -1:
-            if not dfs(i, 0):
-                return False
-
+        if colors[i] == -1 and not dfs(i, 0):
+            return False
     return True
 ```
 
 > Union-Find bipartite detection, maximum bipartite matching and greedy k-colouring are in [graph_advanced.md](./graph_advanced.md); LC 886 Possible Bipartition is worked in [graph_examples.md](./graph_examples.md).
 
-#### **Performance Comparison**
+## Drill Path
 
-| Approach | Time | Space | Best Use Case |
-|----------|------|-------|---------------|
-| BFS | O(V+E) | O(V) | Level-by-level processing |
-| DFS | O(V+E) | O(V) | Simple recursive solution |
-| Union-Find | O(E⋅α(V)) | O(V) | Dynamic conflict detection |
-| Grid-specific | O(R⋅C) | O(R⋅C) | 2D grid problems |
-
-#### **Common Patterns & Tips**
-
-**Pattern Recognition:**
-- Graph coloring → Bipartite check
-- Conflict/compatibility → Build conflict graph
-- Two groups assignment → Bipartite partition
-- Matching problems → Bipartite matching
-
-**Implementation Tips:**
-- Always handle disconnected components
-- Use 0/1 or -1/1 for colors consistently
-- Check conflicts immediately when coloring
-- Consider Union-Find for dynamic scenarios
-
-**Edge Cases:**
-- Empty graph (bipartite by definition)
-- Single node (bipartite)
-- No edges (bipartite)
-- Self-loops (not bipartite if exists)
-- Disconnected components (check all)
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 323 · LC 261 · LC 684 · LC 133 · LC 207 · LC 269 | components, a tree check, union-find, cloning through a map, Kahn, building the graph before sorting it |
+| **Practice** | LC 1971 · LC 997 · LC 547 · LC 841 · LC 797 · LC 785 · LC 802 · LC 210 | edge list vs matrix vs list input, degrees alone, all paths, 2-colouring, three-state DFS, returning the order |
+| **Stretch** | LC 721 · LC 947 · LC 1192 · LC 332 | an attribute as a DSU node, bridges, an Euler path |
 
 ---
 
@@ -613,24 +931,6 @@ Graph Algorithm Selection Flowchart:
 | Floyd-Warshall | O(V³) | O(V²) | All pairs |
 | Union-Find | O(α(n)) | O(V) | Near constant |
 | Topological Sort | O(V + E) | O(V) | Linear time |
-
-### Interview Signal → Pattern
-
-| Signal | Pattern |
-|--------|---------|
-| "shortest path, non-negative weights" | Dijkstra |
-| "shortest path, negative weights / cycles" | Bellman-Ford |
-| "all-pairs shortest path" | Floyd-Warshall |
-| "course prerequisites, ordering" | Topological sort (Kahn's BFS) |
-| "connected components, union" | Union-Find |
-| "remove edge/vertex disconnects graph" | Bridges/Articulation (Tarjan) |
-| "max flow, bipartite matching" | Ford-Fulkerson / Edmonds-Karp |
-| "island counting, flood fill" | DFS/BFS on grid |
-| "use every edge/transition exactly once" | Euler circuit — Hierholzer (LC 753, 332) |
-| "ratios / conversions / exchange-rate queries" | Weighted DFS or weighted Union-Find (LC 399) |
-| "longest path, but moves are strictly increasing" | Implicit DAG → DFS + memo (LC 329) |
-| "connected because they share a row/email/attribute" | Make the attribute a DSU node (LC 947, 721) |
-| "enumerate every path, not just reachability" | DFS + backtracking, no shared visited set (LC 797) |
 
 ### Problems by Pattern
 

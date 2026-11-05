@@ -57,7 +57,7 @@ One row per pattern. The **Card** column links to the template that solves the a
 
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
-| "level by level", "right side view", "zigzag", "minimum depth" | nodes ≤ 10⁴ | BFS with a level loop | [bfs § Pattern 2](./bfs.md#pattern-2-level-by-level-bfs--lc-102-) | a value aggregated up from the leaves → post-order DFS |
+| "level by level", "right side view", "zigzag", "minimum depth" | nodes ≤ 10⁴ | BFS with a level loop | [bfs § Template 1](./bfs.md#template-1-level-order-bfs--lc-102-) | a value aggregated up from the leaves → post-order DFS |
 | "diameter", "balanced?", "max path sum", anything a node computes from its children | recursion depth = height | post-order DFS returning a value | [dfs § Template 6](./dfs.md#template-6-bottom-up-post-order-dfs--lc-543-) | the answer depends on the path from the root → pass it down as an argument (LC 112) |
 | "root-to-leaf path with sum", "all paths" | nodes ≤ 5,000 | pre-order DFS carrying the path | [tree_lca_distance § 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | any downward path, not only from the root → prefix sum on the path (LC 437) |
 | "lowest common ancestor" | nodes ≤ 10⁵ | LCA by returned presence | [tree_lca_distance § 1](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | it is a **BST** → walk down by value, O(h) (LC 235) |
@@ -70,8 +70,8 @@ One row per pattern. The **Card** column links to the template that solves the a
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
 | "number of islands", "connected regions", "flood fill" | grid ≤ 300 × 300 | grid DFS / BFS, mark visited | [dfs § Template 2](./dfs.md#template-2-graph--grid-dfs-flood-fill--lc-200-) | edges arrive one at a time and you query connectivity → union-find |
-| "shortest path / minimum steps", every move costs 1 | V + E ≤ 10⁵ | BFS (mark when enqueued) | [bfs § Pattern 3](./bfs.md#pattern-3-graph-bfs-with-visited-set--lc-200) | moves have different costs → Dijkstra; costs are 0 or 1 → [0-1 BFS](./shortest_path_comparison.md#variant-0-1-bfs) |
-| "rotting oranges", "distance to the nearest 0 / gate" | grid ≤ 10⁵ cells | multi-source BFS | [bfs § Pattern 4](./bfs.md#pattern-4-multi-source-bfs-distance-calculation--lc-542--lc-994-) | the distance from one source only → plain BFS |
+| "shortest path / minimum steps", every move costs 1 | V + E ≤ 10⁵ | BFS (mark when enqueued) | [bfs § Template 2](./bfs.md#template-2-graph-bfs-mark-on-enqueue--lc-1971-) | moves have different costs → Dijkstra; costs are 0 or 1 → [0-1 BFS](./shortest_path_comparison.md#variant-0-1-bfs) |
+| "rotting oranges", "distance to the nearest 0 / gate" | grid ≤ 10⁵ cells | multi-source BFS | [bfs § Template 4](./bfs.md#template-4-multi-source-bfs--lc-994-) | the distance from one source only → plain BFS |
 | "weighted shortest path", "network delay", "minimum effort path" | E ≤ 10⁵, weights ≥ 0 | Dijkstra | [Dijkstra § Template 1](./Dijkstra.md#template-1-basic-dijkstra) | negative weights or "at most k stops" → [Bellman-Ford](./Bellman-Ford.md) (LC 787); all pairs with n ≤ 400 → [Floyd-Warshall](./Floyd-Warshall.md) |
 | "course schedule", "order of tasks with prerequisites", "alien dictionary" | V + E ≤ 10⁵ | topological sort (Kahn's BFS) | [topology_sorting § Template 1](./topology_sorting.md#template-1-bfs-kahns-algorithm-) | an undirected graph → there is no order; check for a cycle with union-find |
 | "redundant connection", "number of provinces", "accounts merge" | n ≤ 10⁵ | union-find | [union_find § 0-3](./union_find.md#0-3-algorithm-pattern--template-) | you also need path lengths → BFS / DFS |

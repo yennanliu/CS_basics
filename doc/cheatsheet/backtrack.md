@@ -953,7 +953,7 @@ holds its own, and there is nothing to undo. Same rule as LC 113's `cur_sum` vs 
 > Mark **once**, before the first recursive call; undo **once**, after the last. Anything that
 > returns in between — the `return (dfs(...) or dfs(...))` above — skips the undo just as
 > surely. The full three-style comparison of this problem (where to guard, where to accumulate)
-> is [dfs.md Template 9](./dfs.md#template-9-grid-dfs--backtracking--3-styles-compared-lc-1219-path-with-maximum-gold).
+> is [dfs.md Template 9](./dfs.md#template-9-grid-dfs-with-restore-backtracking--lc-1219).
 
 ### Template 10: N-Queens — LC 51
 
