@@ -2,7 +2,7 @@
 
 A review of all 135 markdown files in [`doc/cheatsheet/`](cheatsheet/) (150,285 lines), asking a question neither earlier pass asked: **does a sheet make you faster in a FAANG coding interview** — Google L3, Python first, Java second?
 
-> 繁體中文版： [`cheatsheet-review-2026-11.zh-tw.md`](cheatsheet-review-2026-11.zh-tw.md)
+> 繁體中文版： [`cheatsheet-review-2026-11.zh-tw.md`](cheatsheet-review-2026-11.zh-tw.md) · Progress: [`cheatsheet-review-2026-11-progress.md`](cheatsheet-review-2026-11-progress.md)
 
 | Review | Asked | Status |
 |---|---|---|

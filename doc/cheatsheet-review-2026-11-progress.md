@@ -1,0 +1,64 @@
+# Cheatsheet 審查 2026-11 — 執行進度
+
+追蹤 [審查](cheatsheet-review-2026-11.zh-tw.md)（[English](cheatsheet-review-2026-11.md)）的〈建議順序〉一項一項落地的情況。**一個項目一個 PR，照順序做**；每個 PR 合併前把自己那一列改成 ✅ 並填上 PR 編號。
+
+狀態：✅ 已合併 · 🔄 PR 開著 · ⬜ 還沒開始
+
+## 總表
+
+| 步驟 | 項目 | 範圍 | PR | 狀態 |
+|---|---|---|---|---|
+| 1 | 模板、風格指南、審查本身 | `00_template.md`、`CLAUDE.md`、`/lc-cheatsheet`、card gate | [#290](https://github.com/yennanliu/CS_basics/pull/290) | ✅ |
+| — | 這份進度文件 | `doc/cheatsheet-review-2026-11-progress.md` | | 🔄 |
+| 2 | **P0** 修 bug | §9 的 9 個 verified + 11 個 reported、Java 減法 comparator | | ⬜ |
+| 3 | **P7** lint + baseline | `script/check_cheatsheets.py` + baseline + workflow | | ⬜ |
+| 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | | ⬜ |
+| 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | | ⬜ |
+| 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | | ⬜ |
+| 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | | ⬜ |
+| 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | | ⬜ |
+| 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | | ⬜ |
+| 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | | ⬜ |
+| 6b | **P3 + P4** graph 家族 | 最短路徑比較去重；`bfs_examples`、`dfs_examples`、`graph_examples`、`topology_sorting_examples` 改 C，`bfs_advanced`、`dfs_advanced`、`graph_advanced` 改 D | | ⬜ |
+| 6c | **P3 + P4** arrays / strings 家族 | quickselect、KMP / rolling hash 去重；`array_examples`、`string_examples`、`2_pointers_examples`、`sliding_window_examples`、`binary_search_examples` 改 C，`sliding_window_advanced` 改 D | | ⬜ |
+| 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | | ⬜ |
+| 6e | **P3 + P4** hashing / stacks 家族 | `monotonic_stack` vs `stack_examples`；`hash_map_examples`、`stack_examples`、`linked_list_examples`、`heap_examples`、`design_examples` 改 C，`heap_advanced` 改 D | | ⬜ |
+| 7a | **P5** 第二階段 | `build-site.js` 在 Drill Path 旁標出 `progress.txt` 的 verdict | | ⬜ |
+| 7b | **P6** 雜訊與語言 | Python 優先、IPython transcript、行內中文、檔名修正 | | ⬜ |
+
+P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1 改寫，`knapsack_01_zh` 是 P3 #2 的 0/1 knapsack 中文 home，`python_complexity` 與 `complexity_cheatsheet` 是查表型的參考文件（沒有 pattern card 可補），在 P1 合併 constraint ruler 時一起處理。
+
+6a–6e 只涵蓋 24 份 tier 5 主檔的 satellite。其餘 9 份 `_examples`（`greedy`、`matrix`、`prefix_sum`、`set`、`scanning_line`、`trie`、`union_find`、`bit_manipulation`、`Dijkstra`）和 `prefix_sum_advanced` 在 6e 之後補一列，再決定怎麼分。
+
+## 指標
+
+每個 PR 合併時更新「現在」一欄。數字來自審查〈What was measured〉的同一支量測；P7 之後改讀 `script/check_cheatsheets.py` 的 baseline。
+
+| 指標 | 審查時（`6ad1564dd`） | 目標 | 現在 |
+|---|---:|---|---:|
+| §9 verified bug | 9 | 0 | 9 |
+| Java 減法 comparator `(a, b) -> a - b` | 26 | 0 | 26 |
+| 有 recognition 標題的檔案 | 37 / 135 | 所有 tier ≥ 4 主檔 | 37 |
+| `### … LC n` 標題後直接接 code | 401 | 0 | 401 |
+| 沒有 insight 行的範例 | 570 | < 100 | 570 |
+| `NOTE !!!` | 583 行 / 69 檔 | < 50 | 583 |
+| IPython `In [n]:` | 224 行 / 10 檔 | 0 | 224 |
+
+## 每個 PR 的檢查清單
+
+- [ ] 只做總表裡那一列的範圍；順手發現的問題記到下方〈待辦〉，不夾帶
+- [ ] 每段改過的 snippet 都拿題目自己的 example 跑過
+- [ ] `python3 script/check_cheatsheet_cards.py`（新寫或改寫的段落是 card）
+- [ ] `node script/zh.js check cheatsheet`（改到 prose 的段落，中文 overlay 同步）
+- [ ] `bash site/build.sh && node site/e2e-check.js _site && npm test --prefix site`
+- [ ] 這份文件：總表那一列、〈指標〉的「現在」、〈紀錄〉加一行
+
+## 待辦
+
+執行中發現、但不屬於當下那個 PR 的事。
+
+## 紀錄
+
+| 日期 | 步驟 | 備註 |
+|---|---|---|
+| 2026-11-05 | 1 | #290 合併：pattern card / problem card、Skeleton A–D、card gate 與 Claude Code hook |
