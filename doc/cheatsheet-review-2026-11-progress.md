@@ -18,7 +18,7 @@
 | 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | [#308](https://github.com/yennanliu/CS_basics/pull/308) | 🔄 |
 | 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | [#309](https://github.com/yennanliu/CS_basics/pull/309) | 🔄 |
 | 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | [#310](https://github.com/yennanliu/CS_basics/pull/310) | 🔄 |
-| 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | | ⬜ |
+| 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | PR_J | 🔄 |
 | 6b | **P3 + P4** graph 家族 | 最短路徑比較去重；`bfs_examples`、`dfs_examples`、`graph_examples`、`topology_sorting_examples` 改 C，`bfs_advanced`、`dfs_advanced`、`graph_advanced` 改 D | | ⬜ |
 | 6c | **P3 + P4** arrays / strings 家族 | quickselect、KMP / rolling hash 去重；`array_examples`、`string_examples`、`2_pointers_examples`、`sliding_window_examples`、`binary_search_examples` 改 C，`sliding_window_advanced` 改 D | | ⬜ |
 | 6d | **P3 + P4** dp 家族 | 0/1 knapsack 去重；`dp_examples`、`backtrack_examples` 改 C，`dp_advanced`、`backtrack_advanced` 改 D | | ⬜ |
@@ -62,9 +62,11 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 執行中發現、但不屬於當下那個 PR 的事。
 
 - [x] `lc_pattern.md` 的錯誤歸類（§9 最後一列 reported）：P1 整份改寫成 router 時一起解決
-- [ ] （6a，P4）`tree_lca_distance` 的 LC 742 worked example 有 bug：建完圖又重設、BFS 從 root 而不是 k 出發
-- [ ] （6a，P3）`binary_tree` Template 4、6 與 `tree_lca_distance` 的 path / LCA card 重複；`tree2` 重複 `binary_tree` 大部分模板；LC 437 同時在 `prefix_sum_advanced` Template 14；LC 543/124/687 在兩處
-- [ ] （6a，P4）`bst.md` 的「Problems by Pattern」把 LC 669、938 指到錯的模板；Basic Operations 仍是 Java 先、Summary 的 Common Mistakes 太空泛
+- [x] （6a，P4）`tree_lca_distance` 的 LC 742 worked example 有 bug：建完圖又重設、BFS 從 root 而不是 k 出發
+- [x] （6a，P3）`binary_tree` Template 4、6 與 `tree_lca_distance` 的 path / LCA card 重複；`tree2` 重複 `binary_tree` 大部分模板；LC 437 同時在 `prefix_sum_advanced` Template 14；LC 543/124/687 在兩處（LC 437 在 `prefix_sum_advanced` Template 14 的那份除外，見下一列）
+- [x] （6a，P4）`bst.md` 的「Problems by Pattern」把 LC 669、938 指到錯的模板；Basic Operations 仍是 Java 先、Summary 的 Common Mistakes 太空泛
+- [ ] （6a 之後）`prefix_sum_advanced` Template 14 的 LC 437 改成指向 `tree_lca_distance` Template 5 的指標（該檔不屬於任何 6a–6e 家族）
+- [ ] （6a 之後）`tree2.md` 保留的 1.1、1.3、1.5 還不是 card
 - [ ] （6b，P3）LC 785 二分圖同時是 `bfs` T7 與 `graph` T6 的 card；LC 1971 在兩份都有
 - [ ] （6b，P4）`bfs` / `dfs` 裡早於 card 的 variation（LC 101、111、419、797、124、979、2049、542）還不是 problem card
 - [ ] （6c，P3）LC 88 同時是 `array` T6 與 `2_pointers` T5 的錨定題；LC 251 仍在 `array_examples`；LC 1004 / 438 / 567 也在 `sliding_window_examples`；LC 162 / 1095 也在 `binary_search_examples`
@@ -89,3 +91,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 | 2026-11-05 | 5c | P2 arrays / strings：43 張 pattern card（binary_search 8、binary_search_on_answer 4、sliding_window 7、2_pointers 8、array 8、string 8）；binary_search 的 LC 704 模板從 ~1194 行移到 245 行；`array` 的 21 行 IPython 改成一般 python；修 LC 875 Java int 溢位、LC 26 空陣列、LC 8 atoi |
 | 2026-11-05 | 5d | P2 dp：36 張 pattern card（dp 16、backtrack 14、knapsack 6）；新增 bitmask DP（LC 1879）與 digit DP（LC 233）；`knapsack` 改 Python 先；dp T5 改成真正的 LC 309 三狀態解；backtrack 移除 O(2ⁿ·n) 的結果去重與行內中文 |
 | 2026-11-05 | 5e | P2 hashing / stacks：33 張 pattern card（hash_map 11、stack 6、linked_list 7、heap 8）；`00_template.md` 舉例用的 `hash_map` Template 1/2 anchor 變成真的；修 LC 23 合併的是陣列不是串列、Java median `int` 溢位、標成 LC 83 其實是 LC 82；LRU 移到 reversal 之後 |
+| 2026-11-05 | 6a | P3+P4 tree：路徑家族歸 `tree_lca_distance`；`binary_tree` 新增 T12 Two Trees in Lockstep（LC 100）；`tree2` 1,950→518 行變索引；`tree_examples` 2,081→675、`bst_examples` 987→154 改 Skeleton C，`bst_advanced` 改 D；修 LC 742、LC 106 O(n²)、LC 111 |

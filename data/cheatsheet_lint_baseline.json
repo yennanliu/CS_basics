@@ -12,9 +12,7 @@
     "bfs_examples.md": 1,
     "binary_search_examples.md": 2,
     "binary_search_on_answer.md": 1,
-    "binary_tree.md": 2,
-    "bst_advanced.md": 5,
-    "bst_examples.md": 1,
+    "binary_tree.md": 1,
     "design_examples.md": 1,
     "dfs_examples.md": 29,
     "difference_array.md": 4,
@@ -52,8 +50,6 @@
     "string_operations.md": 1,
     "topology_sorting_examples.md": 8,
     "tree_codec.md": 7,
-    "tree_examples.md": 15,
-    "tree_lca_distance.md": 5,
     "trie.md": 5,
     "trie_examples.md": 5,
     "union_find_examples.md": 8
@@ -87,9 +83,7 @@
     "sliding_window_examples.md": 1,
     "sort.md": 1,
     "stack_examples.md": 1,
-    "topology_sorting_examples.md": 1,
-    "tree_backtrack.md": 1,
-    "tree_examples.md": 2
+    "topology_sorting_examples.md": 1
   },
   "blog-link": {
     "backtrack_examples.md": 1,
@@ -105,14 +99,11 @@
     "python_trick_stdlib.md": 1,
     "stack.md": 2,
     "tree.md": 1,
-    "tree_examples.md": 2,
-    "tree_lca_distance.md": 1,
     "trie.md": 1,
     "trie_examples.md": 1
   },
   "heading-emoji": {
     "Dijkstra.md": 3,
-    "bst_examples.md": 1,
     "diff_toposort_quickunion.md": 13,
     "dp_advanced.md": 30,
     "dp_loop_order.md": 3,
@@ -141,11 +132,7 @@
     "bfs_advanced.md": 4,
     "bfs_examples.md": 1,
     "binary_indexed_tree.md": 1,
-    "binary_tree.md": 4,
     "bit_manipulation_examples.md": 5,
-    "bst.md": 1,
-    "bst_advanced.md": 4,
-    "bst_examples.md": 6,
     "combinatorics_math_patterns.md": 7,
     "concurrency_patterns.md": 2,
     "design_examples.md": 14,
@@ -188,8 +175,6 @@
     "topology_sorting_examples.md": 8,
     "tree_codec.md": 3,
     "tree_construction.md": 2,
-    "tree_examples.md": 14,
-    "tree_lca_distance.md": 1,
     "trie.md": 2,
     "trie_examples.md": 4,
     "union_find_examples.md": 2
@@ -198,8 +183,7 @@
     "java_trick_strings_sorting.md": 3
   },
   "py-float-mid": {
-    "binary_search.md": 3,
-    "bst_advanced.md": 1
+    "binary_search.md": 3
   },
   "examples-after-summary": {
     "greedy.md": 1,
@@ -212,8 +196,7 @@
     "scanning_line.md": 1,
     "segment_tree.md": 1,
     "set.md": 1,
-    "sort.md": 1,
-    "tree2.md": 1
+    "sort.md": 1
   },
   "no-recognition": {
     "2_pointers_linkedlist.md": 1,
@@ -278,7 +261,6 @@
     "stack_expression_parsing.md": 1,
     "time_space_complexity.md": 1,
     "topology_sorting.md": 1,
-    "tree2.md": 1,
     "tree_codec.md": 1,
     "tree_construction.md": 1,
     "trie.md": 1,
@@ -292,7 +274,6 @@
     "bfs_examples.md": 1,
     "binary_search_examples.md": 1,
     "bit_manipulation_examples.md": 1,
-    "bst_examples.md": 1,
     "design_examples.md": 1,
     "dfs_examples.md": 1,
     "dp_examples.md": 1,
@@ -309,17 +290,13 @@
     "stack_examples.md": 1,
     "string_examples.md": 1,
     "topology_sorting_examples.md": 1,
-    "tree_examples.md": 1,
     "trie_examples.md": 1,
     "union_find_examples.md": 1
   },
-  "examples-template": {
-    "bst_examples.md": 1
-  },
+  "examples-template": {},
   "advanced-no-when-not": {
     "backtrack_advanced.md": 1,
     "bfs_advanced.md": 1,
-    "bst_advanced.md": 1,
     "dfs_advanced.md": 1,
     "dp_advanced.md": 1,
     "graph_advanced.md": 1,
