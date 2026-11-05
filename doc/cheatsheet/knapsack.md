@@ -39,7 +39,7 @@
 
 ## Recognition
 
-Constraint cues follow the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md): every template here is `O(n * W)`, so it fits when `n * W` is around 10⁷ or less.
+Constraint cues follow the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md): the single-item templates here are `O(n * W)`, so they fit when `n * W` is around 10⁷ or less; the group template ([Template 6](#template-6-group-knapsack--lc-4040-)) also loops over each group's options, `O(n * W * |group|)`, so put that factor in the budget too.
 
 | Signal in the statement | Constraint cue | Reach for | Not this if |
 |---|---|---|---|
@@ -169,7 +169,8 @@ backward s=9: dp[9] = dp[6] (old, F)
 - **Odd total**: `[1, 2, 3, 5]` has total 11; `11 // 2 = 5` is reachable (`2 + 3`), so skipping the
   parity check returns `True` for an impossible split.
 - **Mixing up the transition**: `or` for feasibility, `+=` for counts, `max(…, dp[s - w] + v)` for
-  value. A `max` on a boolean table or `or` on a count table compiles and is wrong.
+  value. `or` on a count table compiles and is wrong: it turns every count into 0 or 1. (A `max`
+  on a boolean table happens to equal `or`, so it is harmless, just unclear.)
 - **Large sums**: values × n can pass `int` range in Java when the transition sums values; use
   `long`.
 

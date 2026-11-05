@@ -353,7 +353,7 @@ def countAndSay(n):
 # python
 # LC 809 - Expressive Words
 # IDEA: walk s and the word together one group at a time; compare each pair of group lengths
-# time = O(len(s) + sum(len(w))) over all words, space = O(1)
+# time = O(len(words) * len(s) + sum(len(w))): each word rescans s, space = O(1)
 def expressiveWords(s, words):
     def stretchy(word):
         i = j = 0
@@ -386,7 +386,7 @@ def expressiveWords(s, words):
 // java
 // LC 809 - Expressive Words
 // IDEA: walk s and the word together one group at a time; compare each pair of group lengths
-// time = O(len(s) + sum(len(w))) over all words, space = O(1)
+// time = O(len(words) * len(s) + sum(len(w))): each word rescans s, space = O(1)
 public int expressiveWords(String s, String[] words) {
     int count = 0;
     for (String word : words) {

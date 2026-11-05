@@ -225,7 +225,8 @@ left=4  right=4   stop -> 4
 - `right = mid - 1` on a feasible `mid` can step past the answer and return an unchecked value:
   `piles = [30,11,23,4,20]`, `h = 6` returns 22 instead of 23. Keep `right = mid`.
 - `left = 0` divides by zero once `mid` reaches 0: `piles = [1]`, `h = 1` probes speed 0.
-- An `int` hour count overflows in Java: `piles = [10^9, 10^9]`, `h = 3` sums 2·10⁹ hours at speed 1.
+- An `int` hour count overflows in Java: `piles = [10^9, 10^9, 10^9]`, `h = 3` sums 3·10⁹ hours at speed 1,
+  past `Integer.MAX_VALUE` (≈ 2.15·10⁹).
   Use `long`.
 - Mixing styles: `while left <= right` with `right = mid` never ends once `left == right` is
   feasible. Either `left < right` + `right = mid`, or `left <= right` + `right = mid - 1` + an `ans`

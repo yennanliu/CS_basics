@@ -214,7 +214,7 @@ total                   8                     4     exactly 2 = 8 - 4 = 4: [1,2]
 **Not this if** — the condition is a sum that can go negative, or an equality no "at most" can
 express ("sum equals k" over negatives, LC 560) → [hash_map § Template 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-).
 
-**Drill** — LC 992 *(no forbidden element)* · LC 2062 · LC 930 *(exactly `goal` ones)* · LC 1248
+**Drill** — LC 2062 · LC 992 *(no forbidden element)* · LC 930 *(exactly `goal` ones)* · LC 1248
 *(exactly k odds; also Template 3)*
 
 ### Template 3: One-Pass Exactly K — Count the Left Gap — LC 1248 ⭐⭐⭐
@@ -426,8 +426,8 @@ answer [0, 3, 5]
 **Not this if** — the number of windows is an input j → DP, `dp[j][i] = max(dp[j][i − 1],
 dp[j − 1][i − k] + w[i − k + 1])`, O(n·j).
 
-**Drill** — LC 1031 *(two windows of different lengths: try both orders, keep a running best
-left window; worked in [prefix_sum_examples.md](./prefix_sum_examples.md))* · LC 689
+**Drill** — LC 689 · LC 1031 *(two windows of different lengths: try both orders, keep a running best
+left window; worked in [prefix_sum_examples.md](./prefix_sum_examples.md))*
 
 ## Windows Whose Key Is Not a Character
 
@@ -549,7 +549,7 @@ result [0, 9]
 **Not this if** — the window is a fixed length and you only ask "seen before?" (LC 187, repeated
 DNA) → a rolling hash, in [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md).
 
-**Drill** — LC 438 *(the same window on characters)* · LC 30 · LC 187 *(fixed-length window
+**Drill** — LC 30 · LC 438 *(the same window on characters)* · LC 187 *(fixed-length window
 with a rolling hash)*
 
 ## Look-Alikes That Are Not One Window
@@ -566,7 +566,7 @@ with a rolling hash)*
 # python
 # LC 1229 - Meeting Scheduler
 # IDEA: sort both lists; overlap = [max(starts), min(ends)]; advance whichever slot ends first
-# time = O(n log n + m log m), space = O(1) extra
+# time = O(n log n + m log m), space = O(n + m) extra (sorted() copies both lists)
 def minAvailableDuration(slots1, slots2, duration):
     slots1 = sorted(slots1)
     slots2 = sorted(slots2)
@@ -619,9 +619,10 @@ public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int du
 
 ## When Not to Use
 
-- **Template 1 (at most K distinct)** — when K is 1 or "no repeats", it is
+- **Template 1 (at most K distinct)** — when the condition is "no repeated character", it is
   [sliding_window § Template 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-)
-  with a set; no counts are needed.
+  with a set; no counts are needed. (K = 1 is a different condition, one character repeated:
+  `"aaab"` gives 3 there, but 2 under "no repeats". Keep the counts, or scan runs.)
 - **Template 2 (exactly K with a reset)** — with no forbidden element, it is
   [sliding_window § Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)
   as written. A long string of allowed characters can also be split on the forbidden ones first

@@ -2334,8 +2334,9 @@ longest True range = dp[1][2]  ->  "bb"
 **Traps**
 - **Checking `dp[i+1][j-1]` without the `j - i <= 2` guard.** When `j - i == 1`, `dp[i+1][j-1]` is
   `dp[i+1][i]`, below the diagonal and still `False`: `"bb"` would not be found.
-- **`i` ascending.** `for i in range(n)` reads row `i+1` before it is filled; `"aba"` loses its
-  answer.
+- **`i` ascending.** `for i in range(n)` reads row `i+1` before it is filled; `"abba"` returns
+  `"bb"`, because its length-4 check reads the inner `"bb"` before that cell is set (`"aba"`
+  survives only thanks to the `j - i <= 2` guard).
 - **Expand-around-center with only odd centres.** Always call `expand(i, i)` **and**
   `expand(i, i + 1)`; `"abba"` has no odd centre.
 

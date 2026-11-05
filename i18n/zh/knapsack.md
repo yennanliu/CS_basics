@@ -42,10 +42,10 @@
 - [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包中文詳解：state 定義、倒序 trace、LC 494/416 解題流程
 - [Knapsack problem — Wikipedia](https://en.wikipedia.org/wiki/Knapsack_problem)
 
-<!-- 655aa2bf69e4 -->
+<!-- 9f0068f25bc0 -->
 ## 辨識
 
-限制條件的線索依照 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 裡的尺規：這裡每個模板都是 `O(n * W)`，所以 `n * W` 大約在 10⁷ 以內就放得下。
+限制條件的線索依照 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 裡的尺規：這裡的單一物品模板都是 `O(n * W)`，所以 `n * W` 大約在 10⁷ 以內就放得下；分組模板（[Template 6](#template-6-group-knapsack--lc-4040-)）還要對每組的選項做迴圈，是 `O(n * W * |group|)`，預算要把這個因子算進去。
 
 | 題目敘述裡的訊號 | 限制條件線索 | 該用 | 不適用的情況 |
 |---|---|---|---|
@@ -85,7 +85,7 @@
 | [5：差值鍵](#template-5-difference-keyed-knapsack--lc-956-) | 兩堆，只在乎差距 | 物品 → 差值 | 快照 | 每個物品三種選擇 |
 | [6：分組](#template-6-group-knapsack--lc-4040-) | 每個物品有一份形態菜單 | 物品 → 容量在**外層** → 選項 | 倒序或快照 | 菜單裡取最好的 |
 
-<!-- d2c71d502ea3 -->
+<!-- 6c68fe75bfa7 -->
 ### 模板 1：0/1 背包（子集合和） — LC 416 ⭐⭐⭐⭐⭐
 
 **辨識** — 「分成兩個總和相等的子集」、「有沒有子集合剛好湊到 X」、
@@ -120,7 +120,7 @@
 **陷阱**
 - **內層迴圈正序**會變成完全背包：`nums = [3]`、`target = 6` 會因為把那唯一的 `3` 用了兩次而回報 `True`。
 - **總和為奇數**：`[1, 2, 3, 5]` 總和 11；`11 // 2 = 5` 湊得到（`2 + 3`），所以漏掉奇偶檢查會對一個不可能的分割回傳 `True`。
-- **轉移式搞混**：可行性用 `or`、計數用 `+=`、價值用 `max(…, dp[s - w] + v)`。在布林表上用 `max`、或在計數表上用 `or`，都能編譯但答案是錯的。
+- **轉移式搞混**：可行性用 `or`、計數用 `+=`、價值用 `max(…, dp[s - w] + v)`。在計數表上用 `or` 能編譯但答案是錯的：每個計數都會變成 0 或 1。（在布林表上用 `max` 剛好等於 `or`，無害，只是不清楚。）
 - **總和很大**：在 Java 裡轉移式若是把值加總，值 × n 可能超出 `int` 範圍；改用 `long`。
 
 **不適用的情況** — 物品可以重複使用 → [模板 4](#template-4-unbounded-min-count--lc-322-)
