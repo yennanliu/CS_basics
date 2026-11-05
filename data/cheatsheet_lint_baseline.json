@@ -225,6 +225,7 @@
   },
   "examples-after-summary": {
     "greedy.md": 1,
+    "intervals.md": 1,
     "kadane_algorithm.md": 1,
     "matrix.md": 1,
     "monotonic_stack.md": 1,
