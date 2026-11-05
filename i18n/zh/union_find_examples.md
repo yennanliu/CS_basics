@@ -71,14 +71,12 @@
 | 兩種情況同時成立時的答案 | 不適用 | **較早**的那條入邊（`cand1`） |
 | 掃過邊的趟數 | 1 | 2 |
 
-<!-- 54592efd91bd -->
+<!-- 86a86386f80d -->
 ### 3) Satisfiability of Equality Equations — LC 990
 
-> 先處理 '==' 的邊；再檢查 '!=' 的配對是否矛盾。
+> **關鍵** — 先把每個 `==` 都 union 起來，再確認每個 `!=` 連的是兩個不同的分量。
 
-<!--CODE-->
-
-<!--CODE-->
+**歸約到**：26 個字母上的併查集。它只在一個地方解，分量標記的 DFS 和這個併查集寫法並列：[dfs_examples.md § LC 990](./dfs_examples.md#satisfiability-of-equality-equations--lc-990)。
 
 <!-- eb877f29aa41 -->
 ## 連通元件的計數與連通性
@@ -286,13 +284,12 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 <!--CODE-->
 <!--CODE-->
 
-<!-- 0ab0f636f982 -->
+<!-- 23855db57137 -->
 ### 17) Most Stones Removed with Same Row or Column — LC 947
 
-> 把同列或同欄的石頭 union 起來；答案 = 石頭數 − 元件數。
+> **關鍵** — 有 `k` 顆石頭的分量可以減到剩一顆，所以答案是 `n − 分量數`；把每顆石頭的列和欄 union 起來，而不是兩兩比較。
 
-<!--CODE-->
-<!--CODE-->
+**歸約到**：以列、欄的值為節點的併查集。它只在一個地方解，時間 O(n · α(n))：[graph_examples.md § LC 947](./graph_examples.md#most-stones-removed-with-same-row-or-column--lc-947)。
 
 <!-- 05b557821995 -->
 ### 17-1) Couples Holding Hands — LC 765 — 元件數 → 交換次數

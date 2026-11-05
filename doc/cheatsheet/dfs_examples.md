@@ -82,7 +82,7 @@ def printTree(root):
 | LC | Problem | Home |
 |---|---|---|
 | 94 | Binary Tree Inorder Traversal | [dfs § Template 1](./dfs.md#template-1-tree-traversal--lc-94-) (anchor) |
-| 100 | Same Tree | [tree_examples.md](./tree_examples.md) |
+| 100 | Same Tree | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) (anchor) |
 | 98 | Validate Binary Search Tree | [bst.md](./bst.md) — validate with bounds |
 | 700 | Search in a Binary Search Tree | [bst.md](./bst.md) |
 | 297 | Serialize and Deserialize Binary Tree | [tree_codec.md](./tree_codec.md) |
@@ -165,6 +165,9 @@ class Solution {
 # LC 529 - Minesweeper
 # IDEA: a mine click is game over; otherwise flood from the click, stopping at cells next to a mine
 # time = O(m * n), space = O(m * n)   each cell is revealed once; recursion as deep as the blank region
+import sys
+sys.setrecursionlimit(10**6)   # the default 1,000 is too low: a 50 x 50 blank board recurses 2,500 deep
+
 def updateBoard(board, click):
     rows, cols = len(board), len(board[0])
     r, c = click
@@ -287,8 +290,8 @@ def equationsPossible(equations):
 - `a!=a` is unsatisfiable on its own, and `a` may appear in no `==`. Test `a == b` first.
 - A one-directional graph breaks transitivity checks: from `a==b, b==c`, a search from `c` finds no
   edge. Add both directions.
-- The union-find version is the other common answer; it is worked in
-  [union_find_examples.md](./union_find_examples.md).
+- Union-find is the other common answer, same O(n): union every `==`, then reject any `!=` whose two
+  letters share a root. This card is its home; `union_find_examples.md` points here.
 
 **Worked elsewhere**
 
@@ -451,6 +454,9 @@ def maxProduct(root):
 # LC 3319 - K-th Largest Perfect Subtree Size in Binary Tree
 # IDEA: post-order returns (height, is_perfect); record 2^height - 1 for every perfect subtree
 # time = O(n log n), space = O(n)   the sort of the recorded sizes dominates
+import sys
+sys.setrecursionlimit(10**6)   # the default 1,000 is too low: a 2,000-node chain recurses 2,000 deep
+
 def kthLargestPerfectSubtree(root, k):
     sizes = []
 
@@ -498,6 +504,9 @@ def kthLargestPerfectSubtree(root, k):
 # LC 417 - Pacific Atlantic Water Flow
 # IDEA: flood uphill from each ocean's border; answer = cells reached by both floods
 # time = O(m * n), space = O(m * n)   each flood visits a cell at most once
+import sys
+sys.setrecursionlimit(10**6)   # the default 1,000 is too low: a flat 200 x 200 grid recurses 40,000 deep
+
 def pacificAtlantic(heights):
     rows, cols = len(heights), len(heights[0])
     pacific, atlantic = set(), set()
