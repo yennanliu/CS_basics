@@ -229,14 +229,12 @@
 <!-- d64aa7d1db0b -->
 ## 兩棵樹同步走範例
 
-<!-- 4db5f0eaf3e6 -->
+<!-- ce274ea2cb74 -->
 ### Symmetric Tree — LC 101
 
 > **關鍵** — 一棵樹對稱，就是它的左右子樹互為**鏡像**，也就是把 LC 100 用在兩棵子樹上、配對交叉：外側配外側（`a.left`、`b.right`），內側配內側（`a.right`、`b.left`）。
 
-**歸約到**：[binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — 一棵樹和自己比較，子節點交叉配對。
-
-<!--CODE-->
+**歸約到**：[binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — 一棵樹和自己比較，子節點交叉配對。它只在一個地方解，遞迴與迭代兩種寫法、試跑和直接配對的 bug 都在：[dfs.md § LC 101](./dfs.md#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree)。
 
 **陷阱**
 - 逐層比較數值、檢查每層是不是回文，會漏掉形狀：`[1,2,2,null,3,null,3]` 去掉 null 後每層數值都是回文，但它不對稱。
