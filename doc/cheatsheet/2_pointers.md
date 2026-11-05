@@ -32,7 +32,7 @@
 | "longest / count palindromic **substring**" | n ≤ 1000 → O(n²) is fine | [Template 3](#template-3-expand-from-centre--lc-5-) expand from centre — LC 5, LC 647 | palindromic **subsequence** → interval DP (LC 516) |
 | "is s a **subsequence** of t", "formed by deleting some characters" | len(t) ≤ 10⁴ | [Template 4](#template-4-subsequence-matching-one-pointer-always-moves--lc-392-) one pointer always moves — LC 392, LC 524, LC 1023, LC 809 | contiguous **substring** match → KMP / window; longest common subsequence → DP (LC 1143) |
 | "merge nums2 into nums1", nums1 has trailing empty slots | m + n ≤ 200, O(1) space asked | [Template 5](#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-) fill from the back — LC 88, LC 977, LC 986 | two linked lists → merge forward with a dummy head (LC 21) |
-| "sort an array of 0, 1, 2 in one pass", "partition by value into three groups" | O(1) space, one pass | [Template 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) Dutch national flag — LC 75, LC 905 | the relative order must be kept → a **stable** list partition (LC 86) is [linked_list.md's two dummies](./linked_list.md#two-dummies--split-into-chains-then-join-lc-86-) |
+| "sort an array of 0, 1, 2 in one pass", "partition by value into three groups" | O(1) space, one pass | [Template 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) Dutch national flag — LC 75, LC 905 | the relative order must be kept → a **stable** list partition (LC 86) is [linked_list.md's two dummies](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-) |
 | "does the linked list have a cycle", "where does it begin", "find the duplicate without modifying" | O(1) memory | [Template 7](#template-7-fastslow-cycle-detection--lc-141-) Floyd fast/slow — LC 141, LC 142, LC 287 | O(n) memory is allowed → a visited set is simpler |
 | window that grows on one condition, shrinks on another | n ≤ 10⁵ | [Template 8](#template-8-grow-right-then-shrink-left--lc-567) grow right, shrink left — LC 567, LC 209 | any real window problem → [sliding_window.md](./sliding_window.md), which owns the family |
 | kth largest / k closest (select, do not sort) | n ≤ 10⁵, average O(n) | [2_pointers_quickselect.md](./2_pointers_quickselect.md) — LC 215, LC 973 | k is tiny or the input streams → heap |
@@ -817,7 +817,7 @@ mid=3 is 1                                     2  4  3   mid > high: done
 - `while mid < high`: `[1,0]` stops with `mid == high` unexamined and stays `[1,0]`.
 
 **Not this if** — the relative order must be kept (a **stable** partition): a stable list partition (LC 86)
-is [linked_list.md's two dummies](./linked_list.md#two-dummies--split-into-chains-then-join-lc-86-), and an
+is [linked_list.md's two dummies](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-), and an
 array keeps order with Template 1's fast/slow (LC 283).
 
 **Drill** — LC 75 ⭐ · LC 905 *(two groups: one swap pointer is enough)* · LC 2161 *(stable — needs a
