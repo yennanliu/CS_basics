@@ -341,6 +341,21 @@ const badgeWrong = sheetBadges.filter(({ id, verdict }) => {
   return verdict === 'none' ? ['ok', 'again'].includes(log) : log !== verdict;
 });
 ok('cheatsheet Drill Paths carry verdict badges', sheetBadges.length > 100, `${sheetBadges.length} badges`);
+// Per page, not just in total: every English sheet whose Drill Path names an LC
+// number carries badges, and its 中文 page carries exactly the same ones — so a
+// heading the stamper does not recognise in one language cannot hide.
+const badgeIds = f => sheetBadges.filter(b => b.f === f).map(b => b.id).join(',');
+const drillPages = fs.readdirSync(`${SITE}/cheatsheets`)
+  .filter(f => f.endsWith('.html') && !f.endsWith('.zh.html'))
+  .filter(f => /<h[2-4][^>]*id="[^"]*drill-path[^"]*"[^>]*>[\s\S]*?LC\s?\d/.test(read(`${SITE}/cheatsheets/${f}`)));
+const unbadged = drillPages.filter(f => !badgeIds(f));
+ok('every Drill Path that names an LC number carries badges', unbadged.length === 0, unbadged.slice(0, 5).join(', '));
+const zhMismatch = drillPages
+  .map(f => [f, f.replace(/\.html$/, '.zh.html')])
+  .filter(([, zh]) => fs.existsSync(`${SITE}/cheatsheets/${zh}`))
+  .filter(([en, zh]) => badgeIds(en) !== badgeIds(zh));
+ok('each 中文 Drill Path carries the same badges as its English page', zhMismatch.length === 0,
+   zhMismatch.slice(0, 5).map(([en]) => en).join(', '));
 ok('every Drill Path badge is the log\'s latest verdict', badgeWrong.length === 0,
    badgeWrong.slice(0, 3).map(b => `${b.f} LC ${b.id}: ${b.verdict} vs log ${logVerdict.get(b.id)}`).join('; '));
 // The shipped script, exercised rather than grepped: the log's verdict decides,
