@@ -559,23 +559,7 @@ left subtree's rightmost node to the right child without recursion.
 > 100 on two subtrees with the pairing crossed: outer with outer (`a.left`, `b.right`), inner with
 > inner (`a.right`, `b.left`).
 
-**Reduces to**: [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — one tree compared with itself, children paired crosswise.
-
-```python
-# python
-# LC 101 - Symmetric Tree
-# IDEA: walk the two halves in lockstep, pairing each node with its mirror position
-# time = O(n), space = O(h)
-def isSymmetric(root):
-    def mirror(a, b):
-        if not a or not b:
-            return a is b                  # both empty -> True; one empty -> False
-        if a.val != b.val:
-            return False
-        return mirror(a.left, b.right) and mirror(a.right, b.left)
-
-    return mirror(root.left, root.right) if root else True
-```
+**Reduces to**: [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — one tree compared with itself, children paired crosswise. It is worked in one place, recursive and iterative, with a trace and the straight-pairing bug: [dfs.md § LC 101](./dfs.md#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree).
 
 **Traps**
 - Comparing values level by level and checking each level is a palindrome misses the shape:

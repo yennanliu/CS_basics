@@ -11,6 +11,7 @@ time; this gate is what stops them going back up in between.
     python3 script/check_cheatsheets.py --verbose          # also list what improved
     python3 script/check_cheatsheets.py --strict           # ignore the baseline
     python3 script/check_cheatsheets.py --update-baseline  # after a fix: lower the floor
+    python3 script/check_cheatsheets.py --update-baseline --allow-increase   # a rule changed
     python3 script/check_cheatsheets.py --report           # the counts, rule by rule
 
 The baseline, data/cheatsheet_lint_baseline.json, holds **a count per rule per
@@ -123,8 +124,6 @@ def java_subtracts(body, a, b):
         if not m:
             continue
         left, right = m.group(1), m.group(2)
-        if "Integer.compare" in term:
-            continue
         if re.search(r"\b(%s|%s)\b" % (a, b), left) and re.search(r"\b(%s|%s)\b" % (a, b), right):
             return True
     return False
@@ -203,7 +202,7 @@ def count_file(name, text, tier):
             if PY_FLOAT_MID.search(line.split("#")[0]):
                 counts["py-float-mid"] += 1
 
-    summary_at = next((k for k, t in enumerate(h2) if re.match(r"summary\b", STAR_RUN.sub("", t), re.I)), None)
+    summary_at = next((k for k, t in enumerate(h2) if re.match(r"(\d+\)\s*)?summary\b", STAR_RUN.sub("", t), re.I)), None)
     if summary_at is not None:
         counts["examples-after-summary"] = sum(
             1 for t in h2[summary_at + 1:] if re.search(r"\bexamples?\b", t, re.I))
@@ -214,7 +213,7 @@ def count_file(name, text, tier):
     if r == "core" and tier >= 4:
         counts["no-recognition"] = 0 if any(RECOGNITION.search(h) for h in headings) else 1
         counts["no-drill-path"] = 0 if any(re.match(r"(\d+\)\s*)?drill path\b", STAR_RUN.sub("", h), re.I)
-                                           for h in headings) else 1
+                                           for h in h2) else 1    # a level-two section, not a subsection
     if r == "examples":
         counts["examples-no-index"] = 0 if any(re.match(r"index\b", h, re.I) for h in h2) else 1
     if r == "advanced":
@@ -281,6 +280,8 @@ def main(argv=None):
     ap.add_argument("--verbose", "-v", action="store_true", help="also list counts that fell")
     ap.add_argument("--strict", action="store_true", help="ignore the baseline")
     ap.add_argument("--update-baseline", action="store_true", help="write the current counts as the baseline")
+    ap.add_argument("--allow-increase", action="store_true",
+                    help="with --update-baseline: also record counts that rose (only when a rule itself changed)")
     ap.add_argument("--report", action="store_true", help="print the totals per rule and exit 0")
     ap.add_argument("--baseline", default=BASELINE, help=argparse.SUPPRESS)
     ap.add_argument("--sheets", default=SHEET_DIR, help=argparse.SUPPRESS)
@@ -296,6 +297,16 @@ def main(argv=None):
         return 0
 
     if args.update_baseline:
+        # Lowering the floor is the point; raising it is not. Refuse to record a count that
+        # rose, or one fix elsewhere would let a regression through. A first baseline is fine.
+        if os.path.exists(args.baseline) and not args.allow_increase:
+            worse, _ = compare(current, load_baseline(args.baseline))
+            if worse:
+                for rule, f, was, now in worse:
+                    print("doc/cheatsheet/%s: %s %d -> %d — %s" % (f, rule, was, now, RULES[rule]))
+                print("cheatsheet lint: not updating the baseline while %d count(s) rose; fix them first"
+                      % len(worse))
+                return 1
         write_baseline(current, args.baseline)
         total = sum(sum(v.values()) for v in current.values())
         print("wrote %s: %d finding(s) across %d rule(s)" % (
