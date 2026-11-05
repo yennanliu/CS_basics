@@ -544,7 +544,7 @@ maps directly in a [Template 1](#template-1-fixed-size-window--lc-643-) loop; th
 pays off when the window can be any length. If t's order matters, it is a subsequence problem
 ([2_pointers.md](./2_pointers.md)).
 
-**Drill** — LC 567 ⭐ *(fixed size, same counts)* · LC 438 · LC 76 ⭐ · LC 30 *(words instead
+**Drill** — LC 76 ⭐ · LC 567 ⭐ *(fixed size, same counts)* · LC 438 · LC 30 *(words instead
 of characters, [sliding_window_advanced.md](./sliding_window_advanced.md))*
 
 ### Template 6: Exactly K via At-Most Subtraction — LC 992 ⭐⭐⭐⭐⭐
@@ -648,8 +648,8 @@ exactly 2  = 12 - 5 = 7
 monotone; use prefix sum + hash map ([prefix_sum.md](./prefix_sum.md)). For a binary array the
 same count also falls out of prefix-sum counting (LC 930, LC 1248).
 
-**Drill** — LC 713 *(counting slot alone, product < k)* · LC 930 · LC 1248 *(odd → 1, even → 0)*
-· LC 992 · LC 2062 *(a consonant resets the window)*
+**Drill** — LC 992 · LC 713 *(counting slot alone, product < k)* · LC 930 · LC 1248 *(odd → 1,
+even → 0)* · LC 2062 *(a consonant resets the window)*
 
 | Problem | LC# | Difficulty | Transformation | Key Insight |
 |---------|-----|------------|----------------|-------------|
