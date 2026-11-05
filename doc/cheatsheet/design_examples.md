@@ -25,13 +25,13 @@ patterns, the five-step interview method and the chooser table; this file keeps 
 ### 1) LRU Cache — LC 146 ⭐⭐⭐⭐⭐
 
 ```python
-# LC 146 LRU Cache (Least Recently Used (LRU) cache)
+# python
 # V0
-# IDEA : HASH MAP + DOUBLY LINKED LIST
-#   map: key -> node, so a lookup is O(1)
-#   list: most recent at the tail, least recent right after the head sentinel,
-#   so "move to the end" and "evict the oldest" are both O(1) pointer splices
+# IDEA: hash map (key -> node) + doubly linked list (most recent at the tail)
 # time = O(1) per get / put, space = O(capacity)
+# The map makes a lookup O(1); the list makes "move to the end" and "evict the oldest" (right after
+# the head sentinel) O(1) pointer splices.
+# LC 146 LRU Cache (Least Recently Used (LRU) cache)
 class Node(object):
     def __init__(self, key=0, val=0):
         self.key = key
