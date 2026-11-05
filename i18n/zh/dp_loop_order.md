@@ -1,8 +1,8 @@
-<!-- 4e9c8ca0cfb6 -->
+<!-- 9f942ff23d73 -->
 # DP 迴圈順序與相依性
 
 > **範圍** — 為什麼自底向上 DP 的迴圈*巢狀*與*方向*是由它自己的轉移式所決定的、錯誤順序會失敗的四種方式，以及用五種順序實作 LC 139 Word Break——包括那個看起來正確、能通過 `"leetcode"`、卻悄悄在題目自己的 Example 2 上失敗的寫法。
-> **另見**：[dp.md](./dp.md) — [Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139) 就是 Word Break 的模板本身，[Template 2a](./dp.md#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-) 是同一條規則套用在 2-D 表格上；[knapsack.md](./knapsack.md) — [四種背包迴圈順序](./knapsack.md#loop-order-combinations-vs-permutations)並列比較；[dp_advanced.md](./dp_advanced.md) — LC 518 與 LC 377 的計數追蹤；[knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包倒序的中文詳解；[recursion_to_dp.md](./recursion_to_dp.md) — 自頂向下的記憶化，這種寫法根本沒有迴圈順序可以寫錯。
+> **另見**：[dp.md](./dp.md) — [Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) 就是 Word Break 的模板本身，[Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) 是同一條規則套用在 2-D 表格上；[knapsack.md](./knapsack.md) — [四種背包迴圈順序](./knapsack.md#loop-order-combinations-vs-permutations)並列比較；[dp_advanced.md](./dp_advanced.md) — LC 518 與 LC 377 的計數追蹤；[knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包倒序的中文詳解；[recursion_to_dp.md](./recursion_to_dp.md) — 自頂向下的記憶化，這種寫法根本沒有迴圈順序可以寫錯。
 
 - **核心概念**：自底向上的 DP 就是對它自己的相依圖做一次拓撲掃描。把轉移式寫下來，合法的迴圈順序恰好就是那些在每條箭頭的頭之前先完成其尾的順序。
 - **何時使用**：每當你把遞迴式轉成表格、必須決定哪個迴圈包在哪個外面時——或者當表格化的解回傳錯誤答案，而*同一個*遞迴式的記憶化版本卻是對的時候。
@@ -61,12 +61,12 @@
 <!-- 0de0d3d03b4b -->
 ## 1) 一般形式
 
-<!-- 7df50eb05be2 -->
+<!-- 6128b78d5fc0 -->
 ### 1-1) 決策流程 ⭐⭐⭐⭐⭐
 
 <!--CODE-->
 
-第 2 步，針對 1-D 表格——它是 [Template 2a](./dp.md#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-) 2-D 表格的姊妹版：
+第 2 步，針對 1-D 表格——它是 [Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) 2-D 表格的姊妹版：
 
 | 轉移式讀取 | 範例 | 所以狀態迴圈要 |
 |---|---|---|
@@ -141,7 +141,7 @@ Word Break 之所以在每一份 DP 題型整理裡都是異類，正是這個�
 <!-- ffc26691e35e -->
 ## 2) LC 139 Word Break——一個遞迴式，五種順序 ⭐⭐⭐⭐⭐
 
-<!-- 5f924ee74a3c -->
+<!-- 23af81850615 -->
 ### 2-1) 遞迴式與它的箭頭
 
 | 面向 | 細節 |
@@ -154,7 +154,7 @@ Word Break 之所以在每一份 DP 題型整理裡都是異類，正是這個�
 
 因為每條箭頭都指向後方，*由左到右填 `dp` 是合法的*。下面所有出錯的地方，都是因為沒有由左到右填。
 
-模板、`n+1` 的大小以及 `set(wordDict)` 陷阱都在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139)；這一節只談巢狀迴圈。原始碼：[`word-break.py`](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py)。
+模板、`n+1` 的大小以及 `set(wordDict)` 陷阱都在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-)；這一節只談巢狀迴圈。原始碼：[`word-break.py`](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py)。
 
 <!-- c8fc134bec5a -->
 ### 2-2) Order A——索引在外，字典在內 ✅
@@ -167,12 +167,12 @@ Word Break 之所以在每一份 DP 題型整理裡都是異類，正是這個�
 
 這裡內層迴圈迭代一個 **set** 是沒問題的，而這是值得注意的性質：單字是從一個已是最終值的列中讀取的，所以它們的順序無關緊要。§2-4 則是順序有關係的那種寫法。
 
-<!-- 6870c03e40d9 -->
+<!-- c55b95f4823e -->
 ### 2-3) Order B——索引在外，切點在內 ✅
 
 <!--CODE-->
 
-相同的箭頭、相同的方向，只是用不同方式列舉同一個最後一段：Order A 問*「哪個單字？」*，Order B 問*「哪個切點？」*。兩者都只讀已完成的格子。完整追蹤在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139)。
+相同的箭頭、相同的方向，只是用不同方式列舉同一個最後一段：Order A 問*「哪個單字？」*，Order B 問*「哪個切點？」*。兩者都只讀已完成的格子。完整追蹤在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-)。
 
 把內層迴圈限制在最長單字的長度內——`for j in range(max(0, i - L), i)`——正是讓它在 LC 139 的限制條件下成為兩者中最快的原因（§2-9）。
 

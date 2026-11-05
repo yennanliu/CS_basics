@@ -16,7 +16,7 @@
 | 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | [#306](https://github.com/yennanliu/CS_basics/pull/306) | 🔄 |
 | 5b | **P2** graph 家族 | `bfs`、`dfs`、`graph` | [#307](https://github.com/yennanliu/CS_basics/pull/307) | 🔄 |
 | 5c | **P2** arrays / strings 家族 | `array`、`string`、`2_pointers`、`sliding_window`、`binary_search`、`binary_search_on_answer` | [#308](https://github.com/yennanliu/CS_basics/pull/308) | 🔄 |
-| 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | | ⬜ |
+| 5d | **P2** dp 家族 | `dp`、`backtrack`、`knapsack` | [#309](https://github.com/yennanliu/CS_basics/pull/309) | 🔄 |
 | 5e | **P2** hashing / stacks 家族 | `hash_map`、`stack`、`linked_list`、`heap` | | ⬜ |
 | 6a | **P3 + P4** tree 家族 | tree path 去重；`tree_examples`、`bst_examples` 改 Skeleton C，`bst_advanced` 改 D | | ⬜ |
 | 6b | **P3 + P4** graph 家族 | 最短路徑比較去重；`bfs_examples`、`dfs_examples`、`graph_examples`、`topology_sorting_examples` 改 C，`bfs_advanced`、`dfs_advanced`、`graph_advanced` 改 D | | ⬜ |
@@ -70,6 +70,8 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 - [ ] （6c，P3）LC 88 同時是 `array` T6 與 `2_pointers` T5 的錨定題；LC 251 仍在 `array_examples`；LC 1004 / 438 / 567 也在 `sliding_window_examples`；LC 162 / 1095 也在 `binary_search_examples`
 - [ ] （6c，P4）`binary_search_on_answer` 的 LC Examples 沒動（LC 1011 仍有 `NOTE !!!`）；`string` Common Tricks 的 LC 1544 仍 Java 先；`array` 1-1-5 / 1-1-7 與 LC 341 仍用未定義的名稱
 - [ ] （P6）`string`、`2_pointers`、`binary_search_on_answer` 的 Summary 決策表與新的 Recognition / Drill Path 部分重複
+- [ ] （6d，P3）LC 416 同時在 `dp` T4 與 `knapsack` T1；LC 216、526 是 `backtrack` 的錨定題，也在 `backtrack_examples` 解過
+- [ ] （6d，P4）標題含 LC 編號、但還不是 problem card 的段落（如 `dp`「Worked table — LC 516」、`backtrack` 的 LC 1219）
 - [ ] （跨 PR）中文 card 標籤：graph 家族用了 辨識 / 關鍵 / 複雜度 / 試跑 / 陷阱 / 不適用時 / 練習，其他家族不一定一致；P6 統一
 
 ## 紀錄
@@ -83,3 +85,4 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 | 2026-11-05 | 5a | P2 tree：27 張 pattern card（tree 3、binary_tree 11、bst 8、tree_lca_distance 5），四份都加 Recognition 與 Drill Path；smoke test 修掉 O(n²) 串接 / 切片、無法編譯的 Java、不能跑的 pseudocode |
 | 2026-11-05 | 5b | P2 graph：23 張 pattern card（graph 6、bfs 7、dfs 10）；修掉沒解到錨定題的模板（dfs T2–T6、graph T1、T5 未定義的名稱）；Recognition 與 Drill Path |
 | 2026-11-05 | 5c | P2 arrays / strings：43 張 pattern card（binary_search 8、binary_search_on_answer 4、sliding_window 7、2_pointers 8、array 8、string 8）；binary_search 的 LC 704 模板從 ~1194 行移到 245 行；`array` 的 21 行 IPython 改成一般 python；修 LC 875 Java int 溢位、LC 26 空陣列、LC 8 atoi |
+| 2026-11-05 | 5d | P2 dp：36 張 pattern card（dp 16、backtrack 14、knapsack 6）；新增 bitmask DP（LC 1879）與 digit DP（LC 233）；`knapsack` 改 Python 先；dp T5 改成真正的 LC 309 三狀態解；backtrack 移除 O(2ⁿ·n) 的結果去重與行內中文 |

@@ -14,7 +14,7 @@ Three templates that do **not** reduce to "pick / skip over an index". Each one 
 extra piece of state through the recursion — a **Trie node**, the **previous operand**, or a
 **deletion budget** — and that extra state is the whole trick.
 
-Everything on this page assumes the [choose → explore → un-choose skeleton](./backtrack.md#template-1-choose--explore--un-choose-)
+Everything on this page assumes the [choose → explore → un-choose skeleton](./backtrack.md#template-1-choose--explore--un-choose--lc-216-)
 is already automatic. Come here when the basic shape is not enough: when re-running the simple
 template per input is too slow, when a partial solution has to be *scored* rather than
 collected, or when the search only becomes tractable after constraints are propagated.

@@ -1,7 +1,7 @@
 # DP Loop Order & Dependency
 
 > **Scope** — Why a bottom-up DP's loop *nesting* and *direction* are forced by its own transition, the four ways a wrong order fails, and LC 139 Word Break worked in five orders — including the one that looks right, passes `"leetcode"`, and silently fails the problem's own Example 2.
-> **See also**: [dp.md](./dp.md) — [Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139) is the Word Break template itself, [Template 2a](./dp.md#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-) is the same rule for a 2-D table; [knapsack.md](./knapsack.md) — [the four knapsack loop orders](./knapsack.md#loop-order-combinations-vs-permutations) side by side; [dp_advanced.md](./dp_advanced.md) — the LC 518 vs LC 377 counting traces; [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包倒序的中文詳解; [recursion_to_dp.md](./recursion_to_dp.md) — top-down memoisation, the formulation with no loop order to get wrong.
+> **See also**: [dp.md](./dp.md) — [Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) is the Word Break template itself, [Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) is the same rule for a 2-D table; [knapsack.md](./knapsack.md) — [the four knapsack loop orders](./knapsack.md#loop-order-combinations-vs-permutations) side by side; [dp_advanced.md](./dp_advanced.md) — the LC 518 vs LC 377 counting traces; [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包倒序的中文詳解; [recursion_to_dp.md](./recursion_to_dp.md) — top-down memoisation, the formulation with no loop order to get wrong.
 
 - **Core idea**: a bottom-up DP is a topological sweep of its own dependency graph. Write the transition down, and the legal loop orders are exactly the ones that finish every arrow's tail before its head.
 - **When to use it**: whenever you turn a recurrence into a table and must decide what loops outside what — or when a tabulated solution returns a wrong answer that the memoised version of the *same* recurrence gets right.
@@ -86,7 +86,7 @@ Step 3.  Does the transition also range over a set of ITEMS
              yes -> may that item loop sit OUTSIDE the state loop?      (§1-4)
 ```
 
-Step 2, for a 1-D table — the sibling of [Template 2a](./dp.md#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-)'s 2-D table:
+Step 2, for a 1-D table — the sibling of [Template 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-)'s 2-D table:
 
 | The transition reads | Example | So the state loop runs |
 |---|---|---|
@@ -206,7 +206,7 @@ Because every arrow points backwards, *filling `dp` left to right is legal*. Eve
 wrong below goes wrong by not filling it left to right.
 
 The template, the `n+1` sizing and the `set(wordDict)` trap are in
-[dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139); this section is only about
+[dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-); this section is only about
 the loop nest. Source: [`word-break.py`](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Backtracking/word-break.py).
 
 ### 2-2) Order A — index outer, dictionary inner ✅
@@ -266,7 +266,7 @@ for i in range(1, n + 1):
 
 Same arrows, same direction, different way of enumerating the same last segment: Order A asks
 *"which word?"*, Order B asks *"which cut?"*. Both only ever read finished cells. The worked trace
-is in [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139).
+is in [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-).
 
 Capping the inner loop at the longest word — `for j in range(max(0, i - L), i)` — is what makes
 this the fastest of the two on LC 139's constraints (§2-9).

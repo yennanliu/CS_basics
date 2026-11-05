@@ -31,11 +31,11 @@
 | **可行性** | 這兩個能不能交錯／能不能配上這個 pattern？ | 97, 10, 44 |
 | **單字串萬用字元** | 帶 `*` 的括號字串是否合法？ | 678 |
 
-<!-- 3160ac14bea2 -->
+<!-- a16e16792ea7 -->
 ### 參考資料
 
 - [dp.md](./dp.md) — 編輯距離（LC 72）與 LCS（LC 1143）的模板
-- [dp.md — 模板 2a](./dp.md#template-2a-reading-a-2-d-dp-table--shape-dependency-fill-order-) — 表格
+- [dp.md — 模板 2a](./dp.md#template-2a-2-d-table-shape-and-fill-order--lc-516-) — 表格
   本身：轉移會讀到哪些格子、為什麼這裡照列掃是唯一合法的填表順序，以及把填好的表變成編輯腳本的
   反向走法
 - [palindrome.md](./palindrome.md) — 單字串的回文 DP 家族
@@ -202,7 +202,7 @@
 
 ---
 
-<!-- 59065ec39ace -->
+<!-- 2e3692226377 -->
 ### **經典字串 DP 模式（詳解）** ⭐⭐⭐⭐
 
 | 題型 | 模式 | 複雜度 | 備註 |
@@ -211,7 +211,7 @@
 | **LCS** | dp[i][j] = s1[:i] 與 s2[:j] 的最長共同子序列長度 | O(m×n) | 兩個序列；相等時走對角線 |
 | **LIS** | dp[i] = 以 i 結尾的最長遞增子序列 | O(n²) | **單一**序列 —— 不是這個格子；用 patience sorting 可到 O(n log n) |
 | **Palindrome** | dp[i][j] = s[i:j+1] 是不是回文 | O(n²) | 從中心往外擴 |
-| **Word Break** | dp[i] = s[:i] 能不能切開 | O(n²) 個切點，算進切片是 O(n³) | **單一**字串、一維 —— 見 [Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139) |
+| **Word Break** | dp[i] = s[:i] 能不能切開 | O(n²) 個切點，算進切片是 O(n³) | **單一**字串、一維 —— 見 [Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) |
 
 <!-- 598a9bfd2a3c -->
 ## LC 範例

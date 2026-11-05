@@ -23,12 +23,12 @@
 - **核心想法**：每題每種語言只放一份正典解；只有當上方註解說明第二種寫法教到了第一種沒教的東西時，才會出現第二個版本
 - **什麼時候用**：當你已經知道該套哪個模板，想看它從頭到尾跑一遍的時候
 
-<!-- dd15e10f194e -->
+<!-- a60bc3f729bf -->
 ## 題型分類
 
 | § | 題目 | 實例化的模板 |
 |---|---------|--------------|
-| 1 | LC 17 Letter Combinations | [Template 1](./backtrack.md#template-1-choose--explore--un-choose-) — 由索引驅動的選擇清單 |
+| 1 | LC 17 Letter Combinations | [Template 1](./backtrack.md#template-1-choose--explore--un-choose--lc-216-) — 由索引驅動的選擇清單 |
 | 2 | LC 39 Combination Sum（＋ LC 216） | [Template 7](./backtrack.md#template-7-combination-sum--lc-39--lc-40-) |
 | 3 | LC 79 Word Search（＋ LC 980、1219） | [Template 9](./backtrack.md#template-9-grid--word-search--lc-79-) |
 | 4 | LC 78 Subsets | [Template 3](./backtrack.md#template-3-subsets--lc-78-) |
@@ -224,13 +224,13 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 
-<!-- 3ab1b20880eb -->
+<!-- accaabe1a3a3 -->
 ### 10) Word Break — LC 139
 
 > 放在這裡是因為它是下面 LC 140 的*判定版*雙胞胎 — 但注意它的解法是
 > **對起始索引做 BFS**，不是回溯：沒有東西需要 undo。
 >
-> DP 的寫法在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139)，而那裡最容易
+> DP 的寫法在 [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-)，而那裡最容易
 > 寫錯的就是巢狀順序 —— `for i: for word:` 正確，`for word: for i:` 會在 `"applepenapple"` 上
 > 安靜地回傳 `False`：
 > [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-)。
@@ -255,13 +255,13 @@ LC 79 回傳 **boolean** 而且會短路（`if dfs(...): return True`）。下�
 
 <!--CODE-->
 
-<!-- 1a5d4813b258 -->
+<!-- 2a49d469c622 -->
 ## 總結與速查
 
 | 如果上面的範例讓你覺得陌生 | 回去看 |
 |---|---|
-| 為什麼要 `path.pop()` ／ 什麼時候不用 | [Template 14](./backtrack.md#template-14-when-to-undo--mutable-vs-immutable-state-) |
-| 遞迴呼叫要傳 `i` 還是 `i + 1` | [Template 2](./backtrack.md#template-2-start_idx--i-vs-i--1-) |
+| 為什麼要 `path.pop()` ／ 什麼時候不用 | [Template 14](./backtrack.md#template-14-when-to-undo--mutable-vs-immutable-state--lc-113-) |
+| 遞迴呼叫要傳 `i` 還是 `i + 1` | [Template 2](./backtrack.md#template-2-start_idx--i-vs-i--1--lc-39-) |
 | 怎麼跳過重複值 | [Duplicate skipping](./backtrack.md#duplicate-skipping--the-same-level-skip-rule-) |
 | 剪枝時該用 `break` 還是 `continue` | [Sort, dedup, prune — when](./backtrack.md#sort-dedup-prune--when) |
 | 怎麼從題目敘述挑出對的形狀 | [Decision Table](./backtrack.md#decision-table--which-backtrack-shape-) |

@@ -86,18 +86,18 @@
 | 「能不能分成兩組」、「是不是二分圖」 | n ≤ 100 | BFS 二著色 | [graph § Template 6](./graph.md#template-6-bipartite-check-2-coloring--lc-785-) | 三組以上 → 用回溯著色 |
 | 「除法求值」、比值查詢 | V ≤ 100 | 沿帶權邊做 DFS，沿路相乘 | [dfs § Template 10](./dfs.md#template-10-weighted-graph-dfs-divisionratio-queries--lc-399) | 固定的圖上有很多查詢 → 帶權併查集 |
 
-<!-- e29afeb463a5 -->
+<!-- c4b0dd18bfc5 -->
 ### 動態規劃
 
 | 敘述裡的訊號 | 限制提示 | 模式 | Card | 長得像，其實不是 |
 |---|---|---|---|---|
-| 「爬樓梯／解碼有幾種方法」、「不能偷相鄰的房子」 | n ≤ 10⁵ | 一維 DP、滾動變數 | [dp § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables---lc-198) | 選擇形成一棵沒有重疊的樹 → 單純遞迴或回溯 |
-| 「字串能不能切成字典裡的單字」 | n ≤ 300 | 前綴切分 DP | [dp § Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139) | 要列出每一種切法 → 帶 memo 的回溯（LC 140） |
-| 網格裡的「不同路徑數」、「最小路徑和」 | m、n ≤ 200 | 二維網格 DP | [dp § Template 2](./dp.md#template-2-2-d-grid-dp---lc-64) | 路徑可以往任何方向走 → 最短路徑（Dijkstra／BFS） |
-| 「和為 target 的子集」、「切成兩個和相等的部分」、「目標和」 | n ≤ 200，總和 ≤ 10⁴ | 0/1 背包 | [dp § Template 4](./dp.md#template-4-01-knapsack---lc-416) | 物品可以重複用（找零，LC 322／518） → 完全背包，迴圈順序要反過來（[dp_loop_order](./dp_loop_order.md)） |
-| 「最長遞增子序列」、「俄羅斯套娃」 | n ≤ 10⁵ | LIS：O(n²) DP，或用 tails 做到 O(n log n)（n ≤ 10⁵ 需要後者） | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence---lc-300)（O(n²)）、[patience_sorting § 1-1](./patience_sorting.md#1-1-basic-op--the-tails-scan-)（O(n log n)） | 要連續的 → 滑動視窗或 Kadane |
+| 「爬樓梯／解碼有幾種方法」、「不能偷相鄰的房子」 | n ≤ 10⁵ | 一維 DP、滾動變數 | [dp § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-) | 選擇形成一棵沒有重疊的樹 → 單純遞迴或回溯 |
+| 「字串能不能切成字典裡的單字」 | n ≤ 300 | 前綴切分 DP | [dp § Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) | 要列出每一種切法 → 帶 memo 的回溯（LC 140） |
+| 網格裡的「不同路徑數」、「最小路徑和」 | m、n ≤ 200 | 二維網格 DP | [dp § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) | 路徑可以往任何方向走 → 最短路徑（Dijkstra／BFS） |
+| 「和為 target 的子集」、「切成兩個和相等的部分」、「目標和」 | n ≤ 200，總和 ≤ 10⁴ | 0/1 背包 | [dp § Template 4](./dp.md#template-4-01-knapsack--lc-416-) | 物品可以重複用（找零，LC 322／518） → 完全背包，迴圈順序要反過來（[dp_loop_order](./dp_loop_order.md)） |
+| 「最長遞增子序列」、「俄羅斯套娃」 | n ≤ 10⁵ | LIS：O(n²) DP，或用 tails 做到 O(n log n)（n ≤ 10⁵ 需要後者） | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence--lc-300-)（O(n²)）、[patience_sorting § 1-1](./patience_sorting.md#1-1-basic-op--the-tails-scan-)（O(n log n)） | 要連續的 → 滑動視窗或 Kadane |
 | 「最長公共子序列」、「編輯距離」、「交錯字串」 | m、n ≤ 1,000 | 以前綴為狀態的二維字串 DP | [dp_string § LCS deep dive](./dp_string.md#deep-dive-the-prefix-based-indexing-pattern-lcs--variants--) | 公共**子字串** → 不相等時歸零 |
-| 「帶冷卻期／手續費／最多 k 次交易的股票買賣」 | n ≤ 10⁵ | 狀態機 DP | [dp § Template 5](./dp.md#template-5-state-machine-dp--lc-121--lc-309) | 只交易一次 → 追蹤目前最低價（LC 121） |
+| 「帶冷卻期／手續費／最多 k 次交易的股票買賣」 | n ≤ 10⁵ | 狀態機 DP | [dp § Template 5](./dp.md#template-5-state-machine-dp--lc-309) | 只交易一次 → 追蹤目前最低價（LC 121） |
 | 「戳氣球」、「合併石頭的最小成本」 | n ≤ 300 | 區間 DP | [dp § Template 3](./dp.md#template-3-interval-dp--lc-312) | 操作的順序無關緊要 → 貪婪 |
 | 「把 n ≤ 16 個東西分配到 k 組」、「走訪所有節點」 | n ≤ 16–20 | 對已用集合做位元遮罩 DP；有「目前節點」時，對 (node, mask) 做 BFS | [bit_manipulation § 2-3](./bit_manipulation.md#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-)（分配）、[shortest_path_comparison § LC 847](./shortest_path_comparison.md#variant-1--bfs-over-node-bitmask--lc-847)（走訪全部） | n 有好幾千 → 不是位元遮罩；找貪婪或以數值為狀態的 DP |
 
