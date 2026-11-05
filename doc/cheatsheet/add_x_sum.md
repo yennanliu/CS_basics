@@ -204,12 +204,20 @@ class Solution(object):
 ```python
 # LC 371 : Sum of Two Integers
 # V0
-# https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster
+# IDEA: XOR adds without carry, (a & b) << 1 is the carry; repeat until no carry.
+#       Python ints are unbounded, so mask to 32 bits and sign-extend at the end.
+# time = O(1) (at most 32 rounds), space = O(1)
 class Solution:
     def getSum(self, a, b):
-        tmp = math.exp(a) * math.exp(b)
-        r = int(math.log(tmp))
-        return r
+        MASK = 0xFFFFFFFF          # keep 32 bits, like Java's int
+        MAX_INT = 0x7FFFFFFF
+        while b & MASK:            # until the carry is zero
+            carry = (a & b) << 1
+            a = (a ^ b) & MASK     # sum without the carry
+            b = carry & MASK
+        a &= MASK
+        # bit 31 set means negative in 32-bit two's complement
+        return a if a <= MAX_INT else ~(a ^ MASK)
 ```
 
 ### 2-4) Add to Array Form of Integer — LC 989

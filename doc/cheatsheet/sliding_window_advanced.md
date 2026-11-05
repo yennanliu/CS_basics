@@ -1418,8 +1418,8 @@ Step 4: return [] (no valid overlap found)
 // IDEA: Sort + Two Pointers on interval arrays
 // time = O(n log n + m log m), space = O(1)
 public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
-    Arrays.sort(slots1, (a, b) -> a[0] - b[0]);
-    Arrays.sort(slots2, (a, b) -> a[0] - b[0]);
+    Arrays.sort(slots1, (a, b) -> Integer.compare(a[0], b[0]));
+    Arrays.sort(slots2, (a, b) -> Integer.compare(a[0], b[0]));
 
     int i = 0, j = 0;
     while (i < slots1.length && j < slots2.length) {

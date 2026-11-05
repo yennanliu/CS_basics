@@ -184,9 +184,11 @@
 
 <!--CODE-->
 
-<!-- 2f922dc15a1e -->
-### 2-4) Graph Connectivity With Threshold (LC 1627) — Floyd-Warshall 連通性
-> 對所有 GCD > threshold 的組合建邊；再用 Floyd-Warshall 遞移閉包回答詢問。
+<!-- a2a47769bdda -->
+### 2-4) Graph Connectivity With Threshold (LC 1627) — 用 Union-Find，不是 Floyd-Warshall
+> **重點** — 看起來像可達性矩陣，但 n ≤ 10⁴ 讓 Floyd-Warshall 的 O(n³) 變成約 10¹² 步。連通性只需要知道連通分量：把每個 g > threshold 和它的所有倍數 union 起來，每個詢問就是比較兩個根（兩次 `find`）。
+
+**歸約到**：[union_find.md](./union_find.md) — 下方的 Sizing Check 一節說明 n 超過幾百時就不該用 Floyd-Warshall。
 
 <!--CODE-->
 
@@ -248,12 +250,12 @@
 | Minimum Weighted Subgraph | 2203 | 三個來源 | Hard |
 | Shortest Path in Undirected Graph | 1976 | 全點對距離 | Medium |
 
-<!-- adc3058c7656 -->
+<!-- 647cba200209 -->
 ### **遞移閉包類**
 | 題目 | LC # | 關鍵技巧 | 難度 |
 |---------|------|---------------|------------|
 | Course Schedule IV | 1462 | 布林版 Floyd-Warshall | Medium |
-| Graph Connectivity | 1627 | 可達性矩陣 | Hard |
+| Graph Connectivity | 1627 | Union-Find（n ≤ 10⁴ 排除 O(n³)） | Hard |
 | Evaluate Division | 399 | 帶權重的遞移閉包 | Medium |
 
 <!-- df204e3cf50c -->

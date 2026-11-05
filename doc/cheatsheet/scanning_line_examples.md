@@ -36,7 +36,7 @@ public int minMeetingRooms(int[][] intervals) {
         events.add(new int[]{inv[0], 1});
         events.add(new int[]{inv[1], -1});
     }
-    events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]); // end before start at same time
+    events.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1])); // end before start at same time
     int rooms = 0, maxRooms = 0;
     for (int[] e : events) { rooms += e[1]; maxRooms = Math.max(maxRooms, rooms); }
     return maxRooms;
@@ -118,7 +118,7 @@ public int minGroups(int[][] intervals) {
         events.add(new int[]{inv[0], 1});
         events.add(new int[]{inv[1], -1});
     }
-    events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]); // start(+1) before end(-1)
+    events.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1])); // start(+1) before end(-1)
     int cur = 0, max = 0;
     for (int[] e : events) { cur += e[1]; max = Math.max(max, cur); }
     return max;
@@ -127,7 +127,7 @@ public int minGroups(int[][] intervals) {
 // Alt: Sort + Min-PQ (reuse group when earliest end < current start)
 // time = O(N log N), space = O(N)
 public int minGroups_pq(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
     PriorityQueue<Integer> pq = new PriorityQueue<>(); // stores end times
     for (int[] inv : intervals) {
         if (!pq.isEmpty() && pq.peek() < inv[0]) pq.poll(); // reuse group
@@ -185,7 +185,7 @@ public int brightestPosition(int[][] lights) {
         events.add(new int[]{light[0] - light[1], 1});
         events.add(new int[]{light[0] + light[1] + 1, -1});
     }
-    events.sort((a, b) -> a[0] - b[0]);
+    events.sort((a, b) -> Integer.compare(a[0], b[0]));
     int brightness = 0, maxBrightness = 0, ans = 0;
     /** NOTE !!! apply EVERY delta at a coordinate before testing the max.
      *  The comparator leaves same-coordinate events unordered, so a +1 that happens to sort
@@ -396,7 +396,7 @@ class Solution(object):
 // IDEA: time sweep + min-PQ of end days; each day attend the earliest deadline
 // time = O(N log N), space = O(N)
 public int maxEvents(int[][] events) {
-    Arrays.sort(events, (a, b) -> a[0] - b[0]);          // by start day
+    Arrays.sort(events, (a, b) -> Integer.compare(a[0], b[0]));          // by start day
     PriorityQueue<Integer> pq = new PriorityQueue<>();   // end days (deadlines)
     int i = 0, day = 0, ans = 0, n = events.length;
 

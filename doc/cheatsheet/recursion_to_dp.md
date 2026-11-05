@@ -1351,7 +1351,7 @@ public int longestIncreasingPathTable(int[][] matrix) {
     int m = matrix.length, n = matrix[0].length;
     Integer[] order = new Integer[m * n];
     for (int c = 0; c < m * n; c++) order[c] = c;
-    Arrays.sort(order, (a, b) -> matrix[a / n][a % n] - matrix[b / n][b % n]);
+    Arrays.sort(order, (a, b) -> Integer.compare(matrix[a / n][a % n], matrix[b / n][b % n]));
     int[][] dp = new int[m][n];
     int best = 0;
     for (int c : order) {

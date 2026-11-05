@@ -454,12 +454,12 @@ class CustomComparable:
 // Java - Custom comparator
 public void customSort(List<Item> items) {
     // Lambda comparator
-    items.sort((a, b) -> a.value - b.value);
+    items.sort((a, b) -> Integer.compare(a.value, b.value));
     
     // Multiple criteria
     items.sort((a, b) -> {
         if (a.priority != b.priority) {
-            return b.priority - a.priority;  // Descending
+            return Integer.compare(b.priority, a.priority);  // Descending
         }
         return a.name.compareTo(b.name);    // Ascending
     });
@@ -487,7 +487,7 @@ class Item implements Comparable<Item> {
     @Override
     public int compareTo(Item other) {
         if (this.value != other.value) {
-            return this.value - other.value;
+            return Integer.compare(this.value, other.value);
         }
         return this.name.compareTo(other.name);
     }
@@ -843,7 +843,7 @@ class Solution:
 //   With height DESC they appear as 7 then 5 (decreasing), so no increasing
 //   subsequence can pick both. With height ASC you'd wrongly nest them.
 public int maxEnvelopes(int[][] envelopes) {
-    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? Integer.compare(b[1], a[1]) : Integer.compare(a[0], b[0]));
 
     int[] tails = new int[envelopes.length];   // tails[l] = min tail of an LIS of length l+1
     int len = 0;
@@ -888,7 +888,7 @@ class Solution:
 // IDEA: height DESC, k ASC. Insert person at index k — everyone already in
 //       the list is taller/equal, so exactly k of them end up in front.
 public int[][] reconstructQueue(int[][] people) {
-    Arrays.sort(people, (a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
+    Arrays.sort(people, (a, b) -> a[0] == b[0] ? Integer.compare(a[1], b[1]) : Integer.compare(b[0], a[0]));
     List<int[]> res = new ArrayList<>();
     for (int[] p : people) res.add(p[1], p);
     return res.toArray(new int[0][]);
@@ -920,7 +920,7 @@ class Solution:
 // IDEA: sort by length -> predecessors always come first. For each word try
 //       deleting each char and look the shorter word up in the dp map.
 public int longestStrChain(String[] words) {
-    Arrays.sort(words, (a, b) -> a.length() - b.length());
+    Arrays.sort(words, (a, b) -> Integer.compare(a.length(), b.length()));
     Map<String, Integer> dp = new HashMap<>();
     int best = 0;
     for (String w : words) {
@@ -1053,12 +1053,12 @@ The recipe is always these four steps:
 // time = O(n log n + q log q + q log n), space = O(n + q)
 public int[] closestRoom(int[][] rooms, int[][] queries) {
     int n = rooms.length, q = queries.length;
-    Arrays.sort(rooms, (a, b) -> b[1] - a[1]);            // size descending
+    Arrays.sort(rooms, (a, b) -> Integer.compare(b[1], a[1]));            // size descending
 
     Integer[] order = new Integer[q];
     for (int i = 0; i < q; i++) order[i] = i;
     // NOTE !!! sort the INDICES, not the queries — ans must go back in the caller's order
-    Arrays.sort(order, (a, b) -> queries[b][1] - queries[a][1]);
+    Arrays.sort(order, (a, b) -> Integer.compare(queries[b][1], queries[a][1]));
 
     TreeSet<Integer> ids = new TreeSet<>();
     int[] ans = new int[q];
@@ -1311,7 +1311,7 @@ sorted_arr = sorted(arr)  # New list
 #### **Java Sorting Tricks**
 ```java
 // Lambda comparator
-Arrays.sort(arr, (a, b) -> a - b);
+Arrays.sort(arr, (a, b) -> Integer.compare(a, b));
 
 // Method reference
 Arrays.sort(arr, Integer::compare);
@@ -1804,7 +1804,7 @@ public String sort(String s) {
          *
          *  Sort by position descending (simulate the "car arriving" process
          */
-        Arrays.sort(cars, (a, b) -> b[0] - a[0]); // Sort by position descending
+        Arrays.sort(cars, (a, b) -> Integer.compare(b[0], a[0])); // Sort by position descending
 
         // Calculate arrival times
         double[] times = new double[n];
@@ -1896,13 +1896,12 @@ public List<String> topKFrequent_0_1(String[] words, int k) {
      *  example:
      *
      *          Collections.sort(res,
-     *                 (w1, w2) -> freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
+     *                 (w1, w2) -> freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : Integer.compare(freq.get(w2), freq.get(w1)));
      */
     Collections.sort(res, (x, y) -> {
-        int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
+        int valDiff = Integer.compare(freq.get(y), freq.get(x)); // bigger count first (decreasing order)
         if (valDiff == 0){
             // Sort on `key ` with `lexicographically` order (increasing order)
-            //return y.length() - x.length(); // ?
             return x.compareTo(y);
         }
         return valDiff;

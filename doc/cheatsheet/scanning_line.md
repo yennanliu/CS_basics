@@ -164,8 +164,8 @@ public int maxOverlap(int[][] intervals) {
     
     // Sort events
     Collections.sort(events, (a, b) -> {
-        if (a[0] != b[0]) return a[0] - b[0];
-        return b[1] - a[1];  // Start before end
+        if (a[0] != b[0]) return Integer.compare(a[0], b[0]);
+        return Integer.compare(b[1], a[1]);  // Start before end
     });
     
     // Sweep
@@ -226,7 +226,7 @@ public long countIntersectingIntervals(int[][] intervals) {
         events[2 * i + 1] = new int[]{intervals[i][1], -1};
     }
     // same pos: start (+1) before end (-1) -> touching closed intervals intersect
-    Arrays.sort(events, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : b[1] - a[1]);
+    Arrays.sort(events, (a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]));
 
     long res = 0;                       // up to C(10^5, 2) ~ 5e9: overflows int
     int active = 0;
@@ -364,8 +364,8 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
     }
     
     Collections.sort(events, (a, b) -> {
-        if (a[0] != b[0]) return a[0] - b[0];
-        return a[1] - b[1];
+        if (a[0] != b[0]) return Integer.compare(a[0], b[0]);
+        return Integer.compare(a[1], b[1]);
     });
     
     List<List<Integer>> result = new ArrayList<>();
@@ -436,8 +436,8 @@ class MyCalendarTwo {
         events.add(new int[]{end, -1});
         
         Collections.sort(events, (a, b) -> {
-            if (a[0] != b[0]) return a[0] - b[0];
-            return a[1] - b[1];
+            if (a[0] != b[0]) return Integer.compare(a[0], b[0]);
+            return Integer.compare(a[1], b[1]);
         });
         
         int booked = 0;
@@ -625,7 +625,7 @@ def maxItemsServed(items):
 // IDEA: sort by start; min-PQ of end days; each day serve the earliest deadline
 // time = O(N log N), space = O(N)
 public int maxItemsServed(int[][] items) {
-    Arrays.sort(items, (a, b) -> a[0] - b[0]);
+    Arrays.sort(items, (a, b) -> Integer.compare(a[0], b[0]));
     PriorityQueue<Integer> pq = new PriorityQueue<>();  // end days
     int i = 0, day = 0, served = 0, n = items.length;
 
@@ -860,8 +860,8 @@ events.sort(key=lambda x: (x[0], -x[1]))   # +1 before -1  -> touching DOES over
 
 ```java
 // java - same two orderings
-events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);  // end(-1) first : half-open
-events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);  // start(+1) first: inclusive
+events.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(a[1], b[1]));  // end(-1) first : half-open
+events.sort((a, b) -> a[0] != b[0] ? Integer.compare(a[0], b[0]) : Integer.compare(b[1], a[1]));  // start(+1) first: inclusive
 ```
 
 **Third tie-break level**: when several events share a coordinate *and* a type (skyline starts at the same `x`), order by the payload — LC 218 sorts starts by **descending height** so the tallest wins immediately and no spurious key point is emitted. See [`heap_advanced.md`](./heap_advanced.md#2-sweep-line--max-heap-of-alive-intervals-) for the lazy-deletion max-heap that pairs with it.

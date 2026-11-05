@@ -1154,7 +1154,7 @@ public int carFleet(int target, int[] position, int[] speed) {
     int n = position.length;
     Integer[] idx = new Integer[n];
     for (int i = 0; i < n; i++) idx[i] = i;
-    Arrays.sort(idx, (a, b) -> position[b] - position[a]);   // front -> back
+    Arrays.sort(idx, (a, b) -> Integer.compare(position[b], position[a]));   // front -> back
     int cnt = 0;
     double mx = 0.0;
     for (int i : idx) {

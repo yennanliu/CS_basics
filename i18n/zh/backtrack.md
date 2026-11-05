@@ -85,7 +85,7 @@
 | 7 | 限制條件滿足 | ❌ 每層處理一列／一格 | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
 | 8 | 括號／字串建構 | ❌ 用計數器當限制 | [backtrack_examples.md](./backtrack_examples.md#8-generate-parentheses--lc-22) | 20, 22, 93 |
 
-<!-- 030bcc3b68de -->
+<!-- 74995e9772fd -->
 ### 各型態筆記
 
 每種形狀的隨手筆記 — 迴圈主體的口訣，以及會踩到的坑。
@@ -95,7 +95,7 @@
     - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
     - （用 for 迴圈呼叫輔助函式）+ start_idx + for 迴圈 + pop(-1)
     - 回溯。找最小情況，把問題轉成`樹的問題`。用 `start` 把已經用過的數字排掉，回傳所有情況
-    - 需要 `!cur.contains(nums[i])` -> 才不會加進重複的元素
+    - 不需要 `contains` 檢查：下一層的 `start_idx` 傳 `i + 1`，每個元素就最多用一次（傳 `i` 會重複使用）。排列用 `visited[]` 記錄用過的**索引**，不是用值去 `contains`，所以 `[1,1]` 兩個 1 都能用；LC 47 的重複值再另外做同層跳過
 - `Subsets II`
     - LC 90
     - start idx + 回溯 + 去重（seen）
@@ -164,7 +164,7 @@
 
 <!--CODE-->
 
-<!-- e6e8f92d20ff -->
+<!-- b5319bbb5b3e -->
 ### Template 2: `start_idx` — `i` vs `i + 1` ⭐⭐⭐⭐⭐
 
 `start_idx`（或叫 `index` 之類的）是用來**控制搜尋空間**的 — 用來**避免重複**，並讓產生的結果保持順序。
@@ -180,11 +180,13 @@
 
 | 傳什麼 | 意義 | 類比 | 例子 |
 | ---- | ------- | ------- | -------- |
-| `i`     | **同一個元素可以再用一次** | **完全背包**（數量無限） | LC 39 (Combination Sum), LC 518 (Coin Change II), LC 377 |
+| `i`     | **同一個元素可以再用一次** | **完全背包**（數量無限） | LC 39 (Combination Sum)；LC 518（Coin Change II）是它的 DP 對應題，只計數不列舉 |
 | `i + 1` | **每個元素最多用一次** | **0/1 背包**、子集 | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
 
 > 排列兩個都不用 — 它會回頭用前面的元素，所以改成維護一個 `visited[]`
 > 陣列／`contains` 檢查，而不是 `start_idx`（見 [Problem Categories](#problem-categories)）。
+> LC 377（Combination Sum IV）也一樣：順序有差，所以每一層都從 0 開始迴圈；
+> 而且它只要計數，是 DP 而不是回溯。
 
 <!--CODE-->
 

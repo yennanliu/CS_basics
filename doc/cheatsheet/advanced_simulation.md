@@ -432,45 +432,47 @@ class Robot:
 > Four priority queues: waiting left/right + working left/right; simulate worker assignments by time.
 
 ```java
+// java
+// IDEA: 4 heaps; the right bank crosses first, least efficient worker first on each bank
+// time = O((n + k) log k), space = O(k)
+// Least efficient = largest left + right, then largest index; the clock jumps when nobody can move.
 // LC 2532 - Time to Cross a Bridge
-// IDEA: 4 heaps (waitL, waitR, workL, workR); pick highest-efficiency waiting worker each step
-// time = O(N log K), space = O(K)  K = workers
 public int findCrossingTime(int n, int k, int[][] time) {
-    // Max-heaps for waiting (by efficiency = leftTime + rightTime, higher = worse = higher priority)
-    PriorityQueue<int[]> waitL = new PriorityQueue<>((a,b) -> b[0]-a[0]); // [eff, id]
-    PriorityQueue<int[]> waitR = new PriorityQueue<>((a,b) -> b[0]-a[0]);
-    // Min-heaps for working (by finish time)
-    PriorityQueue<int[]> workL = new PriorityQueue<>((a,b) -> a[0]-b[0]); // [finishTime, id]
-    PriorityQueue<int[]> workR = new PriorityQueue<>((a,b) -> a[0]-b[0]);
-    for (int i = 0; i < k; i++) waitL.offer(new int[]{time[i][0]+time[i][2], i});
+    // waiting: least efficient first -> larger (right + left), then larger index
+    Comparator<Integer> leastEfficient = (a, b) -> {
+        int ea = time[a][0] + time[a][2], eb = time[b][0] + time[b][2];
+        return ea != eb ? Integer.compare(eb, ea) : Integer.compare(b, a);
+    };
+    PriorityQueue<Integer> waitL = new PriorityQueue<>(leastEfficient);
+    PriorityQueue<Integer> waitR = new PriorityQueue<>(leastEfficient);
+    // working: [time the worker is ready, worker id], earliest first
+    PriorityQueue<int[]> workL = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+    PriorityQueue<int[]> workR = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
+    for (int i = 0; i < k; i++) waitL.offer(i);
+
     int cur = 0;
-    for (int boxes = 0; boxes < n; boxes++) {
-        // Advance time if no one is waiting
-        while (waitL.isEmpty() || waitR.isEmpty()) {
-            int nextFinish = Integer.MAX_VALUE;
-            if (!workL.isEmpty()) nextFinish = Math.min(nextFinish, workL.peek()[0]);
-            if (!workR.isEmpty()) nextFinish = Math.min(nextFinish, workR.peek()[0]);
-            cur = Math.max(cur, nextFinish);
-            while (!workL.isEmpty() && workL.peek()[0] <= cur) { int[] w = workL.poll(); waitL.offer(new int[]{time[w[1]][0]+time[w[1]][2], w[1]}); }
-            while (!workR.isEmpty() && workR.peek()[0] <= cur) { int[] w = workR.poll(); waitR.offer(new int[]{time[w[1]][0]+time[w[1]][2], w[1]}); }
-            if (waitL.isEmpty() && waitR.isEmpty()) cur = nextFinish;
-        }
-        // Priority: right->left over left->right
-        if (!waitR.isEmpty()) {
-            int[] w = waitR.poll();
-            cur += time[w[1]][2];
-            workL.offer(new int[]{cur + time[w[1]][3], w[1]});
-        } else {
-            int[] w = waitL.poll();
-            cur += time[w[1]][0];
-            workR.offer(new int[]{cur + time[w[1]][1], w[1]});
+    while (n > 0 || !waitR.isEmpty() || !workR.isEmpty()) {
+        while (!workL.isEmpty() && workL.peek()[0] <= cur) waitL.offer(workL.poll()[1]);
+        while (!workR.isEmpty() && workR.peek()[0] <= cur) waitR.offer(workR.poll()[1]);
+
+        if (!waitR.isEmpty()) {                       // the right bank always goes first
+            int w = waitR.poll();
+            cur += time[w][2];                        // cross back with a box
+            if (n == 0 && waitR.isEmpty() && workR.isEmpty()) return cur;  // the last box is home
+            workL.offer(new int[]{cur + time[w][3], w});
+        } else if (n > 0 && !waitL.isEmpty()) {       // send someone only while boxes remain
+            int w = waitL.poll();
+            cur += time[w][0];
+            n--;
+            workR.offer(new int[]{cur + time[w][1], w});
+        } else {                                      // nobody can cross yet: jump to the next ready worker
+            int next = Integer.MAX_VALUE;
+            if (!workL.isEmpty() && n > 0) next = Math.min(next, workL.peek()[0]);
+            if (!workR.isEmpty()) next = Math.min(next, workR.peek()[0]);
+            cur = next;
         }
     }
-    // Wait for all right-side workers to come back
-    int ans = cur;
-    while (!waitR.isEmpty()) { int[] w = waitR.poll(); ans = Math.max(ans, cur) + time[w[1]][2]; cur = ans; }
-    while (!workR.isEmpty()) { int[] w = workR.poll(); ans = Math.max(ans, w[0]) + time[w[1]][2]; }
-    return ans;
+    return cur;
 }
 ```
 

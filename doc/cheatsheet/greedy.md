@@ -79,37 +79,76 @@ def interval_scheduling(intervals):
     return count
 ```
 
-### Template 2: Activity Selection with Heap — LC 621 ⭐⭐⭐⭐
+### Template 2: Cooldown Windows with a Max-Heap — LC 621 ⭐⭐⭐⭐
+
+**Recognise** — "the same task needs at least `n` units between runs", "minimum time to finish all
+tasks"; 26 task types, up to 10⁴ tasks, so the heap never holds more than 26 counts.
+
+**Key point** — inside one window of `n + 1` slots no task may repeat, so the best a window can do is
+run the `n + 1` most frequent remaining tasks once each; doing that every window never leaves a task
+waiting longer than it must.
+
 ```python
+# python
+# IDEA: each window of n+1 slots runs the n+1 most frequent remaining tasks (max-heap)
+# time = O(T log 26) = O(T), space = O(26)
+# Slots a window leaves empty are idle, except in the very last window.
+# LC 621 - Task Scheduler
 import heapq
 import collections
 
-def activity_selection_heap(tasks):
-    """Select activities using priority queue"""
-    # Count frequency or priority
+def least_interval(tasks, n):
     freq = collections.Counter(tasks)
-    
-    # Max heap (negate for min heap)
-    heap = [(-count, task) for task, count in freq.items()]
+    heap = [-count for count in freq.values()]   # max-heap of remaining counts
     heapq.heapify(heap)
-    
-    result = []
+
+    time = 0
     while heap:
-        count1, task1 = heapq.heappop(heap)
-        result.append(task1)
-        
-        if heap:
-            count2, task2 = heapq.heappop(heap)
-            result.append(task2)
-            
-            # Add back if still available
-            if count1 < -1:
-                heapq.heappush(heap, (count1 + 1, task1))
-            if count2 < -1:
-                heapq.heappush(heap, (count2 + 1, task2))
-    
-    return result
+        ran = []                                 # counts we ran this cycle
+        for _ in range(min(n + 1, len(heap))):   # one cooldown window: run what is available,
+            ran.append(heapq.heappop(heap) + 1)  # never visit idle slots (counts are negative)
+        for count in ran:
+            if count < 0:                        # still has copies left
+                heapq.heappush(heap, count)
+        # a full window costs n+1; the last window costs only what actually ran
+        time += (n + 1) if heap else len(ran)
+    return time
 ```
+
+```java
+// java
+// IDEA: each window of n+1 slots runs the n+1 most frequent remaining tasks (max-heap)
+// time = O(T log 26) = O(T), space = O(26)
+// LC 621 - Task Scheduler
+public int leastInterval(char[] tasks, int n) {
+    int[] freq = new int[26];
+    for (char t : tasks) freq[t - 'A']++;
+    PriorityQueue<Integer> heap = new PriorityQueue<>(Collections.reverseOrder());  // remaining counts
+    for (int f : freq) if (f > 0) heap.offer(f);
+
+    int time = 0;
+    while (!heap.isEmpty()) {
+        List<Integer> ran = new ArrayList<>();
+        int slots = Math.min(n + 1, heap.size());      // run what is available; never visit idle slots
+        for (int i = 0; i < slots; i++) ran.add(heap.poll() - 1);
+        for (int left : ran) if (left > 0) heap.offer(left);
+        time += heap.isEmpty() ? ran.size() : n + 1;   // only the last window may end early
+    }
+    return time;
+}
+```
+
+**Complexity**
+- **Time O(T)**: each of the T task runs is one heap pop and maybe one push on at most 26 counts.
+- **Space O(26)**: the counts.
+
+**Traps**
+- Counting idle slots in the last window: `["A","A","A","B","B","B"]`, `n = 2` is 8, not 9; the last
+  window costs only the tasks it ran.
+- Walking every slot of a window even after the heap is empty: 10,000 identical tasks with `n = 100`
+  is 1,010,000 slot checks for 10,000 runs. Run `min(n + 1, len(heap))` per window.
+
+**Drill** — LC 621 · LC 767 *(no two equal neighbours: the same heap, window 2)* · LC 358 *(k distance apart)*
 
 ### Template 3: Greedy Accumulation — LC 122 ⭐⭐⭐⭐
 ```python

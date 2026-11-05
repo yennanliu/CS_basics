@@ -785,7 +785,7 @@ public int findNumberOfLIS(int[] nums) {
 // IDEA: Sort height DESC (k ASC); insert at index k — taller people already positioned
 // time = O(N^2), space = O(N)
 public int[][] reconstructQueue(int[][] people) {
-    Arrays.sort(people, (a, b) -> a[0] != b[0] ? b[0] - a[0] : a[1] - b[1]);
+    Arrays.sort(people, (a, b) -> a[0] != b[0] ? Integer.compare(b[0], a[0]) : Integer.compare(a[1], b[1]));
     List<int[]> res = new ArrayList<>();
     for (int[] p : people) res.add(p[1], p);
     return res.toArray(new int[res.size()][]);

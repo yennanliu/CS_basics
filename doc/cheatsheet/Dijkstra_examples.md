@@ -36,7 +36,7 @@ public int networkDelayTime(int[][] times, int n, int k) {
     int[] dist = new int[n + 1];
     Arrays.fill(dist, Integer.MAX_VALUE);
     dist[k] = 0;
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     pq.offer(new int[]{0, k});
     while (!pq.isEmpty()) {
         int[] cur = pq.poll();
@@ -465,7 +465,7 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
         graph.computeIfAbsent(f[0], x -> new ArrayList<>()).add(new int[]{f[1], f[2]});
 
     // [cost, node, stops_used]
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     pq.offer(new int[]{0, src, 0});
 
     // best[node][stops] = min cost to reach node using exactly 'stops' edges
@@ -631,7 +631,7 @@ public int minimumEffortPath(int[][] heights) {
     int[][] dist = new int[m][n];
     for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
     
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
     pq.offer(new int[]{0, 0, 0}); // {row, col, effort}
     dist[0][0] = 0;
     
@@ -671,7 +671,7 @@ public int minimumEffortPath_visited(int[][] heights) {
     int m = heights.length, n = heights[0].length;
     boolean[][] visited = new boolean[m][n];
     
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[0], b[0]));
     pq.offer(new int[]{0, 0, 0}); // {effort, row, col}
     
     int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
@@ -770,7 +770,7 @@ public int minimumEffortPath_unionFind(int[][] heights) {
     }
     
     // Sort edges by effort (Kruskal's principle)
-    edges.sort((a, b) -> a[2] - b[2]);
+    edges.sort((a, b) -> Integer.compare(a[2], b[2]));
     
     UnionFind uf = new UnionFind(m * n);
     int src = 0, dst = m*n - 1;

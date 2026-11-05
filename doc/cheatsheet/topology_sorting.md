@@ -256,26 +256,21 @@ class Graph:
 
     def topologicalSortUtil(self, v, visited, stack):
         visited[v] = True
-
-        ### NOTE this !!! (self.graph[v])
+        # visit every successor of v first ...
         for k in self.graph[v]:
-            if visited[k] == False:
+            if not visited[k]:
                 self.topologicalSortUtil(k, visited, stack)
-        # stack.insert(0,v) # instead of insert v to idx = 0, we can still append v to stack and reverse it and return (e.g. return stack[::-1])
-        """
-        ### NOTE !! stack.append(v) is wrong, we SHOULD use  stack.insert(0,v)
-        """
-        stack.insert(0,v)
+        # ... so v is appended only after everything that must come AFTER it (post-order)
+        stack.append(v)
 
     def topologicalSort(self):
         visited = [False] * self.V
         stack = []
-        ### NOTE this !!! (range(self.V))
+        # start a DFS from every unvisited vertex, so disconnected parts are covered
         for v in range(self.V):
-            # call tologicalSortUtil only if visited[v] == False (the vertice is not visited yet)
-            if visited[v] == False:
+            if not visited[v]:
                 self.topologicalSortUtil(v, visited, stack)
-        # return the result in inverse order
+        # post-order lists each node after its successors; reverse it once
         return stack[::-1]
 
 ### TEST
@@ -289,7 +284,7 @@ g.addEdge(3, 1)
 
 print (g.graph)
 
-# ans should be TableB, TableD, TableC, TableA.
+# -> [0, 2, 3, 1]: every edge u -> v has u before v
 r = g.topologicalSort()
 print (r)
 ```

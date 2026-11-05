@@ -574,21 +574,25 @@ step  r  v  left  window     min_h[0]  max_h[0]  max-min  action                
 
 ### Template 1: Top K Elements Pattern — LC 215
 ```python
-# Python - Find K largest elements
-def topKElements(nums, k):
+# python
+# IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
+# time = O(n log k), space = O(k)
+# LC 215 - Kth Largest Element in an Array
+def findKthLargest(nums, k):
     import heapq
-    
+
     # Min heap of size k for k largest
     min_heap = []
-    
+
     for num in nums:
         heapq.heappush(min_heap, num)
         if len(min_heap) > k:
-            heapq.heappop(min_heap)
-    
-    return min_heap  # Contains k largest elements
+            heapq.heappop(min_heap)   # drop the smallest; the k largest stay
 
-# With custom key for frequency
+    return min_heap[0]  # the smallest of the k largest = the kth largest
+
+# Top-k by frequency - LC 347 Top K Frequent Elements: count, then let heapq.nlargest keep
+# a size-k heap keyed by count
 def topKFrequent(nums, k):
     from collections import Counter
     import heapq
@@ -599,7 +603,22 @@ def topKFrequent(nums, k):
 ```
 
 ```java
-// Java - Top K elements with frequency
+// java
+// IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
+// time = O(n log k), space = O(k)
+// LC 215 - Kth Largest Element in an Array
+public int findKthLargest(int[] nums, int k) {
+    PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+    for (int num : nums) {
+        minHeap.add(num);
+        if (minHeap.size() > k) {
+            minHeap.poll();           // drop the smallest; the k largest stay
+        }
+    }
+    return minHeap.peek();
+}
+
+// Same heap, keyed by frequency - LC 347 Top K Frequent Elements
 public int[] topKFrequent(int[] nums, int k) {
     Map<Integer, Integer> map = new HashMap<>();
     for (int n : nums) {

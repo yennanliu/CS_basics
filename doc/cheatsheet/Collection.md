@@ -324,8 +324,10 @@ counter suffices (or a `TreeMap` when a plain `HashMap` suffices) costs a `log N
 | **sliding window + counter map** | shrink while invalid; delete zero-count keys or `len(map)` lies | 3, 904 | [sliding_window.md](sliding_window.md) |
 | **array of hash sets** | one set per independent constraint, all filled in a single pass | 36 | [array.md](array.md) |
 
-> **Gotcha**: `Counter` / `defaultdict` **create keys on read** (`d[k]` inserts). When the answer depends on
-> `len(d)` (distinct-count windows), delete keys that hit 0, or read with `d.get(k, 0)`.
+> **Gotcha**: `defaultdict` **creates keys on read** (`d[k]` inserts). `Counter` does not (`c[k]` returns 0
+> without inserting), but `c[k] -= 1` down to 0 leaves the key behind. When the answer depends on
+> `len(d)` (distinct-count windows), delete keys that hit 0; `d.get(k, 0)` only reads a count
+> without inserting, it does not remove a zero.
 
 ### 3-4) Java equivalents of the Python ops above ⭐⭐⭐⭐
 
@@ -374,7 +376,7 @@ public class CollectionOps {
         for (String w : words) cnt.merge(w, 1, Integer::sum);
         // min-heap of size k: LOWEST freq at the top; tie -> lexicographically LARGER pops first
         PriorityQueue<String> pq = new PriorityQueue<>(
-            (a, b) -> cnt.get(a).equals(cnt.get(b)) ? b.compareTo(a) : cnt.get(a) - cnt.get(b));
+            (a, b) -> cnt.get(a).equals(cnt.get(b)) ? b.compareTo(a) : Integer.compare(cnt.get(a), cnt.get(b)));
         for (String w : cnt.keySet()) {
             pq.offer(w);
             if (pq.size() > k) pq.poll();   // evict the worst -> heap never exceeds k

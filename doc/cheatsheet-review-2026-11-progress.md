@@ -10,7 +10,7 @@
 |---|---|---|---|---|
 | 1 | 模板、風格指南、審查本身 | `00_template.md`、`CLAUDE.md`、`/lc-cheatsheet`、card gate | [#290](https://github.com/yennanliu/CS_basics/pull/290) | ✅ |
 | — | 這份進度文件 | `doc/cheatsheet-review-2026-11-progress.md` | [#301](https://github.com/yennanliu/CS_basics/pull/301) | 🔄 |
-| 2 | **P0** 修 bug | §9 的 9 個 verified + 11 個 reported、Java 減法 comparator | | ⬜ |
+| 2 | **P0** 修 bug | §9 的 9 個 verified + 11 個 reported、Java 減法 comparator | [#302](https://github.com/yennanliu/CS_basics/pull/302) | 🔄 |
 | 3 | **P7** lint + baseline | `script/check_cheatsheets.py` + baseline + workflow | | ⬜ |
 | 4 | **P1** 入口 | `lc_pattern.md` 改成 router；`startHere` 第一階 | | ⬜ |
 | 5a | **P2** tree 家族 | `tree`、`binary_tree`、`bst`、`tree_lca_distance` | | ⬜ |
@@ -36,8 +36,8 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 
 | 指標 | 審查時（`6ad1564dd`） | 目標 | 現在 |
 |---|---:|---|---:|
-| §9 verified bug | 9 | 0 | 9 |
-| Java 減法 comparator `(a, b) -> a - b` | 26 | 0 | 26 |
+| §9 verified bug | 9 | 0 | 0 |
+| Java 減法 comparator `(a, b) -> a - b` | 26 | 0 | 0（實際掃到 75 處：61 個 lambda + 14 個 `return a - b`；`java_trick_strings_sorting` 示範反例的 3 行保留） |
 | 有 recognition 標題的檔案 | 37 / 135 | 所有 tier ≥ 4 主檔 | 37 |
 | `### … LC n` 標題後直接接 code | 401 | 0 | 401 |
 | 沒有 insight 行的範例 | 570 | < 100 | 570 |
@@ -57,8 +57,11 @@ P2 的 24 份 tier 5 cheatsheet 裡有 4 份不在 5a–5e：`lc_pattern` 由 P1
 
 執行中發現、但不屬於當下那個 PR 的事。
 
+- [ ] `lc_pattern.md` 的錯誤歸類（§9 最後一列 reported）：P1 會整份改寫成 router，在那裡修（步驟 4）
+
 ## 紀錄
 
 | 日期 | 步驟 | 備註 |
 |---|---|---|
 | 2026-11-05 | 1 | #290 合併：pattern card / problem card、Skeleton A–D、card gate 與 Claude Code hook |
+| 2026-11-05 | 2 | P0：9 個 verified + 10 個 reported 修好並用題目 example 跑過（`lc_pattern` 移到 P1）；comparator 改成 `Integer.compare`；改到 prose 的 8 個段落中文 overlay 同步 |

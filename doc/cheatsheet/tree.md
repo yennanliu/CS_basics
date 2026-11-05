@@ -1,6 +1,6 @@
 # Tree Data Structure - Concepts & Patterns
 
-> **Scope** — Tree concepts, tree types and traversal-order *strategy* — the **why** and **which**, plus the advanced techniques that are not per-pattern templates (Morris threading, binary lifting, re-rooting). The templates themselves live in [tree2.md](./tree2.md).
+> **Scope** — Tree concepts, tree types and traversal-order *strategy* — the **why** and **which**, plus the advanced techniques that are worked here (Morris threading, binary lifting, and re-rooting DP, the home of LC 834). The per-pattern binary-tree templates live in [tree2.md](./tree2.md).
 > **See also** — *deep dives split out of this file*: [tree_lca_distance.md](./tree_lca_distance.md) — LCA, node distance, parent maps and root-to-leaf path templates; [tree_codec.md](./tree_codec.md) — subtree serialization and tree ⟷ string codecs; [tree_construction.md](./tree_construction.md) — building a tree from traversals, strings and index ranges; [tree_examples.md](./tree_examples.md) — the worked LC archive for the patterns taught here.
 > *Neighbouring sheets*: [tree2.md](./tree2.md) — one numbered, copy-paste template per pattern; [binary_tree.md](./binary_tree.md) — binary-tree DFS state-flow and structural templates; [bst.md](./bst.md) — ordered trees; [tree_backtrack.md](./tree_backtrack.md) — root→leaf path problems that undo state on the way back up.
 
@@ -958,28 +958,51 @@ def lca(u, v, parent, depth, LOG):
 ### Re-rooting DP — Answer for Every Root
 
 ```python
-# LC 310 Minimum Height Trees — find roots minimizing tree height
-# Equivalent: find centroid(s) of tree
-def findMinHeightTrees(n, edges):
-    if n == 1: return [0]
-    from collections import defaultdict, deque
-    graph = defaultdict(set)
+# python
+# IDEA: two DFS passes; the second moves the root across each edge and adjusts the answer by subtree size
+# time = O(n), space = O(n)
+# DFS 1 (post-order) roots the tree at 0: size[u] = nodes in u's subtree, ans[0] = sum of depths.
+# DFS 2 (pre-order) moves the root across edge u -> v: the size[v] nodes under v get 1 closer and
+# the other n - size[v] get 1 farther, so ans[v] = ans[u] - size[v] + (n - size[v]).
+# (LC 310 Minimum Height Trees looks similar but is leaf trimming, see topology_sorting.md:
+#  it never needs a per-root value.)
+# LC 834 - Sum of Distances in Tree
+def sumOfDistancesInTree(n, edges):
+    from collections import defaultdict
+    graph = defaultdict(list)
     for u, v in edges:
-        graph[u].add(v); graph[v].add(u)
+        graph[u].append(v)
+        graph[v].append(u)
 
-    leaves = deque(i for i in range(n) if len(graph[i]) == 1)
-    remaining = n
-    while remaining > 2:
-        remaining -= len(leaves)
-        new_leaves = deque()
-        while leaves:
-            leaf = leaves.popleft()
-            neighbor = next(iter(graph[leaf]))
-            graph[neighbor].remove(leaf)
-            if len(graph[neighbor]) == 1:
-                new_leaves.append(neighbor)
-        leaves = new_leaves
-    return list(leaves)
+    size = [1] * n
+    ans = [0] * n
+
+    # iterative DFS order from root 0, with parents (avoids recursion limits)
+    order, parent = [], [-1] * n
+    stack, seen = [0], [False] * n
+    seen[0] = True
+    while stack:
+        u = stack.pop()
+        order.append(u)
+        for v in graph[u]:
+            if not seen[v]:
+                seen[v] = True
+                parent[v] = u
+                stack.append(v)
+
+    # DFS 1: children before parents
+    for u in reversed(order):
+        for v in graph[u]:
+            if v != parent[u]:
+                size[u] += size[v]
+                ans[u] += ans[v] + size[v]   # each node under v is 1 deeper from u
+
+    # DFS 2: parents before children - re-root from u to v
+    for u in order:
+        for v in graph[u]:
+            if v != parent[u]:
+                ans[v] = ans[u] - size[v] + (n - size[v])
+    return ans
 ```
 
 ### Tree Serialization / Deserialization — LC 297

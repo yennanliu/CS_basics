@@ -1024,7 +1024,7 @@ public int minimumEffortPath(int[][] heights) {
             if (c + 1 < n) edges.add(new int[]{Math.abs(heights[r][c] - heights[r][c + 1]), id, id + 1});
         }
     }
-    edges.sort((a, b) -> a[0] - b[0]);          // cheapest first
+    edges.sort((a, b) -> Integer.compare(a[0], b[0]));          // cheapest first
 
     int[] p = new int[m * n];
     for (int i = 0; i < m * n; i++) p[i] = i;

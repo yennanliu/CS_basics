@@ -183,7 +183,7 @@ public int lengthOfLIS(int[] nums) {
 // IDEA: sort (w asc, h desc) -> the answer is LIS over heights (patience sorting)
 // time = O(N log N), space = O(N)
 public int maxEnvelopes(int[][] envelopes) {
-    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+    Arrays.sort(envelopes, (a, b) -> a[0] == b[0] ? Integer.compare(b[1], a[1]) : Integer.compare(a[0], b[0]));
     List<Integer> tails = new ArrayList<>();
     for (int[] e : envelopes) {
         int lo = 0, hi = tails.size();

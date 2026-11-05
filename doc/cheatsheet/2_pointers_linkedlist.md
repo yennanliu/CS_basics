@@ -53,23 +53,25 @@ boolean hasCycle(ListNode head){
 #### 1-1-2 : return the "ring start point" of circular linked list 
 ```java
 // java
-// LC 141
+// IDEA: Floyd: the pointers meet inside the cycle; restart one at head, step both by one -> cycle start
+// time = O(n), space = O(1)
+// LC 142 - Linked List Cycle II
 ListNode detectCycle(ListNode head){
     ListNode fast, slow;
     fast = slow = head;
     while (fast != null && fast.next != null){
-        /** NOTE !!! We move pointers first */
+        // move both pointers first, then compare (they start equal at head)
         fast = fast.next.next;
         slow = slow.next;
         if (fast == slow){
             break;
         }
     }
+    // the loop also ends when fast runs off the list: no cycle, so no start point
+    if (fast == null || fast.next == null){
+        return null;
+    }
     slow = head;
-    // may need below logic to check whether is cycle linked list or not
-    // if (! fast or ! fast.next){
-    //     return null;
-    // }
     while (slow != fast){
         slow = slow.next;
         fast = fast.next;
