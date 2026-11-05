@@ -709,6 +709,44 @@ def strStr_hash(haystack, needle):
     return -1
 ```
 
+```java
+// java
+// LC 28 - Find the Index of the First Occurrence in a String
+// IDEA: KMP; lps[i] = length of the longest proper prefix of needle[0..i] that is also its suffix;
+//       on a mismatch fall back to lps[j-1] instead of restarting the text pointer
+// time = O(N + M), space = O(M)
+public int strStr(String haystack, String needle) {
+    int m = needle.length();
+    if (m == 0) {
+        return 0;
+    }
+    int[] lps = new int[m];
+    int len = 0;
+    for (int i = 1; i < m; i++) {
+        while (len > 0 && needle.charAt(i) != needle.charAt(len)) {
+            len = lps[len - 1];
+        }
+        if (needle.charAt(i) == needle.charAt(len)) {
+            len++;
+        }
+        lps[i] = len;
+    }
+    int j = 0;   // characters of needle matched so far
+    for (int i = 0; i < haystack.length(); i++) {
+        while (j > 0 && haystack.charAt(i) != needle.charAt(j)) {
+            j = lps[j - 1];
+        }
+        if (haystack.charAt(i) == needle.charAt(j)) {
+            j++;
+        }
+        if (j == m) {
+            return i - m + 1;
+        }
+    }
+    return -1;
+}
+```
+
 ### 2-2) Repeated Substring Pattern (LC 459)
 
 ```python
@@ -749,52 +787,92 @@ def repeatedSubstringPattern(s):
 ### 2-3) Longest Duplicate Substring (LC 1044)
 
 ```python
+# python
+# LC 1044 - Longest Duplicate Substring
+# IDEA: binary search the length L (a duplicate of length L implies one of length L-1);
+#       Rabin-Karp hashes every length-L window, and a hash hit is confirmed by comparing text
+# time = O(n log n) expected, space = O(n)
 def longestDupSubstring(s):
-    """LC 1044: Find longest duplicate substring using binary search + rolling hash"""
+    MOD, BASE = (1 << 61) - 1, 131
 
-    def has_duplicate(length):
-        """Check if there's duplicate substring of given length"""
-        base = 256
-        mod = 2**63 - 1
-
-        # Calculate base^length
-        base_power = pow(base, length, mod)
-
-        # Initial hash
-        current_hash = 0
-        for i in range(length):
-            current_hash = (current_hash * base + ord(s[i])) % mod
-
-        seen = {current_hash}
-
-        # Rolling hash
-        for i in range(length, len(s)):
-            # Remove leftmost character
-            current_hash = (current_hash - ord(s[i - length]) * base_power) % mod
-            # Add rightmost character
-            current_hash = (current_hash * base + ord(s[i])) % mod
-
-            if current_hash in seen:
-                return i - length + 1
-            seen.add(current_hash)
-
+    def find_duplicate(length):
+        """Start index of a substring of this length that occurs twice, or -1."""
+        power = pow(BASE, length, MOD)            # BASE^length, to drop the leftmost char
+        seen = {}                                 # hash -> start indices with that hash
+        current = 0
+        for i, ch in enumerate(s):
+            current = (current * BASE + ord(ch)) % MOD
+            if i >= length:
+                current = (current - ord(s[i - length]) * power) % MOD
+            if i >= length - 1:
+                start = i - length + 1
+                for prev in seen.get(current, []):
+                    if s[prev:prev + length] == s[start:start + length]:
+                        return start
+                seen.setdefault(current, []).append(start)
         return -1
 
-    # Binary search on length
-    left, right = 0, len(s) - 1
-    result_start = -1
-
+    left, right = 1, len(s) - 1
+    best_start, best_len = 0, 0
     while left <= right:
         mid = (left + right) // 2
-        start_pos = has_duplicate(mid)
-
-        if start_pos != -1:
-            result_start = start_pos
+        start = find_duplicate(mid)
+        if start != -1:
+            best_start, best_len = start, mid
             left = mid + 1
         else:
             right = mid - 1
+    return s[best_start:best_start + best_len]
+```
 
-    return s[result_start:result_start + right] if result_start != -1 else ""
+```java
+// java
+// LC 1044 - Longest Duplicate Substring
+// IDEA: binary search the length L (a duplicate of length L implies one of length L-1);
+//       Rabin-Karp hashes every length-L window, and a hash hit is confirmed by comparing text
+// time = O(N log N) expected, space = O(N)
+public String longestDupSubstring(String s) {
+    int lo = 1, hi = s.length() - 1;
+    String best = "";
+    while (lo <= hi) {
+        int mid = lo + (hi - lo) / 2;
+        String dup = findDuplicate(s, mid);
+        if (dup != null) {
+            best = dup;
+            lo = mid + 1;
+        } else {
+            hi = mid - 1;
+        }
+    }
+    return best;
+}
+
+private String findDuplicate(String s, int len) {
+    final long MOD = 1_000_000_007L, BASE = 31;   // hash * BASE < 2^63: no overflow
+    long power = 1;                                 // BASE^len, to drop the leftmost char
+    for (int i = 0; i < len; i++) {
+        power = power * BASE % MOD;
+    }
+    Map<Long, List<Integer>> seen = new HashMap<>();
+    long hash = 0;
+    for (int i = 0; i < s.length(); i++) {
+        hash = (hash * BASE + s.charAt(i)) % MOD;
+        if (i >= len) {
+            hash = (hash - s.charAt(i - len) * power % MOD + MOD) % MOD;
+        }
+        if (i >= len - 1) {
+            int start = i - len + 1;
+            List<Integer> starts = seen.computeIfAbsent(hash, k -> new ArrayList<>());
+            for (int prev : starts) {   // confirm: equal hashes may still be different text
+                if (s.regionMatches(prev, s, start, len)) {
+                    return s.substring(start, start + len);
+                }
+            }
+            starts.add(start);
+        }
+    }
+    return null;
+}
 ```
 
 ### 2-4) Shortest Palindrome (LC 214)

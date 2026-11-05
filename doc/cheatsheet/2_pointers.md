@@ -1,7 +1,7 @@
 # Two pointers
 
 > **Scope** — The two-pointer family on arrays and strings — opposite-ends convergence, fast/slow, expand-from-centre and the read/write partition, with one canonical template for each; window problems that grow and shrink on a condition live elsewhere.
-> **See also** — *deep dives split out of this file*: [2_pointers_examples.md](./2_pointers_examples.md) — the worked LC catalogue, one canonical solution per problem; [2_pointers_quickselect.md](./2_pointers_quickselect.md) — QuickSelect / partition-based Kth-element selection, which is a selection algorithm rather than a two-pointer scan.
+> **See also** — *deep dives split out of this file*: [2_pointers_examples.md](./2_pointers_examples.md) — the worked LC catalogue, one canonical solution per problem; [quickselect.md](./quickselect.md) — QuickSelect / partition-based Kth-element selection, which is a selection algorithm rather than a two-pointer scan.
 > *Neighbouring sheets*: [sliding_window.md](./sliding_window.md) — variable-size windows driven by a condition; [2_pointers_linkedlist.md](./2_pointers_linkedlist.md) — the same idea on nodes instead of indices; [n_sum.md](./n_sum.md) — the sorted-array k-sum specialisation; [palindrome.md](./palindrome.md) — expand-from-centre in depth.
 
 ## LeetCode Problem Lists
@@ -35,7 +35,8 @@
 | "sort an array of 0, 1, 2 in one pass", "partition by value into three groups" | O(1) space, one pass | [Template 6](#template-6-three-way-partition-dutch-national-flag--lc-75-) Dutch national flag — LC 75, LC 905 | the relative order must be kept → a **stable** list partition (LC 86) is [linked_list.md's two dummies](./linked_list.md#template-3-two-dummies-split-then-join--lc-86-) |
 | "does the linked list have a cycle", "where does it begin", "find the duplicate without modifying" | O(1) memory | [Template 7](#template-7-fastslow-cycle-detection--lc-141-) Floyd fast/slow — LC 141, LC 142, LC 287 | O(n) memory is allowed → a visited set is simpler |
 | window that grows on one condition, shrinks on another | n ≤ 10⁵ | [Template 8](#template-8-grow-right-then-shrink-left--lc-567) grow right, shrink left — LC 567, LC 209 | any real window problem → [sliding_window.md](./sliding_window.md), which owns the family |
-| kth largest / k closest (select, do not sort) | n ≤ 10⁵, average O(n) | [2_pointers_quickselect.md](./2_pointers_quickselect.md) — LC 215, LC 973 | k is tiny or the input streams → heap |
+| two inputs compared token by token — "compare version numbers", "one edit apart", "equal after backspaces" | O(n + m) time, O(1) space | [Template 9](#template-9-two-sequences-in-lockstep--lc-165-) two sequences in lockstep — LC 165, LC 161, LC 844, LC 986 | tokens may be skipped or reordered → subsequence (Template 4) or DP |
+| kth largest / k closest (select, do not sort) | n ≤ 10⁵, average O(n) | [quickselect.md](./quickselect.md) — LC 215, LC 973 | k is tiny or the input streams → heap |
 
 Constraint cues come from the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md). Everything else — the long tail of worked problems — lives in [2_pointers_examples.md](./2_pointers_examples.md).
 
@@ -323,33 +324,11 @@ public int maxArea(int[] height) {
 before comparing)* · LC 167 *(sum too small → `left++`)* · LC 15 *(fix one, converge the rest — see
 [n_sum.md](./n_sum.md))* · LC 42 *(move the side with the lower max)*
 
-#### Valid Palindrome — LC 125
-
-> **Key point** — converging pointers with a skip: each side first steps past characters that do not
-> count, then the pair is compared. The inner loops keep `left < right`, so `" "` is a palindrome.
-
-**Reduces to**: [Template 2](#template-2-converging-pointers-from-both-ends--lc-11-) — the pair test is a character comparison.
-
-```python
-# python
-# LC 125 - Valid Palindrome (ignore non-alphanumeric, case-insensitive)
-# IDEA: converge from both ends, skipping characters that do not count
-# time = O(n), space = O(1)
-def isPalindrome(s):
-    left, right = 0, len(s) - 1
-    while left < right:
-        while left < right and not s[left].isalnum():
-            left += 1
-        while left < right and not s[right].isalnum():
-            right -= 1
-        if s[left].lower() != s[right].lower():
-            return False
-        left += 1
-        right -= 1
-    return True
-```
-
-> One deletion allowed (LC 680) is the same scan with a branch at the first mismatch — see [2_pointers_examples.md](./2_pointers_examples.md).
+**Valid Palindrome — LC 125** is this card with skips: each side first steps past the characters
+that do not count, then the pair is compared. It is worked as
+[string.md § Template 1](./string.md#template-1-two-pointer-scan--in-place-reversal--lc-125-); one
+deletion allowed (LC 680) is the same scan branching twice at the first mismatch, in
+[palindrome.md](./palindrome.md).
 
 #### Remove Element, Bidirectional Variant — LC 27
 
@@ -822,7 +801,7 @@ array keeps order with Template 1's fast/slow (LC 283).
 
 **Drill** — LC 75 ⭐ · LC 905 *(two groups: one swap pointer is enough)* · LC 2161 *(stable — needs a
 second pass or an extra array)* · LC 215 *(the same 3-way partition inside quickselect, see
-[2_pointers_quickselect.md](./2_pointers_quickselect.md))*
+[quickselect.md](./quickselect.md))*
 
 ### Template 7: Fast/Slow Cycle Detection — LC 141 ⭐⭐⭐⭐
 
@@ -995,6 +974,104 @@ variable-window cards in [sliding_window.md](./sliding_window.md); negative valu
 **Drill** — LC 567 ⭐ · LC 438 *(collect every start instead of returning)* · LC 209 *(shrink while the
 sum is still ≥ target)* · LC 76 *(have/need counter — sliding_window's card)*
 
+### Template 9: Two Sequences in Lockstep — LC 165 ⭐⭐⭐⭐
+
+**Recognise** — "compare version1 and version2", "are these two strings one edit apart", "compare
+after applying backspaces", "intersect two sorted lists of intervals". Two inputs, each read **once
+from its own pointer**, one token per round: a revision number, an effective character, an interval.
+O(n + m) time and O(1) space asked.
+
+**Key point** — each round consumes exactly one token from **each** side and compares them; the first
+unequal pair decides the answer, so nothing before it is ever revisited. Looping while **either**
+side has input left and letting an exhausted side yield a neutral token (`0`, an empty string) is
+what makes unequal lengths a non-case.
+
+```python
+# python
+# LC 165 - Compare Version Numbers
+# IDEA: i walks version1, j walks version2; each round parses one revision from each side
+#       (an exhausted side yields 0) and the first unequal pair decides
+# time = O(n1 + n2), space = O(1)
+def compareVersion(version1, version2):
+    i, j = 0, 0
+    n1, n2 = len(version1), len(version2)
+    while i < n1 or j < n2:                    # OR: the shorter side keeps yielding 0
+        a = 0
+        while i < n1 and version1[i] != ".":
+            a = a * 10 + int(version1[i])      # leading zeros vanish here
+            i += 1
+        b = 0
+        while j < n2 and version2[j] != ".":
+            b = b * 10 + int(version2[j])
+            j += 1
+        if a != b:
+            return -1 if a < b else 1
+        i += 1                                 # step over the '.' (harmless past the end)
+        j += 1
+    return 0
+```
+
+```java
+// java
+// LC 165 - Compare Version Numbers
+// IDEA: i walks version1, j walks version2; each round parses one revision from each side
+//       (an exhausted side yields 0) and the first unequal pair decides
+// time = O(n1 + n2), space = O(1)
+public int compareVersion(String version1, String version2) {
+    int i = 0, j = 0;
+    int n1 = version1.length(), n2 = version2.length();
+    while (i < n1 || j < n2) {
+        int a = 0;
+        while (i < n1 && version1.charAt(i) != '.') {
+            a = a * 10 + (version1.charAt(i) - '0');
+            i++;
+        }
+        int b = 0;
+        while (j < n2 && version2.charAt(j) != '.') {
+            b = b * 10 + (version2.charAt(j) - '0');
+            j++;
+        }
+        if (a != b) {
+            return Integer.compare(a, b);
+        }
+        i++;
+        j++;
+    }
+    return 0;
+}
+```
+
+**Complexity**
+- **Time O(n1 + n2)**: the two inner `while` loops move `i` and `j` forward only, and the outer
+  loop ends when both have passed their string.
+- **Space O(1)**: two pointers and two parsed integers; no `split`.
+
+**Dry run** — `version1 = "1.01"`, `version2 = "1.001.1"`
+
+```text
+round  a (from version1)   b (from version2)   result
+1      1                   1                   equal, continue
+2      "01"  -> 1          "001" -> 1          equal, continue
+3      exhausted -> 0      1                   0 < 1 -> return -1
+```
+
+**Traps**
+- `while i < n1 and j < n2` (AND) stops at the shorter string: `"1.0.1"` vs `"1"` returns 0
+  instead of 1.
+- Comparing revisions as strings: `"1.10"` vs `"1.2"` — `"10" < "2"` as text. Parse to integers,
+  which also makes `"01"` equal `"001"`.
+- `split(".")` plus zero-padding is shorter in Python and fine to mention, but it is O(n) extra
+  space; the pointer form is the O(1) answer.
+
+**Not this if** — the two sequences may be matched out of order or skipped arbitrarily → a
+subsequence check ([Template 4](#template-4-subsequence-matching-one-pointer-always-moves--lc-392-))
+or LCS DP; both inputs sorted and the goal is one merged output → [Template 5](#template-5-merge-two-sorted-arrays-fill-from-the-back--lc-88-).
+
+**Drill** — LC 165 ⭐ · LC 844 *(the token is the next character that survives the backspaces —
+walk both strings from the back)* · LC 161 *(stop at the first mismatch, compare the suffixes)* ·
+LC 953 *(adjacent words, a rank map — [hash_map.md](./hash_map.md#template-6-rank-map--value-to-position--lc-953-))* ·
+LC 986 *(intervals: advance the one that ends first — [intervals.md](./intervals.md))*
+
 ## Drill Path
 
 | Stage | Problems (easy → hard) | What it adds |
@@ -1099,4 +1176,4 @@ sum is still ≥ target)* · LC 76 *(have/need counter — sliding_window's card
 - [sliding_window.md](./sliding_window.md) — the condition-driven window
 - [n_sum.md](./n_sum.md) — fixed element + converging pointers (LC 15, LC 16, LC 18)
 - [2_pointers_examples.md](./2_pointers_examples.md) — worked LC catalogue
-- [2_pointers_quickselect.md](./2_pointers_quickselect.md) — Kth element by partition
+- [quickselect.md](./quickselect.md) — Kth element by partition

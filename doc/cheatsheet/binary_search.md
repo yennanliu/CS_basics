@@ -542,7 +542,7 @@ first start >= end          → lower bound
 ```
 
 > Worked solution for LC 436 — including the sort-with-index recipe — lives in
-> [binary_search_examples.md](./binary_search_examples.md) §16.
+> [binary_search_examples.md § Find Right Interval](./binary_search_examples.md#find-right-interval--lc-436-).
 
 ##### Similar Problems: Bound Queries on a Sorted Set
 
@@ -1194,8 +1194,10 @@ num   lower bound   action        tails
 **Drill** — LC 300 ⭐ · LC 1964 *(non-decreasing, report the position per index)* · LC 354
 *(sort with a tie rule, then LIS)* · LC 2111 *(k residue classes, `len − LIS`)*
 
-> The `bisect_left` one-liner and the LC 354 variation are in
-> [binary_search_examples.md](./binary_search_examples.md) §18.
+> `bisect.bisect_left(tails, num)` is the library form of the inner loop. LC 354 is worked in
+> [sort.md § Template 9](./sort.md#template-9-sort-by-a-derived-key-to-unlock-greedy--dp--lc-354-),
+> and the problems that reduce to LIS in [patience_sorting.md](./patience_sorting.md). Cousins
+> that binary search a DP array sorted by end time for the last compatible job: LC 1235, LC 1751.
 
 #### Why It Works — Three Claims
 
@@ -1591,7 +1593,7 @@ descending: nums[mid] > target  -> go RIGHT (left = mid + 1)
 ```
 
 One function serves both: `if ((val < target) == ascending) left = mid + 1; else right = mid - 1;`.
-The worked LC 1095 is in [binary_search_examples.md](./binary_search_examples.md).
+The worked LC 1095 is in [binary_search_examples.md § Find in Mountain Array](./binary_search_examples.md#find-in-mountain-array--lc-1095-).
 
 **Drill** — LC 162 ⭐ · LC 852 *(the mountain guarantees one peak)* · LC 1901 *(2D: binary
 search the rows, take each row's max)* · LC 1095 *(peak, then an ascending and a descending search)*
@@ -1798,9 +1800,9 @@ Famous problems that reuse a template already in this doc; listed so you recogni
 | LC | Problem | Which template |
 |----|---------|----------------|
 | 275 | H-Index II | boundary search on index: first `i` with `citations[i] >= n - i` ([Template 2](#template-2-lower-and-upper-bound--lc-34-)) |
-| 1268 | Search Suggestions System | sort products, `lower_bound` the growing prefix ([Template 2](#template-2-lower-and-upper-bound--lc-34-); LC 436 in binary_search_examples.md); Trie is the alternative |
+| 1268 | Search Suggestions System | sort products, `lower_bound` the growing prefix ([Template 2](#template-2-lower-and-upper-bound--lc-34-); LC 436 in [binary_search_examples.md](./binary_search_examples.md#find-right-interval--lc-436-)); Trie is the alternative |
 | 349 / 350 | Intersection of Two Arrays I / II | sort the bigger array, binary search each element (hash set / two-pointer alternatives) |
-| 792 | Number of Matching Subsequences | per-char sorted index list + `upper_bound` to jump to the next occurrence (the prefix-sum + lower-bound family — binary_search_examples.md §19) |
+| 792 | Number of Matching Subsequences | per-char sorted index list + `upper_bound` to jump to the next occurrence (the per-key sorted-list query of LC 981 / LC 1146) |
 | 222 | Count Complete Tree Nodes | binary search the **last level's node index**, testing each candidate by walking its bit path — `O(log²n)` |
 | 1044 | Longest Duplicate Substring | binary search on the **answer length** + Rabin-Karp rolling hash as the predicate (binary_search_on_answer.md) |
 | 1385 | Find the Distance Value Between Two Arrays | sort `arr2`, binary search each `arr1[i]` for the closest neighbour |

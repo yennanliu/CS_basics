@@ -1051,6 +1051,26 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 ### 6-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths
 > Track lengths with positive and negative product separately; swap on negative number.
 
+```python
+# python
+# LC 1567 - Maximum Length of Subarray with Positive Product
+# IDEA: pos / neg = length of the longest subarray ending here with a positive / negative product;
+#       a zero resets both, a negative swaps them
+# time = O(n), space = O(1)
+def getMaxLen(nums):
+    pos = neg = best = 0
+    for num in nums:
+        if num == 0:
+            pos = neg = 0
+        elif num > 0:
+            pos += 1
+            neg = neg + 1 if neg > 0 else 0          # a negative run stays negative
+        else:
+            pos, neg = (neg + 1 if neg > 0 else 0), pos + 1   # the sign flips both runs
+        best = max(best, pos)
+    return best
+```
+
 ```java
 // LC 1567 - Maximum Length of Subarray with Positive Product
 // IDEA: pos = length with positive product, neg = with negative product; swap on negatives

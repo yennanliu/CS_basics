@@ -1,8 +1,8 @@
-<!-- e13e7c26b1da -->
-# Sliding Window — 進階視窗形態
+<!-- 4b5735ebc4a4 -->
+# 滑動視窗 — 進階視窗形態
 
-> **範圍** — 第一輪學習可以先跳過的滑動視窗技巧：用雙端佇列維護視窗極值、at-most-K-distinct 這一家、超出單一範例的 exactly-K 計數，以及那些「鍵不是字元」的視窗 —— 補集、以單字為單位的區塊、以索引界定的值桶，還有排序後的區間；六份必背模板留在主頁。
-> **另見**：[sliding_window.md](./sliding_window.md) — 這裡每個技巧所依附的六份標準模板，也是 `Template 1-6` 這些引用指向的地方；[sliding_window_examples.md](./sliding_window_examples.md) — 模板本身的題解庫；[monotonic_queue.md](./monotonic_queue.md) — 完整的雙端佇列極值家族，本頁只指過去、不重推一次；[prefix_sum.md](./prefix_sum.md) — 當視窗和可能變負時的前綴和替代方案。
+> **範圍** — 第一輪可以先跳過的滑動視窗技巧：至多 K 個相異的家族、帶禁用元素重置或一次掃描的恰好 K 計數、同時處理多個不重疊的視窗，以及以單字而非字元為鍵的視窗；七個必會模板留在主文件，而由別份文件負責的進階型態（雙端佇列求極值、補集視窗、數值分桶）在這裡只留指引。
+> **另見**：[sliding_window.md](./sliding_window.md) — 這裡每個技巧所依據的七個標準模板；[sliding_window_examples.md](./sliding_window_examples.md) — 不需要進階技巧的實作題；[monotonic_queue.md](./monotonic_queue.md) — 用雙端佇列求視窗極值；[prefix_sum_advanced.md](./prefix_sum_advanced.md) — 補集視窗（「從兩端拿」）；[prefix_sum.md](./prefix_sum.md) — 視窗總和可能為負時，改用前綴和的做法。
 
 <!-- 08fe05f53c92 -->
 ## LeetCode 題目清單
@@ -12,578 +12,252 @@
 - [Monotonic Queue](https://leetcode.com/problem-list/monotonic-queue/)
 - [Rolling Hash](https://leetcode.com/problem-list/rolling-hash/)
 
-<!-- 0556ce6aa63f -->
+<!-- b6a87abaf3e9 -->
 ## 總覽
 
-底下每個技巧，都是 [sliding_window.md](./sliding_window.md) 那六份模板之一，只是某一格塞了不尋常的東西：視窗狀態變成雙端佇列而不是計數器、視窗的鍵變成一個單字或一個值桶而不是字元、視窗其實是被選中那堆東西的*補集*，或者答案需要跑兩趟視窗而不是一趟。
+下面每個技巧都是 [sliding_window.md](./sliding_window.md) 的某個模板換掉一個欄位：收縮條件數的是相異鍵的個數、視窗被禁用元素重置、合法起點的個數跨步驟帶著走、同時替多個視窗打分，或視窗一次走一整個單字。至多 K 個相異（模板 1）和恰好 K 的重置（模板 2）在 L3 面試會出現；其餘較少見，每張卡都會說明通常哪個較簡單的模板就夠了。
 
-<!-- be0ccfd78e87 -->
-### 技巧索引
+<!-- f69d29eb1767 -->
+### 先備知識
 
-| 技巧 | LC# | 不尋常在哪 | 權重 |
-|---|---|---|:---:|
-| 用單調雙端佇列求視窗極值 | 239 | 視窗狀態是有序的 deque，不是計數 | 3 |
-| 最多 K 種相異元素 | 340, 904, 159 | 收縮的判斷式是 `map.size() > K` | 4 |
-| 字母表受限的 exactly-K | 2062 | 遇到禁用字元會*重置*視窗 | 4 |
-| 用前綴和 + HashMap 取代視窗 | 560, 974, 525 | 合法性不單調，或值會變負 | 4 |
-| 視窗內的前綴小技巧 | 1248 | 一趟就數完所有合法的左邊界 | 3 |
-| 最少操作數 → 最大中段子陣列 | 1658 | 答案是視窗的*補集長度* | 4 |
-| 補集視窗（「從兩端取」） | 1423 | 答案是 `total - 最小視窗` | 4 |
-| 多個互不重疊的固定視窗 | 689, 1031 | 對視窗和做前綴／後綴 argmax | 3 |
-| 索引固定的視窗 + 值分桶 | 220 | 視窗以索引界定，但判斷式看的是值 | 4 |
-| 以單字為單位的視窗（固定長度區塊） | 30, 187 | 每個對齊偏移各跑一個視窗 | 4 |
-| 排序區間上的雙指標 | 1229 | 兩個視窗，一個輸入陣列各一個 | 3 |
+- [sliding_window § 模板 2](./sliding_window.md#template-2-grow-then-shrink-the-while-invariant--lc-1004-)：先擴後縮的迴圈。這裡每個模板都保留它。
+- [sliding_window § 模板 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-)：最長的合法視窗。模板 1 就是它加上相異個數的判斷。
+- [sliding_window § 模板 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)：用 `at_most(K) − at_most(K − 1)` 求恰好 K。模板 2 與 3 延伸它。
+- [sliding_window § 模板 1](./sliding_window.md#template-1-fixed-size-window--lc-643-)：固定大小的視窗。模板 4 與 5 建立在它上面。
 
-> **權重** = 面試出現頻率，1-5 分制，對應底下標題上的星星數。
+<!-- c64517cdfa91 -->
+## 辨識
 
-<!-- 22d7029b47a2 -->
-## 視窗極值與 At-Most-K 視窗
+| 題目敘述中的訊號 | 限制提示 | 該用 | 不適用時 |
+|---|---|---|---|
+| 「**至多 K 個相異**值的最長子陣列」 | n ≤ 10⁵ | [模板 1](#template-1-at-most-k-distinct--lc-904-) | 相異值的個數必須恰好是 K，而且是計數不是量長度 → 模板 2 |
+| 「只用這些字元、恰好 K 個相異的子字串有幾個」 | n ≤ 10⁵ | [模板 2](#template-2-exactly-k-with-a-forbidden-element-reset--lc-2062-) | 每個元素都允許 → 照原樣用 [sliding_window § 模板 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) |
+| 「恰好 k 個奇數／1 的子陣列有幾個」，一次掃描 | n ≤ 5·10⁴，值 ≥ 0 | [模板 3](#template-3-one-pass-exactly-k--count-the-left-gap--lc-1248-) | 值可能為負，或目標是總和 → 前綴和 + hash map |
+| 「**三個**（或兩個）長度為 k、**不重疊**、總和最大的子陣列」 | n ≤ 2·10⁴ | [模板 4](#template-4-non-overlapping-fixed-windows--prefixsuffix-argmax--lc-689-) | 視窗個數是參數 → 在（已用視窗數、前綴）上做 DP |
+| 「**所有單字**串接而成」，每個單字等長 | 單字長度 ≤ 30 | [模板 5](#template-5-word-level-window-one-pass-per-offset--lc-30-) | 視窗是單一字元 → [hash_map § 模板 5](./hash_map.md#template-5-fixed-window-character-counts--lc-438) |
+| 「大小為 k 的**每個視窗**的最大／最小值」 | n ≤ 10⁵ | 單調雙端佇列 — [monotonic_queue § 模板 1](./monotonic_queue.md#template-1-sliding-window-maximum-decreasing-deque--lc-239) | 答案是中位數 → 兩個 heap，[monotonic_queue § 模板 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-) |
+| 「從**兩端**拿 k 張牌」、「從兩端移除直到總和為 x」 | n ≤ 10⁵，值 ≥ 1 | 補集視窗 — [prefix_sum_advanced § 模板 9](./prefix_sum_advanced.md#template-9-complement-trick--total--middle-window---lc-1423) | 可以從中間拿 → 剩下的不是一個視窗 |
+| 「`abs(i − j) ≤ k` **而且** `abs(nums[i] − nums[j]) ≤ t`」 | n ≤ 10⁵ | 寬度 `t + 1` 的數值分桶 — [sort § 模板 8](./sort.md#template-8-bucket-sort-by-value-range-bucket--value--width--lc-220-) | 值必須相等 → 在索引視窗上用一般的 set（LC 219） |
 
-<!-- b2c197239a57 -->
-### 用單調雙端佇列求視窗極值 — LC 239 ⭐⭐⭐
+<!-- ed014bb62bb1 -->
+## 至多 K 與恰好 K 計數
 
-> **本頁不重新推導 deque。**[monotonic_queue.md](./monotonic_queue.md) 才是這一家的主人 ——
-> 不變式、攤還 O(n) 的論證、求最小值的變形，以及更難的成員（LC 862、LC 1438、LC 1499）。
-> 底下只給你辨識所需的最低限度：怎麼看出一道視窗題要的是 deque 而不是 map —— **答案是視窗的某個*極值***，
-> 所以被壓過的元素可以永久丟棄。如果答案改成*中位數*，那就什麼都不能丟，你需要兩個堆積或一個有序 multiset。
+<!-- a7936bd2f465 -->
+### 模板 1：至多 K 個相異 — LC 904 ⭐⭐⭐⭐
 
-需要 O(1) 拿到視窗最大／最小值時，用一個維持單調順序的 deque。
+**辨識** — 「**至多 K 個相異**值的最長子陣列／子字串」、「兩個籃子，每籃只放一種水果」。n ≤ 10⁵ → O(n)。
 
-<!--CODE-->
-
-**時間**：O(n) —— 每個元素最多進出 deque 一次。
-
-> 維護一個遞減的索引 deque；front 永遠是當前視窗的最大值。
-
-<!--CODE-->
-
-<!-- a80fdebe3c36 -->
-### 最多 K 種相異元素 ⭐⭐⭐⭐
-
-**形狀**：模板 3（最長視窗）加上 `while len(window_map) > K: shrink`。整個家族就是同一份模板換不同的 `K`，而它同時也是 [Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) 裡 exactly-K 相減的 `atMost` 那一半。
-
-| 題目 | LC# | `K` | 備註 |
-|---------|-----|-----|------|
-| Longest Substring with At Most K Distinct Characters | 340 | K | 一般化的敘述 |
-| Fruit Into Baskets | 904 | 2 | `K = 2` 的 LC 340，底下有解 |
-| Longest Substring with At Most Two Distinct Characters | 159 | 2 | 把 LC 904 搬到字元上 |
-| Longest Substring Without Repeating Characters | 3 | — | 退化情況：每個計數都必須是 1 |
-
-<!-- fd07bdc01c3f -->
-#### Fruit Into Baskets — LC 904
-
-**把題目重講一次**：找出最長的連續子陣列，裡面**最多 2 種**不同的值（2 個籃子，每個裝一種水果）。這就是標準的*「最多 K 種相異元素的最長視窗」*，`K = 2`。
-
-**關鍵想法**：維護視窗的 `{fruit_type: count}` 表。每一步把 `right` 往外擴；只要表裡超過 2 個鍵，就從 `left` 收縮到剩 ≤ 2 為止。答案是過程中看過的最大視窗寬度 `right - left + 1`。視窗永遠不會縮到*小於*目前最佳的合法寬度，所以一趟掃描就是 O(n)。
-
-<!--CODE-->
-
-**為什麼 `del` 很重要**：`len(basket)` 代表視窗裡不同水果的種類數。如果你只把計數減 1，卻不刪掉歸零的鍵，`len(basket)` 就會虛胖，`while` 迴圈會把視窗縮得太兇（或根本不會正確結束）。計數一歸零就要把鍵移掉。
-
-**一般化**：把 `> 2` 換成 `> K`，這份模板就一字不改地解掉 **LC 340（Longest Substring with At Most K Distinct Characters）** —— LC 904 只是 `K = 2` 的特例。要把它變成*剛好 K 個*的計數器，見主頁的 [Template 6: Exactly K via At-Most Subtraction](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)。
-
-| 元件 | 作用 |
-|-------|------|
-| `basket` 表 | 追蹤視窗裡的種類與各自的計數 |
-| `while len(basket) > 2` | 維持不變式 —— 讓視窗保持合法 |
-| 計數歸零時 `del` | 讓 `len(basket)` 等於真正的相異數 |
-| `right - left + 1` | 當前視窗寬度，取最大值存進 `max_fruit` |
-
-<!-- d0e873ed9849 -->
-#### Longest Substring with At Most Two Distinct Characters — LC 159
-
-> 視窗裡的相異字元超過 2 個就收縮左邊；用頻率表追蹤。
-
-<!--CODE-->
-
-<!-- d6c1ba34cbde -->
-## 超出單一範例的 Exactly-K 計數
-
-[Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) 已經給了這個轉換，也解過 LC 992。這一節補的是第一輪可以跳過的部分：字母表受限時會怎樣、什麼時候該改用前綴表，以及為什麼直接做「剛好 K 個」的視窗找不到乾淨的收縮條件。
-
-<!-- 0303507598de -->
-### Count Vowel Substrings —— 重置的變化 — LC 2062 ⭐⭐⭐⭐
-
-**題目：**數出**只由母音組成**（`a, e, i, o, u`）**且**包含**全部 5 個**相異母音的子字串個數。
-
-**關鍵想法：**`剛好 5 個相異母音 = atMost(5) - atMost(4)`
-
-這跟 LC 992 是同一個 `atMost(k) - atMost(k-1)` 轉換，只是**字串版多了一個變化**：
-
-> **「只能有母音」這條限制。** 子字串裡*不能有子音*。所以 `atMost` 一碰到子音，視窗就**當場報廢** —— 清空頻率表，把 `left` 跳到子音後面（`left = right + 1`）。這樣才能保證我們數到的每個視窗都只含母音。
+**關鍵** — `len(basket)` 就是視窗中相異值的個數，因為某個鍵的計數一到 0 就被刪掉。至多 K 個相異的視窗收縮後仍然合法，所以模板 3 的迴圈加上 `while len(basket) > K` 就能用。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!--CODE-->
+**複雜度**
+- **時間 O(n)**：`left` 只往前走，內層 `while` 總共最多跑 n 次。
+- **空間 O(K)**：`basket` 最多有 K + 1 個鍵，因為 `while` 會立刻移掉多出來的那一個。
 
-**為什麼子音重置是它跟 LC 992 唯一的差別：**
+**陷阱**
+- 只減計數不 `del`：在 `[1, 2, 3, 2, 2]` 上，1 的零計數項讓 `len(basket)` 停在 3，`while` 永遠停不下來，把 `left` 推出陣列尾端（`IndexError`，而不是 4）。
+- 在 `while` 裡面記錄 `best`，量到的是有 K + 1 種的視窗：`[1, 2, 3]` 會回報 3。
 
-| | LC 992（K 種相異整數） | LC 2062（5 個相異母音） |
-|---|---|---|
-| 允許的元素 | 任何整數 | **只有母音** |
-| 不合法的元素 | （沒有 —— 全部都允許） | **子音 → 重置視窗** |
-| 轉換 | `atMost(k) - atMost(k-1)` | `atMost(5) - atMost(4)` |
-| 視窗計數 | `ans += r - l + 1` | `ans += r - l + 1` |
+**不適用時** — 題目問的是有幾個子陣列**恰好**有 K 個相異值 → 帶計數欄位把這個迴圈跑兩次（[sliding_window § 模板 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)）。
 
-> **重點：**當一道「數出剛好 K 種相異的子字串」的題目，同時還限制了*哪些字元可以出現*，就保留 `atMost` 相減，只要在遇到禁用字元時加上重置（`map.clear(); l = r + 1`）就好。
+**練習** — LC 904 · LC 159 *（同一題換成字元）* · LC 340 *（`> K` 取代 `> 2`）* · LC 992 *（恰好 K：這個迴圈跑兩次並計數）*
 
-<!-- ad0f2fb243fa -->
-### 為什麼 At-Most 相減行得通 ⭐⭐⭐
+<!-- eb6f8d54f1ab -->
+### 模板 2：帶禁用元素重置的恰好 K — LC 2062 ⭐⭐⭐⭐
 
-<!-- ce3332e204c2 -->
-#### 圖解：一格一格看
+**辨識** — 「只用母音、而且**五個都要有**的子字串有幾個」、「恰好 K 個相異，而且子字串不能含 …」。n ≤ 10⁵。
 
-
-<!--CODE-->
-
-<!-- 44c0a4f19c52 -->
-#### 模式辨識：什麼時候用這招
-
-**看到這些就用「Exactly K」轉換：**
-<!--CODE-->
-
-**直接用滑動視窗就行的情況：**
-<!--CODE-->
-
-<!-- bb9398aac229 -->
-#### 常見錯誤
-
-**1. 忘了 k=0 這個邊界情況：**
-<!--CODE-->
-**2. 求最大／最小長度時用錯方法：**
-<!--CODE-->
-
-**3. 把「個數」跟「長度」搞混：**
-<!--CODE-->
-
-<!-- 89cd621c5b13 -->
-#### 面試時可以講的重點
-
-**1. 怎麼認出來：**
-<!--CODE-->
-
-**2. 複雜度分析：**
-<!--CODE-->
-
-**4. 講法：**
-- 「直接做『剛好 K 個』很難，因為視窗的合法性不是單調變化的」
-- 「『最多 K 個』是單調的 —— 一旦合法，在收縮之前都會一直合法」
-- 「減掉『最多 K-1 個』就把所有多算的部分扣掉了」
-- 「這個轉換把一題 hard 變成兩題 medium」
-
-> at-most 模板本身這裡不重複 —— 直接從
-> [Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) 背起來。
-
-<!-- f1a31aab8b13 -->
-#### 為什麼直接做「剛好 K 個」很難
-
-**直接做的問題：**
-<!--CODE-->
-
-**為什麼「最多 K 個」可行：**
-<!--CODE-->
-
-**這個轉換的數學證明：**
-<!--CODE-->
-
-<!-- 9a953a0a8cba -->
-### 前綴和 + HashMap vs 滑動視窗 —— 該用哪個？ ⭐⭐⭐⭐
-
-<!-- f4f68428d3fd -->
-#### 核心想法
-
-**滑動視窗**
-- 維護一個視窗 `[left, right]`，依一個**單調**的條件收縮或擴張。
-- 只有在合法性單調時才可行：視窗一旦不合法，從左邊收縮一定能把它救回來。
-- 天生適合處理**「最多 K 個」**與**「最長／最短」**這類限制。
-
-**前綴和 + HashMap**
-- 追蹤一個累加的計數（例如目前為止看過幾個奇數）。
-- 用 HashMap 記錄每個前綴計數出現過幾次。
-- 在每個索引查 `prefixCount - k`，就能知道有幾個以此結尾的子陣列**剛好有 k 個**目標元素。
-- 適合需要**精確**命中目標的計數問題，尤其是「剛好 k 個」破壞了滑動視窗單調性的時候。
-
-<!-- 6b2f820cf4a9 -->
-#### 為什麼「剛好 K 個」會弄壞純滑動視窗
-
-<!--CODE-->
-
-滑動視窗只能追蹤**一個**左邊界。但「剛好 k 個」在每個右端點都可能有**多個**合法左邊界 —— 前綴和 + HashMap 每一步用 O(1) 就把它們全數進去。
-
-<!-- 6b436d7b08b2 -->
-#### 對照表
-
-| 面向 | 滑動視窗 | 前綴和 + HashMap |
-|---|---|---|
-| **最適合** | 最多 K 個／最長／最短 | 剛好 K 個／數出子陣列個數 |
-| **條件型態** | 單調（≤ k、≥ k） | 非單調（== k） |
-| **多個左邊界** | ❌ 只能處理一個 | ✅ 全部都算得到 |
-| **空間** | O(1) | HashMap 需要 O(n) |
-| **時間** | O(n) | O(n) |
-| **程式複雜度** | 單純的雙指標 | 需要追蹤前綴 + 基底情況 `map.put(0, 1)` |
-| **關鍵招式** | `while (invalid) { shrink left }` | `res += map.get(prefixCount - k)` |
-
-<!-- 5b7f44c81448 -->
-#### 決策指引
-
-<!--CODE-->
-
-<!-- 5ab033a13911 -->
-#### 兩種寫法並排比較
-
-**滑動視窗 —— 「最多 K 個奇數」：**
-<!--CODE-->
-
-**前綴和 + HashMap —— 「剛好 K 個奇數」：**
-<!--CODE-->
-
-<!-- 8841c05ad700 -->
-#### 相似的 LeetCode 題目
-
-| 題目 | LC# | 難度 | 做法 | 關鍵洞見 |
-|---------|-----|------------|----------|-------------|
-| Count Number of Nice Subarrays | 1248 | Medium | 兩種都行 | 把奇數當 1、偶數當 0；用前綴和或 atMost 技巧 |
-| Binary Subarrays With Sum | 930 | Medium | 兩種都行 | 0/1 陣列；前綴和最直接 |
-| Subarray Sum Equals K | 560 | Medium | **只能用前綴和** | 有負數 → 滑動視窗會壞掉 |
-| Subarrays with K Different Integers | 992 | Hard | 滑動視窗（atMost） | 相異數；atMost(k)-atMost(k-1) |
-| Number of Subarrays with Sum = k | 974 | Medium | **只能用前綴和** | 整除性的變形；需要精確命中 |
-| Contiguous Array | 525 | Medium | **只能用前綴和** | 0 和 1 一樣多；需要精確平衡 |
-
-> **經驗法則**：如果陣列可能有**負數**，或條件是個沒辦法改寫成「最多」的硬等式，就用**前綴和 + HashMap**。如果值都非負、條件是個範圍（≤ k），就用**滑動視窗**。
-
-<!-- 4011c90696ea -->
-### 什麼時候純滑動視窗就夠、什麼時候要額外招式 ⭐⭐⭐
-
-<!-- 738f45889b72 -->
-#### 核心問題：合法性條件單調嗎？
-
-**純滑動視窗可行**的前提是合法性條件**單調**：
-- 視窗一旦不合法，繼續往右擴就會一直不合法
-- 一個 `while (invalid) { shrink left }` 就能乾淨地把合法性救回來
-
-**需要額外招式**的情況是條件**不單調**（尤其是「剛好 k 個」）：
-- 對固定的 `r`，可能有**多個合法的左邊界**
-- 單純縮到合法為止只會給你其中一個答案，其他的就漏掉了
-
-<!-- 4ef25c95095d -->
-#### 決策表
-
-| 條件型態 | 例子 | 純滑動視窗可行？ | 補救方式 |
-|----------------|---------|---------------------|-----|
-| `sum ≤ k` | 乘積 < k | ✅ 可以 | — |
-| `distinct ≤ k` | 最多 K 種相異 | ✅ 可以 | — |
-| `sum ≥ k`（最短長度） | 最小子陣列和 | ✅ 可以 | — |
-| `exactly k` 個奇數／相異值 | LC 1248, LC 992 | ❌ 不行 | `atMost(k) - atMost(k-1)` 或前綴小技巧 |
-| `exactly k`（含偶數間隔） | LC 1248 | ❌ 不行 | 前綴小技巧（數左邊的偶數間隔） |
-
-**兩種補救方式**，本頁或主頁都有講：
-
-1. **`atMost(k) - atMost(k-1)`** —— 兩趟乾淨的掃描；見 [Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)。
-2. **視窗內的前綴小技巧** —— 一趟、O(1) 空間；見下一節。
-
-<!-- 698171006768 -->
-### 視窗內的前綴小技巧 — LC 1248 ⭐⭐⭐
-
-
-**什麼時候用：**要數出**剛好 k 個**某種元素的子陣列，而且你想要一趟 O(n) 解掉，不想呼叫 `atMost` 兩次。
-
-**核心想法：**
-<!--CODE-->
-
-**為什麼碰到新的奇數時 `prefix` 要歸零：**
-- `r` 出現新的奇數，會改變「從左邊數來第 k 個奇數」是哪一個
-- 新的最左奇數前面有幾個偶數，必須重新算
-- 所以把 `prefix = 0` 歸零，讓 while 迴圈重新把它累出來
-
-<!-- 280d316ebd5b -->
-#### 模板
-
-<!--CODE-->
-
-<!-- 3b773d3bcd82 -->
-#### 走查：`nums = [2,2,1,2,1], k = 2`
-
-<!--CODE-->
-
-答案：3 ✅ —— 三個子陣列 `[1,2,1]`、`[2,1,2,1]`、`[2,2,1,2,1]`
-
-<!-- 267c2891246d -->
-#### 比較：前綴小技巧 vs atMost 相減
-
-| | 前綴小技巧 | atMost(k) - atMost(k-1) |
-|---|---|---|
-| **掃描趟數** | 1 | 2 |
-| **空間** | O(1) | O(1) |
-| **複雜度** | O(n) | O(n) |
-| **可讀性** | 有點繞（歸零那段） | 比較乾淨、比較直覺 |
-| **什麼時候用** | 想要一趟解決 | 想要寫得清楚 |
-
-<!-- d6f91b3c7322 -->
-#### 相關題目
-
-| 題目 | LC# | 難度 | 備註 |
-|---------|-----|------------|------|
-| Count Number of Nice Subarrays | 1248 | Medium | 剛好 k 個奇數 |
-| Binary Subarrays With Sum | 930 | Medium | 和剛好是 k（0/1 陣列） |
-| Subarrays with K Different Integers | 992 | Hard | 剛好 k 種相異值 |
-| Number of Substrings Containing All Three Characters | 1358 | Medium | 類似的間隔計數 |
-
-<!-- 860d213483c8 -->
-## 視窗變換
-
-<!-- 14db3b17c302 -->
-### 最少操作數 → 最大子陣列長度 — LC 1658 ⭐⭐⭐⭐
-
-<!-- edbed034f7b9 -->
-#### 核心想法
-
-當題目問的是**從陣列兩端移除元素、直到達成某個目標的最少操作次數**，就把視角翻過來：
-
-<!--CODE-->
-
-**為什麼這樣行得通：**
+**關鍵** — 至多 K 個相異值的視窗，減掉至多 K − 1 個的，剛好就是恰好 K 個的視窗。被計入的視窗都不能含禁用字元，所以 `at_most` 遇到它就重置：清空 map、把 `left` 移到它後面。相減的式子不變，因為兩次呼叫在同樣的位置重置。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- 085ec5b0bcff -->
-#### 模式
+**複雜度**
+- **時間 O(n)**：兩次 `at_most`，每次的 `left` 都只往前走。
+- **空間 O(1)**：`count` 最多放六個母音。
+
+**試跑** — 為什麼相減剛好算出恰好 K 個，以 `[1, 2, 1, 3]`、K = 2 為例：
 
 <!--CODE-->
 
-<!-- ac41e3de12b9 -->
-#### 模板（Java）
+**陷阱**
+- 忘了重置：在 `"aeiouxa"` 上視窗會跨過 `x`，答案變成 3 而不是 1。
+- 推廣成 `exactly(k)` 時，`k = 0` 會呼叫 `at_most(−1)`，它的 `while len(count) > −1` 永遠在收縮；相減前先對 `k = 0` 回傳 0。
+- 把兩個**最長視窗**的長度相減沒有任何意義：這個恆等式對計數（`total += right − left + 1`）成立，對 `max(len)` 不成立。
 
-<!--CODE-->
+**不適用時** — 條件是可能為負的總和，或是任何「至多」都表達不了的等式（負數下的「總和等於 k」，LC 560）→ [hash_map § 模板 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-)。
 
-> **為什麼這裡純滑動視窗就夠：**`# Note: works for any nums[i] >= 0 (non-negative)` —— 往右擴時視窗和是**單調不減**的。從左邊收縮一定會讓和變小 —— 合法性條件是單調的 → 乾淨的雙指標解。
+**練習** — LC 992 *（沒有禁用元素）* · LC 2062 · LC 930 *（恰好 `goal` 個 1）* · LC 1248 *（恰好 k 個奇數；也可用模板 3）*
 
-<!-- 24940acff206 -->
-#### 手動跑一遍 —— `nums = [1,1,4,2,3], x = 5`
+<!-- 5d76cb0b15bf -->
+### 模板 3：一次掃描的恰好 K — 數左側間隙 — LC 1248 ⭐⭐⭐
 
-<!--CODE-->
+**辨識** — 「恰好 k 個奇數／1 的子陣列有幾個」，值是指示性的（奇或偶、1 或 0），而且要求一次掃描、O(1) 空間。
 
-<!-- b813e7b671de -->
-#### 什麼時候套用這個轉換
-
-| 題目裡的訊號 | 轉換 |
-|-----------------------|----------------|
-| 「從左邊或右邊移除」 | 最少移除數 = n − 最大中段子陣列 |
-| 「從兩端操作的最少次數」 | 找和等於 total − x 的最大子陣列 |
-| 「只能從邊緣取元素」 | 補集就是一段連續的中間子陣列 |
-
-<!-- a6ee57014797 -->
-#### 相似的 LeetCode 題目
-
-| 題目 | LC# | 難度 | 關鍵洞見 |
-|---------|-----|------------|-------------|
-| **Minimum Operations to Reduce X to Zero** | **1658** | **Medium** | 核心範例 —— 和等於 total − x 的最大子陣列 |
-| Minimum Size Subarray Sum | 209 | Medium | 和 ≥ target 的最短子陣列（直接做，不用翻轉） |
-| Maximum Erasure Value | 1695 | Medium | 元素全相異的最大子陣列 |
-| Subarray Sum Equals K | 560 | Medium | 精確的子陣列和 —— 用前綴和 + HashMap（有負數） |
-| Longest Subarray of 1's After Deleting One Element | 1493 | Medium | 最大中段子陣列，移除額度固定 |
-| Count Subarrays Where Max Element Appears at Least K Times | 2962 | Medium | 數出合法的中間視窗，最少操作數的框架 |
-
-<!-- 573eb7a9bfc2 -->
-### 補集視窗（「從兩端取」） — LC 1423 ⭐⭐⭐⭐
-
-**什麼時候用：**你必須從陣列的**兩端**取 `k` 個元素（左右怎麼分都可以）。被選中的元素不連續 —— 但你*沒選的*那些一定連續：剛好就是一個大小 `n - k` 的連續視窗。把取到的最大化 ⇔ **把補集視窗最小化**。
-
-<!-- 47cabd8280de -->
-#### 核心想法
-
-<!--CODE-->
-
-<!-- e3761f0dfbc7 -->
-#### 模板（Java）
+**關鍵** — 視窗一旦含有 k 個奇數，從 `left` 到第一個奇數之間的每個起點都給出一個合法子陣列。`while odd == k` 迴圈把 `left` 走過這些起點，並把它們數進 `gap`。在新的奇數出現之前，`gap` 對之後每個 `right` 都仍然成立，所以每一步都加上它，只在遇到奇數時重置。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- 9d37dec48a98 -->
-#### 手動跑一遍 —— `cardPoints = [1,2,3,4,5,6,1], k = 3`
+**複雜度**
+- **時間 O(n)**：`left` 總共只走過陣列一次。
+- **空間 O(1)**：四個整數。前綴和 + hash map 的版本是 O(n) 空間。
+
+**試跑** — `nums = [2, 2, 1, 2, 1], k = 2`：
 
 <!--CODE-->
 
-<!-- a5e611ff5838 -->
-#### 什麼時候套用補集技巧
+**陷阱**
+- 遇到新奇數時沒有重置 `gap`：`[1, 1, 1], k = 1` 在第二個奇數之後還在加舊的間隙，回傳 6 而不是 3。
+- 只在 `while` 裡面計數：第 k 個奇數之後的偶數（`[1, 2, 2], k = 1`）每個都會延長所有已算過的子陣列，這些會被漏掉 — 得到 1 而不是 3。
+
+**不適用時** — 值可能為負，或目標是任意值的總和 → 前綴和 + hash map，[prefix_sum § 模板 6](./prefix_sum.md#template-6-transform-and-count--lc-1248)（同一題，用 `{prefix: count}` 計數）；重視清楚勝過一次掃描時，模板 2 的相減比較好解釋。
+
+**練習** — LC 1248 · LC 930 *（用 1 取代奇數）* · LC 1358 *（數包含三種字母的視窗：同樣是「第一個必要字元之前的每個起點」的計數）*
+
+<!-- 5b64e1b4d4aa -->
+## 同時處理多個視窗
+
+<!-- acc1b8deb977 -->
+### 模板 4：不重疊的固定視窗 — 前綴／後綴 argmax — LC 689 ⭐⭐⭐
+
+**辨識** — 「**三個**長度為 k、不重疊、總和最大的子陣列」、「兩個長度分別為 L 與 M 的不重疊子陣列」。n ≤ 2·10⁴。
+
+**關鍵** — 固定中間的視窗。最好的左視窗就落在 `[0, mid − k]` 的任何位置，最好的右視窗落在 `[mid + k, end]` 的任何位置，兩者互相獨立，所以在視窗總和上做一次前綴 argmax 和一次後綴 argmax，每個 `mid` 都能 O(1) 回答。
 
 <!--CODE-->
 
-<!-- d502a237357f -->
-### 多個互不重疊的固定視窗 — LC 689 ⭐⭐⭐
+<!--CODE-->
 
-**什麼時候用：**要選**好幾個互不重疊的固定大小視窗**，把總和最大化。先固定*中間*那個視窗，這時最佳的左視窗與最佳的右視窗彼此獨立 —— 用前綴／後綴的 argmax 掃描預先算好。這是把兩視窗的情況（LC 1031）推廣到三個。
+**複雜度**
+- **時間 O(n)**：一次滾動算出 `w`，`left` 與 `right` 各掃一次，再掃一次 `mid`。
+- **空間 O(n)**：三個存視窗總和與 argmax 的陣列。
 
-<!-- 2553dcc77862 -->
-#### 手動跑一遍 —— `nums = [1,2,1,2,6,7,5,1], k = 2`
+**試跑** — `nums = [1, 2, 1, 2, 6, 7, 5, 1], k = 2`：
 
 <!--CODE-->
 
-<!-- 996c8b165ad3 -->
-#### 相似題
+**陷阱**
+- 平手：LC 689 要字典序最小的答案。前綴掃描用 `>=` 會把左視窗移到最後一個平手的位置：`[1, 1, 2, 2], k = 1` 回傳 `[1, 2, 3]` 而不是 `[0, 2, 3]`。
+- 中間的迴圈兩側都必須留一整個視窗：`mid` 的範圍是 `[k, m − k)`，不是 `[0, m)`。
 
-| 題目 | LC# | 難度 | 主要差異 |
-|---------|-----|------------|----------------|
-| **Maximum Sum of 3 Non-Overlapping Subarrays** | **689** | **Hard** | 核心範例 —— 3 個視窗，且索引要字典序最小 |
-| Maximum Sum of Two Non-Overlapping Subarrays | 1031 | Medium | 只有 2 個視窗（而且兩個大小不同）—— 緊接在下面解；不需要中間那層迴圈 |
+**不適用時** — 視窗個數是輸入 j → DP，`dp[j][i] = max(dp[j][i − 1], dp[j − 1][i − k] + w[i − k + 1])`，O(n·j)。
 
-<!-- aa403d02ce52 -->
-#### 一般化
-
-<!--CODE-->
-
-<!-- bd3cc406bab0 -->
-#### LC 1031: Maximum Sum of Two Non-Overlapping Subarrays —— 前綴和 + 滑動視窗
-
-> 兩種先後順序都試一遍（L 在 M 前、M 在 L 前）。每一種順序都用 `i` 當 M 視窗的**開區間右端**往前掃；同時維護 `maxL` = 目前為止在 M 左側看過的最佳 L 視窗。
-
-**索引配置（i = M 視窗的開區間右端）：**
-<!--CODE-->
-
-**為什麼從 `i = L + M` 開始？** 那是兩個視窗頭尾相接所需的最短前綴長度。`i` 一路跑到 `<= n`（含），因為 `prefix` 的大小是 `n+1`。
-
-<!--CODE-->
-
-**模式總結：**
-- 前綴和只建一次：O(N)
-- 每種順序掃一趟：一邊推進右視窗，一邊維護 `maxL`（最佳左視窗）
-- 呼叫兩次（把 L/M 對調）涵蓋兩種順序 → 最終答案取兩者的 `Math.max`
+**練習** — LC 1031 *（兩個長度不同的視窗：兩種先後順序都試，維護目前最好的左視窗；在 [prefix_sum_examples.md](./prefix_sum_examples.md) 中解）* · LC 689
 
 <!-- 008d80276a19 -->
 ## 鍵不是字元的視窗
 
-<!-- 98b78afe0f52 -->
-### 索引固定的視窗 + 分桶（值鄰近查詢） — LC 220 ⭐⭐⭐⭐
+<!-- 0e592e6fadbb -->
+### 模板 5：單字層級的視窗，每個偏移跑一次 — LC 30 ⭐⭐⭐⭐
 
-**什麼時候用：**視窗是用**索引距離**界定的（`|i - j| <= indexDiff`），但合法性判斷看的是**值**（`|nums[i] - nums[j]| <= valueDiff`）。普通的頻率表回答不了「視窗裡有沒有*相近的值*？」—— 你需要一個有序結構，或是 O(1) 的分桶技巧。
+**辨識** — 「找出所有**單字全部串接**而成的子字串的起點」，每個單字等長。視窗一次移動一整個單字。
 
-<!-- 4be9ce0b029c -->
-#### 另一種做法：有序集合視窗 —— `O(n log k)`
-
-<!--CODE-->
-
-<!-- da250c282e98 -->
-#### 陷阱
-
-<!--CODE-->
-
-<!-- 822434fe885c -->
-#### 相似題
-
-| 題目 | LC# | 難度 | 主要差異 |
-|---------|-----|------------|----------------|
-| **Contains Duplicate III** | **220** | **Hard** | 核心範例 —— 索引視窗 + 值的鄰近性 |
-| Contains Duplicate II | 219 | Easy | 一樣的索引視窗，但要求完全相等 → 普通 HashSet 就夠 |
-
-<!-- b3787a48d4c1 -->
-### 以單字為單位的滑動視窗（固定長度區塊） — LC 30 ⭐⭐⭐⭐
-
-**什麼時候用：**視窗滑動的單位是**固定長度的區塊**，而不是單一字元 —— 等長單字的串接、k-mer、區塊比對。訣竅是跑 `wordLen` 個各自獨立的滑動視窗，每個起始偏移一個，這樣所有可能的對齊都涵蓋到了，而每個字元在每個偏移下仍然只被看 O(1) 次。
-
-<!-- c5034591ac6b -->
-#### 手動跑一遍 —— `s = "barfoothefoobarman", words = ["foo","bar"]`（wl=3, m=2）
-
-<!--CODE-->
-
-<!-- 283fe4c16383 -->
-#### 變形 —— LC 187 Repeated DNA Sequences（固定長度視窗 + rolling hash）
-
-*變化點：視窗長度固定是 10，而且你只需要知道「之前出現過嗎？」，所以把頻率表換成 set —— 再把每個鹼基編成 2 個位元，視窗的識別值就能 O(1) 更新，不必每次重新雜湊一段 10 個字元的子字串。*
+**關鍵** — 合法起點 `s` 滿足 `s % wordLen == r`，其中 `r < wordLen`，餘數相同的起點共用同樣的單字邊界。所以跑 `wordLen` 個獨立的視窗，每個偏移一個，每次走 `wordLen`；在單一視窗裡，它就是以單字為鍵的字元計數視窗。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- 18d2eee0e56c -->
-### 排序區間上的雙指標 — LC 1229 ⭐⭐⭐
+**複雜度**
+- **時間 O(wordLen · n)**：`wordLen` 次掃描，每次約 `n / wordLen` 步，每一步都要切出並雜湊一個長度 `wordLen` 的單字。
+- **空間 O(m · wordLen)**：`need` 與 `window` 最多存 m 個不同的單字。
 
-> 放在這裡是因為它*不是*滑動視窗：這裡沒有一個帶合法性判斷的單一視窗，而是兩個在兩個排序清單上各自前進的指標。
-> 它會勾起同一種直覺，所以值得練到分得清楚。真正的區間家族住在
-> [intervals.md](./intervals.md) 和 [scanning_line.md](./scanning_line.md)。
-
-**什麼時候用：**兩個排序好的區間陣列；找出第一個（或全部）滿足某個時長／長度要求的重疊區間。
-
-<!-- 2f930ef456b0 -->
-#### 模板（Java）—— Meeting Scheduler
+**試跑** — `s = "barfoothefoobarman", words = ["foo", "bar"]`：
 
 <!--CODE-->
 
-<!-- dfc4b0bb91dc -->
-#### 手動跑一遍 —— `slots1=[[10,50],[60,120],[140,210]], slots2=[[0,15],[60,70]], duration=8`
+**陷阱**
+- 只跑一次、每次前進 1、在每個起點重數 m 個單字，是 O(n · m · wordLen)；正是偏移讓每個單字在一個視窗裡只進出一次。
+- 重複的單字（`["word", "good", "best", "word"]`）：要和 `need` 比較計數，不能用 set，否則多餘副本的收縮永遠不會觸發。
+
+**不適用時** — 視窗是固定長度、只問「之前看過嗎？」（LC 187，重複的 DNA）→ rolling hash，在 [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md)。
+
+**練習** — LC 438 *（同一個視窗，換成字元）* · LC 30 · LC 187 *（固定長度視窗加 rolling hash）*
+
+<!-- ecbb506554e9 -->
+## 看起來像但不是單一視窗的題目
+
+<!-- 2211536525b3 -->
+### Meeting Scheduler — LC 1229
+
+> **關鍵** — 兩個排好序的串列，各一個指標。先結束的區間和另一個串列裡後面的任何區間，重疊都不會比現在更多，所以把它的指標往前移；第一個長度至少 `duration` 的重疊就是最早的答案。
+
+**歸約到**：[intervals § 模板 3](./intervals.md#template-3-two-pointer-intersection-lc-986) — 兩個排序區間串列的交集，只是回傳第一個夠長的重疊，而不是全部收集起來。這裡沒有視窗也沒有合法性判斷，所以它不是滑動視窗的模板。
 
 <!--CODE-->
 
-<!-- b189be281b8a -->
-#### 相似的 LeetCode 題目
-
-| 題目 | LC# | 難度 | 關鍵洞見 |
-|---------|-----|------------|-------------|
-| **Meeting Scheduler** | **1229** | **Medium** | 核心範例 —— 在兩個時段陣列中找第一個長度 d 的重疊 |
-| Interval List Intersections | 986 | Medium | 收集兩個排序區間清單之間的**所有**重疊；同一條「推進較早結束者」規則 |
-| Employee Free Time | 759 | Hard | 合併所有員工的區間、找空檔 —— 同樣是多個排序清單上的指標想法 |
-| Merge Intervals | 56 | Medium | 單一排序區間清單；貪婪地合併重疊區間 |
-| Insert Interval | 57 | Medium | 一趟完成插入 + 合併進排序好的區間清單 |
-| Meeting Rooms | 252 | Easy | 檢查有沒有任兩個區間重疊（依起點排序，比較相鄰的終點） |
-| Meeting Rooms II | 253 | Medium | 數出最少需要幾間會議室；起點與終點分開排序，用雙指標 |
-| Non-overlapping Intervals | 435 | Medium | 貪婪 —— 移除最少的區間，讓剩下的互不重疊 |
-
-<!-- a5f15112fb30 -->
-#### 模式辨識
-
 <!--CODE-->
 
-<!-- ea4fa3974f42 -->
-## 總結與速查
+**陷阱**
+- 移動**開始**較早的那個指標：`slots1 = [[0, 50]], slots2 = [[10, 15], [20, 40]], duration = 10` 會丟掉 `[0, 50]`，回傳 `[]` 而不是 `[20, 30]`。
+- 輸入沒排序：題目沒有保證時段已排序，所以兩邊都要先排序。
 
-<!-- 38540476d73a -->
-### 該用哪種進階形態？ —— 決策表
+**相似題** — LC 986 *（收集所有交集）* · LC 759 *（多個串列之間的空閒時間）*
 
-| 題目講的是 | 就用 | 章節 |
+<!-- b8c677af94b0 -->
+## 不適用時
+
+- **模板 1（至多 K 個相異）** — K 是 1 或「沒有重複」時，它就是用 set 的 [sliding_window § 模板 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-)；不需要計數。
+- **模板 2（帶重置的恰好 K）** — 沒有禁用元素時，它就是照原樣的 [sliding_window § 模板 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)。也可以先在禁用字元處把字串切開，再對每一段跑模板 6。
+- **模板 3（一次掃描數間隙）** — 模板 2 的兩次掃描一樣快、也更好解釋；只有被要求一次掃描時才用數間隙。有負數或真正的總和時兩者都不行：改用前綴和計數表。
+- **模板 4（前綴／後綴 argmax）** — 只有**兩個**視窗時，維護目前最好的左視窗、每種順序掃一次就夠了（LC 1031）；j 個視窗時用 DP。
+- **模板 5（每個偏移跑一次）** — 單字長度不同時完全不適用（回溯或 trie）；視窗是單一字元時，就是 [hash_map § 模板 5](./hash_map.md#template-5-fixed-window-character-counts--lc-438) 的一般固定視窗。
+
+<!-- cf146c401303 -->
+## 總結
+
+<!-- cf90375ed0a1 -->
+### 該用哪種進階型態？— 決策表
+
+| 題目說 | 該用 | 在哪 |
 |---|---|---|
-| 「每個大小 k 的視窗的最大／最小值」 | 單調雙端佇列 | 用單調雙端佇列求視窗極值 — LC 239 |
-| 「最多 K 種相異」（求最長） | 模板 3 加上 `map.size() > K` | 最多 K 種相異元素 |
-| 「剛好 K 個 …」（計數），字母表不受限 | `atMost(K) - atMost(K-1)` | [Template 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) |
-| 「剛好 K 個 …」但只允許某些字元 | atMost + 遇到禁用字元就硬重置 | Count Vowel Substrings — LC 2062 |
-| 「剛好 K 個 …」而且值可能是**負的** | 前綴和 + HashMap —— 視窗一律行不通 | 前綴和 + HashMap vs 滑動視窗 |
-| 「剛好 K 個 …」而且你想一趟解決 | 前綴小技巧（數左邊的間隔） | 視窗內的前綴小技巧 — LC 1248 |
-| 「從兩端移除的最少操作次數」 | `n - 和等於 total - x 的最大中段子陣列` | 最少操作數 → 最大子陣列長度 — LC 1658 |
-| 「從任一端取 k 張牌」 | `total - 大小 n-k 的最小視窗` | 補集視窗 — LC 1423 |
-| 「兩／三個互不重疊的子陣列，總和最大」 | 視窗和 + 前綴／後綴 argmax | 多個互不重疊的固定視窗 — LC 689 |
-| 「`|i-j| <= k` **且** `|nums[i]-nums[j]| <= t`」 | 索引視窗 + 值分桶 | 索引固定的視窗 + 分桶 — LC 220 |
-| 「所有單字的串接」／固定長度的 k-mer | 每個對齊偏移各跑一個視窗 | 以單字為單位的滑動視窗 — LC 30 |
-| 「兩份行程表中最早的共同空檔」 | 雙指標，推進較早結束的那個 | 排序區間上的雙指標 — LC 1229 |
+| 「至多 K 個相異」（最長） | 模板 3 的迴圈加 `len(map) > K` | [模板 1](#template-1-at-most-k-distinct--lc-904-) |
+| 「恰好 K …」（計數），字元不受限 | `at_most(K) − at_most(K − 1)` | [sliding_window § 模板 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) |
+| 「恰好 K …」但只允許某些字元 | 至多計數，遇到禁用字元硬重置 | [模板 2](#template-2-exactly-k-with-a-forbidden-element-reset--lc-2062-) |
+| 「恰好 k 個奇數／1」，一次掃描 | 數左側間隙 | [模板 3](#template-3-one-pass-exactly-k--count-the-left-gap--lc-1248-) |
+| 「恰好 K …」而且值可能為**負** | 前綴和 + hash map — 沒有視窗能用 | [hash_map § 模板 4](./hash_map.md#template-4-prefix-sum-count-map--lc-560-) |
+| 「兩個／三個不重疊子陣列，總和最大」 | 視窗總和 + 前綴／後綴 argmax | [模板 4](#template-4-non-overlapping-fixed-windows--prefixsuffix-argmax--lc-689-) |
+| 「所有單字的串接」 | 每個對齊偏移一個視窗 | [模板 5](#template-5-word-level-window-one-pass-per-offset--lc-30-) |
+| 「兩份行程中最早的共同空檔」 | 兩個指標，移動先結束的那個 | [Meeting Scheduler — LC 1229](#meeting-scheduler--lc-1229) |
 
-<!-- 597414d07159 -->
-### 一個問題就能選出工具
+<!-- 10793a3c3f48 -->
+### 決定工具的那一個問題
 
-> **合法性是單調的嗎？** 如果一個不合法的視窗在 `right` 繼續前進時仍然不合法，那麼一個
-> `while (invalid) shrink` 就夠了，一切都是普通視窗。如果不是 —— 「剛好 k 個」、有負值，
-> 或某個沒辦法改寫成「最多」的等式 —— 你就需要 at-most 相減、前綴表，或前綴小技巧。
-> 這一個問題就把本頁所有技巧分乾淨了。
+> **合法性是單調的嗎？** 如果一個不合法的視窗在 `right` 前進時仍然不合法，一個 `while (invalid) shrink` 就夠了，一切都是普通的視窗。如果不是 — 「恰好 k」、負值，或無法改寫成「至多」的等式 — 就需要至多相減、前綴 map，或數間隙。這一個問題就能把本頁每個技巧分開。
 
-<!-- 29bd38888934 -->
-### 其他高頻的滑動視窗參考
+<!-- 235280d4f171 -->
+### 放在別處的題目
 
-*一些直接沿用 [sliding_window.md](./sliding_window.md) 模板的知名題目 —— 列出來只是為了辨識，沒有新技巧。*
+完整解法在別份文件、用同一個做法的進階視窗題。
 
-| 題目 | LC# | 難度 | 用哪份模板／一句話洞見 |
-|---------|-----|------------|-----------------------------------|
-| Maximum Length of Repeated Subarray | 718 | Medium | 面試預設解是 DP（`dp[i][j]`）；滑動視窗的講法是把一個陣列在另一個上面滑，量每個對齊位置最長的連續相符 —— O(n·m) 時間但只要 O(1) 額外空間 |
-| Maximum Number of Occurrences of a Substring | 1297 | Medium | 只需要看 `minSize` 的固定視窗 —— 任何較長的合法子字串裡一定包含一個合法的 `minSize`，所以 `maxSize` 是煙霧彈 |
-| New 21 Game | 837 | Medium | 在 DP 陣列上開視窗：`dp[i] = (前 maxPts 個機率的視窗和) / maxPts`，每步 O(1) 維護 |
-| Max Value of Equation | 1499 | Hard | 視窗受 `xj - xi <= k` 限制，再對 `yi - xi` 開單調雙端佇列 —— 見 [monotonic_queue.md](monotonic_queue.md) |
+| LC | 題目 | 技巧 | 解在 |
+|---|---|---|---|
+| 239 | Sliding Window Maximum | 存索引的遞減雙端佇列 | [monotonic_queue § 模板 1](./monotonic_queue.md#template-1-sliding-window-maximum-decreasing-deque--lc-239) |
+| 480 | Sliding Window Median | 兩個 heap 加延遲刪除 | [monotonic_queue § 模板 4](./monotonic_queue.md#template-4-sliding-window-median--ordered-multiset--two-heaps-lc-480-) |
+| 1423 | Maximum Points You Can Obtain from Cards | `total − 大小為 n − k 的最小視窗` | [prefix_sum_advanced § 模板 9](./prefix_sum_advanced.md#template-9-complement-trick--total--middle-window---lc-1423) |
+| 1658 | Minimum Operations to Reduce X to Zero | `n − 總和為 total − x 的最長視窗` | [prefix_sum_advanced § 模板 9](./prefix_sum_advanced.md#template-9-complement-trick--total--middle-window---lc-1423)（它的變化題） |
+| 220 | Contains Duplicate III | 索引視窗 + 寬度 `t + 1` 的數值分桶 | [sort § 模板 8](./sort.md#template-8-bucket-sort-by-value-range-bucket--value--width--lc-220-)；有序集合版本在 [scanning_line § 模板 11](./scanning_line.md#template-11-index-sweep--active-ordered-set--lc-220) |
+| 187 | Repeated DNA Sequences | 長度 10 的固定視窗 + 2-bit rolling hash | [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) |
+| 718 | Maximum Length of Repeated Subarray | DP，或二分搜尋 + rolling hash | [string_matching_kmp_rolling_hash.md](./string_matching_kmp_rolling_hash.md) |
+| 1031 | Maximum Sum of Two Non-Overlapping Subarrays | 前綴和 + 目前最好的左視窗 | [prefix_sum_examples.md](./prefix_sum_examples.md) |
+| 1248 | Count Number of Nice Subarrays（前綴 map 版本） | `{奇數個數: 次數}` | [prefix_sum § 模板 6](./prefix_sum.md#template-6-transform-and-count--lc-1248) |
 
-<!-- c3eb9f3babca -->
-### 本頁不涵蓋的
+只供辨識、沒有新技巧：
 
-- **無界串流上的視窗** —— 右端不是陣列索引、而是即時資料流的視窗。本頁除了 LC 220 那個按索引淘汰的做法之外，
-  沒有任何地方假設隨機存取，所以模板可以直接搬過去；串流用的蓄水池／衰減計數技巧住在
-  [streaming_algorithms.md](./streaming_algorithms.md)。
-- **深入的 deque 家族** —— [monotonic_queue.md](./monotonic_queue.md)。
-- **每個視窗的中位數（LC 480）** —— 那是兩個堆積加惰性刪除，不是 deque；見
-  [heap.md](./heap.md)。
+| 題目 | LC# | 一句話重點 |
+|---|---|---|
+| Maximum Number of Occurrences of a Substring | 1297 | 只用大小為 `minSize` 的固定視窗：較長的合法子字串一定包含一個合法的 `minSize` 子字串，所以 `maxSize` 是幌子 |
+| New 21 Game | 837 | 在 DP 陣列上的滑動視窗：`dp[i]` 是前 `maxPts` 個機率的視窗總和除以 `maxPts` |
+| Max Value of Equation | 1499 | 以 `xj − xi ≤ k` 為界的視窗，在 `yi − xi` 上用單調雙端佇列（[monotonic_queue.md](./monotonic_queue.md)） |
+
+<!-- 08768315d871 -->
+### 這裡不涵蓋的內容
+
+- **無界串流上的視窗** — 右邊界是即時資料流而不是陣列索引的視窗。本頁沒有任何東西假設可以隨機存取，所以模板可以直接套用；串流用的 reservoir／衰減計數器技巧在 [streaming_algorithms.md](./streaming_algorithms.md)。
+- **深入的雙端佇列家族** — [monotonic_queue.md](./monotonic_queue.md)。

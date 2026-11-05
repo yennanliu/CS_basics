@@ -495,43 +495,12 @@ class Item implements Comparable<Item> {
 ```
 
 ### Template 4: Quick Select (K-th Element) — LC 215
-```python
-# Python - Quick Select for k-th smallest
-def quickSelect(arr, k):
-    # Find k-th smallest (0-indexed)
-    return quickSelectHelper(arr, 0, len(arr) - 1, k - 1)
 
-def quickSelectHelper(arr, left, right, k):
-    if left == right:
-        return arr[left]
-    
-    # Random pivot for better average case
-    import random
-    pivot_idx = random.randint(left, right)
-    pivot_idx = partition(arr, left, right, pivot_idx)
-    
-    if k == pivot_idx:
-        return arr[k]
-    elif k < pivot_idx:
-        return quickSelectHelper(arr, left, pivot_idx - 1, k)
-    else:
-        return quickSelectHelper(arr, pivot_idx + 1, right, k)
-
-def partition(arr, left, right, pivot_idx):
-    pivot = arr[pivot_idx]
-    # Move pivot to end
-    arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]
-    
-    store_idx = left
-    for i in range(left, right):
-        if arr[i] < pivot:
-            arr[store_idx], arr[i] = arr[i], arr[store_idx]
-            store_idx += 1
-    
-    # Move pivot to final position
-    arr[store_idx], arr[right] = arr[right], arr[store_idx]
-    return store_idx
-```
+Quickselect lives in [quickselect.md](./quickselect.md): the three-way random-pivot template
+([Template 1](./quickselect.md#template-1-three-way-partition-quickselect--lc-215-)), the Lomuto
+and Hoare partitions, and the median-of-medians bound. What it shares with this sheet is the
+partition step of quicksort; what it changes is that only the side holding index k is kept, so
+the total is O(n) on average instead of O(n log n).
 
 ### Template 5: Counting Sort
 ```python

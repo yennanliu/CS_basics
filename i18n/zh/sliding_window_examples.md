@@ -1,8 +1,8 @@
-<!-- c4e8a33857a1 -->
+<!-- 8270219bf097 -->
 # 滑動視窗 — 實戰題解
 
-> **範圍** — 滑動視窗的 LeetCode 實作目錄，每題每語言只留一份標準解，並歸到它所對應的模板底下；模板本身、概念與選擇表都留在主檔滑動視窗那份。
-> **另見**：[sliding_window.md](./sliding_window.md) — 每個範例所對應的六個標準模板，以及在它們之間做選擇的決策表；[sliding_window_advanced.md](./sliding_window_advanced.md) — 比較少見的視窗形狀（雙端佇列取極值、補集、以字為單位、分桶）；[hash_map.md](./hash_map.md) — 這些視窗大多要帶著的頻率表；[2_pointers_examples.md](./2_pointers_examples.md) — 對撞指標的實作目錄。
+> **範圍** — 不屬於任何模板錨定題的滑動視窗 LeetCode 實作題，每題一張題目卡，依它歸約到的主文件模板歸檔；模板、概念與決策表都留在滑動視窗主文件。
+> **另見**：[sliding_window.md](./sliding_window.md) — 每個範例歸約到的七個標準模板，以及在它們之間做選擇的決策表；[sliding_window_advanced.md](./sliding_window_advanced.md) — 較少見的視窗型態（帶重置的恰好 K、單字層級、同時處理多個視窗）；[hash_map.md](./hash_map.md) — 這些視窗大多帶著的頻率表；[2_pointers_examples.md](./2_pointers_examples.md) — 相向指標的題目集。
 
 <!-- c0d9acb2df0d -->
 ## LeetCode 題目清單
@@ -12,139 +12,116 @@
 - [Hash Table](https://leetcode.com/problem-list/hash-table/)
 - [String](https://leetcode.com/problem-list/string/)
 
-<!-- 16122133931b -->
+<!-- d0fee3a94179 -->
 ## 總覽
 
-這裡每一題的解法，都是 [sliding_window.md](./sliding_window.md) 六個模板的其中一個，把三個空格填好而已。標題已經標明用的是哪一個模板，所以先讀模板，這份文件就會變成一組模板的實例，而不是九道各自為政的題目。
+這裡的每一題，都是 [sliding_window.md](./sliding_window.md) 裡某個模板換掉一個欄位：視窗狀態、合法性判斷，或記錄什麼。每張卡都寫出它是哪個模板、多出哪一步，所以請先讀模板。模板自己的錨定題（LC 643、1004、3、209、76、992、4067）在那邊的卡片裡解，這裡不重複。
 
-<!-- bf98e13a6f4e -->
-### 題目索引
+<!-- 365923cc4a4c -->
+## 索引
 
-| # | 題目 | LC# | 模板 | 語言 |
-|---|---------|-----|----------|-------------|
-| 1 | Permutation in String | 567 | 1 — 固定長度 | Java, Python |
-| 2 | Find All Anagrams in a String | 438 | 1 — 固定長度 | Java, Python |
-| 3 | Minimum Swaps to Group All 1's Together | 1151 | 1 — 固定長度（`k = #ones`） | Python |
-| 4 | Max Consecutive Ones III | 1004 | 3 — 最長視窗 | Java |
-| 5 | Longest Repeating Character Replacement | 424 | 3 — 最長視窗 | Java, Python |
-| 6 | Frequency of the Most Frequent Element | 1838 | 3 — 最長視窗（先排序） | Java |
-| 7 | Subarray Product Less Than K | 713 | 6 — 計數槽 | Java, Python |
-| 8 | Arithmetic Slices | 413 | 自訂 — 回看連續段計數 | Python |
-| 9 | Partition Labels | 763 | 自訂 — 貪婪的最後出現位置視窗 | Java |
+| 模式 | 本頁題目（由易到難） | 核心 ⭐ |
+|---|---|---|
+| [模板 1 — 固定大小視窗](./sliding_window.md#template-1-fixed-size-window--lc-643-) | LC 1151 | — |
+| [模板 3 — 滿足 P 的最長視窗](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) | LC 424 · LC 1838 | LC 424 |
+| [模板 6 — 用至多相減求恰好 K](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)（它的計數欄位） | LC 413 · LC 713 | — |
 
-> LC 3、LC 76、LC 209 **不在**這裡：它們是 [sliding_window.md](./sliding_window.md) 中模板 3、5、4 的實作本體，不重複陳述。
+下面這些滑動視窗題在別份文件裡解，用的是同一個做法，所以這裡不重複。
 
-<!-- 30eacfa613f8 -->
-## 固定長度視窗
+| LC | 題目 | 放在 |
+|---|---|---|
+| 438 | Find All Anagrams in a String | [hash_map § 模板 5](./hash_map.md#template-5-fixed-window-character-counts--lc-438) — 用字母計數比對的固定視窗 |
+| 567 | Permutation in String | [2_pointers § 模板 8](./2_pointers.md#template-8-grow-right-then-shrink-left--lc-567) — 同一個視窗，第一次相符就回傳 |
+| 763 | Partition Labels | [string § 模板 8](./string.md#template-8-greedy-partition-by-last-occurrence--lc-763-) — 在最後出現位置貪心切開，不是會收縮的視窗 |
+| 1004 | Max Consecutive Ones III | [sliding_window § 模板 2](./sliding_window.md#template-2-grow-then-shrink-the-while-invariant--lc-1004-) — 這個模板的錨定題 |
 
-<!-- cf4321a3528f -->
-### 1) Permutation in String — LC 567 ⭐⭐⭐⭐
+<!-- 05277f5da8e2 -->
+## 固定大小視窗範例
 
-*模板 1。視窗固定為 `len(s1)`；因為長度固定，直接比對兩張頻率表就夠划算了 — 不需要 `have`／`need` 計數器。*
+<!-- 5279e8abb90b -->
+### Minimum Swaps to Group All 1's Together — LC 1151
 
-> 維護長度為 len(s1) 的視窗字元頻率；檢查是否與 s1 的頻率相符。
+> **關鍵** — 所有的 1 最後會落在某個寬度恰為 `ones = sum(data)` 的區塊裡，區塊中每個 0 都要花一次交換。所以答案是 `ones −（任一寬度為 ones 的視窗中最多的 1 數）`。
+
+**歸約到**：[sliding_window § 模板 1](./sliding_window.md#template-1-fixed-size-window--lc-643-) — 視窗寬度由輸入推得（`ones`），分數是 1 的個數而不是總和。
+
+<!--CODE-->
+
+**陷阱**
+- 全是 0（`[0, 0, 0]`）：`ones = 0` 給出寬度為 0 的視窗，而 `data[right - 0]` 會把剛加入的格子又移掉；在迴圈前就回傳 0。
+
+**相似題** — LC 2134 *（環狀陣列上的同一題：在 `data + data` 上跑視窗）*
+
+<!-- 9d001b2e15f7 -->
+## 最長視窗範例
+
+<!-- cbff3f8188ac -->
+### Longest Repeating Character Replacement — LC 424 ⭐⭐⭐⭐⭐
+
+> **關鍵** — 一個視窗最多換 `k` 個字元就能變成同一個字母，若且唯若 `len − maxFreq ≤ k`。收縮時從不調低 `maxFreq`：過期的值可能讓視窗停在不合法的區段上，但那時視窗只會平移（不會變長），所以 `best` 只有在真的出現更高的 `maxFreq`、可能有更長合法視窗時才會變大。
+
+**歸約到**：[sliding_window § 模板 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) — 合法性判斷改成 `len − maxFreq ≤ k`，而不是「沒有重複」。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- d81429a26aba -->
-### 2) Find All Anagrams in a String — LC 438 ⭐⭐⭐⭐
+**第二種做法 — 每個字母一個視窗。** 對每個不同的字母各跑一次模板 3，問「這個視窗能不能全變成 `letter`？」。它是 O(26·n) 而不是 O(n)，但沒有過期的 `maxFreq` 要解釋，所以在壓力下比較容易說明它是對的。
 
-*模板 1。視窗跟 LC 567 一模一樣，只是改成蒐集每個起始索引，而不是在第一次配對成功時就回傳。*
+<!--CODE-->
 
-> 與 LC 567 相同，但要蒐集所有 anagram 視窗配對成功的起始索引。
+**陷阱**
+- 在收縮之前就記錄 `best`，量到的是不合法的視窗：`"ABAB", k = 0` 會回傳 2 而不是 1。
+- 每一步重算 `max(count.values())` 也是對的，但每步要 O(26)；收縮時調低 `max_freq` 沒有任何好處，因為過期的值永遠不會把 `best` 灌大。
+
+**相似題** — LC 1004 *（二元字母表：數 0 的個數，取代 `len − maxFreq`）* · LC 2024
+
+<!-- d2c5973a24cc -->
+### Frequency of the Most Frequent Element — LC 1838
+
+> **關鍵** — 排序之後，一個視窗最便宜的目標值就是它最右邊的值，把整個視窗補到這個值的成本是 `nums[right] · len − windowSum`。視窗往右變大時這個成本只會增加，所以它是模板 3 的合法性判斷。
+
+**歸約到**：[sliding_window § 模板 3](./sliding_window.md#template-3-longest-window-satisfying-p--lc-3-) — 先做 O(n log n) 排序，合法性是 `nums[right] · len − windowSum ≤ k`。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- 94be2af0606d -->
-### 3) Minimum Swaps to Group All 1's Together — LC 1151
+**陷阱**
+- `right` 從 1 開始又讓 `windowSum = 0`，會把 `nums[0]` 漏在總和外，每個成本都被高估：`[1, 2, 4], k = 5` 回傳 2 而不是 3。（這裡原本的 Java 版就是這樣。）
+- `nums[i] = 10⁵, n = 10⁵` 時 `nums[right] * len` 會讓 `int` 溢位：用 `long` 相乘。
 
-*模板 1，但視窗長度是推導出來的：視窗寬 `k = sum(data)`，答案是 `ones - 任一這種視窗內的最大 1 數量` — 留在視窗裡的 0 剛好就是需要交換的次數。*
+<!-- fecc6e4cd887 -->
+## 恰好 K 計數範例
 
-<!--CODE-->
+<!-- b9f98bf81a45 -->
+### Arithmetic Slices — LC 413
 
-<!-- dd4091ddee36 -->
-## 最長視窗（可變、求最大）
+> **關鍵** — 一段結束在 `i`、有 `run + 2` 個元素的等差段，恰好包含 `run` 個結束在 `i` 的等差切片（長度 3 … run + 2）。所以維護 `run`，每個延續這段的索引都把它加進答案，公差改變時把它歸 0。
 
-<!-- 7727a726d65b -->
-### 4) Max Consecutive Ones III — LC 1004
-
-*模板 3 最純粹的樣子：視窗狀態就是一個計數器（`zeroCnt`），合法性判斷是 `zeroCnt <= k`。*
-
-> 右邊擴張，當 0 的數量超過 k 時從左邊收縮。
+**歸約到**：[sliding_window § 模板 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-)（它的計數欄位） — 視窗是目前這一段，公差改變時是重置而不是收縮，而且每一步加的是 `len − 2` 而不是 `len`，因為一個切片至少要三個元素。
 
 <!--CODE-->
 
-<!-- bda3a1ef54ed -->
-### 5) Longest Repeating Character Replacement — LC 424 ⭐⭐⭐⭐⭐
+**陷阱**
+- 少於三個元素（`[1]`、`[1, 2]`）：迴圈一次都不跑，答案是 0。
+- 從每個 `i` 往回看到公差斷掉為止也是對的，但在一整段長等差（`[1, 2, …, n]`）上是 O(n²)；`run` 把這個數往前帶，省掉回看。
 
-*模板 3，合法性判斷改成 `windowLen - maxFreq <= k`：不管視窗裡出現最多次的是哪個字元，其他全部都得被替換掉。*
+**相似題** — LC 446 *（子序列而非子陣列：在公差的 map 上做 DP，見 [dp.md](./dp.md)）*
 
-> 視窗合法的條件是（視窗長度 - 最大頻率）<= k；一邊擴張一邊追蹤最大頻率。
+<!-- 8fa2d3430f59 -->
+### Subarray Product Less Than K — LC 713
 
-<!--CODE-->
+> **關鍵** — 值都是正數時，視窗變大乘積只會變大，所以「乘積 < k」本身就是一個至多條件：收縮之後，每個結束在 `right`、起點落在 `[left, right]` 的子陣列都合法，共 `right − left + 1` 個。
 
-<!--CODE-->
-
-**第二份 Java 版本，留下來是有理由的** — 這是*另一個*演算法，不是同一份程式碼換個寫法：對每個相異字母各跑一個獨立視窗，然後問「這個視窗能不能全部變成 `letter`？」。複雜度是 O(26·n) 而不是 O(n)，但完全不用維護 `maxFreq`，所以在面試壓力下要論證它是對的容易得多。
-
-<!--CODE-->
-
-<!-- 9e48f6f503e6 -->
-### 6) Frequency of the Most Frequent Element — LC 1838
-
-*模板 3，前面先做一次 O(n log n) 排序。排序才是讓視窗有意義的關鍵：一個視窗最便宜的目標值一定是它最右邊那個數，所以把整個視窗拉平的成本就是 `nums[r] * windowSize - windowSum`。*
-
-> 先排序；右邊擴張，當拉平視窗的成本超過 k 時從左邊收縮。
-
-<!--CODE-->
-
-<!-- 85c4962e20c8 -->
-## 計數型視窗
-
-<!-- eae0ed10f3d5 -->
-### 7) Subarray Product Less Than K — LC 713
-
-*模板 6 的計數槽，但少了扣減那一步：條件（`product < k`）本身就已經是「至多」了，所以每一步做 `count += r - l + 1` 就是全部的答案。*
-
-> 當乘積 >= k 時從左邊收縮；每個合法的右端位置貢獻 (r-l+1) 個子陣列。
+**歸約到**：[sliding_window § 模板 6](./sliding_window.md#template-6-exactly-k-via-at-most-subtraction--lc-992-) — 只有 `at_most` 那一半；條件本來就是「至多」，所以不用相減。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- 2f38e59a0f46 -->
-## 自訂視窗形狀
+**陷阱**
+- `k ≤ 1`：沒有任何視窗合法，少了這個防護 `while` 會把 `left` 推過 `right`、讀到陣列外：`[1, 2, 3], k = 0` 會丟出 `IndexError` 而不是回傳 0。
+- 記錄 `max(len)` 而不是累加 `len`，回答的是「最長」而不是「有幾個」。
 
-<!-- 42515952ce2e -->
-### 8) Arithmetic Slices — LC 413
-
-*這不是雙指標視窗，而是一個回看的連續段計數器。每個延續等差連續段的索引，會為它後面每一段仍然成立的延伸各貢獻一個切片。之所以放在這裡，是因為 LeetCode 把它歸類在滑動視窗，而且「一路往回看到條件斷掉為止」的迴圈用的是同一種直覺。*
-
-<!--CODE-->
-
-<!-- 8ff4f50b8237 -->
-### 9) Partition Labels — LC 763 ⭐⭐⭐⭐
-
-*貪婪視窗，沒有收縮階段：先預先算出每個字元最後出現的索引，掃描時一路把 `end` 往外拉，`i == end` 時就切一刀。這個視窗只會變大，然後重新開始。*
-
-<!--CODE-->
-
-<!-- bdeeb6e982ca -->
-## 總結與速查
-
-| 填進去的槽 | LC 567 / 438 | LC 1004 | LC 424 | LC 1838 | LC 713 |
-|---|---|---|---|---|---|
-| 視窗狀態 | 字元頻率表 | `zeroCnt` | 字元頻率 + `maxFreq` | `windowSum` | 累計 `product` |
-| 合法性判斷 | 長度 `== len(p)` | `zeroCnt <= k` | `len - maxFreq <= k` | `nums[r]*len - sum <= k` | `product < k` |
-| 結果更新 | 表相符時 `res.add(l)` | `max(len)` | `max(len)` | `max(len)` | `count += r - l + 1` |
-| 模板 | 1 | 3 | 3 | 3（排序後） | 6（計數槽） |
-
-- **記得刪掉次數歸零的 key。** 這裡每個以表為基礎的視窗，都倚賴 `map.size()`／`len(dict)` 是真正的相異元素個數。只遞減不刪除會讓它虛胖，收縮迴圈就會出錯。
-- **字母集有界就改用陣列。** LC 567／438 用 `int[26]` 搭配 `Arrays.equals`，比拿 `HashMap` 來比對又快又短。
-- **在正確的位置記錄答案。** 最長視窗類的題目在收縮迴圈*之後*更新；最短視窗類的題目在迴圈*裡面*更新。
-
-這些範例所實例化的模板見 [sliding_window.md](./sliding_window.md)；不在六個模板裡的視窗形狀見 [sliding_window_advanced.md](./sliding_window_advanced.md)。
+**相似題** — LC 992 *（恰好 K 個相異：這個計數做兩次）* · LC 2302

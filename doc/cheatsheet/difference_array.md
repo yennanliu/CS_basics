@@ -703,6 +703,24 @@ class Solution {
 
 ### 2-2) Corporate Flight Bookings — LC 1109
 
+```python
+# python
+# LC 1109 - Corporate Flight Bookings
+# IDEA: difference array — add seats at first-1, cancel them at last; one prefix sum rebuilds the totals
+# time = O(n + len(bookings)), space = O(n)
+def corpFlightBookings(bookings, n):
+    diff = [0] * (n + 1)                 # one extra slot so `last` never needs a bounds check
+    for first, last, seats in bookings:
+        diff[first - 1] += seats         # flights are 1-indexed
+        diff[last] -= seats              # the flight after `last` no longer has them
+    answer = []
+    running = 0
+    for i in range(n):
+        running += diff[i]
+        answer.append(running)
+    return answer
+```
+
 ```java
 // java
 // LC 1109

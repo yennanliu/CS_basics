@@ -1,8 +1,8 @@
-<!-- e2d03c91207a -->
+<!-- c886a48d24e4 -->
 # 進階分治法
 
 > **範圍** — 合併排序以外的分治法 —— 那些「遞迴 + 合併」的形狀（邊排序邊計數、最近點對、矩陣分治、運算式分治）以及它們的遞迴式。
-> **另見**：[2_pointers_quickselect.md](./2_pointers_quickselect.md) — quickselect 的完整內容，本檔一律轉交過去；[sort.md](./sort.md) — 把合併排序與 quickselect 當排序演算法看；[binary_search.md](./binary_search.md) — 只折半、沒有合併步驟；[recursion.md](./recursion.md) — 遞迴的運作機制；[segment_tree.md](./segment_tree.md) — 把分治法固化成資料結構。
+> **另見**：[quickselect.md](./quickselect.md) — quickselect 的完整內容，本檔一律轉交過去；[sort.md](./sort.md) — 把合併排序與 quickselect 當排序演算法看；[binary_search.md](./binary_search.md) — 只折半、沒有合併步驟；[recursion.md](./recursion.md) — 遞迴的運作機制；[segment_tree.md](./segment_tree.md) — 把分治法固化成資料結構。
 
 <!-- c5cca078877d -->
 ## LeetCode 題目清單
@@ -105,7 +105,7 @@
 
 ---
 
-<!-- 99df46e660e4 -->
+<!-- 9b2ac9363321 -->
 ### 模板 5：Quickselect —— 分割後只遞迴一邊 —— LC 215 ⭐⭐⭐⭐⭐
 
 **核心想法**：做完一次分割後，pivot 就坐在它**最終排序後的索引** `p` 上。拿 `p` 跟目標索引比一比 —— 答案只會在其中一邊，所以另外一半直接**丟掉**，不用遞迴進去。
@@ -117,7 +117,7 @@
 <!--CODE-->
 
 > Python 寫法、Hoare 分割與三路分割、LC 973 變形，以及 Median-of-Medians 的大綱，
-> 全部都在 [2_pointers_quickselect.md](./2_pointers_quickselect.md)，那份文件才是這個演算法的主場。
+> 全部都在 [quickselect.md](./quickselect.md)，那份文件才是這個演算法的主場。
 > *這裡*要記的只有它的形狀：它是本檔唯一一個只遞迴進**單邊**的分治模板，
 > 所以遞迴式是 `T(n) = T(n/2) + O(n)`，總複雜度是 O(n)，
 > 而不是本檔其他每個模板都要付的 O(n log n)。

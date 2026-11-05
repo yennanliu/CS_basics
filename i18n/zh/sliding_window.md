@@ -1,8 +1,8 @@
-<!-- 38f7e2767abe -->
+<!-- bef4fa10c7f9 -->
 # 滑動視窗
 
 > **範圍** — 依條件伸縮的視窗 — 固定大小、可變大小、至多 k 個，以及用相減湊出的恰好 k 個；擴張／收縮迴圈與七個標準視窗模板都歸這裡管。
-> **另見** — *從本檔拆出*：[sliding_window_examples.md](./sliding_window_examples.md) — LC 實作解法庫，每題每種語言一份標準解；[sliding_window_advanced.md](./sliding_window_advanced.md) — 雙端佇列求極值、至多 K 的通用化、超出單一題目的恰好 K、補集／單字層級／分桶視窗。
+> **另見** — *從本檔拆出*：[sliding_window_examples.md](./sliding_window_examples.md) — 實作題目，每題一張卡，依它歸約到的模板歸檔；[sliding_window_advanced.md](./sliding_window_advanced.md) — 至多 K 的通用化、超出單一題目的恰好 K、同時處理多個視窗、單字層級的視窗。
 > *相鄰文件*：[2_pointers.md](./2_pointers.md) — 相向逼近而非一前一後的指標；[hash_map.md](./hash_map.md) — 多數視窗都會帶著的計數表；[monotonic_queue.md](./monotonic_queue.md) — 用 O(n) 求視窗極值；[prefix_sum.md](./prefix_sum.md) — 視窗內可能有負值時該去的地方。
 
 <!-- ddcdfa19df42 -->
@@ -257,7 +257,7 @@ n ≤ 5·10⁴ → 預期 O(n)。
 **練習** — LC 3 ⭐ · LC 159 · LC 340 *（至多 k 種：一張計數表，`len(map) > k` 時收縮）*
 · LC 424 ⭐
 
-<!-- 354ced30f8a5 -->
+<!-- e101b75809fb -->
 ### 模板 4：滿足 P 的最短視窗 — LC 209 ⭐⭐⭐⭐⭐
 
 **辨識** — 「總和 ≥ target 的**最短**子陣列」、「能覆蓋 … 的最小視窗」，
@@ -275,6 +275,12 @@ n ≤ 5·10⁴ → 預期 O(n)。
 - **時間 O(n)**：和模板 2 一樣，`left` 在整個執行過程中最多前進 n 次。
 - **空間 O(1)**：一個累計總和。
 
+**追問 — O(n log n)。** LC 209 本身在 O(n) 解之後會追問 O(n log n) 解。
+值都是正數時前綴和嚴格遞增，所以對每個起點 `left`，最短的終點只要一次二分搜尋：
+第一個滿足 `prefix[j] ≥ prefix[left] + target` 的位置。它比視窗慢，只有在追問要求時才給這個答案。
+
+<!--CODE-->
+
 **陷阱**
 - 沒有合法視窗：`target = 11, nums = [1,1,1,1,1,1,1,1]` 必須回傳 0，而不是哨兵值。
 - 在收縮*之後*才記錄，量到的是已經不合法的視窗：
@@ -282,7 +288,7 @@ n ≤ 5·10⁴ → 預期 O(n)。
 - 有負數就壞掉：`target = 3, nums = [1, -1, 3]` 回傳 3，因為總和一掉到 target 以下收縮就停了，
   永遠走不到 `[3]`（長度 1）。
 
-**不是這個，如果** — 值可能為負 → 在前綴和上用單調雙端佇列，LC 862
+**不適用時** — 值可能為負 → 在前綴和上用單調雙端佇列，LC 862
 （[monotonic_queue.md](./monotonic_queue.md)）。
 
 **練習** — LC 209 · LC 1658 *（移除的最短 = 保留總和為 `total − x` 的最長）* ·
@@ -439,7 +445,7 @@ n ≤ 2·10⁴ → O(n)；要排除的是 O(n²) 的列舉。
 **練習** — LC 3 *（「沒有兩個相同」這條配對規則，用 set 檢查新進元素）* · LC 1695
 *（同上，改成算總和）* · LC 4067
 
-<!-- ef29e7f2a1f4 -->
+<!-- 6898f517152a -->
 ## 練習路徑
 
 | 階段 | 題目（由易到難） | 新增了什麼 |
@@ -448,7 +454,7 @@ n ≤ 2·10⁴ → O(n)；要排除的是 O(n²) 的列舉。
 | **練習** | LC 643 · LC 1004 · LC 209 · LC 438 · LC 904 · LC 1248 | 每種型態一題：固定、先擴後縮、最短、記下每個起點、至多 2 種、恰好 k |
 | **延伸** | LC 4067 · LC 992 · LC 30 · LC 239 | 檢查新進元素；用相減做恰好 k；單字層級的視窗；視窗最大值 → [monotonic_queue.md](./monotonic_queue.md) |
 
-「練習」那一列的實作解法在 [sliding_window_examples.md](./sliding_window_examples.md)。
+「練習」那一列的錨定題都在上面的卡片裡；LC 438 在 [hash_map.md](./hash_map.md#template-5-fixed-window-character-counts--lc-438)，LC 904 與 LC 1248 在 [sliding_window_advanced.md](./sliding_window_advanced.md)。其餘的實作題都在 [sliding_window_examples.md](./sliding_window_examples.md)。
 
 <!-- ea4fa3974f42 -->
 ## 總結與快速查表
@@ -592,13 +598,13 @@ n ≤ 2·10⁴ → O(n)；要排除的是 O(n²) 的列舉。
 | 「字串中的排列／字母重排」 | 固定視窗 + Counter 比對 |
 | 「最長的子陣列，其中沒有任兩個／任三個元素使得 …」 | 先確認規則是遺傳的，再只檢查新進元素（模板 7） |
 
-<!-- 484fb2d56b0d -->
+<!-- d43f840f262e -->
 ### 其他內容在哪
 
 | 想找什麼 | 去哪份文件 |
 |---|---|
-| LC 567、438、1004、424、1838、713、413、1151、763 的實作解法 | [sliding_window_examples.md](./sliding_window_examples.md) |
-| 雙端佇列求極值、至多 K 個相異的家族、恰好 K 的深入探討、補集／單字層級／分桶視窗 | [sliding_window_advanced.md](./sliding_window_advanced.md) |
+| LC 424、1838、713、413、1151 的實作解法 — 以及 LC 438、567、763 放在哪 | [sliding_window_examples.md](./sliding_window_examples.md) |
+| 至多 K 個相異的家族、帶重置或一次掃描的恰好 K、同時處理多個視窗、單字層級的視窗 | [sliding_window_advanced.md](./sliding_window_advanced.md) |
 | 完整的單調雙端佇列家族（LC 239、862、1438、1499） | [monotonic_queue.md](./monotonic_queue.md) |
 | 可能含負值的視窗 → 前綴和 + HashMap | [prefix_sum.md](./prefix_sum.md) |
 | 相向逼近（而非一前一後）的指標 | [2_pointers.md](./2_pointers.md) |

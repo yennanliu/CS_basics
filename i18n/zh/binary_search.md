@@ -305,7 +305,7 @@ lower bound，不管題目怎麼包裝（區間、時間戳、咒語強度、LIS
 
 <!--CODE-->
 
-<!-- e4c6597f3426 -->
+<!-- 6563855aee78 -->
 ##### 核心概念：Lower Bound vs 單調堆疊
 
 這兩者經常被搞混，因為聽起來都像是「找下一個更大的東西」。
@@ -323,7 +323,7 @@ LC 436 (Find Right Interval) 是後者的乾淨範例：它要的是在*所有*�
 <!--CODE-->
 
 > LC 436 的完整題解 — 包括「連同索引一起排序」的做法 — 放在
-> [binary_search_examples.md](./binary_search_examples.md) §16。
+> [binary_search_examples.md § Find Right Interval](./binary_search_examples.md#find-right-interval--lc-436-)。
 
 <!-- 2827149ef350 -->
 ##### 相似題目：有序集合上的 Bound 查詢
@@ -607,7 +607,7 @@ LC 81 *（有重複值的搜尋）*
 **辨識關鍵字**：「minimize the maximum」、「maximize the minimum」、「找出最小的
 capacity / speed / divisor」、「能不能切分 / 分配 / 派送」。
 
-<!-- aa336420110f -->
+<!-- 038cdf2afb73 -->
 ### 模板 5：在自己維護的 `tails` 陣列上做 Lower Bound — LC 300 ⭐⭐⭐⭐⭐
 
 **辨識** — 「最長遞增（或鏈式）子序列的**長度**」，直覺解法是 O(n²) 的 DP
@@ -651,8 +651,10 @@ n ≤ 10⁵（LC 1964、LC 354）就不會。
 **練習** — LC 300 ⭐ · LC 1964 *（非遞減，逐一回報每個索引的位置）* · LC 354
 *（帶平手規則的排序，再做 LIS）* · LC 2111 *（k 個餘數類別，`len − LIS`）*
 
-> `bisect_left` 一行版與 LC 354 的變化題都在
-> [binary_search_examples.md](./binary_search_examples.md) §18。
+> `bisect.bisect_left(tails, num)` 是內層迴圈的函式庫寫法。LC 354 的題解在
+> [sort.md § Template 9](./sort.md#template-9-sort-by-a-derived-key-to-unlock-greedy--dp--lc-354-)，
+> 歸約到 LIS 的題目在 [patience_sorting.md](./patience_sorting.md)。近親題是對按結束時間排序的
+> DP 陣列做二分搜尋、找最後一個相容的工作：LC 1235、LC 1751。
 
 <!-- 8436e349ac50 -->
 #### 為什麼可行 — 三個論證
@@ -861,7 +863,7 @@ patience sorting 是同一個動作：把每張牌放到「牌頂 `>= num` 的�
 **練習** — LC 74 ⭐ · LC 240 *（階梯搜尋，不是二分搜尋）* · LC 378 *（對值域做二分搜尋，
 [binary_search_on_answer.md](./binary_search_on_answer.md)）*
 
-<!-- 0246c03d2857 -->
+<!-- 0435d3eebd45 -->
 ### 模板 7：順著斜率找峰值 — LC 162 ⭐⭐⭐⭐
 
 **辨識** — 「找出**一個**峰值元素」、「山脈陣列」、「`nums[i] != nums[i + 1]`」、
@@ -899,7 +901,7 @@ patience sorting 是同一個動作：把每張牌放到「牌頂 `>= num` 的�
 <!--CODE-->
 
 一個函式就能兩者通用：`if ((val < target) == ascending) left = mid + 1; else right = mid - 1;`。
-LC 1095 的題解在 [binary_search_examples.md](./binary_search_examples.md)。
+LC 1095 的題解在 [binary_search_examples.md § Find in Mountain Array](./binary_search_examples.md#find-in-mountain-array--lc-1095-)。
 
 **練習** — LC 162 ⭐ · LC 852 *（山脈保證只有一個峰值）* · LC 1901 *（二維：對列做二分
 搜尋，取每列的最大值）* · LC 1095 *（先找峰值，再做一次遞增、一次遞減搜尋）*
@@ -992,7 +994,7 @@ CtCI 10.5：一個排序好的字串陣列，隨機位置塞了 `""`。`mid` 可
   是同一個教訓：`nums[l] == nums[mid] == nums[r]` 讓探測失去資訊，
   退而求其次的 `l++ / r--` 會讓搜尋退化成 `O(n)`。
 
-<!-- 656f1635c0d2 -->
+<!-- 204cbe39d3eb -->
 ### 2.7) 速查 — 其他帶有二分搜尋味道的題目
 
 這些知名題目都是重用本文件已有的模板；列在這裡是為了讓你一眼認出來，不需要新技巧。
@@ -1000,9 +1002,9 @@ CtCI 10.5：一個排序好的字串陣列，隨機位置塞了 `""`。`mid` 可
 | LC | 題目 | 用哪個模板 |
 |----|---------|----------------|
 | 275 | H-Index II | 對索引做邊界搜尋：第一個滿足 `citations[i] >= n - i` 的 `i`（[模板 2](#template-2-lower-and-upper-bound--lc-34-)） |
-| 1268 | Search Suggestions System | 排序 products，對逐步變長的前綴做 `lower_bound`（[模板 2](#template-2-lower-and-upper-bound--lc-34-)；binary_search_examples.md 的 LC 436）；Trie 是另一種做法 |
+| 1268 | Search Suggestions System | 排序 products，對逐步變長的前綴做 `lower_bound`（[模板 2](#template-2-lower-and-upper-bound--lc-34-)；[binary_search_examples.md](./binary_search_examples.md#find-right-interval--lc-436-) 的 LC 436）；Trie 是另一種做法 |
 | 349 / 350 | Intersection of Two Arrays I / II | 排序較大的陣列，對每個元素做二分搜尋（也可用雜湊集合 / 雙指標） |
-| 792 | Number of Matching Subsequences | 每個字元一份排序索引清單 + `upper_bound` 跳到下一次出現處（前綴和 + lower bound 家族 — binary_search_examples.md §19） |
+| 792 | Number of Matching Subsequences | 每個字元一份排序索引清單 + `upper_bound` 跳到下一次出現處（LC 981 / LC 1146 那種按 key 排序清單的查詢） |
 | 222 | Count Complete Tree Nodes | 對**最後一層的節點索引**做二分搜尋，沿著候選值的位元路徑往下走來驗證 — `O(log²n)` |
 | 1044 | Longest Duplicate Substring | 對**答案長度**做二分搜尋 + Rabin-Karp 滾動雜湊當判定式（binary_search_on_answer.md） |
 | 1385 | Find the Distance Value Between Two Arrays | 排序 `arr2`，對每個 `arr1[i]` 二分搜尋最接近的鄰居 |

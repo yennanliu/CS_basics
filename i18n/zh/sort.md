@@ -154,9 +154,12 @@
 
 <!--CODE-->
 
-<!-- 9f721c0ad5f8 -->
+<!-- 35a4e03e57b4 -->
 ### 模板 4：Quick Select（第 K 個元素）— LC 215
-<!--CODE-->
+
+Quickselect 的主場在 [quickselect.md](./quickselect.md)：三向隨機 pivot 模板
+（[模板 1](./quickselect.md#template-1-three-way-partition-quickselect--lc-215-)）、Lomuto
+與 Hoare 分割，以及 median-of-medians 的界。它跟本頁共用的是 quicksort 的分割步驟；不同的是只保留含有索引 k 的那一側，所以總量平均是 O(n)，而不是 O(n log n)。
 
 <!-- d4b682be22f9 -->
 ### 模板 5：計數排序

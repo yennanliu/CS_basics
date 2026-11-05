@@ -1,7 +1,7 @@
 # Patience Sorting — LIS in O(N log N)
 
 > **Scope** — The card-game algorithm behind `O(N log N)` longest increasing subsequence: the piles, the `tails` array they collapse to, recovering the subsequence itself, and the problem family that reduces to it.
-> **See also**: [binary_search.md](./binary_search.md) §1.5 — the lower-bound template the scan runs on, and the proof that one write per element is the *complete* DP update; [binary_search_examples.md](./binary_search_examples.md) §18 — the worked LC 300 / LC 354 solutions; [dp_pattern.md](./dp_pattern.md) — the `O(n²)` LIS DP this replaces, and the LIS-shaped DPs that cannot be replaced; [sort.md](./sort.md) — the sorting-algorithm neighbours.
+> **See also**: [binary_search.md](./binary_search.md) §1.5 — the lower-bound template the scan runs on, and the proof that one write per element is the *complete* DP update; [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-) — the worked LC 300; [sort.md § Template 9](./sort.md#template-9-sort-by-a-derived-key-to-unlock-greedy--dp--lc-354-) — the worked LC 354; [dp_pattern.md](./dp_pattern.md) — the `O(n²)` LIS DP this replaces, and the LIS-shaped DPs that cannot be replaced; [sort.md](./sort.md) — the sorting-algorithm neighbours.
 
 - **Core idea**: Deal the array out as a game of patience — each card onto the leftmost pile whose top is `>= card`, a new pile if there is none — and the **number of piles is the LIS length**
 - **When to use it**: A longest increasing / chainable run, when only its **length** is wanted and `O(n²)` DP is too slow
@@ -300,7 +300,7 @@ def lis_reconstruct(nums):
 
 ### 2-1) Longest Increasing Subsequence — LC 300 ⭐⭐⭐⭐⭐
 
-The bare scan of §1-1, answer `len(tails)`. The `O(n²)` DP is the expected first answer and the `O(n log n)` scan is the follow-up; the worked write-up of both, with the dry-run table, is in [binary_search_examples.md](./binary_search_examples.md) §18.
+The bare scan of §1-1, answer `len(tails)`. The `O(n²)` DP is the expected first answer and the `O(n log n)` scan is the follow-up; the worked write-up of both, with the dry-run table, is in [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-).
 
 ### 2-2) Increasing Triplet Subsequence — LC 334 ⭐⭐⭐⭐
 
@@ -330,7 +330,7 @@ No binary search: over two slots a linear scan *is* the lower bound, which is wh
 
 LIS in two dimensions. Sort widths **ascending** and, on ties, heights **descending**, then run the scan on the heights alone. The tie rule is the entire problem: with heights descending, two envelopes of equal width can never both be picked, because the later one's height is smaller and so cannot extend the earlier one.
 
-Code — and the same trick applied to LC 1996 — in [binary_search_examples.md](./binary_search_examples.md) §18.
+Code in [sort.md § Template 9](./sort.md#template-9-sort-by-a-derived-key-to-unlock-greedy--dp--lc-354-); LC 1996 (the same tie-rule sort, no binary search) is in the Similar table of [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-).
 
 ### 2-4) Longest Valid Obstacle Course at Each Position — LC 1964 ⭐⭐⭐⭐
 
@@ -463,7 +463,7 @@ class Solution:
 | **1671** | Minimum Number of Removals to Make Mountain Array | The scan run forwards and backwards |
 | **1713** | Minimum Operations to Make a Subsequence | LCS with a distinct side → LIS on mapped indices |
 
-**Cousins** — still "binary search a structure you maintain", but the stored value is a DP result rather than a tail: LC 1235 (Maximum Profit in Job Scheduling), LC 1751 (Maximum Number of Events That Can Be Attended II), LC 981, LC 528 — all in [binary_search_examples.md](./binary_search_examples.md).
+**Cousins** — still "binary search a structure you maintain", but the stored value is a DP result rather than a tail: LC 1235 (Maximum Profit in Job Scheduling), LC 1751 (Maximum Number of Events That Can Be Attended II), named under [binary_search.md § Template 5](./binary_search.md#template-5-lower-bound-on-a-maintained-tails-array--lc-300-); LC 981 in [design_examples.md](./design_examples.md#9-time-based-key-value-store--lc-981); LC 528 in [math.md](./math.md#1-1-11-randomized-sampling-templates-).
 
 **Traps** — LIS-shaped, but not this algorithm:
 
