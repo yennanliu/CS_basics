@@ -1,7 +1,7 @@
 # Tree — Worked LeetCode Examples
 
-> **Scope** — The worked-solution archive for the tree patterns taught elsewhere: one canonical solution per problem per language, grouped by what the problem asks for rather than by technique.
-> **See also**: [tree.md](./tree.md) — the concepts, traversal strategy and templates these examples apply; [tree_lca_distance.md](./tree_lca_distance.md) — LCA, distance and path problems; [tree_codec.md](./tree_codec.md) — serialization and codec problems; [tree_construction.md](./tree_construction.md) — build-a-tree problems.
+> **Scope** — The binary-tree problem set for the templates in binary_tree.md: each problem is filed under the template it reduces to, with the one step it adds, and the templates themselves are not restated here.
+> **See also**: [binary_tree.md](./binary_tree.md) — the templates these problems reduce to; [tree.md](./tree.md) — tree concepts, traversal strategy and Morris threading; [tree_lca_distance.md](./tree_lca_distance.md) — LCA, distance and path problems; [bst_examples.md](./bst_examples.md) — problems that use the BST ordering; [tree_codec.md](./tree_codec.md) and [tree_construction.md](./tree_construction.md) — serialising and building trees.
 
 ## LeetCode Problem Lists
 
@@ -12,524 +12,346 @@
 
 ## Overview
 
-Nineteen worked problems, grouped by the question they ask. Each one applies one of the nine
-patterns in [tree.md](./tree.md); the pattern itself is explained there and is not restated here.
+The classic binary-tree problems, grouped by the [binary_tree.md](./binary_tree.md) template each
+one reduces to and in that sheet's template order. binary_tree.md holds the templates; this sheet is
+the problems, and each card says only what the problem adds to its template. A problem that is the
+anchor of a template, or that is worked in another sheet, has a row in the Index pointing there
+instead of a second copy here.
 
-### Key Properties
-- **Complexity**: O(N) time for all but LC 222 (O(log² N) on a complete tree) and LC 545 (three passes, still O(N))
-- **Core Idea**: each example is one of tree.md's nine patterns plus the problem's own twist
-- **When to Use**: after you know the pattern and want to see it land on a real problem
+## Index
 
-## Problem Categories
+| LC | Problem | Reduces to | Difficulty |
+|---|---|---|---|
+| 545 | [Boundary of Binary Tree](#boundary-of-binary-tree--lc-545) | [binary_tree § Template 1](./binary_tree.md#template-1-recursive-pre--in--post-order-traversal--lc-94) | Medium |
+| 111 | [Minimum Depth of Binary Tree](#minimum-depth-of-binary-tree--lc-111) | [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) | Easy |
+| 199 | [Binary Tree Right Side View](#binary-tree-right-side-view--lc-199) | [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) | Medium |
+| 106 | [Construct Binary Tree from Inorder and Postorder Traversal](#construct-binary-tree-from-inorder-and-postorder-traversal--lc-106) | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | Medium |
+| 1448 | [Count Good Nodes in Binary Tree](#count-good-nodes-in-binary-tree--lc-1448) | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | Medium |
+| 1026 | [Maximum Difference Between Node and Ancestor](#maximum-difference-between-node-and-ancestor--lc-1026) | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | Medium |
+| 104 | [Maximum Depth of Binary Tree](#maximum-depth-of-binary-tree--lc-104) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Easy |
+| 110 | [Balanced Binary Tree](#balanced-binary-tree--lc-110) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Easy |
+| 124 | Binary Tree Maximum Path Sum — worked in [tree_lca_distance.md](./tree_lca_distance.md#binary-tree-maximum-path-sum--lc-124) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Hard |
+| 222 | Count Complete Tree Nodes — the template's anchor | [binary_tree § Template 7](./binary_tree.md#template-7-count-nodes-of-a-complete-tree--lc-222) | Medium |
+| 968 | [Binary Tree Cameras](#binary-tree-cameras--lc-968) | [binary_tree § Template 9](./binary_tree.md#template-9-tree-dp--return-multiple-states--lc-337-) | Hard |
+| 226 | [Invert Binary Tree](#invert-binary-tree--lc-226) | [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) | Easy |
+| 114 | [Flatten Binary Tree to Linked List](#flatten-binary-tree-to-linked-list--lc-114) | [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) | Medium |
+| 1110 | Delete Nodes And Return Forest — the template's anchor | [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) | Medium |
+| 662 | Maximum Width of Binary Tree — the template's anchor | [binary_tree § Template 11](./binary_tree.md#template-11-bfs-with-positional-index--lc-662-) | Medium |
+| 101 | [Symmetric Tree](#symmetric-tree--lc-101) | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) | Easy |
+| 617 | [Merge Two Binary Trees](#merge-two-binary-trees--lc-617) | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) | Easy |
+| 951 | [Flip Equivalent Binary Trees](#flip-equivalent-binary-trees--lc-951) | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) | Medium |
+| 2415 | [Reverse Odd Levels of Binary Tree](#reverse-odd-levels-of-binary-tree--lc-2415) | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) | Medium |
+| 98 | Validate Binary Search Tree — the template's anchor | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) | Medium |
 
-| Group | Problems | Dominant pattern |
-|-------|----------|------------------|
-| **Traversal & level order** | LC 199, 662, 2415 | BFS with per-level bookkeeping |
-| **Structure & property** | LC 222, 101, 100, 951, 98, 110, 545 | post-order validation |
-| **Height, depth & path** | LC 104, 111, 124, 1448 | height bottom-up / depth top-down |
-| **Modification & multi-state** | LC 1110, 114, 617, 226, 968 | post-order rewiring, state returned upward |
+Height vs depth, and the `-1` "not found" sentinel for a depth search, are taught once in
+[binary_tree.md § 0-5](./binary_tree.md#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-).
 
-## Traversal & Level-Order Examples
+## Recursive Traversal Examples
 
-### 1) Tree Right Side View — LC 199
+### Boundary of Binary Tree — LC 545
 
-```java
-// java
+> **Key point** — the boundary is three traversals glued together: the left boundary in
+> **pre-order** (recorded on the way down), every leaf left to right, then the right boundary in
+> **post-order** (recorded on the way back up, so it comes out bottom to top). Excluding leaves from
+> both boundary walks is what keeps a corner from being listed twice.
 
-// LC 199
-List<Integer> res = new ArrayList<>();
-Queue<TreeNode> q = new LinkedList<>();
-/** NOTE !!! seed the queue -- without this the loop never runs and res comes back empty */
-if (root != null) {
-    q.offer(root);
-}
-while (!q.isEmpty()) {
-    TreeNode rightSide = null;
-    int qLen = q.size();
-
-    /**
-     *  NOTE !!!
-     *
-     *   1) via for loop, we can get `most right node` (since the order is root -> left -> right)
-     *   2) via `TreeNode rightSide = null;`, we can get the `most right node` object
-     *      - rightSide could be `right sub tree` or `left sub tree`
-     *
-     *      e.g.
-     *         1
-     *       2   3
-     *       
-     *       
-     *       1
-     *     2   3
-     *   4
-     *
-     */
-    for (int i = 0; i < qLen; i++) {
-        TreeNode node = q.poll();
-        if (node != null) {
-            rightSide = node;
-            q.offer(node.left);
-            q.offer(node.right);
-        }
-    }
-    if (rightSide != null) {
-        res.add(rightSide.val);
-    }
-}
-```
-
-
-**Python — DFS (right-first preorder), same O(n) work without a queue:**
-
-```python 
-# LC 199 Binary Tree Right Side View
-# V0
-# IDEA : DFS
-class Solution(object):
-    def rightSideView(self, root):
-        def dfs(root, layer):
-            if not root:
-                return
-            if len(res) <= layer+1:
-            #if len(res) == layer:     # this works as well
-                res.append([])
-            res[layer].append(root.val)
-            if root.right:
-                dfs(root.right, layer+1)
-            if root.left:
-                dfs(root.left, layer+1)
-        if not root:
-            return []
-        res =[[]]
-        dfs(root, 0)
-        return [x[0] for x in res if len(x) > 0]
-```
-
-### 2) Maximum Width of Binary Tree — LC 662
-```python
-# LC 662 Maximum Width of Binary Tree
-# V0
-# IDEA : defaultdict + DFS
-from collections import defaultdict
-class Solution:
-    def widthOfBinaryTree(self, root):
-        
-        def dfs(node, level, idx):
-            if node:
-                d[level] += [idx]
-                dfs(node.left, level+1, 2*idx)
-                dfs(node.right, level+1, 2*idx+1)
-                
-        d = defaultdict(list)
-        dfs(root, 0, 0)
-        return max(v[-1] - v[0] + 1 for _, v in d.items())
-
-# V0'
-# IDEA : BFS
-# IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
-#        -> SO GO THROUGH ALL LAYERS IN THE TREE, CALCULATE THEIR WIDTH, AND RETRUN THE MAX WIDTH WHICH IS THE NEEDED RESPONSE
-from collections import defaultdict
-class Solution(object):
-    def widthOfBinaryTree(self, root):
-        # edge case
-        if not root:
-            return 0
-        layer = 0
-        idx = 0
-        q = [[root, layer, idx]]
-        res = defaultdict(list)
-        while q:
-            for i in range(len(q)):
-                tmp, layer, idx = q.pop(0)
-                res[layer].append(idx)
-                if tmp.left:
-                    q.append([tmp.left, layer+1, idx*2])
-                if tmp.right:
-                    q.append([tmp.right, layer+1, idx*2+1])
-        #print ("res = " + str(res))
-        # NOTE: res[x] is the LIST of indices on level x, so compare its LENGTH.
-        #       Every level contributes -- dropping single-node levels leaves max()
-        #       with an empty sequence on a one-node tree.
-        _res = [max(res[x]) - min(res[x]) + 1 for x in res if len(res[x]) >= 1]
-        #print ("_res = " + str(_res))
-        return max(_res)
-```
-
-### 3) Reverse Odd Levels of Binary Tree — LC 2415
-
-```java
-// java
-// LC 2415
-
-// V0-1
-// IDEA: DFS + `left, right, layer as helper func parameter` (fixed by gpt)
-public TreeNode reverseOddLevels_0_1(TreeNode root) {
-    if (root == null)
-        return null;
-
-    reverseHelper(root.left, root.right, 1);
-    return root;
-}
-
-/**
- *  NOTE !!!
- *
- *   we NEED to setup 3 parameter in the helper func
- *
- *   1. left node
- *   2. right node
- *   3. layer
- *
- *
- *  NOTE !!!
- *
- *   the helper func return NOTHING !!! (e.g. void)
- */
-private void reverseHelper(TreeNode left, TreeNode right, int level) {
-    if (left == null || right == null)
-        return;
-
-    // Swap values if we're at an odd level
-    if (level % 2 == 1) {
-        int temp = left.val;
-        left.val = right.val;
-        right.val = temp;
-    }
-
-    /**  NOTE !!! below
-     *
-     *
-     */
-    // Recurse into symmetric children
-    reverseHelper(left.left, right.right, level + 1);
-    reverseHelper(left.right, right.left, level + 1);
-}
-```
-
-## Structure & Property Examples
-
-### 4) Node Count Algorithms — LC 222
-```java
-// get nodes count of binary tree
-
-// get nodes count of perfect tree
-
-// get nodes count of complete tree
-// LC 222
-
-// dfs
-class Solution {
-    public int countNodes(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-
-        // Recursively count the nodes in the left subtree
-        int leftCount = countNodes(root.left);
-
-        // Recursively count the nodes in the right subtree
-        int rightCount = countNodes(root.right);
-
-        // Return the total count (current node + left subtree + right subtree)
-        return 1 + leftCount + rightCount;
-    }
-}
-
-
-// bfs
-public int countNodes_2(TreeNode root) {
-
-    if (root == null){
-        return 0;
-    }
-    List<TreeNode> collected = new ArrayList<>();
-    Queue<TreeNode> q = new LinkedList<>();
-    q.add(root);
-    while (!q.isEmpty()){
-        TreeNode cur = q.poll();
-        collected.add(cur);
-        if (cur.left != null) {
-            q.add(cur.left);
-        }
-        if (cur.right != null) {
-            q.add(cur.right);
-        }
-    }
-
-    //return this.count;
-    System.out.println("collected = " + collected.toString());
-    return collected.size();
-}
-```
-
-
-> The three shapes of the counting problem — the generic tree, the perfect tree, and the complete tree (LC 222) — differ only in how much structure lets you skip.
-
-#### Count nodes on a `basic` binary tree
-```java
-// java
-// algorithm book (labu) p. 250
-public int countNodes (TreeNode root){
-    if (root == null) return 0;
-    return 1 + countNodes(root.left) + countNodes(root.right);
-}
-```
-
-#### Count nodes on a `perfect` binary tree
-```java
-// java
-// algorithm book (labu) p. 250
-public int countNodes(TreeNode root){
-    int h = 0;
-    // get tree depth
-    while (root != null){
-        root = root.left;
-        h += 1;
-    }
-    // total nodes = 2**n + 1
-    return (int)Math.pow(2, h) - 1;
-}
-```
-
-#### Count nodes on a `complete` binary tree
-```java
-// java
-// algorithm book (labu) p. 251
-public int countNodes(TreeNode root){
-
-    TreeNode l = root;
-    TreeNode r = root;
-    int hl = 0;
-    int hr = 0;
-
-    while (l != null){
-        l = l.left;
-        hl += 1;
-    }
-
-    while (r != null){
-        r = r.right;
-        hr += 1;
-    }
-
-    // if left, right sub tree have SAME depth -> this is a perfect binary tree
-    if (hl == hr){
-        return (int)Math.pow(2, hl) - 1;
-    }
-
-    // if left, right sub tree have DIFFERENT depth, then we follow the simple bianry tree approach
-    return 1 + countNodes(root.left) + countNodes(root.right);
-}
-```
-
-### 5) check Symmetric Tree — LC 101
-```python
-# LC 101
-class Solution(object):
-    def isSymmetric(self, root):
-        if not root:
-            return True
-        return self.mirror(root.left, root.right)
-
-    def mirror(self, left, right):
-        if not left or not right:
-            return left == right
-        if left.val != right.val:
-            return False
-        return self.mirror(left.left, right.right) and self.mirror(left.right, right.left)
-```
-
-### 6) Same Tree — LC 100
-```python
-# LC 100 Same tree
-# V0
-# IDEA : Recursion
-class Solution(object):
-    def isSameTree(self, p, q):
-        
-        def dfs(p, q):
-            ### NOTE : we need to put this as 1st condition, or will cause "not sub tree" error
-            if not p and not q:
-                return True
-            ### NOTE : elif (but not `if`)
-            elif (not p and q) or (p and not q):
-                return False
-            ### NOTE : elif (but not `if`)
-            elif p.val != q.val:
-                return False
-            return dfs(p.left, q.left) and dfs(p.right, q.right)
-        
-        res = dfs(p, q)
-        return res
-```
-
-#### Variation — Flip Equivalent Binary Trees (LC 951)
-
-**Twist**: same skeleton as LC 100, but at every node the children are allowed to be **swapped** — so instead of one recursive check, try BOTH pairings and `or` them.
-
-```java
-// java
-// LC 951 - Flip Equivalent Binary Trees
-// IDEA: LC 100 (Same Tree) + at each node accept `left-left / right-right`
-//       OR the flipped `left-right / right-left` pairing
-class Solution {
-    public boolean flipEquiv(TreeNode root1, TreeNode root2) {
-        // time = O(N), space = O(H)
-        if (root1 == null && root2 == null) return true;
-        if (root1 == null || root2 == null || root1.val != root2.val) return false;
-
-        return (flipEquiv(root1.left, root2.left) && flipEquiv(root1.right, root2.right))   // not flipped
-            || (flipEquiv(root1.left, root2.right) && flipEquiv(root1.right, root2.left));  // flipped
-    }
-}
-```
+**Reduces to**: [binary_tree § Template 1](./binary_tree.md#template-1-recursive-pre--in--post-order-traversal--lc-94) — three walks instead of one, each recording in the order its part of the boundary is read.
 
 ```python
 # python
-# LC 951 - Flip Equivalent Binary Trees
-# IDEA: Same Tree check, but allow the children pair to be swapped at each node
-class Solution:
-    def flipEquiv(self, root1, root2):
-        # time = O(N), space = O(H)
-        if not root1 and not root2:
-            return True
-        if not root1 or not root2 or root1.val != root2.val:
-            return False
-        return (self.flipEquiv(root1.left, root2.left) and
-                self.flipEquiv(root1.right, root2.right)) or \
-               (self.flipEquiv(root1.left, root2.right) and
-                self.flipEquiv(root1.right, root2.left))
+# LC 545 - Boundary of Binary Tree
+# IDEA: root, then the left boundary top-down, the leaves left to right, the right boundary bottom-up;
+#       neither boundary walk records a leaf, so no node appears twice
+# time = O(n), space = O(h)
+def boundaryOfBinaryTree(root):
+    if not root:
+        return []
+    result = [root.val]
+
+    def is_leaf(node):
+        return not node.left and not node.right
+
+    def left_boundary(node):               # pre-order: record on the way down
+        while node and not is_leaf(node):
+            result.append(node.val)
+            node = node.left if node.left else node.right
+
+    def leaves(node):                      # every leaf, left to right
+        if not node:
+            return
+        if is_leaf(node):
+            result.append(node.val)
+            return
+        leaves(node.left)
+        leaves(node.right)
+
+    def right_boundary(node):              # post-order: record on the way back up
+        stack = []
+        while node and not is_leaf(node):
+            stack.append(node.val)
+            node = node.right if node.right else node.left
+        while stack:
+            result.append(stack.pop())
+
+    if not is_leaf(root):                  # a lone root is not also a leaf
+        left_boundary(root.left)
+        leaves(root)
+        right_boundary(root.right)
+    return result
 ```
 
-> Do NOT try to "normalize" both trees first (e.g. sorting children by value) — values are only unique in this problem's constraints; the two-way check is the general form.
+**Traps**
+- A boundary node with only a right child: `[1,2,null,null,3,…]` — the left boundary continues to
+  the **right** child when there is no left one. Following `.left` only stops the walk early.
+- `root = [1]`: the root is a leaf, so collecting leaves again prints `[1, 1]`. Guard the root.
+- `root = [1,null,2,3,4]`: the root has no left subtree, so the left boundary is just `[1]`; the
+  leaves are `3, 4` and the right boundary is `2`, giving `[1,3,4,2]`.
 
-### 7) Validate Binary Search Tree — LC 98
+## Level-Order Examples
+
+### Minimum Depth of Binary Tree — LC 111
+
+> **Key point** — BFS reaches nodes in order of depth, so the **first leaf** it dequeues is the
+> shallowest one and the search can stop there; a recursive `min` has to treat a node with one child
+> specially, because its empty side is not a leaf.
+
+**Reduces to**: [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) — the level-order queue with an early exit at the first leaf.
+
 ```python
-# 98. Validate Binary Search Tree
-# V0
-# IDEA : BFS
-#  -> trick : we make sure current tree and all of sub tree are valid BST
-#   -> not only compare tmp.val with tmp.left.val, tmp.right.val,
-#   -> but we need compare if tmp.left.val is SMALLER then `previous node val`
-#   -> but we need compare if tmp.right.val is BIGGER then `previous node val`
-class Solution(object):
-    def isValidBST(self, root):
-        if not root:
-            return True
-        _min = -float('inf')
-        _max = float('inf')
-        ### NOTE : we set q like below
-        q = [[root, _min, _max]]
-        while q:
-            for i in range(len(q)):
-                tmp, _min, _max = q.pop(0)
-                if tmp.left:
-                    ### NOTE : below condition
-                    if tmp.left.val >= tmp.val or tmp.left.val <= _min:
-                        return False
-                    ### NOTE : we append tmp.val as _max
-                    q.append([tmp.left, _min, tmp.val])
-                if tmp.right:
-                    ### NOTE : below condition
-                    if tmp.right.val <= tmp.val or tmp.right.val >= _max:
-                        return False
-                    ### NOTE : we append tmp.val as _min
-                    q.append([tmp.right, tmp.val, _max])
-        return True
+# python
+# LC 111 - Minimum Depth of Binary Tree
+# IDEA: BFS carrying the depth; the first leaf dequeued is the shallowest
+# time = O(n), space = O(w)   w = maximum width of a level; stops at the first leaf
+from collections import deque
 
-# V0'
-# IDEA: RECURSION 
-class Solution(object):
-    def isValidBST(self, root):
-        """
-        :type root: TreeNode
-        :rtype: bool
-        """
-        return self.valid(root, float('-inf'), float('inf'))
-        
-    def valid(self, root, min_, max_):
-        if not root: return True
-        if root.val >= max_ or root.val <= min_:
-            return False
-        return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
+def minDepth(root):
+    if not root:
+        return 0
+    queue = deque([(root, 1)])
+    while queue:
+        node, depth = queue.popleft()
+        if not node.left and not node.right:   # the first leaf BFS reaches is the shallowest
+            return depth
+        if node.left:
+            queue.append((node.left, depth + 1))
+        if node.right:
+            queue.append((node.right, depth + 1))
 ```
 
-### 8) Balanced Binary Tree — LC 110
-```java
-// java
-// LC 110
+**Traps**
+- The recursive form `1 + min(minDepth(left), minDepth(right))` returns 1 on `[2,null,3,null,4,null,5,null,6]`:
+  the empty left child scores 0, but it is not a leaf. The correct answer is 5. When one child is
+  missing, recurse only into the other.
+- LC 104 (max depth) does not have this trap: `max` never picks the empty side over a real one.
 
+### Binary Tree Right Side View — LC 199
 
-// V0
-// IDEA : DFS
-// https://www.bilibili.com/video/BV1Ug411S7my/?share_source=copy_web
-public boolean isBalanced(TreeNode root) {
-    // edge
-    if (root == null) {
-        return true;
-    }
-    if (root.left == null && root.right == null) {
-        return true;
-    }
+> **Key point** — the node you see from the right on each level is the **last** node of that level
+> in left-to-right order, and the level-size snapshot is what tells you which dequeue is the last.
 
-    int leftDepth = getDepthDFS(root.left);
-    int rightDepth = getDepthDFS(root.right);
+**Reduces to**: [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) — the per-level reducer keeps only the last node.
 
-    // check if `current` node is `balanced`
-    if (Math.abs(leftDepth - rightDepth) > 1) {
-        return false;
-    }
+```python
+# python
+# LC 199 - Binary Tree Right Side View
+# IDEA: level-order BFS; record the last node of each level
+# time = O(n), space = O(w)
+from collections import deque
 
-    // dfs call
-    // recursively check if `sub left node` and  `sub right node` are `balanced`
-    return isBalanced(root.left) && isBalanced(root.right);
-}
-
-// LC 104
-public int getDepthDFS(TreeNode root) {
-    if (root == null) {
-        return 0;
-    }
-
-  return Math.max(getDepthDFS(root.left), getDepthDFS(root.right)) + 1;
-}
-
-// V1
-// IDEA :  TOP DOWN RECURSION
-// https://leetcode.com/problems/balanced-binary-tree/editorial/
-// Recursively obtain the height of a tree. An empty tree has -1 height
-private int height(TreeNode root) {
-    // An empty tree has height -1
-    if (root == null) {
-        return -1;
-    }
-    return 1 + Math.max(height(root.left), height(root.right));
-}
-
-public boolean isBalanced(TreeNode root) {
-    // An empty tree satisfies the definition of a balanced tree
-    if (root == null) {
-        return true;
-    }
-
-    // Check if subtrees have height within 1. If they do, check if the
-    // subtrees are balanced
-    return Math.abs(height(root.left) - height(root.right)) < 2
-            && isBalanced(root.left)
-            && isBalanced(root.right);
-}
+def rightSideView(root):
+    result = []
+    if not root:
+        return result
+    queue = deque([root])
+    while queue:
+        level_size = len(queue)
+        for i in range(level_size):
+            node = queue.popleft()
+            if i == level_size - 1:            # the last node of the level is the one you see
+                result.append(node.val)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+    return result
 ```
 
-#### Why top-down is O(N log N) — balanced vs skewed recursion tree ⭐⭐⭐⭐
+**Traps**
+- Taking only right children: `[1,2,3,4]` has `4` visible on level 2 although it hangs off the
+  **left** subtree. The answer is `[1,3,4]`, not `[1,3]`.
+- A DFS that visits right before left and records the first node at each new depth works too, in
+  O(h) space; `len(result) == depth` is the "first visit to this depth" test.
 
-Both versions above are **top-down**: every `isBalanced(node)` call runs `height()` over the node's
-whole subtree again. Here is the same code in Python, since the analysis below refers to it line by line:
+## Build-from-Traversals Examples
+
+### Construct Binary Tree from Inorder and Postorder Traversal — LC 106
+
+> **Key point** — the **last** postorder value is the root, so read postorder from the end; read
+> backwards it is root, right, left, which means the **right** subtree must be built before the left.
+
+**Reduces to**: [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) — the same inorder split, with the root taken from the other end and the two recursive calls swapped.
+
+```python
+# python
+# LC 106 - Construct Binary Tree from Inorder and Postorder Traversal
+# IDEA: postorder[-1] is the root; its inorder index splits [lo, hi]; build RIGHT first
+# time = O(n), space = O(n)   the index map, plus O(h) recursion
+def buildTree(inorder, postorder):
+    index_of = {val: i for i, val in enumerate(inorder)}
+    post_idx = [len(postorder) - 1]           # next root, read from the END of postorder
+
+    def build_range(lo, hi):                  # the subtree whose inorder slice is [lo, hi]
+        if lo > hi:
+            return None
+        root = TreeNode(postorder[post_idx[0]])
+        post_idx[0] -= 1
+        mid = index_of[root.val]
+        root.right = build_range(mid + 1, hi)  # RIGHT first: postorder read backwards is root, right, left
+        root.left = build_range(lo, mid - 1)
+        return root
+
+    return build_range(0, len(inorder) - 1)
+```
+
+**Traps**
+- Building the left subtree first: the next value from the end of postorder belongs to the right
+  subtree, so `inorder = [9,3,15,20,7]`, `postorder = [9,15,7,20,3]` comes out with 20 on the left.
+- Slicing (`inorder[:idx]`, `postorder[:idx]`) and `inorder.index(...)` at every call are O(n) each,
+  O(n²) on a skewed tree; the index map and the moving pointer keep it O(n).
+
+## Root-to-Leaf State Examples
+
+### Count Good Nodes in Binary Tree — LC 1448
+
+> **Key point** — whether a node is "good" depends only on the maximum **above** it, so that
+> maximum travels down as an argument; it is an `int`, so each call has its own copy and there is
+> nothing to undo on the way back.
+
+**Reduces to**: [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) — the root-to-node state is one number instead of a list, so the backtracking step disappears.
+
+```python
+# python
+# LC 1448 - Count Good Nodes in Binary Tree
+# IDEA: pre-order DFS carrying the maximum on the path from the root
+# time = O(n), space = O(h)
+def goodNodes(root):
+    def dfs(node, max_so_far):
+        if not node:
+            return 0
+        good = 1 if node.val >= max_so_far else 0
+        max_so_far = max(max_so_far, node.val)   # an int: each call has its own copy
+        return good + dfs(node.left, max_so_far) + dfs(node.right, max_so_far)
+
+    return dfs(root, root.val)
+```
+
+**Traps**
+- `>` instead of `>=` drops the nodes equal to the max so far: in `[3,3,null,4,2]` the second 3
+  is good, so the answer is 3, and `>` returns 2.
+- Seeding with 0 instead of `root.val` breaks on negative values; the root is always good, so seed
+  with its own value (or `-inf`).
+
+### Maximum Difference Between Node and Ancestor — LC 1026
+
+> **Key point** — the largest `|ancestor − descendant|` on a path is the path's max minus its min,
+> so carry those two numbers down and read `high − low` when the path ends. No pair is ever
+> compared, and no BST order is used.
+
+**Reduces to**: [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) — state carried down a root-to-leaf path; the
+same two values as [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98)'s bounds, widened instead of checked.
+
+```python
+# python
+# LC 1026 - Maximum Difference Between Node and Ancestor
+# IDEA: carry the path's min and max down; at the end of a path the answer is max - min
+# time = O(n), space = O(h)
+def maxAncestorDiff(root):
+    def dfs(node, low, high):
+        if not node:
+            return high - low                    # the path ended: its widest spread
+        low = min(low, node.val)
+        high = max(high, node.val)
+        return max(dfs(node.left, low, high), dfs(node.right, low, high))
+
+    return dfs(root, root.val, root.val)
+```
+
+**Traps**
+- Comparing each node only with its parent: LC 1026's example 1,
+  `[8,3,10,1,6,null,14,null,null,4,7,13]`, returns 5 (8 − 3) instead of 7 (8 − 1, two edges
+  apart).
+
+| | Validate (LC 98) | Max ancestor diff (LC 1026) |
+|---|---|---|
+| carried down | the legal interval | the path's min and max |
+| at a node outside it | return false | widen it |
+| children combine with | `and` | `max` |
+
+## Height-Up Examples
+
+### Maximum Depth of Binary Tree — LC 104
+
+> **Key point** — the depth of a tree is one more than the deeper of its two subtrees; it is the
+> height the template returns, with no global needed because the root's own return value is the answer.
+
+**Reduces to**: [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) — the return value alone, without the global.
+
+```python
+# python
+# LC 104 - Maximum Depth of Binary Tree
+# IDEA: post-order; my depth = 1 + the deeper child's depth
+# time = O(n), space = O(h)
+def maxDepth(root):
+    if not root:
+        return 0
+    return 1 + max(maxDepth(root.left), maxDepth(root.right))
+```
+
+**Traps**
+- Counting edges instead of nodes: LC 104 counts **nodes**, so `maxDepth(None) = 0` and a single
+  node is 1. Returning `-1` for `None` (the edge convention) gives 2 for `[3,9,20,null,null,15,7]`.
+- On a chain of 10⁴ nodes the recursion is 10⁴ deep; in Python that needs `sys.setrecursionlimit`
+  or a level-order BFS that counts levels.
+
+### Balanced Binary Tree — LC 110
+
+> **Key point** — return the height and the verdict from the **same** post-order pass: `-1` means
+> "already unbalanced somewhere below", and every ancestor passes it straight up, so each node is
+> visited once.
+
+**Reduces to**: [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) — the height doubles as a failure signal instead of feeding a global.
 
 ```python
 # python
 # LC 110 - Balanced Binary Tree
-# IDEA: top-down — at every node, compare the two subtree heights, then recurse into both children
-# time = O(N log N) on a balanced tree, O(N^2) upper bound; space = O(h)
+# IDEA: post-order height; -1 is the "unbalanced" sentinel that short-circuits upward
+# time = O(n), space = O(h)
+def isBalanced(root):
+    def height(node):                      # -1 means "already unbalanced below here"
+        if not node:
+            return 0
+        left = height(node.left)
+        if left == -1:
+            return -1
+        right = height(node.right)
+        if right == -1:
+            return -1
+        if abs(left - right) > 1:
+            return -1
+        return 1 + max(left, right)
+
+    return height(root) != -1
+```
+
+**Second solution — top-down, and why it costs more.** The version most people write first checks
+the heights at the root and then recurses into both children, so `height()` re-walks every subtree
+once per ancestor. It is correct; it is shown only for the complexity question the interviewer asks next.
+
+```python
+# python
+# LC 110 - Balanced Binary Tree (top-down)
+# IDEA: at every node compare the two subtree heights, then recurse into both children
+# time = O(n log n) on a balanced tree, O(n^2) upper bound; space = O(h)
 def isBalanced(root):
     def height(node):
         if not node:
@@ -543,1539 +365,332 @@ def isBalanced(root):
     return isBalanced(root.left) and isBalanced(root.right)
 ```
 
-**The method: work per level × number of levels.** Draw the recursion tree of `isBalanced`. Level `d`
-holds the calls for the nodes at depth `d`, and each call costs the size of its subtree, because
-`height()` visits every node below it. Add up each level, then add up the levels. The two shapes differ
-in **both** numbers, so you cannot take one number from each shape:
+Count the work per level of the recursion, times the number of levels. Each shape gives one of
+each; never take one number from each shape:
 
 | | Balanced tree | Skewed tree (a chain) |
 |---|---|---|
-| Number of levels (tree height) | **log N** | **N** |
-| Work on level `d` | 2^d calls × subtree size N/2^d ≈ **N** | 1 call × subtree size N − d |
-| Total | N × log N = **O(N log N)** | N + (N−1) + … + 1 = N(N+1)/2 = **O(N²)** |
-| Recurrence | T(N) = 2T(N/2) + O(N) | T(N) = T(N−1) + O(N) |
+| Levels | log n | n |
+| Work on level `d` | 2^d calls × subtree size n/2^d ≈ n | 1 call × subtree size n − d |
+| Total | n · log n = **O(n log n)** — T(n) = 2T(n/2) + O(n) | n + (n−1) + … + 1 = **O(n²)** — T(n) = T(n−1) + O(n) |
 
-- **Balanced:** the subtrees on any one level are disjoint and together hold about all N nodes, so each
-  level costs O(N). There are log N levels. T(N) = 2T(N/2) + O(N) is the merge-sort recurrence, and the
-  Master Theorem gives **O(N log N)**.
-- **Skewed:** each level has a single call, and its subtree is one node smaller than the one above it.
-  The decreasing sum N, N−1, …, 1 *already* adds up all N levels, so the total is **O(N²)**. There is
-  no log N in it.
+Per node, the same count reads: `height()` visits a node once for each of its ancestors, so the
+total is the sum of the depths, n × (average depth). Only the balanced shape keeps that depth at log n.
 
-> **The N² log N trap.** Multiplying the skewed sum (N + (N−1) + … + 1 = O(N²)) by the balanced height
-> (log N) gives O(N² log N), and that is wrong twice. The arithmetic series is already the total over
-> every level, so multiplying it by a level count counts it again. And log N levels only happen in a
-> balanced tree, where a level costs N, not N − d. Each shape gives one per-level cost and one height.
-> Never mix them.
+**Traps**
+- O(n² log n) is the answer you get by multiplying the skewed series (already a total over every
+  level) by the balanced height. It counts the levels twice.
+- On a chain this top-down code actually exits at the root (heights n−1 and 0 differ by more than
+  1), so the O(n²) is the cost of the recursion pattern, paid in full by code with no early exit,
+  such as a naive diameter that calls `height` at every node.
+- Checking the bottom-up `-1` only once, after both calls: still O(n), but it walks the right
+  subtree of an already-failed node for nothing. Test `left == -1` before recursing right.
 
-**What this code actually does on a chain.** The `> 1` check runs *before* the recursion. On a chain of
-N ≥ 3 nodes the root sees heights N−1 and 0, so it returns `False` after one O(N) height pass and never
-goes down the chain. The O(N²) row is the cost of the *recursion pattern*: calling `height()` at every
-node of a deep tree with nothing to stop it early. Code without an early exit pays it in full, for
-example a naive diameter (LC 543) that runs `height(l) + height(r)` at every node. For this problem,
-O(N²) is an upper bound (at most N calls, each at most O(N)), and the balanced case is the one worth
-quoting. Measured with the `height()` calls counted, null children included:
+## Tree DP Examples
 
-```text
-perfect tree, N = 16383   isBalanced -> True    height() calls = 425,986    ≈ 1.9 · N log N
-chain,        N = 4000    isBalanced -> False   height() calls = 8,000      (exits at the root)
-chain,        N = 4000    height() at every node, no early exit
-                                                height() calls = 16,004,000 ≈ 2 · N²/2
-```
+### Binary Tree Cameras — LC 968
 
-**The O(N) fix** is bottom-up: return the height and a "this subtree is already unbalanced" signal (`-1`)
-from the **same** post-order pass, so each node is visited once. That is `checkBalance` under
-[§10, Common Variations](#5-common-variations).
+> **Key point** — each call returns a **state** — uncovered, has a camera, covered — and the parent
+> decides. A null child counts as covered, so a leaf reports "uncovered" and forces the camera onto
+> its parent, which covers three levels instead of one. An uncovered node places nothing: it defers
+> to its parent.
 
-#### The balanced case, worked out — where O(N log N) comes from
-
-Take a **perfect** binary tree with H levels (depth `d = 0 … H−1`), so N = 2^H − 1 and H = log₂(N + 1).
-Count the cost of `isBalanced(v)` as the size of v's subtree: the two `height()` calls visit every node
-below v, plus v itself.
-
-**1. Work on one level.** Each level doubles the node count and halves the subtree size, and the two cancel:
-
-```text
-level d:  2^d nodes, each with a subtree of 2^(H−d) − 1 nodes
-
-  Work(d) = 2^d · (2^(H−d) − 1)
-          = 2^H − 2^d
-          = (N + 1) − 2^d          ≤ N        ← every level costs about N, never less than (N+1)/2
-
-  N = 7 (H = 3):   d=0: 1·7 = 7    d=1: 2·3 = 6    d=2: 4·1 = 4
-```
-
-This is the step that keeps the balanced case from being an arithmetic series. The subtrees shrink as
-you go down, but there are more of them, so each level still covers nearly all N nodes.
-
-**2. Add up the levels.**
-
-```text
-  T = Σ_{d=0}^{H−1} (2^H − 2^d)
-    = H · 2^H − (2^H − 1)                 (geometric series: 1 + 2 + … + 2^(H−1) = 2^H − 1)
-    = (N + 1) · log₂(N + 1) − N
-    = Θ(N log N)
-
-  N = 7:   3 · 8 − 7 = 17  =  7 + 6 + 4  ✓
-```
-
-**3. The same answer from the recurrence.** One call on N nodes does O(N) of `height()` work, then
-recurses into two halves of about N/2 nodes each:
-
-```text
-  T(N) = 2T(N/2) + cN
-       = 4T(N/4) + cN + cN
-       = 8T(N/8) + 3cN
-       …
-       = 2^k · T(N/2^k) + k · cN        stop when N/2^k = 1, i.e. k = log₂ N
-       = N · T(1) + cN · log₂ N
-       = Θ(N log N)
-```
-
-**Master Theorem**, for T(N) = a·T(N/b) + f(N): here a = 2, b = 2, f(N) = Θ(N). Since
-N^(log_b a) = N^(log₂ 2) = N¹, f(N) grows at the same rate as N^(log_b a). That is case 2, which gives
-**Θ(N^(log_b a) · log N) = Θ(N log N)**. Each of the log N levels costs the same Θ(N).
-
-**4. Counting per node instead of per level.** `height()` starts at a node's *children*, so during
-w's own `isBalanced(w)` call it never visits w. Only the call at each of w's ancestors does, which makes
-`depth(w)` visits by `height()`. Add 1 for w's own `isBalanced` call and the total is
-`Σ (depth(w) + 1)`, which is N × (average depth + 1):
-
-```text
-  balanced:  most nodes sit near depth log N    →  ≈ N · log N
-  chain:     depths are 0, 1, …, N−1            →  N(N+1)/2 = O(N²)
-```
-
-This one formula covers both shapes. The cost is N times how deep a node sits on average, and only the
-balanced shape keeps that depth at log N.
-
-**Checked against the code.** For H = 1 … 15, the nodes visited by `height()` equal
-`Σ depth(w) = H(N+1) − 2N` exactly. That is step 2's sum minus the N `isBalanced` calls themselves,
-which is the `+1` in step 4. Counting null children too, the
-count is `2 · (H·2^H − (2^H − 1))`. At H = 14 that is 2 · 212,993 = **425,986**, the measured figure above.
-
-### 9) Boundary of Binary Tree — LC 545
-```python
-# LC 545. Boundary of Binary Tree
-# V0
-# IDEA : DFS
-# https://xiaoguan.gitbooks.io/leetcode/content/LeetCode/545-boundary-of-binary-tree-medium.html
-# https://www.cnblogs.com/lightwindy/p/9583723.html
-class Solution(object):
-    def boundaryOfBinaryTree(self, root):
-        def leftBoundary(root, nodes):
-            if not root or (not root.left and not root.right):
-                return
-            nodes.append(root.val)
-            """
-            NOTE this !!!
-            """
-            if not root.left:
-                leftBoundary(root.right, nodes)
-            else:
-                leftBoundary(root.left, nodes)
- 
-        def rightBoundary(root, nodes):
-            if not root or (not root.left and not root.right):
-                return
-            """
-            NOTE this !!!
-            """
-            if not root.right:
-                rightBoundary(root.left, nodes)
-            else:
-                rightBoundary(root.right, nodes)
-            nodes.append(root.val)
- 
-        def leaves(root, nodes):
-            if not root:
-                return
-            if not root.left and not root.right:
-                nodes.append(root.val)
-                return
-            leaves(root.left, nodes)
-            leaves(root.right, nodes)
- 
-        if not root:
-            return []
- 
-        nodes = [root.val]
-        leftBoundary(root.left, nodes)
-        """
-        NOTE this !!!
-        """
-        leaves(root.left, nodes)
-        leaves(root.right, nodes)
-        rightBoundary(root.right, nodes)
-        return nodes
-
-# V0'
-class Solution(object):
-    def boundaryOfBinaryTree(self, root):
-        if not root: return []
-
-        left_bd_nodes = [root]
-        cur = root.left
-        while cur:
-            left_bd_nodes.append(cur)
-            cur = cur.left or cur.right
-
-        right_bd_nodes = [root]
-        cur = root.right
-        while cur:
-            right_bd_nodes.append(cur)
-            cur = cur.right or cur.left
-
-        leaf_nodes = []
-        stack = [root]
-        while stack:
-            node = stack.pop()
-            if node.right:
-                stack.append(node.right)
-            if node.left:
-                stack.append(node.left)
-            if not node.left and not node.right:
-                leaf_nodes.append(node)
-
-        ans = []
-        seen = set()
-        def visit(node):
-            if node not in seen:
-                seen.add(node)
-                ans.append(node.val)
-
-        for node in left_bd_nodes: visit(node)
-        for node in leaf_nodes: visit(node)
-        for node in reversed(right_bd_nodes): visit(node)
-
-        return ans
-```
-
-## Height, Depth & Path Examples
-
-### 10) Tree Height and Depth Operations
-
-#### **Core Concepts: Height vs Depth**
-
-| Concept | Definition | Direction | Traversal | Use Case |
-|---------|------------|-----------|-----------|----------|
-| **Height** | Distance from node to deepest leaf | Bottom-up | Post-order DFS | Tree properties, balance check |
-| **Depth** | Distance from root to target node | Top-down | Pre-order DFS | Node distance, level finding |
-
-**Key Insight**: `getDepth()` is the fundamental algorithm for calculating distance between nodes (from root to any target node).
-
-#### **Visual Comparison**
-
-```text
-        1           Height of 1: 2 (to deepest leaf)
-       / \          Depth of 1: 0 (root)
-      2   3         Height of 2: 1, Depth of 2: 1
-     / \            Height of 4: 0, Depth of 4: 2
-    4   5           Height of 5: 0, Depth of 5: 2
-
-Height measures "how far down can I go?"
-Depth measures "how far am I from the root?"
-```
-
-#### **1. Get Height (Post-order DFS)**
-
-**Purpose**: Calculate distance from node to its deepest descendant leaf.
-
-```java
-// java
-/**
- * 🌳 Get Height - Bottom-up approach
- *
- * Time: O(N) - visit each node once
- * Space: O(h) - recursion stack depth
- *
- * Returns: Height of tree (number of edges from node to deepest leaf)
- */
-public int getHeight(TreeNode root) {
-    if (root == null) {
-        return -1;  // ✅ Return -1 for null (so leaf height = 0)
-    }
-
-    // Post-order: process children first, then current node
-    int leftHeight = getHeight(root.left);
-    int rightHeight = getHeight(root.right);
-
-    return Math.max(leftHeight, rightHeight) + 1;
-}
-
-/**
- * Why return -1 for null?
- *
- * • By definition: leaf node has height 0
- * • If root is a leaf:
- *   - leftHeight = -1 (null)
- *   - rightHeight = -1 (null)
- *   - max(-1, -1) + 1 = 0 ✅ (correct leaf height)
- *
- * Alternative: return 0 for null
- * Then leaf height would be 1 (which is also valid but less standard)
- */
-```
+**Reduces to**: [binary_tree § Template 9](./binary_tree.md#template-9-tree-dp--return-multiple-states--lc-337-) — three states instead of (take, skip), and a greedy rule at each node instead of a max.
 
 ```python
 # python
-def get_height(node):
-    """
-    Height: Distance from node to deepest leaf (bottom-up)
+# LC 968 - Binary Tree Cameras
+# IDEA: post-order DFS returning one of 3 states; the parent makes the decision
+# time = O(n), space = O(h)
+def minCameraCover(root):
+    UNCOVERED, CAMERA, COVERED = 0, 1, 2
+    cameras = 0
 
-    Returns -1 for null so leaf height = 0
-    """
-    if not node:
-        return -1
+    def dfs(node):
+        nonlocal cameras
+        if not node:
+            return COVERED                 # so a leaf reports UNCOVERED and its parent acts
+        left = dfs(node.left)
+        right = dfs(node.right)
+        if left == UNCOVERED or right == UNCOVERED:   # test this FIRST
+            cameras += 1
+            return CAMERA
+        if left == CAMERA or right == CAMERA:
+            return COVERED
+        return UNCOVERED                   # decide nothing: the parent places the camera
 
-    left_height = get_height(node.left)
-    right_height = get_height(node.right)
-
-    return max(left_height, right_height) + 1
+    if dfs(root) == UNCOVERED:             # the root has no parent to defer to
+        cameras += 1
+    return cameras
 ```
-
-#### **2. Get Depth (Pre-order DFS)**
-
-**Purpose**: Calculate distance from root to target node. **This is the core distance-finding algorithm.**
 
 ```java
 // java
-/**
- * 🌿 Get Depth - Top-down approach
- *
- * This is the fundamental algorithm for finding distance between nodes:
- * - Distance from root to any target node
- * - Can be used as building block for node-to-node distance (via LCA)
- *
- * Time: O(N) - worst case visit all nodes
- * Space: O(h) - recursion stack depth
- *
- * Returns:
- * - Depth (number of edges from root to target) if found
- * - -1 if target not found
- */
-public int getDepth(TreeNode root, TreeNode target) {
-    return getDepthHelper(root, target, 0);
+// LC 968 - Binary Tree Cameras
+// IDEA: post-order, 3 states; an uncovered child forces a camera here
+// time = O(n), space = O(h)
+private static final int UNCOVERED = 0, CAMERA = 1, COVERED = 2;
+private int cameras = 0;
+
+public int minCameraCover(TreeNode root) {
+    cameras = 0;
+    if (dfs(root) == UNCOVERED) {
+        cameras++;                              // the root has no parent to defer to
+    }
+    return cameras;
 }
 
-private int getDepthHelper(TreeNode root, TreeNode target, int depth) {
-    if (root == null) {
-        return -1; // ❌ Target not found in this branch
-    }
-
-    if (root == target) {
-        return depth; // ✅ Found! Return current distance from root
-    }
-
-    // Pre-order: try left subtree first
-    int leftDepth = getDepthHelper(root.left, target, depth + 1);
-    if (leftDepth != -1) {
-        return leftDepth; // Found in left subtree
-    }
-
-    // If not in left, try right subtree
-    return getDepthHelper(root.right, target, depth + 1);
-}
-
-/**
- * Why return -1 for null?
- *
- * • -1 is a sentinel value meaning "not found"
- * • Allows us to distinguish between:
- *   - "Found at root" (depth = 0)
- *   - "Not found" (depth = -1)
- * • Enables early termination when target is found
- */
-```
-
-```python
-# python
-def get_depth(root, target, depth=0):
-    """
-    Depth: Distance from root to target node (top-down)
-
-    This is the core distance algorithm - finds distance from root to any node.
-
-    Returns:
-    - depth (number of edges) if target found
-    - -1 if target not found
-    """
-    if not root:
-        return -1  # Not found
-
-    if root == target or root.val == target:
-        return depth  # Found!
-
-    # Try left subtree
-    left_depth = get_depth(root.left, target, depth + 1)
-    if left_depth != -1:
-        return left_depth
-
-    # Try right subtree
-    return get_depth(root.right, target, depth + 1)
-```
-
-#### **3. Comparison Table**
-
-| Aspect | Get Height | Get Depth |
-|--------|------------|-----------|
-| **Traversal Order** | Post-order (left → right → root) | Pre-order (root → left → right) |
-| **Direction** | Bottom-up (leaf to node) | Top-down (root to node) |
-| **Null Return** | `-1` (so leaf height = 0) | `-1` (meaning "not found") |
-| **Parameter Passing** | None (computed from children) | Pass `depth` down through recursion |
-| **Use Case** | Tree balance, tree properties | **Distance calculation**, level finding |
-| **When to Use** | Need children data first | Need parent data for children |
-| **Example Problems** | LC 104 (Max Depth), LC 110 (Balanced Tree) | LC 1740 (Distance in Tree), LC 863 (Distance K) |
-
-#### **4. Relationship to Distance Between Nodes**
-
-```java
-/**
- * Finding distance between ANY two nodes uses getDepth() as building block:
- *
- * 1. Find Lowest Common Ancestor (LCA) of node1 and node2
- * 2. Distance = getDepth(LCA, node1) + getDepth(LCA, node2)
- *
- * See LC 1740 for full implementation.
- */
-public int findDistance(TreeNode root, int p, int q) {
-    TreeNode lca = findLCA(root, p, q);
-    return getDepth(lca, p) + getDepth(lca, q);
-}
-```
-
-#### **5. Common Variations**
-
-```java
-// java
-
-// Variation 1: Get depth by value instead of node reference
-public int getDepth(TreeNode root, int targetVal) {
-    return getDepthHelper(root, targetVal, 0);
-}
-
-private int getDepthHelper(TreeNode node, int targetVal, int depth) {
-    if (node == null) {
-        return -1;
-    }
-    if (node.val == targetVal) {
-        return depth;
-    }
-
-    int left = getDepthHelper(node.left, targetVal, depth + 1);
-    if (left != -1) return left;
-
-    return getDepthHelper(node.right, targetVal, depth + 1);
-}
-
-// Variation 2: Get height returning 0 for null (leaf height = 1)
-public int getHeightAlternative(TreeNode root) {
-    if (root == null) {
-        return 0;  // Leaf node height = 1 with this approach
-    }
-    return 1 + Math.max(getHeightAlternative(root.left),
-                        getHeightAlternative(root.right));
-}
-
-// Variation 3: Check if tree is balanced (height difference ≤ 1)
-public boolean isBalanced(TreeNode root) {
-    return checkBalance(root) != -1;
-}
-
-private int checkBalance(TreeNode node) {
-    if (node == null) {
-        return 0;
-    }
-
-    int leftHeight = checkBalance(node.left);
-    if (leftHeight == -1) return -1;
-
-    int rightHeight = checkBalance(node.right);
-    if (rightHeight == -1) return -1;
-
-    if (Math.abs(leftHeight - rightHeight) > 1) {
-        return -1;  // Unbalanced
-    }
-
-    return 1 + Math.max(leftHeight, rightHeight);
-}
-```
-
-#### **6. Key Takeaways**
-
-1. **Height (Post-order)**: Used for tree properties, needs children info first
-2. **Depth (Pre-order)**: **Core distance algorithm**, passes info down to children
-3. **Return -1 for null**:
-   - Height: Makes leaf height = 0 (standard definition)
-   - Depth: Signals "target not found"
-4. **Distance between nodes** = Use `getDepth()` twice with LCA
-5. **Choose based on info flow**:
-   - Need children data? → Use height (post-order)
-   - Need parent data? → Use depth (pre-order)
-
-
-> Concrete implementations of the height/depth ideas above.
-
-#### Get Maximum depth
-
-- LC 104 : Maximum Depth of Binary Tree
-- LC 110 : Balanced Binary Tree
-
-```java
-// java
-// V0
-// IDEA : RECURSIVE (DFS)
-public int maxDepth(TreeNode root) {
-
-    if (root == null){
-        return 0;
-    }
-
-    // NOTE : below conditon is optional (have or not use is OK)
-//        if (root.left == null && root.right == null){
-//            return 1;
-//        }
-
-    int leftD = maxDepth(root.left) + 1;
-    int rightD = maxDepth(root.right) + 1;
-
-    return Math.max(leftD, rightD);
-}
-```
-
-```python
-#-----------------
-# BFS
-#-----------------
-# ....
-layer = 1
-q = [[layer, root]]
-res = []
-while q:
-    # NOTE !!! FIFO, so we pop first added element (new element added at right hand side)
-    layer, tmp = q.pop(0)      # NOTE: pop from the QUEUE, not from the tree node
-    """
-    KEY here !!!!
-    """
-    if tmp and not tmp.left and not tmp.right:
-        res.append(layer)
-    if tmp.left:
-        q.append([layer+1, tmp.left])
-    if tmp.right:
-        q.append([layer+1, tmp.right])
-    # ...
-```
-
-#### Get Minimum depth
-- LC 111 : Minimum Depth of Binary Tree 
-
-```java
-// java
-
-// V0'
-// IDEA : DFS
-public int minDepth(TreeNode root) {
-
-    if (root == null){
-        return  0;
-    }
-
-    return getDepth(root);
-}
-
-private int getDepth(TreeNode root){
-
-    if (root == null){
-        return 0;
-    }
-
-    /**
-     *  NOTE !!! below condition
-     *  -> we need to go till meat a node, then calculate min depths (number of node)
-     *  -> Note: A leaf is a node with no children.
-     *  -> plz check below example for idea
-     *  example : [2,null,3,null,4,null,5,null,6]
-     *
-     *
-     */
-    if (root.left == null) {
-        return 1 + getDepth(root.right);
-    } else if (root.right == null) {
-        return 1 + getDepth(root.left);
-    }
-
-    return 1 + Math.min(getDepth(root.left), getDepth(root.right));
-}
-```
-
-### 11) Maximum Depth of Binary Tree — LC 104
-```python
-# LC 104 Maximum Depth of Binary Tree
-# V0
-# IDEA : DFS
-class Solution(object):
-    def maxDepth(self, root):
-
-        if root == None:
-            return 0
-        return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
-
-# V0'
-# bfs
-class Solution(object):
-    def maxDepth(self, root):
-        # edge case
-        if not root:
-            return 0
-        res = 0
-        layer = 0
-        q = [[root, layer]]
-        while q:
-            for i in range(len(q)):
-                tmp, layer = q.pop(0)
-                res = max(res, layer)
-                if tmp.left:
-                    q.append([tmp.left, layer+1])
-                if tmp.right:
-                    q.append([tmp.right, layer+1])                   
-        return res + 1
-```
-
-### 12) Minimum Depth of Binary Tree — LC 111
-
-> Reference: [MinimumDepthOfBinaryTree.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MinimumDepthOfBinaryTree.java)
-
-```python
-# LC 111 Minimum Depth of Binary Tree
-
-# V0
-# IDEA : BFS
-class Solution(object):
-    def minDepth(self, root):
-        # edge case
-        if not root:
-            return 0
-        if root and not root.left and not root.right:
-            return 1
-        layer = 1
-        q = [[layer, root]]
-        res = []
-        while q:
-            for i in range(len(q)):
-                layer, tmp = q.pop(0)
-                """
-                NOTE !!! : via below condition, we get "layer" of " A leaf is a node with no children."
-                """
-                if tmp and not tmp.left and not tmp.right:
-                    res.append(layer)
-                if tmp.left:
-                    q.append([layer+1, tmp.left])
-                if tmp.right:
-                    q.append([layer+1, tmp.right])
-        # get min
-        #print ("res = " + str(res))
-        return min(res)
-
-# V0'
-# IDEA : DFS
-# compare with LC 104 : Maximum Depth of Binary Tree
-class Solution(object):
-    def minDepth(self, root):
-        if not root:
-            return 0
-        ### NOTE here : we need min depth, so if not root.left, then we need to return directly
-        if not root.left:
-            return 1 + self.minDepth(root.right)
-        ### NOTE here : we need min depth, so if not root.right, then we need to return directly
-        elif not root.right:
-            return 1 + self.minDepth(root.left)
-        else:
-            return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
-```
-
-### 13) Binary Tree Maximum Path Sum — LC 124
-
-```java
-// java
-// LC 124
-
-// V0-1
-// IDEA: DFS (GPT)
-private int maxSum = Integer.MIN_VALUE;
-
-public int maxPathSum_0_1(TreeNode root) {
-    if (root == null) {
-        return Integer.MIN_VALUE; // Handle null case
-    }
-
-    dfs(root);
-    return maxSum;
-}
-
-/** NOTE !!!
- *
- *  the response type of dfs is `integer`
- *  e.g. the `max path sum` per input node
- */
 private int dfs(TreeNode node) {
     if (node == null) {
-        return 0;
+        return COVERED;
     }
-
-    // Compute max path sum of left and right children, discard negative values
-    /**
-     *  NOTE !!!
-     *
-     *   we cache `leftMax` on current node
-     *   we cache `rightMax` on current node
-     *
-     *   so we can update global `max path sum` below
-     */
-    int leftMax = Math.max(dfs(node.left), 0);
-    int rightMax = Math.max(dfs(node.right), 0);
-
-    // Update global max sum with current node as the highest ancestor
-    /**
-     *  NOTE !!!
-     *
-     *  we update global `max path sum`,
-     *  but the `maxSum` is NOT return as method reponse,
-     *  we simply update the global variable `maxSum`
-     *
-     *  -> the method return val is local max path (node.val + Math.max(leftMax, rightMax))
-     */
-    maxSum = Math.max(maxSum, node.val + leftMax + rightMax);
-
-    // Return max sum path including this node (but only one subtree path)
-    /**
-     *  NOTE !!!
-     *
-     *
-     *  -> the method return val is local max path (node.val + Math.max(leftMax, rightMax)),
-     *     instead of `maxSum`
-     *
-     */
-    return node.val + Math.max(leftMax, rightMax);
-}
-
-```
-
-```python
-# 124. Binary Tree Maximum Path Sum
-# V0
-# IDEA : DFS
-# https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/209995/Python-solution
-class Solution(object):
-    def maxPathSum(self, root):
-        def dfs(root):
-            if not root:
-                return 0
-            l_max = dfs(root.left)
-            r_max = dfs(root.right)
-            """
-            handle if l_max < 0:
-                    -> start again from root.val
-                   else:
-                    -> l_max += root.val
-            """
-            if l_max < 0:
-                l_max = root.val
-            else:
-                l_max += root.val
-            """
-            handle if r_max < 0:
-                    -> start again from root.val
-                   else:
-                    -> r_max += root.val
-            """
-            if r_max < 0:
-                r_max = root.val
-            else:
-                r_max += root.val
-
-            self.maximum = max(self.maximum, l_max + r_max - root.val)
-            return max(l_max, r_max)
-           
-        self.maximum = -float('inf')
-        dfs(root)
-        return self.maximum
-```
-
-### 14) Count Good Nodes in Binary Tree — LC 1448
-```java
-// java
-// LC 1448
- // V1
-    // IDEA : DFS
-    // https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
-    private int numGoodNodes = 0;
-
-    public int goodNodes_2(TreeNode root) {
-        dfs(root, Integer.MIN_VALUE);
-        return numGoodNodes;
+    int left = dfs(node.left);
+    int right = dfs(node.right);
+    if (left == UNCOVERED || right == UNCOVERED) {
+        cameras++;
+        return CAMERA;
     }
-
-    private void dfs(TreeNode node, int maxSoFar) {
-        if (maxSoFar <= node.val) {
-            numGoodNodes++;
-        }
-
-        if (node.right != null) {
-            dfs(node.right, Math.max(node.val, maxSoFar));
-        }
-
-        if (node.left != null) {
-            dfs(node.left, Math.max(node.val, maxSoFar));
-        }
+    if (left == CAMERA || right == CAMERA) {
+        return COVERED;
     }
-
-
-    // V2
-    // IDEA : DFS + Iterative
-    // https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
-    class Pair {
-
-        public TreeNode node;
-        public int maxSoFar;
-
-        public Pair(TreeNode node, int maxSoFar) {
-            this.node = node;
-            this.maxSoFar = maxSoFar;
-        }
-    }
-
-    public int goodNodes_3(TreeNode root) {
-        int numGoodNodes = 0;
-        Stack<Pair> stack = new Stack<>();
-        stack.push(new Pair(root, Integer.MIN_VALUE));
-
-        while (stack.size() > 0) {
-            Pair curr = stack.pop();
-            if (curr.maxSoFar <= curr.node.val) {
-                numGoodNodes++;
-            }
-
-            if (curr.node.left != null) {
-                stack.push(new Pair(curr.node.left, Math.max(curr.node.val, curr.maxSoFar)));
-            }
-
-            if (curr.node.right != null) {
-                stack.push(new Pair(curr.node.right, Math.max(curr.node.val, curr.maxSoFar)));
-            }
-        }
-
-        return numGoodNodes;
-    }
-```
-
-## Modification & Multi-State Examples
-
-### 15) Delete Nodes And Return Forest — LC 1110
-
-**Problem**: Given a binary tree root and an array of values to delete, remove those nodes and return a list of the roots of the remaining trees (forest).
-
-**Core Idea**: 
-- Use DFS with two state tracking: whether current node should be deleted, and whether parent was deleted
-- A node becomes a forest root if it's NOT deleted but its parent IS deleted
-- Post-order DFS processes children first, allowing clean disconnection
-
-**Approach 1: DFS + State Tracking (Recommended)**
-
-```java
-public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-    HashSet<Integer> deleteSet = new HashSet<>();
-    for (int x : to_delete) {
-        deleteSet.add(x);
-    }
-    
-    List<TreeNode> forest = new ArrayList<>();
-    dfs(root, deleteSet, true, forest);  // root has no parent → treated as deleted
-    return forest;
-}
-
-private TreeNode dfs(TreeNode node, HashSet<Integer> deleteSet, boolean isParentDeleted, List<TreeNode> forest) {
-    if (node == null)
-        return null;
-
-    boolean isDeleted = deleteSet.contains(node.val);
-
-    // If this node is a new root (NOT deleted AND parent WAS deleted or doesn't exist)
-    if (!isDeleted && isParentDeleted) {
-        forest.add(node);
-    }
-
-    // Post-order: process children first (their isParentDeleted = current node's isDeleted)
-    node.left = dfs(node.left, deleteSet, isDeleted, forest);
-    node.right = dfs(node.right, deleteSet, isDeleted, forest);
-
-    // Return null to parent if deleted (automatically disconnects), else return node
-    return isDeleted ? null : node;
+    return UNCOVERED;
 }
 ```
 
-**Complexity**: Time O(N), Space O(N)
-- Visit each node exactly once
-- HashSet operations: O(1)
-- Recursion depth: O(h) worst case O(N)
-
-**Approach 2: BFS (Level-Order Traversal)**
-
-```java
-public List<TreeNode> delNodes_BFS(TreeNode root, int[] to_delete) {
-    Set<Integer> deleteSet = new HashSet<>();
-    for (int val : to_delete) {
-        deleteSet.add(val);
-    }
-    
-    List<TreeNode> forest = new ArrayList<>();
-    Queue<TreeNode> q = new LinkedList<>();
-    q.add(root);
-    
-    while (!q.isEmpty()) {
-        TreeNode curNode = q.poll();
-        
-        // Disconnect children if they need to be deleted
-        if (curNode.left != null) {
-            q.add(curNode.left);
-            if (deleteSet.contains(curNode.left.val)) {
-                curNode.left = null;  // Disconnect
-            }
-        }
-        
-        if (curNode.right != null) {
-            q.add(curNode.right);
-            if (deleteSet.contains(curNode.right.val)) {
-                curNode.right = null;  // Disconnect
-            }
-        }
-        
-        // If current node is deleted, add its children as forest roots
-        if (deleteSet.contains(curNode.val)) {
-            if (curNode.left != null) {
-                forest.add(curNode.left);
-            }
-            if (curNode.right != null) {
-                forest.add(curNode.right);
-            }
-        }
-    }
-    
-    // Add original root if not deleted
-    if (!deleteSet.contains(root.val)) {
-        forest.add(root);
-    }
-    
-    return forest;
-}
-```
-
-**Complexity**: Time O(N), Space O(N)
-
-**Example Walkthrough**: 
-```text
-Input: root = [1,2,3,4,5,6,7], to_delete = [3,5]
-
-       1
-      / \
-     2   3
-    / \ /  \
-   4  5 6   7
-
-Step 1: DFS processes:
-- Node 4: isParentDeleted=false (parent 2 not deleted) → NOT a root
-- Node 5: isDeleted=true, Node 2 disconnects it
-- Node 2: isParentDeleted=false (parent 1 not deleted) → NOT a root
-- Node 6: isParentDeleted=true (parent 3 deleted) → IS a root! Add 6
-- Node 7: isParentDeleted=true (parent 3 deleted) → IS a root! Add 7
-- Node 3: isDeleted=true, Node 1 disconnects it
-- Node 1: isParentDeleted=true (root, treated as parent deleted) and NOT deleted → IS a root! Add 1
-
-Result: [1(with subtree [2,4]), 6, 7]
-```
-
-**Key Insights**:
-1. **Two-State Pattern**: Track both `isDeleted` and `isParentDeleted`
-2. **Forest Root Condition**: `(!isDeleted && isParentDeleted)` OR `(!isDeleted && isRoot)`
-3. **Post-order DFS**: Children processed before parent decision, allowing clean disconnection
-4. **Automatic Disconnection**: Returning null from `dfs()` automatically sets parent's child to null
-5. **Why BFS works**: By queuing all children first, then processing, we naturally discover which nodes become roots
-
-**Common Pitfalls** ⚠️:
-1. **Forgetting root special case**: Root has no parent, so treat it as "parent deleted" to allow it as forest root
-2. **Wrong traversal order**: Must process children before parent to know if node is deleted
-3. **Not disconnecting properly**: BFS approach needs explicit `curNode.left = null` disconnection
-4. **Missing forest roots**: Check both initial root and nodes whose parent is deleted
-
-**Similar Problems**:
-| Problem | LC # | Key Difference |
-|---------|------|-----------------|
-| Delete Nodes And Return Forest | 1110 | Base pattern |
-| Delete Leaves With Given Value | 1325 | Recursive deletion (delete after children are processed) |
-| Trim a Binary Search Tree | 669 | Range-based filtering instead of value-based deletion |
-| Lowest Common Ancestor IV | 1676 | LCA of **N** target nodes (not a deletion problem — the shared skeleton is post-order "return what my subtree found") |
-
-**Common Applications:**
-- Tree pruning with multiple resulting subtrees
-- Forest formation from selective node removal
-- File system operations (delete nodes and keep remaining structure)
-- Hierarchical data management with cascading deletions
-
-**Pattern Recognition:**
-- ✅ Need to delete specific nodes and keep rest of tree structure
-- ✅ Result is a forest (multiple tree roots)
-- ✅ Deleted node's children should survive
-- ✅ State depends on both current node and parent's decision
-
-### 16) Flatten Binary Tree to Linked List — LC 114
-
-**Problem**: Flatten a binary tree into a "linked list" **in-place**, where every `right` pointer is the next node in **pre-order**, and every `left` pointer is `null`.
-
-```text
-Input:                Output (right-linked, all left = null):
-
-      1                 1
-     / \                 \
-    2   5                 2
-   / \   \                 \
-  3   4   6                 3
-                            \
-                             4
-                              \
-                               5
-                                \
-                                 6
-```
-
-**Core Idea — Post-order DFS returning the "tail"**
-
-The cleanest recursive solution flattens left & right subtrees first (post-order), then rewires the current node. The key trick: **each `helper` call returns the *tail* (last node in pre-order) of the subtree it flattened**, so the parent knows where to splice the original right subtree.
-
-```python
-# python
-# LC 114 Flatten Binary Tree to Linked List
-# IDEA: DFS (post-order) — return the TAIL of each flattened subtree
-class Solution(object):
-    def flatten(self, root):
-        """Do not return anything, modify root in-place instead."""
-        self.helper(root)
-
-    def helper(self, node):
-        # Base case: an empty subtree has no tail
-        if not node:
-            return None
-
-        # 1) Flatten BOTH subtrees first (post-order)
-        left_tail  = self.helper(node.left)   # last node of flattened left
-        right_tail = self.helper(node.right)  # last node of flattened right
-
-        # 2) If a left subtree exists, splice it between node and node.right
-        if left_tail:
-            left_tail.right = node.right  # left's tail -> original right
-            node.right = node.left        # move left subtree to the right
-            node.left = None              # left must be null per problem
-
-        # 3) Return the tail of THIS flattened subtree (pre-order last node)
-        #    priority: right_tail > left_tail > node itself
-        if right_tail:
-            return right_tail
-        if left_tail:
-            return left_tail
-        return node
-```
-
-**Why return the tail?** When we move the left subtree to the right, we must reconnect the *original* right subtree to the **end** of the flattened left subtree — not to its root. The only node that knows where that end is, is the recursive call that flattened the left subtree. So it returns its tail.
-
-#### Rewiring visualization (the `if left_tail:` block)
-
-```text
-Before:                 After:
-      node                node
-     /    \                  \
-   left   right             left            (node.right = node.left)
-                               \
-                              ...  (flattened left chain)
-                                  \
-                                  right     (left_tail.right = node.right)
-```
-
-#### The two `if left_tail:` blocks answer different questions
-
-The shape that looks redundant at first glance is:
-
-```text
-if left_tail:        # (A) REWIRE  — do I have to move anything?
-    ...
-
-if right_tail:       # (B) REPORT  — who is my last node?
-    return right_tail
-if left_tail:
-    return left_tail
-return node
-```
-
-Same test, two unrelated jobs:
-
-| Block | The question it answers | What it produces |
-|-------|-------------------------|------------------|
-| **(A)** `if left_tail:` | "Is there a left chain that has to be *moved* onto the right and spliced in front of the original right subtree?" | a **mutation** of this node's pointers |
-| **(B)** `if right_tail: / if left_tail:` | "Which node does my **parent** splice the cached right head onto?" | this call's **return value** |
-
-They cannot be merged, because the two questions disagree in both directions:
-
-- **left only, no right** — (A) runs (the left chain is moved over, and `left_tail.right = node.right` harmlessly assigns `None`), but (B) skips `right_tail` and returns `left_tail`.
-- **right only, no left** — (A) is skipped entirely (the right subtree is *already* where pre-order wants it), yet (B) still has to return `right_tail`.
-
-> The `right_head` cache in some write-ups is only needed when `node.right = node.left` is executed **before** `left_tail.right = node.right` is read. Do the read first, as above, and the cache disappears.
-
-#### Why the tail check runs right → left → node — backwards from the traversal
-
-After block (A), this subtree's flattened layout is fixed by pre-order:
-
-```text
-node ──→ [ flattened left chain ] ──→ [ flattened right chain ]
- ^                  ^                            ^
- 3rd fallback       2nd choice                   1st choice for the TAIL
-```
-
-The head is the *leftmost* box, so it is always `node`. The tail is the *rightmost non-empty* box, so finding it means reading that layout **from the right end** — the first box that exists wins:
-
-```text
-1. right subtree exists  → right_tail ends the whole chain
-2. no right, but left    → left_tail ends it
-3. neither               → node is the entire chain, so node is its own tail
-```
-
-That is why the `if` order is not the traversal order:
-
-| | Order |
-|---|---|
-| **Flatten / traversal** | root → left → right |
-| **Tail hunt** | right → left → root |
-
-Same list, scanned from the other end. Read the `if` chain as a **priority fallback**, not as a visit order.
-
-#### Why the return value is the tail, not the head
-
-The head is never in doubt: the parent already holds `node.left` and `node.right`, and each of those *is* the head of its own flattened chain, so returning a head would tell the parent nothing new. What the parent cannot see cheaply is where a child's chain **ends** — and that end is exactly the node the cached right head must hook onto.
-
-The alternative is to walk there:
-
-```python
-current = root                 # tree2 7.2's template does this
-while current.right:
-    current = current.right    # O(h) per node → O(n·h), O(n^2) on a skewed tree
-current.right = right
-```
-
-Returning the tail replaces that walk with an O(1) hand-off, which is what makes the post-order version O(n) overall.
-
-#### Dry run — `root = [1,2,5,3,4,null,6]`
+**Dry run** — `root = [1,2,3,4,5,null,null,6,7]`
 
 ```text
         1
        / \
-      2   5
-     / \   \
-    3   4   6
+      2   3
+     / \
+    4   5
+   / \
+  6   7
+
+post-order: 6, 7, 4, 5, 2, 3, 1
+  6, 7 : both children null (COVERED)  -> UNCOVERED
+  4    : left UNCOVERED                -> camera #1, CAMERA
+  5    : leaf                          -> UNCOVERED
+  2    : left CAMERA, right UNCOVERED  -> the uncovered test wins: camera #2, CAMERA
+  3    : leaf                          -> UNCOVERED
+  1    : right UNCOVERED               -> camera #3, CAMERA
+answer 3
 ```
 
-Post-order visits the **deepest-left** nodes first. Trace of `helper` returns (the tail each call hands back):
+**Traps**
+- Testing "a child has a camera" before "a child is uncovered": node 2 above returns COVERED and
+  leaves 5 with no camera anywhere near it.
+- Forgetting the root: `[0]` is a single uncovered leaf with no parent, so the answer is 1, not 0.
+- Returning UNCOVERED for null puts a camera on every leaf; null must be the covered-without-a-camera state.
 
-```text
-helper(3): no children          -> left_tail=None, right_tail=None       -> return 3
-helper(4): no children          -> return 4
-helper(2): left_tail=3, right_tail=4
-           left_tail(3).right = node.right (4)   =>  3 -> 4
-           node.right = node.left (3)            =>  2 -> 3
-           node.left = None
-           subtree now: 2 -> 3 -> 4              -> return right_tail = 4
-helper(6): no children          -> return 6
-helper(5): left_tail=None, right_tail=6
-           (no left subtree, nothing to rewire)
-           subtree: 5 -> 6                       -> return right_tail = 6
-helper(1): left_tail=4 (tail of "2->3->4"), right_tail=6
-           left_tail(4).right = node.right (5)   =>  4 -> 5
-           node.right = node.left (2)            =>  1 -> 2
-           node.left = None
-           => 1 -> 2 -> 3 -> 4 -> 5 -> 6         -> return 6
-```
+## Structural Modification Examples
 
-Final flattened list (all `left=None`): `1 -> 2 -> 3 -> 4 -> 5 -> 6` ✅ (matches pre-order).
+### Invert Binary Tree — LC 226
 
-#### Pattern & alternatives
+> **Key point** — inverting a tree is swapping the two child **pointers** at every node; the
+> recursion returns the inverted subtree and the parent reattaches it, so both results must be
+> computed before either pointer is overwritten.
 
-| Approach | Idea | Time | Space | Notes |
-|----------|------|------|-------|-------|
-| **Post-order + return tail** (above) | Flatten subtrees, splice via returned tail | O(N) | O(h) recursion | Clean, intuitive |
-| **Reverse pre-order + `prev`** | Visit `right → left → node`, set `node.right = prev` | O(N) | O(h) | Mirror of building list backwards (see `V0-1`) |
-| **Pre-order collect to list** | Store nodes in pre-order, relink in a loop | O(N) | O(N) | Easiest to reason about |
-| **Morris-style iterative** | For each node, find left subtree's rightmost, splice | O(N) | **O(1)** | Best for the *follow-up* (true in-place) |
-
-**Reverse pre-order (`prev` pointer) — the slick O(h) variant:**
-
-```python
-# Visit right first, then left, building the list from tail to head
-class Solution(object):
-    def __init__(self):
-        self.prev = None
-    def flatten(self, root):
-        if not root:
-            return
-        self.flatten(root.right)
-        self.flatten(root.left)
-        root.right = self.prev   # link to the chain built so far
-        root.left = None
-        self.prev = root         # current node becomes new head
-```
-
-**True O(1) space (iterative, the follow-up answer):**
-
-```python
-class Solution(object):
-    def flatten(self, root):
-        curr = root
-        while curr:
-            if curr.left:
-                rightmost = curr.left
-                while rightmost.right:        # find left subtree's rightmost
-                    rightmost = rightmost.right
-                rightmost.right = curr.right  # splice original right after it
-                curr.right = curr.left        # move left to right
-                curr.left = None
-            curr = curr.right                 # advance down the new right spine
-```
-
-**Similar problems**:
-
-| Problem | LC # | Key Difference |
-|---------|------|-----------------|
-| Flatten Binary Tree to Linked List | 114 | Base pattern (pre-order flatten in-place) |
-| Binary Tree Preorder Traversal | 144 | Same visit order, just collect values |
-| Convert BST to Sorted Doubly Linked List | 426 | In-order flatten into a doubly linked list |
-| Increasing Order Search Tree | 897 | In-order flatten into right-only chain |
-| Flatten a Multilevel Doubly Linked List | 430 | Same "splice child chain before next" idea on a list |
-
-### 17) Merge Two Binary Trees — LC 617
-
-```python
-# LC 617 Merge Two Binary Trees
-# NOTE !!! there is also BFS solution
-# V0
-# IDEA : DFS + BACKTRACK
-class Solution:
-    def mergeTrees(self, t1, t2):
-        return self.dfs(t1,t2)
-
-    def dfs(self, t1, t2):
-        if not t1 and not t2:
-            return
-        
-        if t1 and t2:
-            ### NOTE here
-            newT = TreeNode(t1.val +  t2.val)
-            newT.right = self.mergeTrees(t1.right, t2.right)
-            newT.left = self.mergeTrees(t1.left, t2.left)   
-            return newT
-        
-        ### NOTE here
-        else:
-            return t1 or t2
-```
-
-```java
-// java
-// V0
-// IDEA : RECURSIVE
-public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
-
-    if (t1 == null && t2 == null){
-        return null;
-    }
-
-    if (t1 != null && t2 != null){
-        t1.val += t2.val;
-    }
-
-    if (t1 == null && t2 != null){
-        // NOTE!!! return t2 directly here
-        return t2;
-    }
-
-    if (t1 != null && t2 == null){
-        // NOTE!!! return t1 directly here
-        return t1;
-    }
-
-    t1.left = mergeTrees(t1.left, t2.left);
-    t1.right = mergeTrees(t1.right, t2.right);
-
-    return t1;
-}
-```
-
-### 18) Invert Binary Tree — LC 226
-```python
-# LC 226 Invert Binary Tree
-
-# V0
-# IDEA : DFS
-# -> below code shows a good example that tree is a type of "linked list"
-# -> we don't really modify tree's "value", but we modify the pointer
-# -> e.g. make root.left point to root.right, make root.right point to root.left
-class Solution(object):
-    def invertTree(self, root):
-        def dfs(root):
-            if not root:
-                return root
-            ### NOTE THIS
-            if root:
-                # NOTE : have to do root.left, root.right ON THE SAME TIME
-                root.left, root.right = dfs(root.right), dfs(root.left)
-        dfs(root)
-        return root
-
-# V0'
-# IDEA BFS
-class Solution(object):
-    def invertTree(self, root):
-        if root == None:
-            return root
-        queue = [root]
-        while queue:
-            # queue = queue[::-1] <-- this one is NOT working
-            for i in range(len(queue)):         
-                tmp = queue.pop()
-                ### NOTE here !!!!!!
-                # -> we do invert op via below
-                tmp.left, tmp.right = tmp.right, tmp.left
-                if tmp.left:
-                    queue.append(tmp.left)
-                if tmp.right:
-                    queue.append(tmp.right)
-        return root
-```
-
-```java
-// java
-// DFS
-    // V0
-    // IDEA : DFS
-    public TreeNode invertTree(TreeNode root) {
-        if (root == null) {
-            return null;
-        }
-        /** NOTE !!!!
-         *
-         *   instead of calling invertTree and assign value to sub tree directly,
-         *   we need to CACHE invertTree result, and assign later
-         *   -> since assign directly will cause tree changed, and affect the other invertTree call
-         *
-         *   e.g. below is WRONG,
-         *      root.left = invertTree(root.right);
-         *      root.right = invertTree(root.left);
-         *
-         *   need to cache result
-         *
-         *       TreeNode left = invertTree(root.left);
-         *       TreeNode right = invertTree(root.right);
-         *
-         *   then assign to sub tree
-         *
-         *       root.left = right;
-         *       root.right = left;
-         */
-        TreeNode left = invertTree(root.left);
-        TreeNode right = invertTree(root.right);
-        root.left = right;
-        root.right = left;
-        /** NOTE !!!! below is WRONG */
-//        root.left = invertTree(root.right);
-//        root.right = invertTree(root.left);
-        return root;
-    }
-```
-
-### 19) Binary Tree Cameras — LC 968 (Bottom-Up Greedy with Multi-State)
-
-
-> Reference: [BinaryTreeCameras.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearchTree/BinaryTreeCameras.java)
-> · [binary-tree-cameras.py](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/binary-tree-cameras.py)
-
-Some problems require each node to return a **state** (not a numeric value) to its parent, and the parent makes a **greedy decision** based on children's states. This is a distinct bottom-up pattern.
-
-**Core Idea — 3-State Greedy:**
-```text
-State 0: NOT covered (needs a camera from parent)
-State 1: HAS a camera (covers parent, self, children)
-State 2: COVERED (by a child's camera, but has no camera itself)
-
-null nodes → return 2 (covered), so leaves are forced to be state 0 (uncovered),
-which forces their parents to place cameras — this is the greedy insight.
-```
-
-**Why bottom-up (post-order)?**
-- Leaves are the most "wasteful" place for cameras (they only cover 1 node upward)
-- By processing leaves first, we force cameras onto their parents (which cover 3 nodes)
-- This greedy strategy from bottom to top minimizes total cameras
-
-**Only three cases — and the order they are tested in matters:**
-
-| # | Test | What it means | Action |
-|---|------|---------------|--------|
-| 1 | `left == 0 \|\| right == 0` | a child is uncovered, and I am its only remaining coverer | place a camera here, return `1` |
-| 2 | `left == 1 \|\| right == 1` | a child has a camera, so it already covers me | return `2` (covered), no camera |
-| 3 | otherwise (`both == 2`) | both children are covered and neither has a camera — **I** am uncovered | return `0`, decide nothing |
-
-Case 3 is the one worth internalising: there is **no camera decision to make here at all**.
-An uncovered node does not fix itself — it reports state `0` upward and lets the **parent**
-decide, because a camera at the parent also covers the grandparent, while a camera here
-would cover only this node and its (already covered) children. Deferring the decision is
-what the post-order return value is *for*.
-
-**Case 1 must be tested before case 2.** A node with one uncovered child and one child that
-has a camera still MUST place a camera — the uncovered child has no other neighbour left.
-Flip the two tests and that node returns "covered", silently leaving the child uncovered.
-
-```java
-// java
-// LC 968 — Binary Tree Cameras: bottom-up greedy with 3 states
-// time = O(N), space = O(H)
-int cameraCnt = 0;
-
-public int minCameraCover(TreeNode root) {
-    // If root itself is uncovered, it needs a camera too
-    if (dfs(root) == 0) {
-        cameraCnt++;
-    }
-    return cameraCnt;
-}
-
-private int dfs(TreeNode node) {
-    // null = covered (so leaves become uncovered → forces parent to place camera)
-    if (node == null) return 2;
-
-    int left = dfs(node.left);    // post-order: solve children first
-    int right = dfs(node.right);
-
-    // Case 1: any child uncovered → MUST place camera here (test this FIRST)
-    if (left == 0 || right == 0) {
-        cameraCnt++;
-        return 1;  // has camera
-    }
-
-    // Case 2: any child has camera → this node is covered
-    if (left == 1 || right == 1) {
-        return 2;  // covered
-    }
-
-    // Case 3: both children covered (no cameras) → this node is NOT covered.
-    // Decide nothing: report the state upward and let the parent place the camera.
-    return 0;  // uncovered
-}
-```
+**Reduces to**: [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) — return the rebuilt subtree and reassign; nothing is deleted.
 
 ```python
 # python
-# LC 968 — Binary Tree Cameras
-# IDEA: post-order DFS returning one of 3 states; the parent makes the decision
-class Solution:
-    def minCameraCover(self, root):
-        # time = O(N), space = O(H)
-        self.cnt = 0
-
-        def dfs(node):
-            # null = covered, so a leaf comes back uncovered
-            if not node:
-                return 2
-
-            left = dfs(node.left)      # post-order: children first
-            right = dfs(node.right)
-
-            # Case 1: a child is uncovered -> I MUST place a camera (test this FIRST)
-            if left == 0 or right == 0:
-                self.cnt += 1
-                return 1
-
-            # Case 2: a child has a camera -> I am covered, no camera needed
-            if left == 1 or right == 1:
-                return 2
-
-            # Case 3: both children covered, neither has a camera -> I am uncovered.
-            #         Place NOTHING here: report 0 upward and let the parent decide.
-            return 0
-
-        # the root has no parent to fall back on
-        if dfs(root) == 0:
-            self.cnt += 1
-        return self.cnt
+# LC 226 - Invert Binary Tree
+# IDEA: post-order; invert both subtrees, then swap them
+# time = O(n), space = O(h)
+def invertTree(root):
+    if not root:
+        return None
+    left = invertTree(root.left)           # compute BOTH before assigning either
+    right = invertTree(root.right)
+    root.left = right
+    root.right = left
+    return root
 ```
 
-**Visual — why greedy works bottom-up:**
+```java
+// java
+// LC 226 - Invert Binary Tree
+// IDEA: post-order; cache both inverted subtrees, then swap
+// time = O(n), space = O(h)
+public TreeNode invertTree(TreeNode root) {
+    if (root == null) {
+        return null;
+    }
+    TreeNode left = invertTree(root.left);     // cache both results first
+    TreeNode right = invertTree(root.right);
+    root.left = right;
+    root.right = left;
+    return root;
+}
+```
+
+**Traps**
+- `root.left = invertTree(root.right); root.right = invertTree(root.left);` — the second line reads
+  the left pointer the first line just overwrote, so `[2,1,3]` comes back as `[2,3,3]`-shaped
+  garbage. Python's `root.left, root.right = f(root.right), f(root.left)` is safe only because the
+  right-hand side is evaluated in full first.
+
+### Flatten Binary Tree to Linked List — LC 114
+
+> **Key point** — each call flattens its subtree and returns the subtree's **tail** (its last node in
+> pre-order); the parent then splices `node → left chain → right chain` in O(1) by hanging the
+> original right subtree off the left chain's tail, instead of walking down to find it.
+
+**Reduces to**: [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) — the post-order rewire, returning the tail rather than the new root.
+
+```python
+# python
+# LC 114 - Flatten Binary Tree to Linked List
+# IDEA: post-order; flatten both sides, splice node -> left chain -> right chain, return the tail
+# time = O(n), space = O(h)
+def flatten(root):
+    def flatten_tail(node):                # flatten node's subtree, return its LAST node
+        if not node:
+            return None
+        left_tail = flatten_tail(node.left)
+        right_tail = flatten_tail(node.right)
+        if left_tail:                      # splice: node -> left chain -> right chain
+            left_tail.right = node.right
+            node.right = node.left
+            node.left = None
+        if right_tail:                     # the tail is the last non-empty box
+            return right_tail
+        if left_tail:
+            return left_tail
+        return node
+
+    flatten_tail(root)
+```
+
+**Dry run** — `root = [1,2,5,3,4,null,6]`
+
 ```text
-        1  ← left=1 (2 has a camera), right=0 (3 uncovered) → case 1 → camera
-       / \
-      2   3 ← 3 is a leaf → state 0 (uncovered)
-     / \
-    4   5 ← 4 places a camera (state 1); 5 is a leaf → state 0 (uncovered)
-   / \
-  6   7 ← leaves → state 0 (uncovered), which forces 4 to place a camera
-
-post-order visiting order: 6, 7, 4, 5, 2, 3, 1
-  6, 7 : null children return 2 → case 3 → return 0 (uncovered)
-  4    : left = 0            → case 1 → camera #1, return 1
-  5    : null children       → case 3 → return 0 (uncovered)
-  2    : left = 1, right = 0 → case 1, NOT case 2 → camera #2, return 1
-  3    : null children       → case 3 → return 0 (uncovered)
-  1    : left = 1, right = 0 → case 1 → camera #3, return 1
-  dfs(root) = 1, not 0 → no extra camera at the root. Answer = 3.
+flatten_tail(3) -> 3              flatten_tail(4) -> 4
+flatten_tail(2): left_tail 3, right_tail 4
+                 3.right = 4, 2.right = 3, 2.left = None   => 2 -> 3 -> 4,  return 4
+flatten_tail(6) -> 6
+flatten_tail(5): no left; right_tail 6                     => 5 -> 6,       return 6
+flatten_tail(1): left_tail 4, right_tail 6
+                 4.right = 5, 1.right = 2, 1.left = None   => 1 -> 2 -> 3 -> 4 -> 5 -> 6
 ```
 
-**State transition rules (decision at each node):**
+**Traps**
+- Writing `node.right = node.left` **before** `left_tail.right = node.right` loses the original
+  right subtree: read it first, or cache it.
+- The tail is looked up right → left → node, the reverse of the traversal: the chain ends with the
+  right part if there is one. A node with a right child but no left still returns `right_tail`.
+- Finding the tail by walking `while cur.right` at every node instead of returning it is O(n·h),
+  O(n²) on a skewed tree.
 
-| Left State | Right State | Decision | Return |
-|:----------:|:-----------:|----------|:------:|
-| 0 (uncovered) | any | Place camera | 1 |
-| any | 0 (uncovered) | Place camera | 1 |
-| 1 (camera) | any non-0 | Covered by child | 2 |
-| any non-0 | 1 (camera) | Covered by child | 2 |
-| 2 (covered) | 2 (covered) | Not covered, rely on parent | 0 |
+**Not this if** — the follow-up asks for O(1) extra space: that is the Morris rewire in
+[tree.md § Template 1](./tree.md#template-1-morris-in-order-traversal--lc-94), which threads each
+left subtree's rightmost node to the right child without recursion.
 
-**Key insight — why `null → 2` (covered)?**
-If null returned 0 (uncovered), every leaf would be forced to have a camera — wasteful. By treating null as "covered", leaves become state 0 (uncovered), forcing their **parents** to place cameras, which is strictly better (covers 3 nodes vs 1).
+## Two Trees in Lockstep Examples
 
-> **The 1 / 2 labels are arbitrary.** Only the *roles* matter: one state means "uncovered",
-> one means "has a camera", one means "covered by a child", and **null takes the
-> covered-without-a-camera state**. Solutions in the wild (this repo's Python file among them)
-> swap the numbers for `1 = covered, 2 = has camera` and return `1` for null — the same
-> algorithm with the last two labels renamed. Read the `null` return first to tell which
-> convention a snippet is using.
+### Symmetric Tree — LC 101
 
-**Similar LC problems using bottom-up greedy with states:**
+> **Key point** — a tree is symmetric when its left and right subtrees are **mirrors**, which is LC
+> 100 on two subtrees with the pairing crossed: outer with outer (`a.left`, `b.right`), inner with
+> inner (`a.right`, `b.left`).
 
-| LC # | Problem | States | Greedy Insight |
-|------|---------|--------|----------------|
-| 968 | Binary Tree Cameras | 0/1/2 (uncovered/camera/covered) | Delay cameras upward, place at parents of leaves |
-| 337 | House Robber III | rob/skip per node | Max(rob current + skip children, skip current + best of children) |
-| 979 | Distribute Coins in Binary Tree | excess coins per subtree | Each edge transfer = 1 move; count \|excess\| bottom-up |
-| 1373 | Max Sum BST in Binary Tree | valid/invalid BST + sum | Bottom-up validate BST property + track max sum |
+**Reduces to**: [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — one tree compared with itself, children paired crosswise. It is worked in one place, recursive and iterative, with a trace and the straight-pairing bug: [dfs.md § LC 101](./dfs.md#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree).
 
-## Summary
+**Traps**
+- Comparing values level by level and checking each level is a palindrome misses the shape:
+  `[1,2,2,null,3,null,3]` has palindromic values per level once nulls are dropped, and is not symmetric.
+- Pairing `a.left` with `b.left` checks equality, not symmetry.
 
-| Problem | Pattern | The one thing to remember |
-|---|---|---|
-| LC 199 | BFS / DFS by depth | take the **last** node of each level (or the first, visiting right → left) |
-| LC 222 | complete-tree recursion | compare left and right spine heights → O(log² N), not O(N) |
-| LC 662 | index-encoded BFS | node `i` → children `2i`, `2i+1`; width = last − first + 1 |
-| LC 2415 | level-order + swap | reverse the **values** of a level, not the nodes |
-| LC 101 | mirrored DFS | compare `(a.left, b.right)` and `(a.right, b.left)` |
-| LC 100 / 951 | paired DFS | LC 951 additionally allows the child pair to be swapped |
-| LC 98 | in-order / bounds | pass `(low, high)` down — comparing with the direct children is not enough |
-| LC 110 | post-order height | return `-1` to signal "already unbalanced" and stop early |
-| LC 545 | three passes | left boundary, leaves, reversed right boundary — de-duplicate the corners |
-| LC 104 / 111 | height | min depth needs the null-child guard; max depth does not |
-| LC 124 | post-order + global max | return one branch upward, record `left + node + right` globally |
-| LC 1448 | top-down max-so-far | carry the path maximum down as a parameter |
-| LC 1110 | two-state DFS | a survivor whose parent died becomes a forest root |
-| LC 114 | post-order returning the tail | or the O(1)-space Morris rewire in tree.md |
-| LC 617 / 226 | structural recursion | build or swap on the way down, return the node |
-| LC 968 | bottom-up 3-state greedy | `null → covered` forces cameras onto the parents of leaves; an uncovered node places nothing and defers to its parent |
+### Merge Two Binary Trees — LC 617
+
+> **Key point** — where both trees have a node, the merged node is their sum; where only one does,
+> that whole subtree is reused as it is, so the recursion stops there instead of copying it.
+
+**Reduces to**: [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — the lockstep walk returns a new node instead of a boolean.
+
+```python
+# python
+# LC 617 - Merge Two Binary Trees
+# IDEA: walk both trees in lockstep; sum where both exist, reuse the lone subtree otherwise
+# time = O(min(n1, n2)), space = O(min(h1, h2))
+def mergeTrees(root1, root2):
+    if not root1:
+        return root2                       # reuse the other subtree as it is
+    if not root2:
+        return root1
+    merged = TreeNode(root1.val + root2.val)
+    merged.left = mergeTrees(root1.left, root2.left)
+    merged.right = mergeTrees(root1.right, root2.right)
+    return merged
+```
+
+**Traps**
+- Recursing into the lone subtree to copy it costs O(n1 + n2) instead of the overlap only;
+  returning it as is is the point.
+- Writing the sum into `root1` and returning it (as many solutions do) is also accepted, but it
+  mutates the input; say which one you are doing.
+
+### Flip Equivalent Binary Trees — LC 951
+
+> **Key point** — at every node the children may have been swapped, so accept either pairing: the
+> lockstep check with `left-left / right-right` **or** `left-right / right-left`.
+
+**Reduces to**: [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — two pairings tried at each node, joined with `or`.
+
+```python
+# python
+# LC 951 - Flip Equivalent Binary Trees
+# IDEA: Same Tree, but the children pair may also be matched crosswise
+# time = O(n), space = O(h)   values are unique, so at most one pairing can match at each node
+def flipEquiv(root1, root2):
+    if not root1 or not root2:
+        return root1 is root2
+    if root1.val != root2.val:
+        return False
+    same = flipEquiv(root1.left, root2.left) and flipEquiv(root1.right, root2.right)
+    flipped = flipEquiv(root1.left, root2.right) and flipEquiv(root1.right, root2.left)
+    return same or flipped
+```
+
+**Traps**
+- The O(n) bound depends on the values being unique: with duplicates, both pairings can recurse
+  deep and the worst case is worse than linear.
+- Normalising both trees first (sort each node's children by value) also works here, but only
+  because the values are unique; the two-way check is the general form.
+
+### Reverse Odd Levels of Binary Tree — LC 2415
+
+> **Key point** — in a **perfect** tree, the node at position `i` of a level and the node at its
+> mirror position are reached by walking the two halves in lockstep, outer with outer and inner with
+> inner, exactly as LC 101 pairs them; reversing a level is swapping the values of each such pair.
+
+**Reduces to**: [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — the LC 101 mirror pairing, swapping values on odd levels instead of comparing them.
+
+```python
+# python
+# LC 2415 - Reverse Odd Levels of Binary Tree
+# IDEA: walk mirror pairs in lockstep; swap their values on odd levels
+# time = O(n), space = O(log n)   the tree is perfect, so its height is log n
+def reverseOddLevels(root):
+    def pair(a, b, level):                 # a and b are mirror positions on the same level
+        if not a:                          # perfect tree: a and b are empty together
+            return
+        if level % 2 == 1:
+            a.val, b.val = b.val, a.val
+        pair(a.left, b.right, level + 1)   # outer pair
+        pair(a.right, b.left, level + 1)   # inner pair
+
+    pair(root.left, root.right, 1)
+    return root
+```
+
+**Traps**
+- Swapping nodes instead of values means relinking parents on both sides; swapping `val` is all the
+  problem needs.
+- Pairing `a.left` with `b.left` maps position `i` to `i + half`, not to its mirror: a level holding
+  `1 … 8` comes out `5 6 7 8 1 2 3 4` instead of `8 7 6 5 4 3 2 1`.
+
+**Not this if** — the tree is not perfect, or you prefer the obvious route: a level-order BFS that
+collects each odd level and reverses its values ([binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102)), at O(w) space.

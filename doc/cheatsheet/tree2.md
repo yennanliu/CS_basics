@@ -1,9 +1,7 @@
-# Tree Pattern Templates - Comprehensive Guide
+# Tree Pattern Templates — Index and Traversal Variants
 
-> **Scope** — A numbered, copy-paste **template** per tree pattern, in Python *and* Java — the single home for tree templates. Template-first, no theory: which traversal a problem wants is [tree.md](./tree.md)'s question.
-> **See also**: [tree.md](./tree.md) — concepts, tree types, when to use which traversal; [tree_lca_distance.md](./tree_lca_distance.md) — LCA, node distance and root-to-leaf paths, which this sheet defers to entirely; [tree_construction.md](./tree_construction.md) and [tree_codec.md](./tree_codec.md) — building a tree from an encoding, and serialising it back; [binary_tree.md](./binary_tree.md) — how DFS state flows through a binary tree; [bst.md](./bst.md) — ordered trees.
-
-> **Note:** This file contains detailed traversal templates and implementation code. For tree concepts, types, and algorithm patterns, see [tree.md](./tree.md).
+> **Scope** — An index from every tree pattern to the one card that teaches it, plus the traversal forms no core sheet spells out: iterative pre- and post-order, zigzag levels, the bottom-left value and vertical order.
+> **See also**: [binary_tree.md](./binary_tree.md) — the binary-tree templates, one card each; [tree.md](./tree.md) — concepts, tree types, when to use which traversal; [tree_lca_distance.md](./tree_lca_distance.md) — LCA, node distance and root-to-leaf paths; [tree_examples.md](./tree_examples.md) — the worked problems; [tree_construction.md](./tree_construction.md) and [tree_codec.md](./tree_codec.md) — building a tree from an encoding, and serialising it back; [bst.md](./bst.md) — ordered trees.
 
 ## LeetCode Problem Lists
 
@@ -13,11 +11,33 @@
 
 ## Overview
 
-This document provides detailed templates for all tree problem patterns, organized by categories with example code, explanations, and corresponding LeetCode problems.
+This sheet used to hold its own copy of every tree template, next to the copies in
+[binary_tree.md](./binary_tree.md), [tree_lca_distance.md](./tree_lca_distance.md) and
+[tree_examples.md](./tree_examples.md), and the copies drifted apart. Each pattern now has one
+home, and every section below says where it is. What stays here is the handful of forms that
+have no other home: the explicit-stack pre- and post-order walks, the zigzag BFS, the
+bottom-left value, and the sort-by-coordinate vertical order.
 
 ---
 
+## Recognition
+
+Only the forms this sheet still owns; every other tree signal is in [binary_tree.md](./binary_tree.md#recognition)'s table.
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "preorder traversal", and the follow-up "iteratively" | n ≤ 100 | [1.1)](#11-preorder-template--lc-144) one stack, right child pushed first | in-order without recursion → [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
+| "postorder traversal", "iteratively" | n ≤ 100 | [1.3)](#13-postorder-template--lc-145) two stacks, or a reversed root-right-left walk | the order does not matter, only the visit → any traversal |
+| "zigzag level order", "alternate left-to-right and right-to-left" | n ≤ 2000 | [1.5)](#15-bfs--direction-template--lc-103) level BFS, flip every other level | every level in one direction → [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
+| "leftmost value in the last row" | n ≤ 10⁴ | [2.7)](#27-leftmost-value-at-maximum-depth--lc-513) index 0 of every level | the rightmost value of **every** level (LC 199) → [tree_examples.md](./tree_examples.md#binary-tree-right-side-view--lc-199) |
+| "vertical order", ties broken by value | n ≤ 1000 | [8.3)](#83-coordinate-map-traversal-template--lc-987) collect `(col, row, val)`, sort | ties kept in BFS order (LC 314) → BFS grouping by column, no sort |
+
 ## 1) Tree Traversal Templates
+
+| What this section used to hold | Where it lives now |
+|---|---|
+| 1.2) Inorder Template — LC 94 | [binary_tree § Template 1](./binary_tree.md#template-1-recursive-pre--in--post-order-traversal--lc-94) (recursive) and [§ Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) (the stack form); the O(1)-space Morris walk is [tree.md § Template 1](./tree.md#template-1-morris-in-order-traversal--lc-94) |
+| 1.4) BFS Template (Level-order) — LC 102 | [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) — the queue-length snapshot |
 
 ### 1.1) Preorder Template — LC 144
 
@@ -106,96 +126,6 @@ public List<Integer> preorderIterative(TreeNode root) {
 
 ---
 
-### 1.2) Inorder Template — LC 94 ⭐⭐⭐⭐⭐
-
-**Pattern**: Left → Root → Right
-**Use Case**: BST sorted order, tree validation
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Recursive
-def inorder_traversal(root):
-    result = []
-
-    def inorder(node):
-        if not node:
-            return
-
-        # Left subtree first
-        inorder(node.left)
-
-        # Process root
-        result.append(node.val)
-
-        # Right subtree
-        inorder(node.right)
-
-    inorder(root)
-    return result
-
-# Python - Iterative
-def inorder_iterative(root):
-    result = []
-    stack = []
-    current = root
-
-    while stack or current:
-        # Go to leftmost node
-        while current:
-            stack.append(current)
-            current = current.left
-
-        # Process current node
-        current = stack.pop()
-        result.append(current.val)
-
-        # Move to right subtree
-        current = current.right
-
-    return result
-```
-
-```java
-// Java - Recursive
-public void inorderTraversal(TreeNode root, List<Integer> result) {
-    if (root == null) return;
-
-    inorderTraversal(root.left, result);    // Left subtree
-    result.add(root.val);                   // Current node
-    inorderTraversal(root.right, result);   // Right subtree
-}
-
-// Java - Iterative
-public List<Integer> inorderIterative(TreeNode root) {
-    List<Integer> result = new ArrayList<>();
-    Stack<TreeNode> stack = new Stack<>();
-    TreeNode current = root;
-
-    while (!stack.isEmpty() || current != null) {
-        while (current != null) {
-            stack.push(current);
-            current = current.left;
-        }
-
-        current = stack.pop();
-        result.add(current.val);
-        current = current.right;
-    }
-
-    return result;
-}
-```
-
-#### LeetCode Problems
-- LC 94: Binary Tree Inorder Traversal (Easy)
-- LC 98: Validate Binary Search Tree (Medium)
-- LC 230: Kth Smallest Element in a BST (Medium)
-
----
-
 ### 1.3) Postorder Template — LC 145
 
 **Pattern**: Left → Right → Root
@@ -266,100 +196,6 @@ public void postorderTraversal(TreeNode root, List<Integer> result) {
 #### LeetCode Problems
 - LC 145: Binary Tree Postorder Traversal (Easy)
 - LC 590: N-ary Tree Postorder Traversal (Easy)
-
----
-
-### 1.4) BFS Template (Level-order) — LC 102 ⭐⭐⭐⭐⭐
-
-**Pattern**: Process nodes level by level
-**Use Case**: Shortest path, level-based problems
-**Time Complexity**: O(n)
-**Space Complexity**: O(w) where w is max width
-
-#### Template Code
-
-```python
-# Python - BFS with Level Grouping
-from collections import deque
-
-def level_order_traversal(root):
-    if not root:
-        return []
-
-    result = []
-    queue = deque([root])
-
-    while queue:
-        level_size = len(queue)
-        current_level = []
-
-        for _ in range(level_size):
-            node = queue.popleft()
-            current_level.append(node.val)
-
-            if node.left:
-                queue.append(node.left)
-            if node.right:
-                queue.append(node.right)
-
-        result.append(current_level)
-
-    return result
-
-# Python - Simple BFS (Flat List)
-def level_order_simple(root):
-    if not root:
-        return []
-
-    result = []
-    queue = deque([root])
-
-    while queue:
-        node = queue.popleft()
-        result.append(node.val)
-
-        if node.left:
-            queue.append(node.left)
-        if node.right:
-            queue.append(node.right)
-
-    return result
-```
-
-```java
-// Java - BFS with Level Grouping
-public List<List<Integer>> levelOrder(TreeNode root) {
-    List<List<Integer>> result = new ArrayList<>();
-    if (root == null) return result;
-
-    Queue<TreeNode> queue = new LinkedList<>();
-    queue.offer(root);
-
-    while (!queue.isEmpty()) {
-        int levelSize = queue.size();
-        List<Integer> currentLevel = new ArrayList<>();
-
-        for (int i = 0; i < levelSize; i++) {
-            TreeNode node = queue.poll();
-            currentLevel.add(node.val);
-
-            if (node.left != null) queue.offer(node.left);
-            if (node.right != null) queue.offer(node.right);
-        }
-
-        result.add(currentLevel);
-    }
-
-    return result;
-}
-```
-
-#### LeetCode Problems
-- LC 102: Binary Tree Level Order Traversal (Medium)
-- LC 107: Binary Tree Level Order Traversal II (Medium)
-- LC 103: Binary Tree Zigzag Level Order Traversal (Medium)
-- LC 199: Binary Tree Right Side View (Medium)
-- LC 637: Average of Levels in Binary Tree (Easy) — same loop, aggregate each level instead of collecting it
 
 ---
 
@@ -450,858 +286,98 @@ public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
 
 ## 2) Tree Property Templates
 
-### 2.1) Postorder Height Template — LC 104
-
-**Pattern**: Calculate height bottom-up
-**Use Case**: Tree height/depth calculation
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Height Calculation
-def max_depth(root):
-    if not root:
-        return 0
-
-    left_height = max_depth(root.left)
-    right_height = max_depth(root.right)
-
-    return 1 + max(left_height, right_height)
-```
-
-```java
-// Java - Height Calculation
-public int maxDepth(TreeNode root) {
-    if (root == null) {
-        return 0;
-    }
-
-    int leftHeight = maxDepth(root.left);
-    int rightHeight = maxDepth(root.right);
-
-    return 1 + Math.max(leftHeight, rightHeight);
-}
-```
-
-#### LeetCode Problems
-- LC 104: Maximum Depth of Binary Tree (Easy)
-
----
-
-### 2.2) BFS Early Stop Template — LC 111
-
-**Pattern**: Stop when condition met
-**Use Case**: Minimum depth to leaf
-**Time Complexity**: O(n) worst case, better in practice
-**Space Complexity**: O(w)
-
-#### Template Code
-
-```python
-# Python - Minimum Depth
-from collections import deque
-
-def min_depth(root):
-    if not root:
-        return 0
-
-    queue = deque([(root, 1)])
-
-    while queue:
-        node, depth = queue.popleft()
-
-        # Found first leaf - return immediately
-        if not node.left and not node.right:
-            return depth
-
-        if node.left:
-            queue.append((node.left, depth + 1))
-        if node.right:
-            queue.append((node.right, depth + 1))
-
-    return 0
-```
-
-```java
-// Java - Minimum Depth
-public int minDepth(TreeNode root) {
-    if (root == null) return 0;
-
-    Queue<TreeNode> queue = new LinkedList<>();
-    queue.offer(root);
-    int depth = 1;
-
-    while (!queue.isEmpty()) {
-        int levelSize = queue.size();
-
-        for (int i = 0; i < levelSize; i++) {
-            TreeNode node = queue.poll();
-
-            if (node.left == null && node.right == null) {
-                return depth;
-            }
-
-            if (node.left != null) queue.offer(node.left);
-            if (node.right != null) queue.offer(node.right);
-        }
-
-        depth++;
-    }
-
-    return depth;
-}
-```
-
-#### LeetCode Problems
-- LC 111: Minimum Depth of Binary Tree (Easy)
-
----
-
-### 2.3) Height Validation Template — LC 110 ⭐⭐⭐
-
-**Pattern**: Validate tree properties during height calculation
-**Use Case**: Check if tree is balanced
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Balanced Tree Check
-def is_balanced(root):
-    def check_height(node):
-        if not node:
-            return 0
-
-        left_height = check_height(node.left)
-        if left_height == -1:
-            return -1
-
-        right_height = check_height(node.right)
-        if right_height == -1:
-            return -1
-
-        # Check balance condition
-        if abs(left_height - right_height) > 1:
-            return -1
-
-        return 1 + max(left_height, right_height)
-
-    return check_height(root) != -1
-```
-
-```java
-// Java - Balanced Tree Check
-public boolean isBalanced(TreeNode root) {
-    return checkHeight(root) != -1;
-}
-
-private int checkHeight(TreeNode node) {
-    if (node == null) {
-        return 0;
-    }
-
-    int leftHeight = checkHeight(node.left);
-    if (leftHeight == -1) return -1;
-
-    int rightHeight = checkHeight(node.right);
-    if (rightHeight == -1) return -1;
-
-    if (Math.abs(leftHeight - rightHeight) > 1) {
-        return -1;
-    }
-
-    return 1 + Math.max(leftHeight, rightHeight);
-}
-```
-
-#### LeetCode Problems
-- LC 110: Balanced Binary Tree (Easy)
-
----
-
-### 2.4) Mirror Validation Template — LC 101
-
-**Pattern**: Compare symmetric subtrees
-**Use Case**: Check if tree is symmetric
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Symmetric Tree
-def is_symmetric(root):
-    def is_mirror(left, right):
-        if not left and not right:
-            return True
-        if not left or not right:
-            return False
-
-        return (left.val == right.val and
-                is_mirror(left.left, right.right) and
-                is_mirror(left.right, right.left))
-
-    if not root:
-        return True
-    return is_mirror(root.left, root.right)
-```
-
-```java
-// Java - Symmetric Tree
-public boolean isSymmetric(TreeNode root) {
-    if (root == null) return true;
-    return isMirror(root.left, root.right);
-}
-
-private boolean isMirror(TreeNode left, TreeNode right) {
-    if (left == null && right == null) return true;
-    if (left == null || right == null) return false;
-
-    return left.val == right.val &&
-           isMirror(left.left, right.right) &&
-           isMirror(left.right, right.left);
-}
-```
-
-#### LeetCode Problems
-- LC 101: Symmetric Tree (Easy)
-
----
-
-### 2.5) Tree Comparison Template — LC 100
-
-**Pattern**: Compare two trees node by node
-**Use Case**: Check if two trees are identical
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Same Tree
-def is_same_tree(p, q):
-    if not p and not q:
-        return True
-    if not p or not q:
-        return False
-
-    return (p.val == q.val and
-            is_same_tree(p.left, q.left) and
-            is_same_tree(p.right, q.right))
-```
-
-```java
-// Java - Same Tree
-public boolean isSameTree(TreeNode p, TreeNode q) {
-    if (p == null && q == null) return true;
-    if (p == null || q == null) return false;
-
-    return p.val == q.val &&
-           isSameTree(p.left, q.left) &&
-           isSameTree(p.right, q.right);
-}
-```
-
-#### LeetCode Problems
-- LC 100: Same Tree (Easy)
-- LC 572: Subtree of Another Tree (Easy)
-- LC 951: Flip Equivalent Binary Trees (Medium) — **variation**: children may be swapped, so accept either pairing: `(l,l && r,r) || (l,r && r,l)`
-
----
-
-### 2.6) Minimum Depth — the recursive form and its single-child trap
-
-> `2.2)` above solves LC 111 with BFS, which is the better answer because it stops at the
-> first leaf. The recursive form is worth knowing anyway, because it is where the classic
-> mistake lives: `1 + min(left, right)` is wrong for a node with **one** child — the missing
-> side returns 0 and the node is reported as a leaf. The two guards below are the fix.
-
-**Pattern**: Find minimum depth to leaf
-**Use Case**: Shortest path to leaf
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Minimum Depth DFS
-def min_depth(root):
-    if not root:
-        return 0
-
-    # If one child is missing, only consider the other
-    if not root.left:
-        return 1 + min_depth(root.right)
-    if not root.right:
-        return 1 + min_depth(root.left)
-
-    return 1 + min(min_depth(root.left), min_depth(root.right))
-```
-
-```java
-// Java - Minimum Depth DFS
-public int minDepth(TreeNode root) {
-    if (root == null) return 0;
-
-    if (root.left == null) {
-        return 1 + minDepth(root.right);
-    }
-    if (root.right == null) {
-        return 1 + minDepth(root.left);
-    }
-
-    return 1 + Math.min(minDepth(root.left), minDepth(root.right));
-}
-```
-
-#### LeetCode Problems
-- LC 111: Minimum Depth of Binary Tree (Easy)
-
----
-
+| What this section used to hold | Where it lives now |
+|---|---|
+| 2.1) Postorder Height Template — LC 104 | [Maximum Depth of Binary Tree — LC 104](./tree_examples.md#maximum-depth-of-binary-tree--lc-104) |
+| 2.2) BFS Early Stop Template — LC 111 | [Minimum Depth of Binary Tree — LC 111](./tree_examples.md#minimum-depth-of-binary-tree--lc-111) — the first leaf a BFS pops |
+| 2.3) Height Validation Template — LC 110 | [Balanced Binary Tree — LC 110](./tree_examples.md#balanced-binary-tree--lc-110) — return `-1` as the unbalanced signal |
+| 2.4) Mirror Validation Template — LC 101 | [Symmetric Tree — LC 101](./tree_examples.md#symmetric-tree--lc-101) |
+| 2.5) Tree Comparison Template — LC 100 | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — two trees in lockstep |
+| 2.6) Minimum Depth — the recursive form and its single-child trap | the same LC 111 card, whose traps cover the one-child node |
 
 ### 2.7) Leftmost Value at Maximum Depth — LC 513
 
-**Pattern**: Find leftmost node at maximum depth
-**Use Case**: Bottom-left tree value
-**Time Complexity**: O(n)
-**Space Complexity**: O(w)
+> **Key point** — a level-order BFS meets the levels top to bottom and each level left to right, so
+> the first node popped on each level is that level's leftmost; the last value recorded that way is
+> the bottom-left one.
 
-#### Template Code
+**Reduces to**: [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) — the queue-length snapshot, recording index 0 of
+every level instead of the whole level.
 
 ```python
-# Python - Find Bottom Left Tree Value
+# python
+# LC 513 - Find Bottom Left Tree Value
+# IDEA: level-order BFS; the first node of each level overwrites the answer, so the last level wins
+# time = O(n), space = O(w)   w = maximum width of a level
 from collections import deque
 
 def find_bottom_left_value(root):
     queue = deque([root])
     leftmost = root.val
-
     while queue:
         level_size = len(queue)
-
         for i in range(level_size):
             node = queue.popleft()
-
-            # First node of level
-            if i == 0:
+            if i == 0:                     # first node of this level
                 leftmost = node.val
-
             if node.left:
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
-
     return leftmost
 ```
 
 ```java
-// Java - Find Bottom Left Tree Value
+// java
+// LC 513 - Find Bottom Left Tree Value
+// IDEA: level-order BFS; record index 0 of every level
+// time = O(n), space = O(w)
 public int findBottomLeftValue(TreeNode root) {
     Queue<TreeNode> queue = new LinkedList<>();
     queue.offer(root);
     int leftmost = root.val;
-
     while (!queue.isEmpty()) {
         int levelSize = queue.size();
-
         for (int i = 0; i < levelSize; i++) {
             TreeNode node = queue.poll();
-
             if (i == 0) {
                 leftmost = node.val;
             }
-
-            if (node.left != null) queue.offer(node.left);
-            if (node.right != null) queue.offer(node.right);
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
         }
     }
-
     return leftmost;
 }
 ```
 
-#### LeetCode Problems
-- LC 513: Find Bottom Left Tree Value (Medium)
+**Traps**
+- "Leftmost" is per level, not "keep going left": in `[1,2,3,4,null,5,6,null,null,7]` the answer 7
+  sits under the **right** child.
+- Enqueue right before left and the **last** node popped is the bottom-left one: a one-variable
+  version, but the order is the whole trick, so say it out loud.
 
 ---
-
 
 ## 3) Path-Based Templates
 
-### 3.1) Global Max Update Template — LC 124 ⭐⭐⭐⭐
-
-**Pattern**: Track global maximum during traversal
-**Use Case**: Maximum path sum problems
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Binary Tree Maximum Path Sum
-def max_path_sum(root):
-    max_sum = float('-inf')
-
-    def max_gain(node):
-        nonlocal max_sum
-
-        if not node:
-            return 0
-
-        # Max sum on left and right (ignore negative)
-        left_gain = max(max_gain(node.left), 0)
-        right_gain = max(max_gain(node.right), 0)
-
-        # Update global max with path through current node
-        current_path_sum = node.val + left_gain + right_gain
-        max_sum = max(max_sum, current_path_sum)
-
-        # Return max gain if continue from this node
-        return node.val + max(left_gain, right_gain)
-
-    max_gain(root)
-    return max_sum
-```
-
-```java
-// Java - Binary Tree Maximum Path Sum
-private int maxSum = Integer.MIN_VALUE;
-
-public int maxPathSum(TreeNode root) {
-    maxGain(root);
-    return maxSum;
-}
-
-private int maxGain(TreeNode node) {
-    if (node == null) return 0;
-
-    int leftGain = Math.max(maxGain(node.left), 0);
-    int rightGain = Math.max(maxGain(node.right), 0);
-
-    int currentPathSum = node.val + leftGain + rightGain;
-    maxSum = Math.max(maxSum, currentPathSum);
-
-    return node.val + Math.max(leftGain, rightGain);
-}
-```
-
-#### LeetCode Problems
-- LC 124: Binary Tree Maximum Path Sum (Hard)
-
----
-
-### 3.2) Path Accumulation Template — LC 112
-
-**Pattern**: Track sum along path
-**Use Case**: Check if path sum exists
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Path Sum
-def has_path_sum(root, target_sum):
-    if not root:
-        return False
-
-    # Leaf node - check if sum matches
-    if not root.left and not root.right:
-        return root.val == target_sum
-
-    # Recurse with updated target
-    remaining = target_sum - root.val
-    return (has_path_sum(root.left, remaining) or
-            has_path_sum(root.right, remaining))
-```
-
-```java
-// Java - Path Sum
-public boolean hasPathSum(TreeNode root, int targetSum) {
-    if (root == null) {
-        return false;
-    }
-
-    if (root.left == null && root.right == null) {
-        return root.val == targetSum;
-    }
-
-    int remaining = targetSum - root.val;
-    return hasPathSum(root.left, remaining) ||
-           hasPathSum(root.right, remaining);
-}
-```
-
-#### LeetCode Problems
-- LC 112: Path Sum (Easy)
-
----
-
-### 3.3) Path + Backtrack Template — LC 113 ⭐⭐⭐⭐
-
-**Pattern**: Collect all paths with backtracking
-**Use Case**: Find all paths matching criteria
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Path Sum II
-def path_sum(root, target_sum):
-    result = []
-
-    def dfs(node, remaining, path):
-        if not node:
-            return
-
-        path.append(node.val)
-
-        if not node.left and not node.right and remaining == node.val:
-            result.append(path[:])
-
-        dfs(node.left, remaining - node.val, path)
-        dfs(node.right, remaining - node.val, path)
-
-        path.pop()  # Backtrack
-
-    dfs(root, target_sum, [])
-    return result
-```
-
-```java
-// Java - Path Sum II
-public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
-    List<List<Integer>> result = new ArrayList<>();
-    List<Integer> path = new ArrayList<>();
-    dfs(root, targetSum, path, result);
-    return result;
-}
-
-private void dfs(TreeNode node, int remaining, List<Integer> path,
-                 List<List<Integer>> result) {
-    if (node == null) return;
-
-    path.add(node.val);
-
-    if (node.left == null && node.right == null && remaining == node.val) {
-        result.add(new ArrayList<>(path));
-    }
-
-    dfs(node.left, remaining - node.val, path, result);
-    dfs(node.right, remaining - node.val, path, result);
-
-    path.remove(path.size() - 1);  // Backtrack
-}
-```
-
-#### LeetCode Problems
-- LC 113: Path Sum II (Medium)
-- LC 257: Binary Tree Paths (Easy)
-
----
-
-### 3.4) Path Count Tracking Template — LC 437
-
-**Pattern**: Count paths using prefix sum
-**Use Case**: Paths with target sum (any start/end)
-**Time Complexity**: O(n)
-**Space Complexity**: O(n)
-
-#### Template Code
-
-```python
-# Python - Path Sum III
-def path_sum(root, target_sum):
-    def dfs(node, current_sum):
-        if not node:
-            return 0
-
-        current_sum += node.val
-
-        # Count paths ending at current node
-        count = prefix_sum.get(current_sum - target_sum, 0)
-
-        # Add current sum to map
-        prefix_sum[current_sum] = prefix_sum.get(current_sum, 0) + 1
-
-        # Recurse to children
-        count += dfs(node.left, current_sum)
-        count += dfs(node.right, current_sum)
-
-        # Backtrack
-        prefix_sum[current_sum] -= 1
-
-        return count
-
-    prefix_sum = {0: 1}
-    return dfs(root, 0)
-```
-
-```java
-// Java - Path Sum III
-private int count = 0;
-
-public int pathSum(TreeNode root, int targetSum) {
-    Map<Long, Integer> prefixSum = new HashMap<>();
-    prefixSum.put(0L, 1);
-    dfs(root, 0L, targetSum, prefixSum);
-    return count;
-}
-
-private void dfs(TreeNode node, long currentSum, int targetSum,
-                 Map<Long, Integer> prefixSum) {
-    if (node == null) return;
-
-    currentSum += node.val;
-
-    count += prefixSum.getOrDefault(currentSum - targetSum, 0);
-
-    prefixSum.put(currentSum, prefixSum.getOrDefault(currentSum, 0) + 1);
-
-    dfs(node.left, currentSum, targetSum, prefixSum);
-    dfs(node.right, currentSum, targetSum, prefixSum);
-
-    prefixSum.put(currentSum, prefixSum.get(currentSum) - 1);
-}
-```
-
-#### LeetCode Problems
-- LC 437: Path Sum III (Medium)
-
----
-
-### 3.5) Path Value Building Template — LC 129
-
-**Pattern**: Build value from root to leaf
-**Use Case**: Calculate number from root-to-leaf path
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Sum Root to Leaf Numbers
-def sum_numbers(root):
-    def dfs(node, current_number):
-        if not node:
-            return 0
-
-        current_number = current_number * 10 + node.val
-
-        # Leaf node - return the number
-        if not node.left and not node.right:
-            return current_number
-
-        # Sum from both subtrees
-        return dfs(node.left, current_number) + dfs(node.right, current_number)
-
-    return dfs(root, 0)
-```
-
-```java
-// Java - Sum Root to Leaf Numbers
-public int sumNumbers(TreeNode root) {
-    return dfs(root, 0);
-}
-
-private int dfs(TreeNode node, int currentNumber) {
-    if (node == null) return 0;
-
-    currentNumber = currentNumber * 10 + node.val;
-
-    if (node.left == null && node.right == null) {
-        return currentNumber;
-    }
-
-    return dfs(node.left, currentNumber) + dfs(node.right, currentNumber);
-}
-```
-
-#### LeetCode Problems
-- LC 129: Sum Root to Leaf Numbers (Medium)
-
----
-
-### 3.6) Path State Tracking Template — LC 1448
-
-**Pattern**: Track maximum value along path
-**Use Case**: Count good nodes (nodes >= max in path)
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Count Good Nodes
-def good_nodes(root):
-    def dfs(node, max_so_far):
-        if not node:
-            return 0
-
-        count = 1 if node.val >= max_so_far else 0
-
-        new_max = max(max_so_far, node.val)
-        count += dfs(node.left, new_max)
-        count += dfs(node.right, new_max)
-
-        return count
-
-    return dfs(root, float('-inf'))
-```
-
-```java
-// Java - Count Good Nodes
-public int goodNodes(TreeNode root) {
-    return dfs(root, Integer.MIN_VALUE);
-}
-
-private int dfs(TreeNode node, int maxSoFar) {
-    if (node == null) return 0;
-
-    int count = node.val >= maxSoFar ? 1 : 0;
-
-    int newMax = Math.max(maxSoFar, node.val);
-    count += dfs(node.left, newMax);
-    count += dfs(node.right, newMax);
-
-    return count;
-}
-```
-
-#### LeetCode Problems
-- LC 1448: Count Good Nodes in Binary Tree (Medium)
-
----
-
-### 3.7) Longest Path Template — LC 543
-
-**Pattern**: Find longest path between any two nodes
-**Use Case**: Diameter of tree
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Diameter of Binary Tree
-def diameter_of_binary_tree(root):
-    diameter = 0
-
-    def depth(node):
-        nonlocal diameter
-
-        if not node:
-            return 0
-
-        left_depth = depth(node.left)
-        right_depth = depth(node.right)
-
-        # Update diameter
-        diameter = max(diameter, left_depth + right_depth)
-
-        return 1 + max(left_depth, right_depth)
-
-    depth(root)
-    return diameter
-```
-
-```java
-// Java - Diameter of Binary Tree
-private int diameter = 0;
-
-public int diameterOfBinaryTree(TreeNode root) {
-    depth(root);
-    return diameter;
-}
-
-private int depth(TreeNode node) {
-    if (node == null) return 0;
-
-    int leftDepth = depth(node.left);
-    int rightDepth = depth(node.right);
-
-    diameter = Math.max(diameter, leftDepth + rightDepth);
-
-    return 1 + Math.max(leftDepth, rightDepth);
-}
-```
-
-#### LeetCode Problems
-- LC 543: Diameter of Binary Tree (Easy)
-
----
-
-### 3.8) Same Value Path Template — LC 687
-
-**Pattern**: Find longest path with same values
-**Use Case**: Longest univalue path
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Longest Univalue Path
-def longest_univalue_path(root):
-    longest = 0
-
-    def dfs(node):
-        nonlocal longest
-
-        if not node:
-            return 0
-
-        left_length = dfs(node.left)
-        right_length = dfs(node.right)
-
-        left_path = left_length + 1 if node.left and node.left.val == node.val else 0
-        right_path = right_length + 1 if node.right and node.right.val == node.val else 0
-
-        longest = max(longest, left_path + right_path)
-
-        return max(left_path, right_path)
-
-    dfs(root)
-    return longest
-```
-
-```java
-// Java - Longest Univalue Path
-private int longest = 0;
-
-public int longestUnivaluePath(TreeNode root) {
-    dfs(root);
-    return longest;
-}
-
-private int dfs(TreeNode node) {
-    if (node == null) return 0;
-
-    int leftLength = dfs(node.left);
-    int rightLength = dfs(node.right);
-
-    int leftPath = 0, rightPath = 0;
-
-    if (node.left != null && node.left.val == node.val) {
-        leftPath = leftLength + 1;
-    }
-    if (node.right != null && node.right.val == node.val) {
-        rightPath = rightLength + 1;
-    }
-
-    longest = Math.max(longest, leftPath + rightPath);
-
-    return Math.max(leftPath, rightPath);
-}
-```
-
-#### LeetCode Problems
-- LC 687: Longest Univalue Path (Medium)
+Every path template moved to the sheet that owns paths, or to the height card the bent-path
+problems reduce to:
+
+| What this section used to hold | Where it lives now |
+|---|---|
+| 3.1) Global Max Update Template — LC 124 | [Binary Tree Maximum Path Sum — LC 124](./tree_lca_distance.md#binary-tree-maximum-path-sum--lc-124) |
+| 3.2) Path Accumulation Template — LC 112 | [Path Sum — LC 112](./tree_lca_distance.md#path-sum--lc-112) |
+| 3.3) Path + Backtrack Template — LC 113 | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) |
+| 3.4) Path Count Tracking Template — LC 437 | [tree_lca_distance § Template 5](./tree_lca_distance.md#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) |
+| 3.5) Path Value Building Template — LC 129 | [Sum Root to Leaf Numbers — LC 129](./tree_lca_distance.md#sum-root-to-leaf-numbers--lc-129) |
+| 3.6) Path State Tracking Template — LC 1448 | [Count Good Nodes in Binary Tree — LC 1448](./tree_examples.md#count-good-nodes-in-binary-tree--lc-1448) |
+| 3.7) Longest Path Template — LC 543 | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) |
+| 3.8) Same Value Path Template — LC 687 | [Longest Univalue Path — LC 687](./tree_lca_distance.md#longest-univalue-path--lc-687) |
 
 ---
 
@@ -1341,346 +417,58 @@ range, or the token before the first `(`.
 
 ## 7) Tree Modification Templates
 
-### 7.1) Tree Inversion Template — LC 226
-
-**Pattern**: Swap left and right subtrees
-**Use Case**: Mirror/invert tree
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Invert Binary Tree
-def invert_tree(root):
-    if not root:
-        return None
-
-    # Swap children
-    root.left, root.right = root.right, root.left
-
-    # Recursively invert subtrees
-    invert_tree(root.left)
-    invert_tree(root.right)
-
-    return root
-```
-
-```java
-// Java - Invert Binary Tree
-public TreeNode invertTree(TreeNode root) {
-    if (root == null) return null;
-
-    // Cache children
-    TreeNode left = invertTree(root.left);
-    TreeNode right = invertTree(root.right);
-
-    // Swap
-    root.left = right;
-    root.right = left;
-
-    return root;
-}
-```
-
-#### LeetCode Problems
-- LC 226: Invert Binary Tree (Easy)
-
----
-
-### 7.2) Tree Flattening Template — LC 114
-
-**Pattern**: Flatten tree to linked list
-**Use Case**: Convert to right-skewed tree
-**Time Complexity**: O(n·h) — the `while current.right` walk re-scans the chain at every node (O(n^2) on a skewed tree). Return each subtree's tail instead and it drops to O(n): see [tree_examples 16)](./tree_examples.md#16-flatten-binary-tree-to-linked-list--lc-114).
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```python
-# Python - Flatten Binary Tree to Linked List
-def flatten(root):
-    if not root:
-        return
-
-    flatten(root.left)
-    flatten(root.right)
-
-    # Save right subtree
-    right = root.right
-
-    # Move left subtree to right
-    root.right = root.left
-    root.left = None
-
-    # Attach original right subtree to end
-    current = root
-    while current.right:
-        current = current.right
-    current.right = right
-```
-
-```java
-// Java - Flatten Binary Tree to Linked List
-public void flatten(TreeNode root) {
-    if (root == null) return;
-
-    flatten(root.left);
-    flatten(root.right);
-
-    TreeNode right = root.right;
-
-    root.right = root.left;
-    root.left = null;
-
-    TreeNode current = root;
-    while (current.right != null) {
-        current = current.right;
-    }
-    current.right = right;
-}
-```
-
-#### LeetCode Problems
-- LC 114: Flatten Binary Tree to Linked List (Medium)
-
----
-
-### 7.3) Tree Merging Template — LC 617
-
-**Pattern**: Merge two trees node by node
-**Use Case**: Combine two trees
-**Time Complexity**: O(min(n, m))
-**Space Complexity**: O(min(h1, h2))
-
-#### Template Code
-
-```python
-# Python - Merge Two Binary Trees
-def merge_trees(t1, t2):
-    if not t1 and not t2:
-        return None
-    if not t1:
-        return t2
-    if not t2:
-        return t1
-
-    # Merge current nodes
-    merged = TreeNode(t1.val + t2.val)
-
-    # Recursively merge children
-    merged.left = merge_trees(t1.left, t2.left)
-    merged.right = merge_trees(t1.right, t2.right)
-
-    return merged
-```
-
-```java
-// Java - Merge Two Binary Trees
-public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
-    if (t1 == null && t2 == null) return null;
-    if (t1 == null) return t2;
-    if (t2 == null) return t1;
-
-    TreeNode merged = new TreeNode(t1.val + t2.val);
-
-    merged.left = mergeTrees(t1.left, t2.left);
-    merged.right = mergeTrees(t1.right, t2.right);
-
-    return merged;
-}
-```
-
-#### LeetCode Problems
-- LC 617: Merge Two Binary Trees (Easy)
+| What this section used to hold | Where it lives now |
+|---|---|
+| 7.1) Tree Inversion Template — LC 226 | [Invert Binary Tree — LC 226](./tree_examples.md#invert-binary-tree--lc-226) |
+| 7.2) Tree Flattening Template — LC 114 | [Flatten Binary Tree to Linked List — LC 114](./tree_examples.md#flatten-binary-tree-to-linked-list--lc-114) |
+| 7.3) Tree Merging Template — LC 617 | [Merge Two Binary Trees — LC 617](./tree_examples.md#merge-two-binary-trees--lc-617) |
+| Deleting nodes and returning the forest — LC 1110 | [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) |
 
 ---
 
 ## 8) Advanced Tree Templates
 
-### 8.1) O(1)-Space Level Linking Template — LC 117 ⭐⭐⭐⭐⭐
-
-**Pattern**: Treat the level you already linked as a **linked list**, and build the level below with a **dummy head + tail** pointer
-**Use Case**: Connect `next` pointers per level without a BFS queue
-**Key Idea**: You never need a queue when each level already knows its own order — walk it via `next`, append children to a sentinel-headed list, then descend to `dummy.next`
-**Time Complexity**: O(n)
-**Space Complexity**: O(1) — no queue, no recursion
-
-#### Template Code
-
-```java
-// java
-// LC 117 - Populating Next Right Pointers in Each Node II
-// IDEA: walk the current level through its own `next` chain; build the next level
-//       onto a dummy head so missing children need no special cases
-// time = O(N), space = O(1)
-public Node connect(Node root) {
-    Node curr = root;
-    while (curr != null) {
-        Node dummy = new Node(0);   // sentinel head of the level below
-        Node tail  = dummy;
-        for (Node node = curr; node != null; node = node.next) {
-            if (node.left  != null) { tail.next = node.left;  tail = tail.next; }
-            if (node.right != null) { tail.next = node.right; tail = tail.next; }
-        }
-        curr = dummy.next;          // descend to the level we just linked
-    }
-    return root;
-}
-```
-
-```python
-# python
-# LC 117 - Populating Next Right Pointers in Each Node II
-# IDEA: current level is already a linked list via `next`;
-#       append its children to a dummy-headed list, then descend
-# time = O(N), space = O(1)
-def connect(root):
-    curr = root
-    while curr:
-        dummy = Node(0)          # sentinel head of the level below
-        tail = dummy
-        node = curr
-        while node:
-            if node.left:
-                tail.next = node.left
-                tail = tail.next
-            if node.right:
-                tail.next = node.right
-                tail = tail.next
-            node = node.next
-        curr = dummy.next        # descend to the level we just linked
-    return root
-```
-
-**Variation — LC 116 (perfect binary tree)**: every node has 0 or 2 children, so the dummy head is unnecessary — link `node.left → node.right` and `node.right → node.next.left`, then drop straight to `leftmost.left`.
-
-```java
-// java
-// LC 116 - Populating Next Right Pointers in Each Node (perfect tree)
-// IDEA: perfect tree ⇒ children always exist ⇒ link them directly from the parent level
-// time = O(N), space = O(1)
-public Node connect(Node root) {
-    Node leftmost = root;
-    while (leftmost != null && leftmost.left != null) {
-        for (Node node = leftmost; node != null; node = node.next) {
-            node.left.next = node.right;                       // same parent
-            if (node.next != null) node.right.next = node.next.left;  // across parents
-        }
-        leftmost = leftmost.left;
-    }
-    return root;
-}
-```
-
-```python
-# python
-# LC 116 - Populating Next Right Pointers in Each Node (perfect tree)
-# time = O(N), space = O(1)
-def connect(root):
-    leftmost = root
-    while leftmost and leftmost.left:
-        node = leftmost
-        while node:
-            node.left.next = node.right
-            if node.next:
-                node.right.next = node.next.left
-            node = node.next
-        leftmost = leftmost.left
-    return root
-```
-
-#### LeetCode Problems
-- LC 117: Populating Next Right Pointers in Each Node II (Medium)
-- LC 116: Populating Next Right Pointers in Each Node (Medium)
-
-
-**Why the dummy head**: children may be missing (LC 117 is a *general* binary tree, not a perfect
-one), so you cannot compute "the next node" by position. The dummy + `tail` pointer skips holes
-automatically — which is exactly why the *same* code solves LC 116 and LC 117.
-
-**Trace** (`root = [1,2,3,4,5,null,7]`):
-
-```text
-level 1:  1                      dummy -> 2 -> 3
-level 2:  2 -> 3                 dummy -> 4 -> 5 -> 7   (3 has no left child; dummy skips the hole)
-level 3:  4 -> 5 -> 7            dummy -> null  -> stop
-```
-
-**When to reuse this**: any "connect / compare nodes on the same level" question where the node
-carries a spare pointer (LC 116, LC 117). If the node has **no** `next` field, fall back to the
-queue BFS in [1.4)](#14-bfs-template-level-order--lc-102-).
-
-### 8.2) Postorder Tree DP (Pair Return) Template — LC 337 ⭐⭐⭐⭐
-
-**Pattern**: Each node returns **two (or k) answers** — one per state — instead of a single number
-**Use Case**: Adjacent-node constraints ("can't take a node and its child"), any tree DP where the parent's choice depends on whether the child was taken
-**Key Idea**: Returning `{take, skip}` removes the need for memoization — a plain postorder pass is already O(n)
-**Time Complexity**: O(n)
-**Space Complexity**: O(h)
-
-#### Template Code
-
-```java
-// java
-// LC 337 - House Robber III
-// IDEA: post-order tree DP — each node returns {best if robbed, best if skipped}
-// time = O(N), space = O(H)
-public int rob(TreeNode root) {
-    int[] res = dfs(root);
-    return Math.max(res[0], res[1]);
-}
-
-// returns {maxIfRobCurrent, maxIfSkipCurrent}
-private int[] dfs(TreeNode node) {
-    if (node == null) return new int[]{0, 0};
-
-    int[] l = dfs(node.left);
-    int[] r = dfs(node.right);
-
-    int rob  = node.val + l[1] + r[1];                          // children MUST be skipped
-    int skip = Math.max(l[0], l[1]) + Math.max(r[0], r[1]);     // children are free to choose
-
-    return new int[]{rob, skip};
-}
-```
-
-```python
-# python
-# LC 337 - House Robber III
-# IDEA: post-order tree DP — return (rob_this, skip_this) per node
-# time = O(N), space = O(H)
-def rob(root):
-    def dfs(node):
-        if not node:
-            return (0, 0)
-
-        l = dfs(node.left)
-        r = dfs(node.right)
-
-        rob_this  = node.val + l[1] + r[1]   # children must be skipped
-        skip_this = max(l) + max(r)          # children choose freely
-
-        return (rob_this, skip_this)
-
-    return max(dfs(root))
-```
-
-#### LeetCode Problems
-- LC 337: House Robber III (Medium)
-
----
+| What this section used to hold | Where it lives now |
+|---|---|
+| 8.1) O(1)-Space Level Linking Template — LC 117 | [binary_tree § Template 8](./binary_tree.md#template-8-level-linking-with-o1-space--lc-117-) |
+| 8.2) Postorder Tree DP (Pair Return) Template — LC 337 | [binary_tree § Template 9](./binary_tree.md#template-9-tree-dp--return-multiple-states--lc-337-) |
+| 8.4) Complete Tree Node Count Template — LC 222 | [binary_tree § Template 7](./binary_tree.md#template-7-count-nodes-of-a-complete-tree--lc-222) |
 
 ### 8.3) Coordinate Map Traversal Template — LC 987
 
-**Pattern**: DFS tagging every node with `(col, row)`, then **sort by (col, row, val)**
-**Use Case**: Vertical / column-based output where ties must break deterministically
-**Key Idea**: `left → col - 1`, `right → col + 1`, depth → `row`. BFS alone is *not* enough for LC 987: two nodes can share `(col, row)`, and the tie-break is by **value**, so collect-then-sort
-**Time Complexity**: O(n log n)
-**Space Complexity**: O(n)
+> **Key point** — give every node a coordinate (`left → col - 1`, `right → col + 1`, depth → `row`)
+> and the output order is a plain sort by `(col, row, val)`. A BFS alone is not enough: two nodes
+> can share `(col, row)`, and the tie is broken by **value**, so collect first, then sort.
 
-#### Template Code
+**Reduces to**: [binary_tree § Template 1](./binary_tree.md#template-1-recursive-pre--in--post-order-traversal--lc-94) —
+any traversal that carries `(row, col)` down, followed by one sort.
 
+```python
+# python
+# LC 987 - Vertical Order Traversal of a Binary Tree
+# IDEA: DFS collecting (col, row, val); plain tuple sort gives col → row → val
+# time = O(N log N), space = O(N)
+def vertical_traversal(root):
+    nodes = []
+
+    def dfs(node, row, col):
+        if not node:
+            return
+        nodes.append((col, row, node.val))
+        dfs(node.left,  row + 1, col - 1)
+        dfs(node.right, row + 1, col + 1)
+
+    dfs(root, 0, 0)
+    nodes.sort()
+
+    res, prev_col = [], None
+    for col, row, val in nodes:
+        if col != prev_col:
+            res.append([])
+            prev_col = col
+        res[-1].append(val)
+    return res
+```
 ```java
 // java
 // LC 987 - Vertical Order Traversal of a Binary Tree
@@ -1713,238 +501,18 @@ private void dfs(TreeNode node, int row, int col, List<int[]> nodes) {
     dfs(node.right, row + 1, col + 1, nodes);
 }
 ```
-
-```python
-# python
-# LC 987 - Vertical Order Traversal of a Binary Tree
-# IDEA: DFS collecting (col, row, val); plain tuple sort gives col → row → val
-# time = O(N log N), space = O(N)
-def vertical_traversal(root):
-    nodes = []
-
-    def dfs(node, row, col):
-        if not node:
-            return
-        nodes.append((col, row, node.val))
-        dfs(node.left,  row + 1, col - 1)
-        dfs(node.right, row + 1, col + 1)
-
-    dfs(root, 0, 0)
-    nodes.sort()
-
-    res, prev_col = [], None
-    for col, row, val in nodes:
-        if col != prev_col:
-            res.append([])
-            prev_col = col
-        res[-1].append(val)
-    return res
-```
-
-#### LeetCode Problems
-- LC 987: Vertical Order Traversal of a Binary Tree (Hard)
+**Traps**
+- Grouping by column with a BFS and no sort: LC 987 example 3 has 5 and 6 at the same `(col, row)`,
+  and they must come out as `[1,5,6]`, sorted by value, not in visiting order.
+- LC 314 (vertical order, no value tie-break) wants BFS order within a column, so there the sort
+  key is `(col, BFS index)`, not `(col, row, val)`.
 
 ---
 
-### 8.4) Complete Tree Node Count Template — LC 222
+## Drill Path
 
-**Pattern**: Exploit the **complete tree** shape to skip whole subtrees instead of visiting all `n` nodes
-**Use Case**: Counting nodes faster than O(n) when the tree is complete
-**Key Idea**: If leftmost depth == rightmost depth, the subtree is **perfect** → `2^d - 1` with no recursion. Otherwise recurse; only one child per level is imperfect, so the recursion is O(log n) deep with an O(log n) depth probe at each step
-**Time Complexity**: O(log² n)
-**Space Complexity**: O(log n)
-
-#### Template Code
-
-```java
-// java
-// LC 222 - Count Complete Tree Nodes
-// IDEA: perfect subtree ⇒ 2^d - 1 in O(log n); otherwise recurse on both children
-// time = O(log^2 N), space = O(log N)
-public int countNodes(TreeNode root) {
-    if (root == null) return 0;
-
-    int ld = leftDepth(root), rd = rightDepth(root);
-    if (ld == rd) return (1 << ld) - 1;   // perfect subtree — no traversal needed
-
-    return 1 + countNodes(root.left) + countNodes(root.right);
-}
-
-private int leftDepth(TreeNode n)  { int d = 0; while (n != null) { d++; n = n.left;  } return d; }
-private int rightDepth(TreeNode n) { int d = 0; while (n != null) { d++; n = n.right; } return d; }
-```
-
-```python
-# python
-# LC 222 - Count Complete Tree Nodes
-# IDEA: leftmost depth == rightmost depth ⇒ perfect subtree ⇒ 2^d - 1
-# time = O(log^2 N), space = O(log N)
-def count_nodes(root):
-    if not root:
-        return 0
-
-    ld, node = 0, root
-    while node:
-        ld += 1
-        node = node.left
-
-    rd, node = 0, root
-    while node:
-        rd += 1
-        node = node.right
-
-    if ld == rd:
-        return (1 << ld) - 1          # perfect subtree
-
-    return 1 + count_nodes(root.left) + count_nodes(root.right)
-```
-
-#### LeetCode Problems
-- LC 222: Count Complete Tree Nodes (Medium)
-
----
-
-## Summary Table: All Templates
-
-| Template Name | Pattern | Time | Space | LeetCode Problems |
-|--------------|---------|------|-------|-------------------|
-| **Preorder Template** | Root → Left → Right | O(n) | O(h) | LC 144 |
-| **Inorder Template** | Left → Root → Right | O(n) | O(h) | LC 94, 98, 230 |
-| **Postorder Template** | Left → Right → Root | O(n) | O(h) | LC 145 |
-| **BFS Template** | Level-by-level | O(n) | O(w) | LC 102, 103, 107, 199 |
-| **BFS + Direction** | Alternating levels | O(n) | O(w) | LC 103 |
-| **Postorder Height** | Bottom-up height | O(n) | O(h) | LC 104 |
-| **BFS Early Stop** | Stop at condition | O(n) | O(w) | LC 111 |
-| **Height Validation** | Balance check | O(n) | O(h) | LC 110 |
-| **Mirror Validation** | Symmetric check | O(n) | O(h) | LC 101 |
-| **Tree Comparison** | Compare trees | O(n) | O(h) | LC 100, 572 |
-| **Global Max Update** | Track global max | O(n) | O(h) | LC 124 |
-| **Path Accumulation** | Sum along path | O(n) | O(h) | LC 112 |
-| **Path + Backtrack** | Collect all paths | O(n) | O(h) | LC 113, 257 |
-| **Path Count Tracking** | Prefix sum paths | O(n) | O(n) | LC 437 |
-| **Path Value Building** | Build path value | O(n) | O(h) | LC 129 |
-| **Path State Tracking** | Track max in path | O(n) | O(h) | LC 1448 |
-| **Longest Path** | Diameter calculation | O(n) | O(h) | LC 543 |
-| **Same Value Path** | Univalue path | O(n) | O(h) | LC 687 |
-| **LCA Standard** → [tree_lca_distance.md](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | Find LCA | O(n) | O(h) | LC 236 |
-| **Value Comparison** → [tree_lca_distance.md](./tree_lca_distance.md#template-1-lca-by-returned-presence--lc-236) | BST LCA | O(h) | O(1) | LC 235 |
-| **Path Distance** → [tree_lca_distance.md](./tree_lca_distance.md#template-3-distance-between-nodes-via-lca--lc-1740) | Distance via LCA | O(n) | O(h) | LC 1740 |
-| **Tree to Graph** → [tree_lca_distance.md](./tree_lca_distance.md#template-2-parent-map--bfs--lc-863) | Convert for queries | O(n) | O(n) | LC 863, 742 |
-| **Min Depth (recursive)** | Single-child guard | O(n) | O(h) | LC 111 |
-| **Leftmost at Depth** | Bottom-left value | O(n) | O(w) | LC 513 |
-| **Tree Building** → [tree_construction.md](./tree_construction.md#2-construct-binary-tree-from-preorder-and-inorder-traversal--lc-105) | Build from arrays | O(n) | O(n) | LC 105, 106 |
-| **String Conversion** → [tree_codec.md](./tree_codec.md) | Serialize/deserialize | O(n) | O(n) | LC 297, 449 |
-| **String Construction** → [tree_codec.md](./tree_codec.md) | Tree to string | O(n) | O(h) | LC 606 |
-| **Tree Inversion** | Mirror tree | O(n) | O(h) | LC 226 |
-| **Tree Flattening** | Flatten to list | O(n) | O(h) | LC 114 |
-| **Tree Merging** | Merge two trees | O(n) | O(h) | LC 617 |
-| **O(1) Level Linking** | Dummy head + `next` chain | O(n) | O(1) | LC 117, 116 |
-| **Postorder Tree DP** | Return {take, skip} pair | O(n) | O(h) | LC 337 |
-| **Coordinate Map Traversal** | Sort by (col, row, val) | O(n log n) | O(n) | LC 987 |
-| **Complete Tree Node Count** | Perfect subtree ⇒ 2^d − 1 | O(log² n) | O(log n) | LC 222 |
-
----
-
-## Quick Reference Guide
-
-### When to Use Each Template
-
-1. **Need to process root before children?** → Use Preorder Template
-2. **Need sorted order (BST)?** → Use Inorder Template
-3. **Need children data for parent?** → Use Postorder Template
-4. **Need level-by-level processing?** → Use BFS Template
-5. **Need to track path sum/values?** → Use Path Tracking Templates
-6. **Need to find LCA?** → [tree_lca_distance.md](./tree_lca_distance.md)
-7. **Need to build tree from arrays?** → [tree_construction.md](./tree_construction.md)
-8. **Need to modify tree structure?** → Use Tree Modification Templates
-9. **Need to validate tree properties?** → Use Validation Templates
-10. **Need distance between two nodes?** → [tree_lca_distance.md](./tree_lca_distance.md)
-
----
-
-## Practice Recommendations
-
-### Easy Problems (Start Here)
-- LC 144, 94, 145: Basic traversals
-- LC 100, 101: Tree comparison
-- LC 104, 111: Depth calculation
-- LC 226: Tree inversion
-- LC 617: Tree merging
-
-### Medium Problems (Build Skills)
-- LC 102, 103, 107: Level-order variants
-- LC 105, 106: Tree construction
-- LC 113, 129, 437: Path problems
-- LC 236: LCA
-- LC 114: Tree flattening
-
-### Hard Problems (Master Level)
-- LC 124: Maximum path sum
-- LC 297: Serialization
-- LC 1740: Distance calculation
-
----
-
-**Note**: All templates assume TreeNode definition:
-```python
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-```
-
-```java
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
-}
-```
-
-## LC Examples — Problems Without a Dedicated Template
-
-> Every other problem in this file is solved inside its own numbered template above. The two below have no dedicated template section, so they live here.
-
-### 2-1) Validate Binary Search Tree (LC 98) — DFS with Bounds
-> Pass valid range (lo, hi) recursively; each node must be strictly within bounds.
-
-```java
-// LC 98 - Validate Binary Search Tree
-// IDEA: DFS with min/max bounds — value must be in (lo, hi)
-// time = O(N), space = O(H)
-public boolean isValidBST(TreeNode root) {
-    return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
-}
-private boolean validate(TreeNode node, long lo, long hi) {
-    if (node == null) return true;
-    if (node.val <= lo || node.val >= hi) return false;
-    return validate(node.left, lo, node.val) && validate(node.right, node.val, hi);
-}
-```
-
-### 2-2) Binary Tree Right Side View (LC 199) — BFS Level Order
-> BFS level by level; record the last node of each level as right-side visible.
-
-```java
-// LC 199 - Binary Tree Right Side View
-// IDEA: BFS — collect rightmost (last) node value per level
-// time = O(N), space = O(N)
-public List<Integer> rightSideView(TreeNode root) {
-    List<Integer> res = new ArrayList<>();
-    if (root == null) return res;
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    while (!q.isEmpty()) {
-        int size = q.size();
-        for (int i = 0; i < size; i++) {
-            TreeNode node = q.poll();
-            if (i == size - 1) res.add(node.val);
-            if (node.left  != null) q.offer(node.left);
-            if (node.right != null) q.offer(node.right);
-        }
-    }
-    return res;
-}
-```
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** | LC 144 · LC 145 · LC 103 | the two explicit-stack walks, then a level BFS whose direction flips |
+| **Practice** | LC 513 · LC 589 · LC 590 | the last level's first node; the same stack walks on an N-ary tree |
+| **Stretch** | LC 987 · LC 314 | coordinates, with ties broken by value, then by BFS order |

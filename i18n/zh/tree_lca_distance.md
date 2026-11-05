@@ -26,7 +26,7 @@
 - **什麼時候用**：答案是一條路徑、一段距離或一個交會點，而不是某個子樹性質
 - **哨兵規則**：距離的輔助函式在「找不到」時必須回傳 `-1`（不能是 `0`），因為 `0` 是一個合法的距離
 
-<!-- e34ee8d96ccb -->
+<!-- a2880f40a0cb -->
 ## 辨識
 
 限制條件的線索來自 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 裡的尺規；這裡每一列要的都是一次 O(N) 的走訪。
@@ -40,7 +40,7 @@
 | 「值為 `p` 與 `q` 的兩個節點之間的邊數」 | 節點 ≤ 10⁴ | [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740) LCA ＋ 兩次 `get_dist` | 要所有距離 `k` 的節點 → [Template 2](#template-2-parent-map--bfs--lc-863) |
 | 「所有總和為 `targetSum` 的根到葉路徑」、「回傳每一條路徑」 | 節點 ≤ 5,000 | [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) 前序＋回溯 | 路徑可以從根以下開始 → [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) |
 | 「總和為 `targetSum` 的路徑數量」，路徑「不必從根開始、也不必在葉結束」 | 節點 ≤ 1,000，有負值 | [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) 前綴和 map | 同一個問題但在**陣列**上 → [prefix_sum_advanced.md](./prefix_sum_advanced.md#template-14-prefix-sum-on-a-tree-dfs--hashmap--backtrack---lc-437) |
-| 「任意兩節點之間的最長路徑」、「最大路徑和」 | 節點 ≤ 3 · 10⁴ | 後序高度＋全域最大值（[5-1)](#5-1-find-paths-with-specific-properties)、[binary_tree.md](./binary_tree.md)） | 路徑必須是根 → 葉 → [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) |
+| 「任意兩節點之間的最長路徑」、「最大路徑和」 | 節點 ≤ 3 · 10⁴ | 後序高度＋全域最大值（[LC 124 卡片](#binary-tree-maximum-path-sum--lc-124)、[binary_tree.md](./binary_tree.md)） | 路徑必須是根 → 葉 → [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) |
 
 <!-- 5443721c5191 -->
 ## 題型分類
@@ -494,7 +494,7 @@ LCA 就在那一側，直接走過去。
 - ❌ 如果兩個節點可能在互不相干的子樹裡 → 先找 LCA（[Template 1](#template-1-lca-by-returned-presence--lc-236)）
 - ❌ 如果需要**所有**方向的距離（包含往上）→ 用 [Template 2](#template-2-parent-map--bfs--lc-863)，也就是父節點表
 
-<!-- 60210e5f2e7f -->
+<!-- c08aedcbf68d -->
 ### Template 4: Root-to-Leaf Path with Backtracking — LC 113
 
 **辨識** — 「所有值的總和等於 `targetSum` 的**根到葉**路徑」、「回傳每一條路徑」、「葉子是沒有子節點的節點」。節點 ≤ 5,000 → 一次 O(N) 走訪，加上複製留下來那些路徑的成本。
@@ -519,7 +519,7 @@ LCA 就在那一側，直接走過去。
 - 漏了 `pop`：右子樹會繼承左子樹的節點 — `[1,2,3]`、`targetSum = 4` 會記下 `[1, 2, 3]`。
 - `remaining < 0` 就提早停：值可能是負的，後面的節點可以把它拉回來。
 
-**不是它，如果** — 路徑可以在一條往下的線上**任意**起訖 → [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437)。路徑可以在某個節點**轉彎**（LC 124、LC 543）→ 後序高度加全域最大值，見 [5-1)](#5-1-find-paths-with-specific-properties)。只問是或否（LC 112）→ 完全不需要 list，回傳 `left or right`。
+**不是它，如果** — 路徑可以在一條往下的線上**任意**起訖 → [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437)。路徑可以在某個節點**轉彎**（LC 124、LC 543）→ 後序高度加全域最大值，見 [LC 124 卡片](#binary-tree-maximum-path-sum--lc-124)。只問是或否（LC 112）→ 完全不需要 list，回傳 `left or right`。
 
 **練習** — LC 113 · LC 112 *（是或否，不用路徑 list）* · LC 257 *（路徑寫成字串）* · LC 129 *（往下帶一個數字而不是 list）* · LC 988 *（比較反轉後的路徑）*
 
@@ -590,25 +590,88 @@ LCA 就在那一側，直接走過去。
 | DFS＋路徑 list＋回溯  | 只能根 → 葉         | `List<Integer>` path  | 移除最後一個元素     |
 | DFS＋前綴和＋回溯 | 任意節點 → 任意節點 ↓   | `Map<Long, Integer>`  | 把 map 的計數減一     |
 
-<!-- 598a9bfd2a3c -->
+<!-- 44f4a758f481 -->
 ## LC 範例
 
-<!-- 56042854bf28 -->
-### 5-1) 找出具備特定性質的路徑
+不是任何模板錨點題的路徑題，做成問題卡放在這裡。LC 543（直徑）是
+[binary_tree.md § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543)
+的錨點題，在那裡講解；下面的 LC 124 和 LC 687 就是同一個模板，只是「一條臂」的定義不同。
 
-<!-- 9840e24f26ce -->
-#### 路徑和問題
+<!-- 3bf43744210c -->
+### Path Sum — LC 112
+
+> **關鍵** — 題目只問有沒有，所以往下走時唯一要記的就是還欠多少：把 `targetSum - node.val` 傳給子節點，而且只有**葉子**能結清這筆帳。
+
+**歸約到**：[Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) — 不用複製或還原路徑 list，收集結果改成 `left or right`。
+
 <!--CODE-->
 
-<!-- 55d655b10e37 -->
-#### 路徑長度問題
 <!--CODE-->
+
+**陷阱**
+- 在 `None` 而不是在葉子判斷：`root = [1,2]`、`targetSum = 1` 會回傳 `true`，但節點 1 有子節點，不是葉子。
+- 空樹配 `targetSum = 0` 是 `false`：根本沒有路徑。
+
+<!-- 7c5ea2982e9e -->
+### Sum Root to Leaf Numbers — LC 129
+
+> **關鍵** — 往下帶的狀態是目前路徑拼出來的數字：`number * 10 + node.val`。它是 `int`，每次呼叫都拿到自己的一份，沒有東西要還原；葉子回傳它的數字，每個內部節點回傳兩個子節點的總和。
+
+**歸約到**：[Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) — 帶的是一個數字而不是 list，也就是上面「路徑更新策略」裡不可變狀態的情況。
 
 <!--CODE-->
 
-<!-- b4ad1268e699 -->
-### 5-2) Closest Leaf in a Binary Tree（Move Parent 模式） — LC 742
+**陷阱**
+- 在 `None` 回傳 `number`，會把只有一個子節點的節點算兩次：`[1,2,3]` 要維持 25，必須在葉子回傳數字、在 `None` 回傳 0。
+
+<!-- 87a605864a58 -->
+### Binary Tree Maximum Path Sum — LC 124
+
+> **關鍵** — 和直徑一樣是「回傳一條臂、記錄轉彎」的形狀，只是把高度換成總和。值可能是負的，所以會拉低總和的臂要夾到 `0`（不取），而全域值從 `-inf` 開始，因為最佳路徑可能只是單一個負數節點。
+
+**歸約到**：[binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) — 兩邊各加上 `max(0, arm)`，每個節點都加上 `node.val`。
+
 <!--CODE-->
+
+<!--CODE-->
+
+**試跑** — `root = [-10,9,20,null,null,15,7]`
+
+<!--CODE-->
+
+**陷阱**
+- `best` 從 `0` 開始：`root = [-3]` 會回傳 0，但路徑至少要包含一個節點，答案是 -3。
+- 回傳 `node.val + left + right`：父節點會延伸一條已經轉彎的路徑。
+- 把**全域值**夾到 0 而不是臂：`max(0, …)` 只放在每一條臂上。
+
+<!-- daee2a0b21bc -->
+### Longest Univalue Path — LC 687
+
+> **關鍵** — 一條臂只能穿過兩端值相同的邊繼續延伸。所以在記錄轉彎 `left + right` 之前，子節點的臂在 `child.val == node.val` 時加一，否則歸零。答案數的是**邊**。
+
+**歸約到**：[binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) — 臂穿過值不同的邊就歸零。
+
+<!--CODE-->
+
+**陷阱**
+- 子節點值不同就不往下遞迴：那棵子樹裡仍可能有答案。`[1,4,5,4,4,null,5]` 的答案 2 來自根（值 1）底下的 `4-4-4`。
+- 數節點而不是數邊：單一節點是 0，不是 1。
+
+<!-- fabda13b3d0d -->
+### Closest Leaf in a Binary Tree — LC 742
+
+> **關鍵** — 最近的葉子可能在節點 `k` 的**上方**（經過父節點再往另一支下去），所以先把樹變成無向圖。接著從 `k` 做 BFS，節點依距離順序被走到，第一個彈出的葉子就是答案。
+
+**歸約到**：[Template 2](#template-2-parent-map--bfs--lc-863) — 同樣的父節點邊與 BFS，只是停在第一個沒有子節點的節點，而不是走 `k` 輪。
+
+<!--CODE-->
+
+**陷阱**
+- 從 `root` 開始 BFS：找到的是離根最近的葉子。`[1,2,3,4,null,null,null,5,null,6]`、`k = 2` 必須回傳 3（往上兩條邊再過去），而不是 2 那條鏈底下的葉子。
+- 用圖上的度數判斷葉子：只有一個子節點的樹，根的度數是 1，但它不是葉子。要用原本的 `left` / `right`。
+- DFS 填好 `graph` 之後又重新建立它，每個節點就都沒有鄰居了。
+
+**相似題** — LC 863（距離為 `k` 的所有節點）· LC 2385（感染整棵樹要幾分鐘：從起點做 BFS 輪數）
 
 <!-- c958d33988b8 -->
 ## 模式選擇策略
@@ -626,7 +689,7 @@ LCA 就在那一側，直接走過去。
 | **練習** | LC 112 · LC 113 · LC 1650 · LC 863 · LC 1740 · LC 437 | Template 4、1（沒有根）、2、3、5，各一次 |
 | **延伸** | LC 1644 · LC 865 · LC 2096 · LC 2385 | 目標可能不存在、隱含的目標、寫成步驟的路徑、父節點表上的 BFS 輪數 |
 
-<!-- f66b1d3f48cc -->
+<!-- f534ca63ad28 -->
 ## 總結
 
 | 題目要你求… | 掏這個出來 | 章節 |
@@ -637,7 +700,7 @@ LCA 就在那一側，直接走過去。
 | 任意兩節點之間的邊數 | LCA ＋ 兩次 `get_dist` | [Template 3](#template-3-distance-between-nodes-via-lca--lc-1740) |
 | 所有符合某規則的根到葉路徑 | 前序 DFS＋回溯 | [Template 4](#template-4-root-to-leaf-path-with-backtracking--lc-113) |
 | 任意到任意向下路徑的數量 | 前序 DFS＋前綴和 HashMap | [Template 5](#template-5-downward-path-count-with-a-prefix-sum-map--lc-437) |
-| 通過任一節點的最長路徑 | 後序高度＋全域最大值 | [5-1)](#5-1-find-paths-with-specific-properties) |
+| 通過任一節點的最長路徑 | 後序高度＋全域最大值 | [LC 124 卡片](#binary-tree-maximum-path-sum--lc-124) |
 
 **在這裡代價最大的三個錯誤：**
 - 「找不到」回傳 `0` 而不是 `-1` — `0` 是一個合法的距離

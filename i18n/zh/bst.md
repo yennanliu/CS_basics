@@ -1,9 +1,9 @@
-<!-- 954801569a9a -->
+<!-- 01357a6132b6 -->
 # BST (Binary Search Tree)（二元搜尋樹）
 
 > **範圍** — 只談有序的樹 —— `left < root < right` 這條不變式換來了什麼（O(log n) 搜尋、中序即排序、依範圍剪枝、順序統計）。
 
-> **另見**：[bst_examples.md](./bst_examples.md) — 這些模板對應的 LC 完整解法庫，外加樹的路徑和題型家族；[bst_advanced.md](./bst_advanced.md) — 順序統計（rank）查詢、O(h) 的延遲式迭代器、修復壞掉的 BST，以及各種建構變形的目錄；[binary_tree.md](./binary_tree.md) — 無序的二元樹；[tree.md](./tree.md) — 樹的通用概念；[segment_tree.md](./segment_tree.md) — 在陣列（而非樹）上做區間查詢。
+> **另見**：[bst_examples.md](./bst_examples.md) — 在這些模板上多加一步的 BST 題；[bst_advanced.md](./bst_advanced.md) — O(h) 的延遲式迭代器、修復壞掉的 BST、順序統計（rank）查詢，以及各種建構變形；[tree_lca_distance.md](./tree_lca_distance.md) — 路徑和題型，用不到大小順序；[binary_tree.md](./binary_tree.md) — 無序的二元樹；[tree.md](./tree.md) — 樹的通用概念；[segment_tree.md](./segment_tree.md) — 在陣列（而非樹）上做區間查詢。
 
 <!-- 2ecddae21148 -->
 ## LeetCode 題目清單
@@ -31,14 +31,12 @@
 - **中序走訪**：輸出遞增排序的序列
 - **什麼時候用**：有序資料的操作、區間查詢、順序統計
 
-<!-- ad0bac6d5dfc -->
+<!-- c08c87b8bedf -->
 ### 參考資料
 - [BST Visualizer](https://www.cs.usfca.edu/~galles/visualization/BST.html)
 - [fucking-algorithm - BST pt.1](https://labuladong.github.io/algo/2/21/43/)
 - [fucking-algorithm - BST pt.2](https://labuladong.github.io/algo/2/21/44/)
 - [fucking-algorithm - BST pt.3](https://labuladong.github.io/algo/2/21/42/)
-
-<!--CODE-->
 
 <!-- 23e5a37c4293 -->
 ### 樹節點的基本操作
@@ -46,19 +44,16 @@
 所有 BST 模板都建立在這種樸素遞迴之上。下面兩段都沒有用到排序性質 ——
 當 `left < root < right` 幫不上忙時，你就會退回這個形狀。
 
-<!-- f72bfae8a6e3 -->
+<!-- 74964655b13f -->
 #### **改動每個節點 —— 樸素的前序遞迴**
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- 28b3b73bd7af -->
-#### **判斷兩棵樹是否相同 —— LC 100**
-<!--CODE-->
+逐節點比較兩棵樹（LC 100）是同一套遞迴、同時走兩棵樹；它在
+[binary_tree.md § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) 裡完整寫出。
 
-> LC 100 的 Python 版放在 [tree_examples.md](./tree_examples.md)。
-
-<!-- 69dae2c6a7ac -->
+<!-- 7ea6c35e7e37 -->
 ## 辨識
 
 限制條件的提示來自 [complexity_cheatsheet.md](./complexity_cheatsheet.md) 裡的那把尺。
@@ -74,7 +69,7 @@
 | 「第 k 小」、「iterator」、「最小差值」、「眾數」 | | [模板 5](#template-5-in-order-walk-is-sorted--lc-230) 中序即排序 | 樹會更新、又要反覆問第 k 小 → 附帶大小的 BST（[bst_advanced.md](./bst_advanced.md)） |
 | 「有序陣列 → 高度平衡的 BST」、「把這棵 BST 平衡」 | | [模板 6](#template-6-sorted-array-to-balanced-bst--lc-108) 取中間當根 | 輸入是鏈結串列（LC 109）→ [bst_advanced.md](./bst_advanced.md) |
 | BST 上的「最近共同祖先」 | 節點 ≤ 10⁵ | [模板 10](#template-10-lca-via-bst-ordering--lc-235-) 往下走到分岔點 | 一般二元樹，或只有 parent 指標 → [tree_lca_distance.md](./tree_lca_distance.md) |
-| 「路徑和」、「從根到葉」 | | 不是 BST 題 → [bst_examples.md](./bst_examples.md) 的模板 7 | |
+| 「路徑和」、「從根到葉」 | | 不是 BST 題 → [tree_lca_distance.md](./tree_lca_distance.md) | |
 
 <!-- 5ab0cfa81ec9 -->
 ## 題型分類
@@ -114,17 +109,17 @@
 - **例題**：LC 235、LC 530、LC 783、LC 776
 - **模板**：用性質模板
 
-<!-- 7a7663a226a3 -->
+<!-- bb74678e05a1 -->
 ### **模式 6：路徑問題**
 - **說明**：牽涉根到葉、或節點到節點路徑的題目
 - **辨識關鍵字**：「path sum」、「root to leaf」、「maximum path」、「consecutive sequence」
 - **例題**：LC 112、LC 113、LC 257、LC 124、LC 129、LC 298、LC 437
-- **模板**：DFS 搭配路徑追蹤、回溯或全域狀態
+- **模板**：本頁沒有 —— 用不到順序；見 [tree_lca_distance.md](./tree_lca_distance.md)
 
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- 7b6ac622c7de -->
+<!-- 0dcdb0abf273 -->
 ### 模板比較表
 | 模板類型 | 適用情境 | 關鍵操作 | 時間 | 空間 | 什麼時候用 |
 |---------------|----------|---------------|------|-------|-------------|
@@ -133,15 +128,10 @@
 | **刪除模板** | 移除節點 | 找到 + 重接 | O(log n) | O(h) | 刪掉某個值 |
 | **中序模板** | 有序操作 | 左-根-右 | O(n) | O(h) | 第 k 個元素、區間 |
 | **建構模板** | 建 BST | 分治法 | O(n) | O(n) | 從陣列建樹 |
-| **路徑模板** | 根到葉路徑 | DFS + 追蹤 | O(n) | O(h) | 路徑和、序列 |
 
-> **其他模板在哪裡。** 模板編號在整個 BST 家族中是連貫的，所以下面的跳號不是筆誤：
->
-> - **模板 5b**（延遲式 BST 迭代器）、**模板 8**（修復壞掉的 BST）、**模板 9**
->   （順序統計／rank 查詢）以及 **模板 3c / 4b / 6b**（拆離、邊界傳遞、建構變形）
->   → [bst_advanced.md](./bst_advanced.md)
-> - **模板 7**（根到葉與節點到節點的路徑問題 —— 不限於 BST）以及完整的
->   LC 解法庫 → [bst_examples.md](./bst_examples.md)
+> **其他模板在哪裡。** 模板 7–9 已經移出，所以本頁的編號從 6 直接跳到 10。延遲式迭代器、
+> 修復壞掉的 BST、rank 查詢與各種建構變形是 [bst_advanced.md](./bst_advanced.md) 的模板 1–5；
+> 路徑問題在 [tree_lca_distance.md](./tree_lca_distance.md)。
 
 <!-- d3533180953c -->
 ### 模板 1：依比較往下走 — LC 700
@@ -198,7 +188,7 @@
 **練習** —— LC 701 · LC 108 *（插入很多個、還要平衡）* · LC 1008 *（插入一段前序，
 或用上下界做到 O(n)）*
 
-<!-- b4bf56f35bb1 -->
+<!-- 6c7e5d472863 -->
 ### 模板 3：用後繼交換來刪除 — LC 450
 
 **辨識** —— 「刪除值為 k 的節點並回傳 root」、「從 BST 移除一個值」。
@@ -216,7 +206,7 @@
   往下，所以總長還是一條路徑。
 - **空間 O(h)**：沿著那條路徑的遞迴堆疊。
 
-**手動追蹤**
+**試跑**
 
 <!--CODE-->
 
@@ -226,8 +216,10 @@
 - 找不到 key 時樹必須保持不變：在 `[5,3,6,2,4,null,7]` 上 `key = 0` 會走到 `if not root`
   的 base case，每一層都回傳自己。
 - 改用**前驅**（左子樹的最大值）一樣正確；在同一份解法裡兩種混用就不對了。
+- 把 `key` 換到後繼的位置、再往**兩邊**子樹都遞迴（常見的初稿寫法）結果正確，但變成 O(n)：
+  它放掉了讓這題只走一條路徑、做到 O(h) 的那個性質。
 
-**不是這個，如果** —— 要移除的是一整個**範圍**的值 → 模板 3b 一趟就修剪完，
+**不適用時** —— 要移除的是一整個**範圍**的值 → 模板 3b 一趟就修剪完，
 不必每個值刪一次。
 
 **練習** —— LC 450 · LC 669 *（刪除一個範圍）* · LC 776 *（拆開而不是刪除）*
@@ -266,7 +258,7 @@
 
 **練習** —— LC 669 · LC 938 *（求和，而不是重建）* · LC 450 · LC 776 *（拆開，每個節點都留著）*
 
-<!-- 58c69faa2438 -->
+<!-- c82ff76b4342 -->
 #### **變形：求和而非重組結構 —— LC 938**
 
 > **關鍵** —— 跟 `trimBST` 一樣的三路剪枝：範圍外的 root 會排除整整一邊，
@@ -274,7 +266,7 @@
 
 **化約為**：[模板 3b](#template-3b-trim-to-a-range--lc-669-) —— 求和，而不是重組結構。
 
-完整解在 [bst_examples.md § LC 938](./bst_examples.md#7-range-sum-of-bst--lc-938)。
+完整解在 [bst_examples.md § LC 938](./bst_examples.md#range-sum-of-bst--lc-938)。
 
 <!-- 0d710e1f131c -->
 #### 比較：Trim vs Split vs Delete
@@ -285,7 +277,7 @@
 | **Split** | 776 | 不會 | `TreeNode[2]` | 拆成 2 棵樹，**所有**節點都留著 |
 | **Delete** | 450 | 會（1 個） | 單一 `TreeNode` | 剛好移除 1 個指定節點 |
 
-<!-- c43fa1ed122e -->
+<!-- 0d7fda9ed147 -->
 ### 模板 4：用上下界驗證 — LC 98
 
 **辨識** —— 「這是不是合法 BST」、「最大的、本身是 BST 的子樹」（LC 333）、
@@ -296,6 +288,11 @@
 父節點的值，往右走會把下界收緊。每個節點都落在自己的區間內，樹才合法。
 
 <!--CODE-->
+
+<!--CODE-->
+
+第二種解法，保留它是因為它回答了「能不能**不用遞迴**？」：同一個區間跟著每個節點放進佇列，
+所以就算是 10⁴ 個節點的歪斜樹，也不會讓呼叫堆疊溢位。
 
 <!--CODE-->
 
@@ -310,12 +307,12 @@
   的節點的樹判成不合法。「沒有界」要用 `null`（或 `long`）。
 - 用 `<=` 和 `>=`，不是 `<` 和 `>`：LC 98 裡重複值不合法，所以 `[2,2,2]` 必須回傳 false。
 
-**不是這個，如果** —— 面試官偏好中序：依中序走（模板 5），檢查每個值都嚴格大於前一個。
+**不適用時** —— 面試官偏好中序：依中序走（模板 5），檢查每個值都嚴格大於前一個。
 一樣 O(n)，而且能推廣到 LC 99（找出被交換的兩個節點）。
 
 **練習** —— LC 98 ⭐ · LC 530 *（中序 + prev）* · LC 333 *（改成把上下界往上回傳）* · LC 99
 
-<!-- 8464089ea538 -->
+<!-- 40c19c4b624e -->
 ### 模板 5：中序走訪即排序 — LC 230
 
 **辨識** —— 「第 k 小」、「BST iterator」、「任兩值的最小差」、「眾數」、「轉成有序串列」——
@@ -339,20 +336,21 @@
 - 差一：要在 pop **之後**遞減，再檢查 `k == 0`。遞減前就檢查會回傳第 k+1 個：
   `[3,1,4,null,2]`、k = 1 會回傳 2 而不是 1。
 
-**不是這個，如果** —— 樹會變動、又要反覆問第 k 小（LC 230 的 follow-up）→ 在每個節點存子樹大小，
-也就是 [bst_advanced.md](./bst_advanced.md) 裡模板 9 的順序統計樹。
+**不適用時** —— 樹會變動、又要反覆問第 k 小（LC 230 的 follow-up）→ 在每個節點存子樹大小，
+也就是
+[bst_advanced.md § Template 3](./bst_advanced.md#template-3-size-augmented-order-statistic-bst--lc-703-) 的順序統計樹。
 
 **練習** —— LC 230 ⭐ · LC 530 · LC 501 · LC 173 *（同一個堆疊，在兩次呼叫之間暫停）* · LC 538
 
-<!-- cd6c056a76ba -->
+<!-- ef11078f968a -->
 #### **模式：反向中序做遞減**
 
 右 → 節點 → 左的順序會依遞減走訪各個值，所以維護一個累加和，就能把每個節點換成
 「所有大於等於它的值的總和」（LC 538 / LC 1038）。
 
-完整解在 [bst_examples.md § LC 538](./bst_examples.md#5-convert-bst-to-greater-tree--lc-538)。
+完整解在 [bst_examples.md § LC 538](./bst_examples.md#convert-bst-to-greater-tree--lc-538)。
 
-<!-- dcb44caf3c59 -->
+<!-- d2b5dbbe6923 -->
 ### 模板 6：有序陣列轉平衡 BST — LC 108
 
 **辨識** —— 「把有序陣列／串列轉成**高度平衡**的 BST」、「把這棵 BST 重建成平衡的」
@@ -374,17 +372,17 @@
   傳索引。
 - Python 3 裡 `mid = (left + right) / 2` 是浮點數，拿來當索引會失敗；要用 `//`。
 
-**不是這個，如果** —— 輸入是有序**鏈結串列**（LC 109）：每一層找中間要 O(n)，所以要嘛用快慢指標，
-要嘛模擬中序建構 —— 見 [bst_advanced.md](./bst_advanced.md) 的模板 6b。
+**不適用時** —— 輸入是有序**鏈結串列**（LC 109）：每一層找中間要 O(n)，所以要嘛用快慢指標，
+要嘛模擬中序建構 —— 見
+[bst_advanced.md § LC 109](./bst_advanced.md#convert-sorted-list-to-binary-search-tree--lc-109)。
 
 **練習** —— LC 108 · LC 109 · LC 1382 *（先中序，再用這個）* · LC 1008
 
-<!-- 89276e72d88e -->
+<!-- 54ddd0e97e62 -->
 #### **其他建構輸入**
 
-`模式 6.2`（有序鏈結串列，LC 109）、`6.3`（前序，LC 1008）、`6.4`（平衡既有的
-BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算數量，LC 96）
-統一收在 [bst_advanced.md](./bst_advanced.md) 的 **模板 6b**。
+有序鏈結串列（LC 109）、前序（LC 1008）、要重新平衡的既有 BST（LC 1382），以及所有相異 BST
+（LC 95，LC 96 只算數量），都在 [bst_advanced.md](./bst_advanced.md#construction-variants) 的建構一節完整寫出。
 
 值得記在腦子裡的一句話：**LC 1382 = LC 94 + LC 108** —— 用中序走訪把 BST 攤平
 （模板 5），再用上面那套「取中間當根」的遞迴重建。
@@ -433,10 +431,10 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 
 **練習** —— LC 235 ⭐ · LC 236 *（沒有順序）* · LC 1650 *（parent 指標）* · LC 1644
 
-<!-- 4d2974157997 -->
+<!-- 594e77bf1481 -->
 ## 依模式分類的題目
 
-> 只有索引，沒有程式碼。`模板`欄沿用整個家族的編號：模板 1–6 與 10 在本頁，模板 5b / 8 / 9 / 3c / 4b / 6b 在 [bst_advanced.md](./bst_advanced.md)，模板 7（路徑問題）在 [bst_examples.md](./bst_examples.md)。
+> 只有索引，沒有程式碼。`Template N` 是本頁的卡片；`advanced T N` 是 [bst_advanced.md](./bst_advanced.md) 的 Template N；只寫 `advanced` 則是那裡的一張題目卡。
 
 <!-- cae2934e6af7 -->
 ### 依模式分類的題目對照
@@ -452,68 +450,59 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 | Two Sum IV - Input is BST | 653 | Easy | 雜湊 + 走訪 | 模板 5 |
 | Find Mode in BST | 501 | Easy | 中序走訪 | 模板 5 |
 
-<!-- 2d988a387ba7 -->
+<!-- 38eec28c563b -->
 #### **模式 2：BST 插入與刪除**
 | 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
 |---------|------|------------|---------------|----------|
 | Insert into a BST | 701 | Medium | 遞迴插入 | 模板 2 |
 | Delete Node in a BST | 450 | Medium | 三種情況 | 模板 3 |
-| Trim a Binary Search Tree | 669 | Medium | 遞迴修剪 | 模板 3 |
+| Trim a Binary Search Tree | 669 | Medium | 遞迴修剪 | 模板 3b |
 
-<!-- 491fe207193d -->
+<!-- fc14411769c2 -->
 #### **模式 3：BST 走訪與轉換**
 | 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
 |---------|------|------------|---------------|----------|
 | Kth Smallest Element in BST | 230 | Medium | 中序走訪 | 模板 5 |
-| BST Iterator | 173 | Medium | 堆疊 + 中序 | 模板 5 |
+| BST Iterator | 173 | Medium | 堆疊 + 中序 | advanced T1 |
 | Convert BST to Greater Tree | 538 | Medium | 反向中序 | 模板 5 |
 | Binary Search Tree to Greater Sum Tree | 1038 | Medium | 反向中序 | 模板 5 |
-| Convert Sorted List to BST | 109 | Medium | 雙指標 | 模板 6b |
+| Convert Sorted List to BST | 109 | Medium | 雙指標 | advanced |
 | Flatten BST to Sorted List | 426 | Medium | 中序 + 串接 | 模板 5 |
 | Increasing Order Search Tree | 897 | Easy | 中序重建 | 模板 5 |
-| All Elements in Two BSTs | 1305 | Medium | 兩個延遲式迭代器 + 合併 | 模板 5b |
+| All Elements in Two BSTs | 1305 | Medium | 兩個延遲式迭代器 + 合併 | advanced |
 
-<!-- 0a07117bcff5 -->
+<!-- 6ec91e65fa1f -->
 #### **模式 4：BST 建構**
 | 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
 |---------|------|------------|---------------|----------|
 | Convert Sorted Array to BST | 108 | Easy | 二分搜尋 | 模板 6 |
-| Unique Binary Search Trees | 96 | Medium | DP／卡塔蘭數 | 特例 |
-| Unique Binary Search Trees II | 95 | Medium | 生成全部 | 模板 6b |
-| Serialize and Deserialize BST | 449 | Medium | 前序編碼 | 特例 |
-| Construct BST from Preorder | 1008 | Medium | 堆疊／遞迴 | 模板 6b |
-| Balance a Binary Search Tree | 1382 | Medium | 中序 + 重建 | 模板 6b |
+| Unique Binary Search Trees | 96 | Medium | DP／卡塔蘭數 | advanced |
+| Unique Binary Search Trees II | 95 | Medium | 生成全部 | advanced T5 |
+| Serialize and Deserialize BST | 449 | Medium | 前序編碼 | 模板 4 |
+| Construct BST from Preorder | 1008 | Medium | 前序加上下界 | advanced T4 |
+| Balance a Binary Search Tree | 1382 | Medium | 中序 + 重建 | advanced |
 
-<!-- f450611f4687 -->
+<!-- 38cf929d734c -->
 #### **模式 5：BST 性質與範圍問題**
 | 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
 |---------|------|------------|---------------|----------|
 | Lowest Common Ancestor of BST | 235 | Easy | BST 性質 | 模板 10 |
 | Minimum Distance Between BST Nodes | 783 | Easy | 中序相鄰差 | 模板 5 |
 | Minimum Absolute Difference in BST | 530 | Easy | 中序相鄰差 | 模板 5 |
-| Range Sum of BST | 938 | Easy | DFS + 剪枝 | 模板 1 |
-| Split BST | 776 | Medium | 遞迴拆分 | 特例 |
+| Range Sum of BST | 938 | Easy | DFS + 剪枝 | 模板 3b |
+| Split BST | 776 | Medium | 遞迴拆分 | 模板 3b |
 | Largest BST Subtree | 333 | Medium | 由下而上驗證 | 模板 4 |
-| Kth Largest Element in a Stream | 703 | Easy | 附帶大小資訊的 BST（rank 查詢） | 模板 9 |
-| Maximum Difference Between Node and Ancestor | 1026 | Medium | 邊界往下傳遞（min/max） | 模板 4b |
-| Delete Nodes And Return Forest | 1110 | Medium | 遞迴 + 回傳 `null` 以拆離 | 模板 3c |
+| Kth Largest Element in a Stream | 703 | Easy | 附帶大小資訊的 BST（rank 查詢） | advanced T3 |
+| Maximum Difference Between Node and Ancestor | 1026 | Medium | 邊界往下傳遞（min/max） | advanced |
 
-<!-- c66bee176875 -->
+<!-- 614b94c22714 -->
 #### **模式 6：路徑問題**
-| 題目 | LC # | 難度 | 關鍵技巧 | 模板 |
-|---------|------|------------|---------------|----------|
-| Path Sum | 112 | Easy | DFS 遞迴 | 模板 7 |
-| Path Sum II | 113 | Medium | DFS + 回溯 | 模板 7 |
-| Binary Tree Paths | 257 | Easy | DFS + 路徑追蹤 | 模板 7 |
-| Sum Root to Leaf Numbers | 129 | Medium | DFS + 累加 | 模板 7 |
-| Binary Tree Maximum Path Sum | 124 | Hard | DFS + 全域最大值 | 模板 7 |
-| Binary Tree Longest Consecutive Sequence | 298 | Medium | DFS + 計數器 | 模板 7 |
-| Path Sum III | 437 | Medium | 前綴和 + DFS | 模板 7 |
+不是 BST 題：LC 112、113、124、129、257、437 在 [tree_lca_distance.md](./tree_lca_distance.md)，LC 298 在 [binary_tree.md](./binary_tree.md)。
 
 <!-- 69f00fdec4e9 -->
 ### 依難度的完整題目清單
 
-<!-- 90359ce11c7f -->
+<!-- 23a098285dec -->
 #### Easy（打底）
 - LC 700: Search in a Binary Search Tree - 基本 BST 搜尋
 - LC 270: Closest Binary Search Tree Value - 改寫過的搜尋
@@ -525,10 +514,8 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 - LC 897: Increasing Order Search Tree - 中序重建
 - LC 938: Range Sum of BST - DFS + 剪枝
 - LC 501: Find Mode in Binary Search Tree - 中序 + 計數
-- LC 112: Path Sum - 基本的 DFS 路徑和
-- LC 257: Binary Tree Paths - DFS 路徑追蹤
 
-<!-- 08683bfa9f8f -->
+<!-- 92abeb66e1ac -->
 #### Medium（核心）
 - LC 98: Validate Binary Search Tree - 經典驗證題
 - LC 173: Binary Search Tree Iterator - 設計題
@@ -548,16 +535,11 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 - LC 1038: Binary Search Tree to Greater Sum Tree - 累加
 - LC 1382: Balance a Binary Search Tree - 中序 + 重建成平衡 BST
 - LC 426: Convert BST to Sorted Doubly Linked List - 原地轉換
-- LC 113: Path Sum II - 所有和為目標值的根到葉路徑
-- LC 129: Sum Root to Leaf Numbers - DFS 累加
-- LC 298: Binary Tree Longest Consecutive Sequence - 追蹤序列長度
-- LC 437: Path Sum III - 任意路徑和為目標值（前綴和）
 
-<!-- 0e809d76905e -->
+<!-- d565bade4b85 -->
 #### Hard（進階）
-- LC 99: Recover Binary Search Tree - 修復被交換的節點（見 [bst_advanced.md](./bst_advanced.md) 的模板 8）
+- LC 99: Recover Binary Search Tree - 修復被交換的節點（見 [bst_advanced.md § Template 2](./bst_advanced.md#template-2-in-order-drop-detection--lc-99-)）
 - LC 1373: Maximum Sum BST in Binary Tree - 複雜驗證
-- LC 124: Binary Tree Maximum Path Sum - 節點到節點的最大路徑
 
 <!-- 91b92ac26603 -->
 ## 練習路線
@@ -578,7 +560,7 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 ### 決策流程圖
 <!--CODE-->
 
-<!-- cb0fa6ec4b9b -->
+<!-- b34a15b882ad -->
 ### 該用哪個模板？—— 快速挑選
 
 | 題目問的是… | 用哪個模板 | 關鍵技巧 | 典型 LC 題 |
@@ -590,15 +572,12 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 | 「第 k 小／大」 | 模板 5 | 中序走訪 | 230, 173 |
 | 「兩節點的 LCA」 | 模板 10 | 只往同時容納兩者的那側下降 | 235 |
 | 「把有序陣列轉成樹」 | 模板 6 | 二分取中間 | 108 |
-| 「平衡 BST」 | 模板 6.4 → [advanced](./bst_advanced.md) | 中序 + 重建 | 1382 |
-| 「和為目標值的路徑」 | 模板 7.1 → [examples](./bst_examples.md) | DFS + 遞減目標值 | 112 |
-| 「所有和為目標值的路徑」 | 模板 7.2 → [examples](./bst_examples.md) | DFS + 回溯 | 113 |
-| 「最大路徑和」 | 模板 7.5 → [examples](./bst_examples.md) | DFS + 全域最大值 | 124 |
-| 「任意和為目標值的路徑」 | 模板 7.7 → [examples](./bst_examples.md) | 前綴和 | 437 |
-| 「修復壞掉的 BST」 | 模板 8 → [advanced](./bst_advanced.md) | 中序 + 用 `prev` 偵測下降 | 99, 501, 530 |
-| 「串流中的第 k 大／rank 查詢」 | 模板 9 → [advanced](./bst_advanced.md) | 附帶大小資訊的 BST | 703 |
+| 「平衡 BST」 | [advanced § LC 1382](./bst_advanced.md#balance-a-binary-search-tree--lc-1382-) | 中序 + 重建 | 1382 |
+| 「路徑和」、「最大路徑和」 | [tree_lca_distance.md](./tree_lca_distance.md) | 不是 BST 技巧 | 112, 113, 124, 437 |
+| 「修復壞掉的 BST」 | [advanced § Template 2](./bst_advanced.md#template-2-in-order-drop-detection--lc-99-) | 中序 + 用 `prev` 偵測下降 | 99, 501, 530 |
+| 「串流中的第 k 大／rank 查詢」 | [advanced § Template 3](./bst_advanced.md#template-3-size-augmented-order-statistic-bst--lc-703-) | 附帶大小資訊的 BST | 703 |
 
-<!-- 4ba5f22d2361 -->
+<!-- 16af5382c6d6 -->
 ### 辨識模式
 
 **關鍵字 → 模板對照：**
@@ -609,9 +588,9 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 - **「Kth」、「sorted」、「inorder」、「iterator」** → 模板 5（中序）
 - **「lowest common ancestor」、「split point」** → 模板 10（用排序性質求 LCA）
 - **「construct」、「build」、「convert」、「balance」、「generate」** → 模板 6（建構）
-- **「path」、「sum」、「maximum path」、「consecutive」** → 模板 7（路徑問題）
-- **「recover」、「swapped」、「fix」、「adjacent values」、「successor」、「mode」** → 模板 8（中序 + `prev`）
-- **「stream」、「after each insert」、「rank」、「how many are less than」** → 模板 9（順序統計 BST）
+- **「path」、「sum」、「maximum path」、「consecutive」** → 不是 BST：[tree_lca_distance.md](./tree_lca_distance.md)
+- **「recover」、「swapped」、「fix」、「adjacent values」、「successor」、「mode」** → [bst_advanced.md](./bst_advanced.md) 模板 2（中序 + `prev`）
+- **「stream」、「after each insert」、「rank」、「how many are less than」** → [bst_advanced.md](./bst_advanced.md) 模板 3（順序統計 BST）
 
 <!-- f1ac367e38fe -->
 ### 解題步驟
@@ -621,22 +600,21 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 4. **用剪枝最佳化**：跳過不必要的子樹
 5. **拿退化的樹測**：最差情況
 
-<!-- e7d46436f7ed -->
+<!-- ee1fddd4635b -->
 ### 常見錯誤與提示
 
-**🚫 常見錯誤：**
-- **沒用到 BST 性質**：把 BST 當成一般二元樹在處理
-- **忘了中序 = 有序**：白白錯過最佳化機會
-- **刪除處理錯誤**：沒有涵蓋全部三種情況
-- **驗證寫錯**：只檢查父子關係，沒檢查整棵子樹
-- **邊走訪邊改動**：可能破壞 BST 性質
+每張卡片的**陷阱**都寫出會觸發它的輸入；下面是代價最高的五個。
 
-**✅ 最佳實務：**
-- **一定要用上 BST 性質**：能剪的搜尋空間就剪掉
-- **需要排序就用中序**：不要另外再排一次
-- **明確處理重複值**：先決定你的 BST 允不允許重複
-- **考慮樹的平衡**：面試時要主動提到最差 O(n)
-- **測邊界情況**：空樹、單一節點、全左／全右
+- **只跟父節點比的驗證** —— `[5,4,6,null,null,3,7]` 通過父子檢查，但 `3` 位在 `5` 的右邊。
+  要把區間帶下去（[模板 4](#template-4-validate-with-bounds--lc-98)）。
+- **丟掉回傳的子節點** —— 寫了 `insertIntoBST(root.left, val)` 卻沒有 `root.left = …`，
+  葉子建出來就掉了（[模板 2](#template-2-insert-at-the-null-leaf--lc-701)）。
+- **超出範圍的節點直接回傳 `None`** —— 在 LC 669 會把它底下仍在範圍內的節點一起丟掉
+  （[模板 3b](#template-3b-trim-to-a-range--lc-669-)）。
+- **往 LCA 走時用 `<=`** —— 在 `[6,2,8,0,4,…]` 上 `p = 2, q = 4` 會走過頭，錯過答案 `2`
+  （[模板 10](#template-10-lca-via-bst-ordering--lc-235-)）。
+- **直接宣稱 O(log n)** —— 依序插入 `1, 2, …, n` 會長成一條鏈，這裡每個模板在它上面都是 O(n)。
+  要說「O(h)，平衡時是 O(log n)」。
 
 <!-- be865a8c5ef2 -->
 ### 面試提示
@@ -662,16 +640,16 @@ BST，LC 1382）、`6.5`（生成所有相異 BST，LC 95）與 `6.6`（計算�
 ### Python 實作備註
 <!--CODE-->
 
-<!-- 9877d73ac025 -->
+<!-- d0d53adb4333 -->
 ### 挑模板的實戰心法
 
 1. **善用 BST 性質**：題目能用到 `left < root < right`，就用模板 1-6
-2. **路徑問題**：多數在任意二元樹上都成立，不限 BST（模板 7）
+2. **路徑問題**：在任何二元樹上都成立，所以放在 [tree_lca_distance.md](./tree_lca_distance.md)
 3. **建構**：先看輸入型態（陣列／串列／走訪序列）→ 對應不同的模板變體
 4. **修改**：改完之後一律回傳 root（模板 2、3、6）
 5. **不確定時**：先想想中序走訪有沒有幫助（模板 5）
 
 ---
-**面試必會題**：LC 98, 108, 112, 113, 124, 173, 230, 235, 450, 700, 701, 1382
-**進階題**：LC 99, 124, 298, 333, 437, 776, 1373
+**面試必會題**：LC 98, 108, 173, 230, 235, 450, 700, 701, 1382
+**進階題**：LC 99, 333, 776, 1373
 **關鍵字**：BST、二元搜尋樹、中序、有序、驗證、搜尋樹、路徑和、DFS、回溯、平衡、建構

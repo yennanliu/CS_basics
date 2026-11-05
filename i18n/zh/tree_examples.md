@@ -1,8 +1,8 @@
-<!-- 79ec37c79b3a -->
-# 樹 — 實戰題解
+<!-- f390446e13ad -->
+# 樹 — LeetCode 實戰範例
 
-> **範圍** — 其他檔案所教的樹模式，其題解檔案庫：每題每種語言各一份標準解法，依「題目在問什麼」分組，而不是依技巧分組。
-> **另見**：[tree.md](./tree.md) — 這些範例所套用的觀念、走訪策略與模板；[tree_lca_distance.md](./tree_lca_distance.md) — LCA、距離與路徑題；[tree_codec.md](./tree_codec.md) — 序列化與 codec 題；[tree_construction.md](./tree_construction.md) — 建樹題。
+> **範圍** — binary_tree.md 各模板的二元樹題目集：每題歸在它化約到的模板底下，只寫它多出來的那一步，模板本身不在這裡重講。
+> **另見**：[binary_tree.md](./binary_tree.md) — 這些題目化約到的模板；[tree.md](./tree.md) — 樹的觀念、走訪策略與 Morris threading；[tree_lca_distance.md](./tree_lca_distance.md) — LCA、距離與路徑題；[bst_examples.md](./bst_examples.md) — 用到 BST 順序的題目；[tree_codec.md](./tree_codec.md) 與 [tree_construction.md](./tree_construction.md) — 樹的序列化與建構。
 
 <!-- 189f22eff331 -->
 ## LeetCode 題目清單
@@ -12,704 +12,293 @@
 - [Depth-First Search](https://leetcode.com/problem-list/depth-first-search/)
 - [Breadth-First Search](https://leetcode.com/problem-list/breadth-first-search/)
 
-<!-- 681e3a2418e7 -->
-## 總覽
+<!-- 02231984c76d -->
+## 概覽
 
-十九題實戰題解，依它們問的問題分組。每一題都套用 [tree.md](./tree.md) 裡九種模式的其中一種；模式本身在那邊解釋，這裡不重複。
+經典的二元樹題目，依各題化約到的 [binary_tree.md](./binary_tree.md) 模板分組，順序與該檔的模板順序一致。模板在 binary_tree.md，這一份只放題目，每張卡只寫這題比模板多了什麼。凡是某個模板的錨點題，或已在別份檔案完整解過的題目，Index 只放一列指過去，不在這裡再抄一份。
 
-<!-- b525e2b29ba9 -->
-### 關鍵性質
-- **複雜度**：除了 LC 222（完全二元樹上 O(log² N)）和 LC 545（掃三趟，仍是 O(N)）之外，全部都是 O(N) 時間
-- **核心想法**：每個範例都是 tree.md 九種模式的其中一種，再加上該題自己的轉折
-- **什麼時候用**：模式已經懂了、想看它落在真實題目上的時候
+<!-- d06edd636cd9 -->
+## Index
 
-<!-- 86988320a337 -->
-## 題型分類
+| LC | 題目 | 歸約到 | 難度 |
+|---|---|---|---|
+| 545 | [Boundary of Binary Tree](#boundary-of-binary-tree--lc-545) | [binary_tree § Template 1](./binary_tree.md#template-1-recursive-pre--in--post-order-traversal--lc-94) | Medium |
+| 111 | [Minimum Depth of Binary Tree](#minimum-depth-of-binary-tree--lc-111) | [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) | Easy |
+| 199 | [Binary Tree Right Side View](#binary-tree-right-side-view--lc-199) | [binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) | Medium |
+| 106 | [Construct Binary Tree from Inorder and Postorder Traversal](#construct-binary-tree-from-inorder-and-postorder-traversal--lc-106) | [binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) | Medium |
+| 1448 | [Count Good Nodes in Binary Tree](#count-good-nodes-in-binary-tree--lc-1448) | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | Medium |
+| 1026 | [Maximum Difference Between Node and Ancestor](#maximum-difference-between-node-and-ancestor--lc-1026) | [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) | Medium |
+| 104 | [Maximum Depth of Binary Tree](#maximum-depth-of-binary-tree--lc-104) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Easy |
+| 110 | [Balanced Binary Tree](#balanced-binary-tree--lc-110) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Easy |
+| 124 | Binary Tree Maximum Path Sum — 完整解法在 [tree_lca_distance.md](./tree_lca_distance.md#binary-tree-maximum-path-sum--lc-124) | [binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) | Hard |
+| 222 | Count Complete Tree Nodes — 該模板的錨點題 | [binary_tree § Template 7](./binary_tree.md#template-7-count-nodes-of-a-complete-tree--lc-222) | Medium |
+| 968 | [Binary Tree Cameras](#binary-tree-cameras--lc-968) | [binary_tree § Template 9](./binary_tree.md#template-9-tree-dp--return-multiple-states--lc-337-) | Hard |
+| 226 | [Invert Binary Tree](#invert-binary-tree--lc-226) | [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) | Easy |
+| 114 | [Flatten Binary Tree to Linked List](#flatten-binary-tree-to-linked-list--lc-114) | [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) | Medium |
+| 1110 | Delete Nodes And Return Forest — 該模板的錨點題 | [binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) | Medium |
+| 662 | Maximum Width of Binary Tree — 該模板的錨點題 | [binary_tree § Template 11](./binary_tree.md#template-11-bfs-with-positional-index--lc-662-) | Medium |
+| 101 | [Symmetric Tree](#symmetric-tree--lc-101) | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) | Easy |
+| 617 | [Merge Two Binary Trees](#merge-two-binary-trees--lc-617) | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) | Easy |
+| 951 | [Flip Equivalent Binary Trees](#flip-equivalent-binary-trees--lc-951) | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) | Medium |
+| 2415 | [Reverse Odd Levels of Binary Tree](#reverse-odd-levels-of-binary-tree--lc-2415) | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) | Medium |
+| 98 | Validate Binary Search Tree — 該模板的錨點題 | [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) | Medium |
 
-| 分組 | 題目 | 主導模式 |
-|-------|----------|------------------|
-| **走訪與層序** | LC 199、662、2415 | 逐層記帳的 BFS |
-| **結構與性質** | LC 222、101、100、951、98、110、545 | 後序驗證 |
-| **高度、深度與路徑** | LC 104、111、124、1448 | 由下而上算高度／由上而下算深度 |
-| **修改與多狀態** | LC 1110、114、617、226、968 | 後序重接指標、狀態往上回傳 |
+高度 vs 深度，以及深度搜尋用 `-1` 當「沒找到」的哨兵值，統一在 [binary_tree.md § 0-5](./binary_tree.md#0-5-depth-vs-height--the-two-numbers-a-tree-dfs-computes-) 講一次。
 
-<!-- 85f7b0d5490a -->
-## 走訪與層序範例
+<!-- 3b3708f1a0eb -->
+## 遞迴走訪範例
 
-<!-- 416da687dc33 -->
-### 1) Tree Right Side View — LC 199
+<!-- d0f66cb70a96 -->
+### Boundary of Binary Tree — LC 545
 
-<!--CODE-->
+> **關鍵** — 邊界是三段走訪接起來的：左邊界用**前序**（往下走時記錄），所有葉子由左到右，再接右邊界用**後序**（回程時記錄，所以是由下往上）。兩段邊界走訪都不記葉子，角落的節點才不會被列兩次。
 
-
-**Python — DFS（右子樹優先的前序），一樣 O(n) 而且不用佇列：**
-
-<!--CODE-->
-
-<!-- 7c263ecaf1dc -->
-### 2) Maximum Width of Binary Tree — LC 662
-<!--CODE-->
-
-<!-- 00f286dc2563 -->
-### 3) Reverse Odd Levels of Binary Tree — LC 2415
-
-<!--CODE-->
-
-<!-- 8481a18efc18 -->
-## 結構與性質範例
-
-<!-- a80a251c3b2c -->
-### 4) 節點計數演算法 — LC 222
-<!--CODE-->
-
-
-> 計數問題有三種樣態 —— 一般樹、完美樹、完全樹（LC 222）—— 差別只在「結構讓你能跳過多少東西」。
-
-<!-- 00d6a4a42d46 -->
-#### 在 `basic` 二元樹上數節點
-<!--CODE-->
-
-<!-- 3e84b792face -->
-#### 在 `perfect` 二元樹上數節點
-<!--CODE-->
-
-<!-- ac5d902ef805 -->
-#### 在 `complete` 二元樹上數節點
-<!--CODE-->
-
-<!-- e68cca5b6a42 -->
-### 5) 檢查對稱樹 — LC 101
-<!--CODE-->
-
-<!-- 9ff06bfba4d9 -->
-### 6) Same Tree — LC 100
-<!--CODE-->
-
-<!-- 3ca1f0a5bcd5 -->
-#### 變形 — Flip Equivalent Binary Trees (LC 951)
-
-**轉折**：骨架和 LC 100 一樣，但每個節點的左右子樹允許**互換** —— 所以不是做一次遞迴檢查，而是兩種配對都試，再 `or` 起來。
+**歸約到**：[binary_tree § Template 1](./binary_tree.md#template-1-recursive-pre--in--post-order-traversal--lc-94) — 一次走訪變成三次，每段都依它在邊界上被讀出的順序記錄。
 
 <!--CODE-->
 
-<!--CODE-->
+**陷阱**
+- 邊界上的節點只有右子節點：`[1,2,null,null,3,…]` — 沒有左子節點時，左邊界要接著往**右**子節點走。只跟著 `.left` 走會提早停下。
+- `root = [1]`：root 本身是葉子，再收一次葉子會印出 `[1, 1]`。要先擋掉 root。
+- `root = [1,null,2,3,4]`：root 沒有左子樹，所以左邊界只有 `[1]`；葉子是 `3, 4`，右邊界是 `2`，答案 `[1,3,4,2]`。
 
-> 千萬不要想先把兩棵樹「正規化」（例如把子樹依值排序）—— 值只在這題的限制下才唯一；雙向檢查才是通用寫法。
+<!-- 91c4f81bd928 -->
+## 層序範例
 
-<!-- ba457eb37833 -->
-### 7) Validate Binary Search Tree — LC 98
-<!--CODE-->
+<!-- 47570f8cda22 -->
+### Minimum Depth of Binary Tree — LC 111
 
-<!-- ab082c17f33a -->
-### 8) Balanced Binary Tree — LC 110
-<!--CODE-->
+> **關鍵** — BFS 依深度順序抵達節點，所以第一個出佇列的**葉子**就是最淺的，搜尋可以就此停止；遞迴版的 `min` 則必須特別處理只有一個子節點的節點，因為空的那一側不是葉子。
 
-<!-- ecac80ad5083 -->
-#### 為什麼由上而下是 O(N log N) —— 平衡樹 vs 偏斜樹的遞迴樹 ⭐⭐⭐⭐
-
-上面兩個版本都是**由上而下（top-down）**：每次呼叫 `isBalanced(node)` 都會對該節點的整棵子樹重跑一次 `height()`。下面是同一份程式的 Python 版，後面的分析會逐行對照它：
+**歸約到**：[binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) — 層序佇列，加上遇到第一個葉子就提早結束。
 
 <!--CODE-->
 
-**分析方法：每層工作量 × 總層數。** 畫出 `isBalanced` 的遞迴樹。第 `d` 層是深度 `d` 上所有節點的呼叫，而每次呼叫的開銷就是它子樹的大小，因為 `height()` 會走訪底下每一個節點。先把每一層加總，再把所有層加總。兩種樹形在**這兩個數字上都不同**，所以不能一個數字取自一種樹形、另一個取自另一種：
+**陷阱**
+- 遞迴寫成 `1 + min(minDepth(left), minDepth(right))`，在 `[2,null,3,null,4,null,5,null,6]` 上會回傳 1：空的左子節點得 0，但它不是葉子。正確答案是 5。缺一個子節點時，只往另一邊遞迴。
+- LC 104（最大深度）沒有這個陷阱：`max` 永遠不會挑空的那一側。
 
-| | 平衡樹 | 偏斜樹（一條鏈） |
+<!-- 9b546bb8160f -->
+### Binary Tree Right Side View — LC 199
+
+> **關鍵** — 從右邊看到的節點，就是每一層由左到右的**最後一個**節點；先記下該層的大小，才知道哪一次出佇列是最後一個。
+
+**歸約到**：[binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) — 每層的歸納只保留最後一個節點。
+
+<!--CODE-->
+
+**陷阱**
+- 只沿著右子節點走：`[1,2,3,4]` 第 2 層看得到 `4`，雖然它掛在**左**子樹下。答案是 `[1,3,4]`，不是 `[1,3]`。
+- 先走右再走左、在每個新深度記下第一個節點的 DFS 也行，空間 O(h)；`len(result) == depth` 就是「第一次到這個深度」的判斷。
+
+<!-- 105a5a7e5506 -->
+## 由走訪序建樹範例
+
+<!-- 9a3c8fb49e34 -->
+### Construct Binary Tree from Inorder and Postorder Traversal — LC 106
+
+> **關鍵** — postorder 的**最後一個**值是 root，所以從尾端往回讀；倒著讀是 root、右、左，因此必須先建**右**子樹再建左子樹。
+
+**歸約到**：[binary_tree § Template 3](./binary_tree.md#template-3-build-from-preorder--inorder--lc-105) — 同樣用 inorder 切分，只是 root 從另一端取，兩個遞迴呼叫對調。
+
+<!--CODE-->
+
+**陷阱**
+- 先建左子樹：從 postorder 尾端讀到的下一個值屬於右子樹，所以 `inorder = [9,3,15,20,7]`、`postorder = [9,15,7,20,3]` 建出來 20 會跑到左邊。
+- 每次呼叫都切片（`inorder[:idx]`、`postorder[:idx]`）並呼叫 `inorder.index(...)`，各是 O(n)，在歪斜的樹上就是 O(n²)；用索引 map 加一個移動的指標才是 O(n)。
+
+<!-- 0779c45f30c1 -->
+## 根到節點狀態範例
+
+<!-- 7e1e073c0a38 -->
+### Count Good Nodes in Binary Tree — LC 1448
+
+> **關鍵** — 一個節點是不是「好節點」只取決於它**上方**的最大值，所以這個最大值當參數往下傳；它是 `int`，每次呼叫各有一份，回程時沒有東西要復原。
+
+**歸約到**：[tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) — 根到節點的狀態是一個數字而不是 list，所以回溯那一步就不見了。
+
+<!--CODE-->
+
+**陷阱**
+- 用 `>` 取代 `>=` 會漏掉等於目前最大值的節點：`[3,3,null,4,2]` 中第二個 3 是好節點，答案是 3，用 `>` 會回傳 2。
+- 起始值設成 0 而不是 `root.val`，遇到負數就錯；root 一定是好節點，所以用它自己的值（或 `-inf`）當起點。
+
+<!-- 17171bd2c22e -->
+### Maximum Difference Between Node and Ancestor — LC 1026
+
+> **關鍵** — 一條路徑上最大的 `|祖先 − 子孫|` 就是這條路徑的最大值減最小值，所以把這兩個數往下帶，
+> 路徑結束時讀出 `high − low` 即可。不用比較任何一對，也用不到 BST 的順序。
+
+**歸約到**：[tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) —— 沿根到葉路徑往下帶狀態；
+和 [bst § Template 4](./bst.md#template-4-validate-with-bounds--lc-98) 的上下界是同樣兩個值，只是拿來擴張而不是檢查。
+
+<!--CODE-->
+
+**陷阱**
+- 每個節點只跟父節點比：LC 1026 的範例 1，
+  `[8,3,10,1,6,null,14,null,null,4,7,13]`，會回傳 5（8 − 3）而不是 7（8 − 1，相隔兩條邊）。
+
+| | 驗證（LC 98） | 祖先最大差（LC 1026） |
 |---|---|---|
-| 總層數（樹高） | **log N** | **N** |
-| 第 `d` 層的工作量 | 2^d 次呼叫 × 子樹大小 N/2^d ≈ **N** | 1 次呼叫 × 子樹大小 N − d |
-| 總和 | N × log N = **O(N log N)** | N + (N−1) + … + 1 = N(N+1)/2 = **O(N²)** |
-| 遞迴式 | T(N) = 2T(N/2) + O(N) | T(N) = T(N−1) + O(N) |
+| 往下帶的 | 合法區間 | 路徑上的最小值與最大值 |
+| 節點落在區間外時 | 回傳 false | 擴張區間 |
+| 子節點結果用什麼合併 | `and` | `max` |
 
-- **平衡樹：** 同一層的各子樹互不重疊，合起來幾乎涵蓋全部 N 個節點，所以每層開銷是 O(N)。總共 log N 層。T(N) = 2T(N/2) + O(N) 就是 merge sort 的遞迴式，大師定理（Master Theorem）給出 **O(N log N)**。
-- **偏斜樹：** 每層只有一次呼叫，且子樹比上一層少一個節點。遞減的級數 N, N−1, …, 1 *本身就已經*把 N 層全部加總了，所以總和是 **O(N²)**，裡面沒有 log N。
+<!-- 6a07b8f28645 -->
+## 高度往上傳範例
 
-> **N² log N 的陷阱。** 把偏斜樹的總和（N + (N−1) + … + 1 = O(N²)）乘上平衡樹的高度（log N），得到 O(N² log N)，這錯了兩次。那個等差級數已經是所有層的總和，再乘上層數等於重複計算。而且只有平衡樹才會有 log N 層，那時每層的開銷是 N，不是 N − d。每種樹形各自給出一個每層開銷和一個高度，絕對不要混著用。
+<!-- 52bac94ad11f -->
+### Maximum Depth of Binary Tree — LC 104
 
-**這份程式在一條鏈上實際會怎樣。** `> 1` 的檢查在遞迴*之前*執行。在 N ≥ 3 的鏈上，根節點看到的高度是 N−1 和 0，所以跑完一次 O(N) 的高度計算就回傳 `False`，根本不會往鏈下走。O(N²) 那一列是這個*遞迴模式*的開銷：在一棵很深的樹上每個節點都呼叫 `height()`，而且沒有任何提早結束的機制。沒有提早結束的程式會付出全部代價，例如在每個節點都跑 `height(l) + height(r)` 的天真版直徑（LC 543）。就這題而言，O(N²) 是上界（最多 N 次呼叫，每次最多 O(N)），值得拿來說的是平衡樹的情況。以下是計算 `height()` 呼叫次數（含空子節點）的實測結果：
+> **關鍵** — 一棵樹的深度是兩棵子樹中較深者再加一；這就是模板回傳的高度，而且 root 自己的回傳值就是答案，不需要全域變數。
 
-<!--CODE-->
-
-**O(N) 的解法**是由下而上：在**同一次**後序走訪中同時回傳高度和「此子樹已經不平衡」的訊號（`-1`），讓每個節點只被走訪一次。那就是 [§10，常見變化](#5-common-variations) 底下的 `checkBalance`。
-
-<!-- 3eead258b384 -->
-#### 平衡樹的情況，完整推導 —— O(N log N) 從哪裡來
-
-取一棵有 H 層（深度 `d = 0 … H−1`）的**完美**二元樹，所以 N = 2^H − 1，H = log₂(N + 1)。把 `isBalanced(v)` 的開銷算成 v 子樹的大小：兩次 `height()` 呼叫會走訪 v 底下的每個節點，再加上 v 自己。
-
-**1. 單一層的工作量。** 每往下一層，節點數加倍、子樹大小減半，兩者互相抵消：
+**歸約到**：[binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) — 只用回傳值，不用全域變數。
 
 <!--CODE-->
 
-這一步就是平衡樹不會變成等差級數的原因。往下走子樹雖然變小，但子樹的數量變多，所以每一層仍然涵蓋幾乎全部 N 個節點。
+**陷阱**
+- 數邊而不是數節點：LC 104 數的是**節點**，所以 `maxDepth(None) = 0`，單一節點是 1。`None` 回傳 `-1`（數邊的慣例）會讓 `[3,9,20,null,null,15,7]` 得到 2。
+- 10⁴ 個節點的鏈，遞迴就有 10⁴ 層；Python 需要 `sys.setrecursionlimit`，或改用逐層計數的層序 BFS。
 
-**2. 把各層加總。**
+<!-- 4bca76729182 -->
+### Balanced Binary Tree — LC 110
 
-<!--CODE-->
+> **關鍵** — 高度和判定結果在**同一次**後序走訪裡一起回傳：`-1` 代表「下面某處已經不平衡」，每個祖先直接往上傳，所以每個節點只走一次。
 
-**3. 用遞迴式得到同樣的答案。** 對 N 個節點的一次呼叫會做 O(N) 的 `height()` 工作，然後遞迴進入兩個各約 N/2 個節點的半邊：
-
-<!--CODE-->
-
-**大師定理（Master Theorem）**，套用在 T(N) = a·T(N/b) + f(N)：這裡 a = 2、b = 2、f(N) = Θ(N)。因為 N^(log_b a) = N^(log₂ 2) = N¹，f(N) 和 N^(log_b a) 成長速度相同。這是第 2 種情況，得到 **Θ(N^(log_b a) · log N) = Θ(N log N)**。log N 層中的每一層都花費相同的 Θ(N)。
-
-**4. 改成逐節點計算，而不是逐層。** `height()` 從節點的*子節點*開始，所以在 w 自己的 `isBalanced(w)` 呼叫中不會走訪 w。只有 w 的每個祖先的呼叫會走訪它，所以 `height()` 走訪 w 共 `depth(w)` 次。再加上 w 自己那次 `isBalanced` 呼叫的 1，總和是 `Σ (depth(w) + 1)`，也就是 N ×（平均深度 + 1）：
+**歸約到**：[binary_tree § Template 5](./binary_tree.md#template-5-height-up-answer-in-a-global--lc-543) — 高度同時兼任失敗訊號，而不是拿去更新全域變數。
 
 <!--CODE-->
 
-這一個公式同時涵蓋兩種樹形。開銷是 N 乘上節點平均有多深，而只有平衡的樹形能把這個深度維持在 log N。
-
-**對照程式驗證。** 對 H = 1 … 15，`height()` 走訪的節點數正好等於 `Σ depth(w) = H(N+1) − 2N`。這是第 2 步的總和減掉 N 次 `isBalanced` 呼叫本身，也就是第 4 步裡的 `+1`。連空子節點一起算，次數是 `2 · (H·2^H − (2^H − 1))`。H = 14 時就是 2 · 212,993 = **425,986**，也就是上面的實測數字。
-
-<!-- 50446d246923 -->
-### 9) Boundary of Binary Tree — LC 545
-<!--CODE-->
-
-<!-- 189d06803883 -->
-## 高度、深度與路徑範例
-
-<!-- c16712ec4a33 -->
-### 10) 樹的高度與深度操作
-
-<!-- cce5ed8da2a6 -->
-#### **核心觀念：高度 vs 深度**
-
-| 觀念 | 定義 | 方向 | 走訪 | 用途 |
-|---------|------------|-----------|-----------|----------|
-| **高度** | 節點到最深葉子的距離 | 由下而上 | 後序 DFS | 樹的性質、平衡檢查 |
-| **深度** | 根節點到目標節點的距離 | 由上而下 | 前序 DFS | 節點距離、找層數 |
-
-**關鍵洞見**：`getDepth()` 是計算節點間距離最基本的演算法（從根走到任一目標節點）。
-
-<!-- ab3473fe6f76 -->
-#### **視覺比較**
+**第二種解法 — 由上而下，以及為什麼比較貴。** 多數人第一次寫的版本是先在 root 比較兩邊高度，再遞迴進兩個子節點，所以 `height()` 會對每個祖先把整棵子樹重走一次。它是對的；放在這裡只是為了面試官接下來會問的複雜度問題。
 
 <!--CODE-->
 
-<!-- b2e575b5f244 -->
-#### **1. 取得高度（後序 DFS）**
+用「遞迴每一層的工作量 × 層數」來算。每種形狀各自給出一個每層成本和一個層數，絕不能兩種形狀各取一個：
 
-**目的**：計算節點到它最深的後代葉子的距離。
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 605a3041e6f4 -->
-#### **2. 取得深度（前序 DFS）**
-
-**目的**：計算根到目標節點的距離。**這就是核心的求距離演算法。**
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- ac14ecc47796 -->
-#### **3. 比較表**
-
-| 面向 | 取得高度 | 取得深度 |
-|--------|------------|-----------|
-| **走訪順序** | 後序（left → right → root） | 前序（root → left → right） |
-| **方向** | 由下而上（葉子到節點） | 由上而下（根到節點） |
-| **null 的回傳值** | `-1`（讓葉子高度 = 0） | `-1`（代表「找不到」） |
-| **參數傳遞** | 沒有（由子節點算出來） | 遞迴時把 `depth` 往下傳 |
-| **用途** | 樹的平衡、樹的性質 | **距離計算**、找層數 |
-| **什麼時候用** | 需要先拿到子節點的資料 | 需要把父節點的資料給子節點 |
-| **例題** | LC 104 (Max Depth)、LC 110 (Balanced Tree) | LC 1740 (Distance in Tree)、LC 863 (Distance K) |
-
-<!-- a21743bcac12 -->
-#### **4. 和節點間距離的關係**
-
-<!--CODE-->
-
-<!-- 8f848f573888 -->
-#### **5. 常見變形**
-
-<!--CODE-->
-
-<!-- 7ae2d613cbd7 -->
-#### **6. 帶走的重點**
-
-1. **高度（後序）**：用來算樹的性質，需要先有子節點的資訊
-2. **深度（前序）**：**核心的距離演算法**，把資訊往下傳給子節點
-3. **null 回傳 -1**：
-   - 高度：讓葉子高度 = 0（標準定義）
-   - 深度：代表「找不到目標」
-4. **節點間距離** = 搭配 LCA，用 `getDepth()` 算兩次
-5. **依資訊流向選擇**：
-   - 需要子節點的資料？→ 用高度（後序）
-   - 需要父節點的資料？→ 用深度（前序）
-
-
-> 上面高度／深度想法的具體實作。
-
-<!-- ce7cfbd8646e -->
-#### 取得最大深度
-
-- LC 104 : Maximum Depth of Binary Tree
-- LC 110 : Balanced Binary Tree
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- fd243e549189 -->
-#### 取得最小深度
-- LC 111 : Minimum Depth of Binary Tree 
-
-<!--CODE-->
-
-<!-- 8e0af4374960 -->
-### 11) Maximum Depth of Binary Tree — LC 104
-<!--CODE-->
-
-<!-- db7975d34366 -->
-### 12) Minimum Depth of Binary Tree — LC 111
-
-> 參考：[MinimumDepthOfBinaryTree.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MinimumDepthOfBinaryTree.java)
-
-<!--CODE-->
-
-<!-- 84fe98653cf5 -->
-### 13) Binary Tree Maximum Path Sum — LC 124
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- b8d5cebf0e28 -->
-### 14) Count Good Nodes in Binary Tree — LC 1448
-<!--CODE-->
-
-<!-- 1e8f9fe626f8 -->
-## 修改與多狀態範例
-
-<!-- a92dfc00e864 -->
-### 15) Delete Nodes And Return Forest — LC 1110
-
-**題目**：給一棵二元樹的 root 和一組要刪除的值，把那些節點移除，回傳剩下那些樹的 root 列表（森林）。
-
-**核心想法**： 
-- 用 DFS 追蹤兩個狀態：目前節點該不該刪、以及父節點有沒有被刪
-- 一個節點如果自己沒被刪、但父節點被刪了，它就成為森林的一個 root
-- 後序 DFS 先處理子節點，才能乾淨地把連結切斷
-
-**做法 1：DFS + 狀態追蹤（推薦）**
-
-<!--CODE-->
-
-**複雜度**：時間 O(N)、空間 O(N)
-- 每個節點恰好走訪一次
-- HashSet 操作：O(1)
-- 遞迴深度：O(h)，最差 O(N)
-
-**做法 2：BFS（層序走訪）**
-
-<!--CODE-->
-
-**複雜度**：時間 O(N)、空間 O(N)
-
-**範例走查**： 
-<!--CODE-->
-
-**關鍵洞見**：
-1. **雙狀態模式**：同時追蹤 `isDeleted` 和 `isParentDeleted`
-2. **森林 root 的條件**：`(!isDeleted && isParentDeleted)` 或 `(!isDeleted && isRoot)`
-3. **後序 DFS**：子節點先處理完，父節點才做決定，連結才切得乾淨
-4. **自動斷開**：`dfs()` 回傳 null，父節點的對應子指標就自動變成 null
-5. **BFS 為什麼可行**：先把所有子節點入列再處理，自然就會發現哪些節點變成 root
-
-**容易踩到的坑** ⚠️：
-1. **忘了 root 的特例**：root 沒有父節點，所以要把它當成「父節點已被刪」，它才能成為森林 root
-2. **走訪順序錯了**：必須先處理子節點，才知道這個節點是不是被刪
-3. **沒有正確斷開**：BFS 做法需要明確寫 `curNode.left = null` 來斷開
-4. **漏掉森林 root**：初始的 root 和「父節點被刪」的節點兩種都要檢查
-
-**相似題目**：
-| 題目 | LC # | 關鍵差異 |
-|---------|------|-----------------|
-| Delete Nodes And Return Forest | 1110 | 基礎模式 |
-| Delete Leaves With Given Value | 1325 | 遞迴式刪除（子節點處理完之後才刪） |
-| Trim a Binary Search Tree | 669 | 用範圍過濾，而不是依值刪除 |
-| Lowest Common Ancestor IV | 1676 | **N** 個目標節點的 LCA（不是刪除題 — 共通的骨架是後序「回傳我的子樹找到了什麼」） |
-
-**常見應用：**
-- 修剪樹，結果會產生多棵子樹
-- 選擇性移除節點以形成森林
-- 檔案系統操作（刪節點、保留剩餘結構）
-- 帶連鎖刪除的階層式資料管理
-
-**模式辨識：**
-- ✅ 要刪掉特定節點，但保留其餘的樹結構
-- ✅ 結果是一片森林（多個樹根）
-- ✅ 被刪節點的子節點要留下來
-- ✅ 狀態同時取決於目前節點和父節點的決定
-
-<!-- 68b97ae75155 -->
-### 16) Flatten Binary Tree to Linked List — LC 114
-
-**題目**：**原地**把一棵二元樹壓平成一條「鏈結串列」，每個 `right` 指標指向**前序**的下一個節點，每個 `left` 都是 `null`。
-
-<!--CODE-->
-
-**核心想法 —— 後序 DFS 回傳「尾巴」**
-
-最乾淨的遞迴解法會先把左右子樹壓平（後序），再重接目前節點。關鍵技巧：**每次 `helper` 呼叫都回傳它壓平那棵子樹的*尾巴*（前序的最後一個節點）**，父節點才知道要把原本的右子樹接到哪裡。
-
-<!--CODE-->
-
-**為什麼要回傳尾巴？**把左子樹搬到右邊時，必須把*原本的*右子樹接到壓平後左子樹的**尾端**，而不是它的 root。唯一知道尾端在哪的，就是那次壓平左子樹的遞迴呼叫。所以它要回傳自己的尾巴。
-
-<!-- 83fbd84a7b04 -->
-#### 重接指標的視覺化（`if left_tail:` 那一段）
-
-<!--CODE-->
-
-<!-- 040660b025cf -->
-#### 兩個 `if left_tail:` 區塊回答的是不同問題
-
-乍看之下多餘的寫法是：
-
-<!--CODE-->
-
-同樣的判斷，兩份不相干的工作：
-
-| 區塊 | 它回答的問題 | 它產生什麼 |
-|-------|-------------------------|------------------|
-| **(A)** `if left_tail:` | 「有沒有一條左鏈必須*搬*到右邊，接在原本的右子樹前面？」 | 對這個節點指標的**修改** |
-| **(B)** `if right_tail: / if left_tail:` | 「我的**父節點**要把快取的右子頭接到哪個節點上？」 | 這次呼叫的**回傳值** |
-
-它們不能合併，因為兩個問題在兩個方向上都不一致：
-
-- **只有左、沒有右** —— (A) 會執行（左鏈被搬過去，`left_tail.right = node.right` 無害地指定成 `None`），但 (B) 跳過 `right_tail`，回傳 `left_tail`。
-- **只有右、沒有左** —— (A) 整個被跳過（右子樹*本來*就在前序要它在的位置），但 (B) 還是得回傳 `right_tail`。
-
-> 有些寫法裡的 `right_head` 快取，只有在 `left_tail.right = node.right` 被讀取**之前**就先執行 `node.right = node.left` 時才需要。像上面那樣先讀，快取就不見了。
-
-<!-- 83602a426519 -->
-#### 為什麼尾巴檢查是 right → left → node —— 和走訪順序相反
-
-區塊 (A) 之後，這棵子樹壓平後的排列已由前序固定：
-
-<!--CODE-->
-
-頭是*最左邊*的格子，所以永遠是 `node`。尾巴是*最右邊的非空*格子，所以找它就是**從右端**讀這個排列 —— 第一個存在的格子勝出：
-
-<!--CODE-->
-
-這就是為什麼 `if` 的順序不是走訪順序：
-
-| | 順序 |
-|---|---|
-| **壓平／走訪** | root → left → right |
-| **找尾巴** | right → left → root |
-
-同一條串列，從另一端掃。把 `if` 鏈讀成**優先序的後備**，而不是走訪順序。
-
-<!-- 7ac8a9c9ebcb -->
-#### 為什麼回傳值是尾巴，而不是頭
-
-頭從來不是問題：父節點已經握有 `node.left` 和 `node.right`，而它們各自*就是*自己那條壓平鏈的頭，所以回傳頭並不會告訴父節點任何新資訊。父節點無法便宜看到的，是子節點的鏈在哪裡**結束** —— 而那個結尾正是快取的右子頭必須掛上去的節點。
-
-另一種做法是走過去：
-
-<!--CODE-->
-
-回傳尾巴把那段走訪換成 O(1) 的交接，這就是後序版本整體能做到 O(n) 的原因。
-
-<!-- b42065fa8620 -->
-#### 實際跑一遍 —— `root = [1,2,5,3,4,null,6]`
-
-<!--CODE-->
-
-後序會先走到**最左最深**的節點。`helper` 回傳值（每次呼叫交回的尾巴）的追蹤：
-
-<!--CODE-->
-
-最後壓平的串列（所有 `left=None`）：`1 -> 2 -> 3 -> 4 -> 5 -> 6` ✅（和前序一致）。
-
-<!-- d352533c1032 -->
-#### 模式與其他做法
-
-| 做法 | 想法 | 時間 | 空間 | 備註 |
-|----------|------|------|-------|-------|
-| **後序 + 回傳尾巴**（上面那個） | 壓平子樹，再用回傳的尾巴接起來 | O(N) | O(h) 遞迴 | 乾淨、直覺 |
-| **反向前序 + `prev`** | 依 `right → left → node` 走訪，設 `node.right = prev` | O(N) | O(h) | 等於反過來把串列建起來（見 `V0-1`） |
-| **前序收集到 list** | 用前序把節點存起來，再用迴圈重接 | O(N) | O(N) | 最好想 |
-| **Morris 式迭代** | 對每個節點找左子樹最右端，接上去 | O(N) | **O(1)** | *追問*（真正原地）的最佳解 |
-
-**反向前序（`prev` 指標）—— 漂亮的 O(h) 版本：**
-
-<!--CODE-->
-
-**真正 O(1) 空間（迭代版，追問的答案）：**
-
-<!--CODE-->
-
-**相似題目**：
-
-| 題目 | LC # | 關鍵差異 |
-|---------|------|-----------------|
-| Flatten Binary Tree to Linked List | 114 | 基礎模式（原地前序壓平） |
-| Binary Tree Preorder Traversal | 144 | 走訪順序相同，只是把值收集起來 |
-| Convert BST to Sorted Doubly Linked List | 426 | 用中序壓平成雙向鏈結串列 |
-| Increasing Order Search Tree | 897 | 用中序壓平成只有右子的鏈 |
-| Flatten a Multilevel Doubly Linked List | 430 | 在串列上做同樣的「把子鏈接在 next 之前」 |
-
-<!-- aac93d713835 -->
-### 17) Merge Two Binary Trees — LC 617
-
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 7e12677f8a6a -->
-### 18) Invert Binary Tree — LC 226
-<!--CODE-->
-
-<!--CODE-->
-
-<!-- 4bddd441cf81 -->
-### 19) Binary Tree Cameras — LC 968（由下而上的多狀態貪婪）
-
-
-> 參考：[BinaryTreeCameras.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearchTree/BinaryTreeCameras.java)
-> · [binary-tree-cameras.py](https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Binary_Search_Tree/binary-tree-cameras.py)
-
-有些題目需要每個節點回傳一個**狀態**（而不是數值）給父節點，父節點再根據子節點的狀態做**貪婪決策**。這是一種獨立的由下而上模式。
-
-**核心想法 —— 三狀態貪婪：**
-<!--CODE-->
-
-**為什麼要由下而上（後序）？**
-- 葉子是放攝影機最「浪費」的位置（往上只蓋到 1 個節點）
-- 先處理葉子，就會逼著攝影機裝到它們的父節點（一次蓋 3 個節點）
-- 這種由下往上的貪婪策略會讓攝影機總數最少
-
-**只有三種情況 —— 而且檢查的順序很重要：**
-
-| # | 判斷 | 意義 | 動作 |
-|---|------|---------------|--------|
-| 1 | `left == 0 \|\| right == 0` | 有個子節點未被覆蓋，而我是它唯一剩下的覆蓋者 | 在這裡放攝影機，回傳 `1` |
-| 2 | `left == 1 \|\| right == 1` | 有個子節點有攝影機，所以它已經覆蓋了我 | 回傳 `2`（已覆蓋），不放攝影機 |
-| 3 | 其他（`both == 2`） | 兩個子節點都已覆蓋，且都沒有攝影機 —— **我**沒被覆蓋 | 回傳 `0`，什麼都不決定 |
-
-情況 3 才是值得內化的那個：這裡**根本沒有要不要放攝影機的決策**。
-未被覆蓋的節點不會自己解決 —— 它把狀態 `0` 往上回報，讓**父節點**決定，因為裝在父節點的攝影機
-還能覆蓋祖父節點，而裝在這裡只能覆蓋這個節點和它（已被覆蓋的）子節點。延後決策，
-正是後序回傳值*存在的目的*。
-
-**情況 1 必須在情況 2 之前檢查。** 一個節點若有一個未覆蓋的子節點、另一個子節點有攝影機，
-仍然必須放攝影機 —— 那個未覆蓋的子節點已經沒有其他鄰居了。
-把兩個判斷對調，那個節點就會回傳「已覆蓋」，悄悄讓子節點沒被覆蓋。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**視覺化 —— 由下而上的貪婪為什麼成立：**
-<!--CODE-->
-
-**狀態轉移規則（每個節點的決策）：**
-
-| 左子狀態 | 右子狀態 | 決策 | 回傳 |
-|:----------:|:-----------:|----------|:------:|
-| 0（未覆蓋） | 任意 | 放攝影機 | 1 |
-| 任意 | 0（未覆蓋） | 放攝影機 | 1 |
-| 1（有攝影機） | 任意非 0 | 被子節點覆蓋 | 2 |
-| 任意非 0 | 1（有攝影機） | 被子節點覆蓋 | 2 |
-| 2（已覆蓋） | 2（已覆蓋） | 自己沒被覆蓋，交給父節點 | 0 |
-
-**關鍵洞見 —— 為什麼 `null → 2`（已覆蓋）？**
-如果 null 回傳 0（未覆蓋），每個葉子都會被迫裝攝影機 —— 太浪費。把 null 當成「已覆蓋」，葉子就會是狀態 0（未覆蓋），逼著它們的**父節點**裝攝影機，這嚴格更好（一次蓋 3 個節點，而不是 1 個）。
-
-> **1 / 2 這兩個標籤是任意的。** 重要的只有*角色*：一個狀態代表「未覆蓋」，
-> 一個代表「有攝影機」，一個代表「被子節點覆蓋」，而 **null 取的是「已覆蓋但沒有攝影機」的狀態**。
-> 外面的解法（本 repo 的 Python 檔也是其中之一）會把數字換成 `1 = 已覆蓋、2 = 有攝影機`，並讓 null 回傳 `1`
-> —— 同一個演算法，只是後兩個標籤改了名。先讀 `null` 的回傳值，就知道一段程式用的是哪種慣例。
-
-**同樣用「由下而上帶狀態的貪婪」的相似 LC 題目：**
-
-| LC # | 題目 | 狀態 | 貪婪洞見 |
-|------|---------|--------|----------------|
-| 968 | Binary Tree Cameras | 0/1/2（未覆蓋／有攝影機／已覆蓋） | 把攝影機往上拖延，裝在葉子的父節點 |
-| 337 | House Robber III | 每個節點 rob/skip | Max(搶自己 + 跳過子節點, 跳過自己 + 子節點的最佳解) |
-| 979 | Distribute Coins in Binary Tree | 每棵子樹多出來的硬幣數 | 每條邊搬一次算 1 步；由下而上累加 \|excess\| |
-| 1373 | Max Sum BST in Binary Tree | BST 合法／不合法 + 總和 | 由下而上驗證 BST 性質，同時追蹤最大總和 |
-
-<!-- 6e672d17de2f -->
-## 重點整理
-
-| 題目 | 模式 | 一定要記住的一件事 |
+| | 平衡的樹 | 歪斜的樹（一條鏈） |
 |---|---|---|
-| LC 199 | 依深度做 BFS / DFS | 取每層**最後**一個節點（或用 right → left 走訪時取第一個） |
-| LC 222 | 完全樹遞迴 | 比較左右脊的高度 → O(log² N)，不是 O(N) |
-| LC 662 | 用索引編碼的 BFS | 節點 `i` → 子節點 `2i`、`2i+1`；寬度 = 最後 − 最前 + 1 |
-| LC 2415 | 層序 + 交換 | 反轉的是一層的**值**，不是節點 |
-| LC 101 | 鏡像 DFS | 比較 `(a.left, b.right)` 和 `(a.right, b.left)` |
-| LC 100 / 951 | 成對 DFS | LC 951 額外允許左右子樹互換 |
-| LC 98 | 中序／上下界 | 把 `(low, high)` 往下傳 —— 只和直接子節點比較是不夠的 |
-| LC 110 | 後序高度 | 回傳 `-1` 代表「已經不平衡」，提早收工 |
-| LC 545 | 掃三趟 | 左邊界、葉子、反轉的右邊界 —— 記得把角落去重 |
-| LC 104 / 111 | 高度 | 最小深度需要防 null 子節點的判斷；最大深度不用 |
-| LC 124 | 後序 + 全域最大值 | 往上只回傳一條分支，`left + node + right` 記在全域 |
-| LC 1448 | 由上而下帶著目前最大值 | 把路徑上的最大值當參數往下傳 |
-| LC 1110 | 雙狀態 DFS | 父節點死了但自己活著的節點，就是森林的 root |
-| LC 114 | 後序回傳尾巴 | 或用 tree.md 裡 O(1) 空間的 Morris 重接法 |
-| LC 617 / 226 | 結構遞迴 | 往下走的時候建立或交換，再回傳節點 |
-| LC 968 | 由下而上的三狀態貪婪 | `null → 已覆蓋`，這會逼著攝影機裝到葉子的父節點；未被覆蓋的節點什麼都不放，交給父節點決定 |
+| 層數 | log n | n |
+| 第 `d` 層的工作量 | 2^d 次呼叫 × 子樹大小 n/2^d ≈ n | 1 次呼叫 × 子樹大小 n − d |
+| 總和 | n · log n = **O(n log n)** — T(n) = 2T(n/2) + O(n) | n + (n−1) + … + 1 = **O(n²)** — T(n) = T(n−1) + O(n) |
 
-<!-- stale: f557c0a3a5c8 -->
-### 15) Delete Nodes And Return Forest — LC 1110
+換成以節點來數：`height()` 會因為每個祖先各走訪一個節點一次，所以總和就是所有深度的和，即 n ×（平均深度）。只有平衡的形狀能把那個深度壓在 log n。
 
-**題目**：給一棵二元樹的 root 和一組要刪除的值，把那些節點移除，回傳剩下那些樹的 root 列表（森林）。
+**陷阱**
+- O(n² log n) 是把歪斜情況的級數（本身已經是所有層的總和）乘上平衡情況的高度得到的。它把層數算了兩次。
+- 在鏈上，這段由上而下的程式其實在 root 就結束了（高度 n−1 和 0 差超過 1），所以 O(n²) 是這種遞迴模式的成本，由沒有提早結束的程式全額支付，例如在每個節點都呼叫 `height` 的天真直徑寫法。
+- 由下而上版本只在兩次呼叫之後才檢查一次 `-1`：仍是 O(n)，但會白白走完一個已經失敗節點的右子樹。在遞迴右邊之前先測 `left == -1`。
 
-**核心想法**： 
-- 用 DFS 追蹤兩個狀態：目前節點該不該刪、以及父節點有沒有被刪
-- 一個節點如果自己沒被刪、但父節點被刪了，它就成為森林的一個 root
-- 後序 DFS 先處理子節點，才能乾淨地把連結切斷
+<!-- 0ad7eeccc532 -->
+## 樹形 DP 範例
 
-**做法 1：DFS + 狀態追蹤（推薦）**
+<!-- 8fd866820fdc -->
+### Binary Tree Cameras — LC 968
+
+> **關鍵** — 每次呼叫回傳一個**狀態** — 未覆蓋、有攝影機、已覆蓋 — 由父節點做決定。空子節點算已覆蓋，所以葉子會回報「未覆蓋」，逼父節點裝攝影機，一台可以蓋三層而不是一層。未覆蓋的節點自己什麼都不放：交給父節點決定。
+
+**歸約到**：[binary_tree § Template 9](./binary_tree.md#template-9-tree-dp--return-multiple-states--lc-337-) — 三個狀態取代 (take, skip)，每個節點用貪心規則取代取 max。
 
 <!--CODE-->
 
-**複雜度**：時間 O(N)、空間 O(N)
-- 每個節點恰好走訪一次
-- HashSet 操作：O(1)
-- 遞迴深度：O(h)，最差 O(N)
+<!--CODE-->
 
-**做法 2：BFS（層序走訪）**
+**試跑** — `root = [1,2,3,4,5,null,null,6,7]`
 
 <!--CODE-->
 
-**複雜度**：時間 O(N)、空間 O(N)
+**陷阱**
+- 先測「有子節點裝了攝影機」再測「有子節點未覆蓋」：上例的節點 2 會回傳 COVERED，讓 5 附近完全沒有攝影機。
+- 忘了 root：`[0]` 是一個沒有父節點、未覆蓋的葉子，答案是 1，不是 0。
+- 空節點回傳 UNCOVERED 會讓每個葉子都裝攝影機；空節點必須是「已覆蓋但沒有攝影機」的狀態。
 
-**範例走查**： 
-<!--CODE-->
+<!-- 4f01c6aa2aad -->
+## 結構修改範例
 
-**關鍵洞見**：
-1. **雙狀態模式**：同時追蹤 `isDeleted` 和 `isParentDeleted`
-2. **森林 root 的條件**：`(!isDeleted && isParentDeleted)` 或 `(!isDeleted && isRoot)`
-3. **後序 DFS**：子節點先處理完，父節點才做決定，連結才切得乾淨
-4. **自動斷開**：`dfs()` 回傳 null，父節點的對應子指標就自動變成 null
-5. **BFS 為什麼可行**：先把所有子節點入列再處理，自然就會發現哪些節點變成 root
+<!-- 74a1a5bcbd63 -->
+### Invert Binary Tree — LC 226
 
-**容易踩到的坑** ⚠️：
-1. **忘了 root 的特例**：root 沒有父節點，所以要把它當成「父節點已被刪」，它才能成為森林 root
-2. **走訪順序錯了**：必須先處理子節點，才知道這個節點是不是被刪
-3. **沒有正確斷開**：BFS 做法需要明確寫 `curNode.left = null` 來斷開
-4. **漏掉森林 root**：初始的 root 和「父節點被刪」的節點兩種都要檢查
+> **關鍵** — 翻轉一棵樹就是在每個節點交換兩個子節點**指標**；遞迴回傳翻好的子樹、父節點再接回去，所以兩邊的結果都要在任一指標被覆寫之前算好。
 
-**相似題目**：
-| 題目 | LC # | 關鍵差異 |
-|---------|------|-----------------|
-| Delete Nodes And Return Forest | 1110 | 基礎模式 |
-| Delete Leaves With Given Value | 1325 | 遞迴式刪除（子節點處理完之後才刪） |
-| Trim a Binary Search Tree | 669 | 用範圍過濾，而不是依值刪除 |
-| Lowest Common Ancestor III | 1676 | 在刪除後的森林裡找 LCA |
-
-**常見應用：**
-- 修剪樹，結果會產生多棵子樹
-- 選擇性移除節點以形成森林
-- 檔案系統操作（刪節點、保留剩餘結構）
-- 帶連鎖刪除的階層式資料管理
-
-**模式辨識：**
-- ✅ 要刪掉特定節點，但保留其餘的樹結構
-- ✅ 結果是一片森林（多個樹根）
-- ✅ 被刪節點的子節點要留下來
-- ✅ 狀態同時取決於目前節點和父節點的決定
-
-<!-- stale: c98187fdb84b -->
-#### 模式與其他做法
-
-| 做法 | 想法 | 時間 | 空間 | 備註 |
-|----------|------|------|-------|-------|
-| **後序 + 回傳尾巴**（上面那個） | 壓平子樹，再用回傳的尾巴接起來 | O(N) | O(h) 遞迴 | 乾淨、直覺 |
-| **反向前序 + `prev`** | 依 `right → left → node` 走訪，設 `node.right = prev` | O(N) | O(h) | 等於反過來把串列建起來（見 `V0-1`） |
-| **前序收集到 list** | 用前序把節點存起來，再用迴圈重接 | O(N) | O(N) | 最好想 |
-| **Morris 式迭代** | 對每個節點找左子樹最右端，接上去 | O(N) | **O(1)** | *追問*（真正原地）的最佳解 |
-
-**反向前序（`prev` 指標）—— 漂亮的 O(h) 版本：**
+**歸約到**：[binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) — 回傳重建好的子樹再重新指派；沒有刪除任何東西。
 
 <!--CODE-->
 
-**真正 O(1) 空間（迭代版，追問的答案）：**
+<!--CODE-->
+
+**陷阱**
+- `root.left = invertTree(root.right); root.right = invertTree(root.left);` — 第二行讀到的是第一行剛覆寫的左指標，所以 `[2,1,3]` 會變成 `[2,3,3]` 這種亂掉的形狀。Python 的 `root.left, root.right = f(root.right), f(root.left)` 之所以安全，只是因為右邊會先整個算完。
+
+<!-- a7db4dca2490 -->
+### Flatten Binary Tree to Linked List — LC 114
+
+> **關鍵** — 每次呼叫把自己的子樹攤平，並回傳子樹的**尾巴**（前序中的最後一個節點）；父節點就能用 O(1) 接成 `node → 左鏈 → 右鏈`：把原本的右子樹掛在左鏈的尾巴上，不必一路走下去找。
+
+**歸約到**：[binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-) — 後序重新接線，回傳的是尾巴而不是新的 root。
 
 <!--CODE-->
 
-**關鍵洞見**：回傳值優先序 `right_tail > left_tail > node` 對應的就是**前序的最後一個節點** —— 前序會結束在最右邊那條分支，所以右子樹的尾巴（如果有的話）就是整體的尾巴。
-
-**相似題目**：
-
-| 題目 | LC # | 關鍵差異 |
-|---------|------|-----------------|
-| Flatten Binary Tree to Linked List | 114 | 基礎模式（原地前序壓平） |
-| Binary Tree Preorder Traversal | 144 | 走訪順序相同，只是把值收集起來 |
-| Convert BST to Sorted Doubly Linked List | 426 | 用中序壓平成雙向鏈結串列 |
-| Increasing Order Search Tree | 897 | 用中序壓平成只有右子的鏈 |
-| Flatten a Multilevel Doubly Linked List | 430 | 在串列上做同樣的「把子鏈接在 next 之前」 |
-
-<!-- stale: 652e4da8e465 -->
-### 19) Binary Tree Cameras — LC 968（由下而上的多狀態貪婪）
-
-
-> 參考：[BinaryTreeCameras.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BinarySearchTree/BinaryTreeCameras.java)
-
-有些題目需要每個節點回傳一個**狀態**（而不是數值）給父節點，父節點再根據子節點的狀態做**貪婪決策**。這是一種獨立的由下而上模式。
-
-**核心想法 —— 三狀態貪婪：**
-<!--CODE-->
-
-**為什麼要由下而上（後序）？**
-- 葉子是放攝影機最「浪費」的位置（往上只蓋到 1 個節點）
-- 先處理葉子，就會逼著攝影機裝到它們的父節點（一次蓋 3 個節點）
-- 這種由下往上的貪婪策略會讓攝影機總數最少
+**試跑** — `root = [1,2,5,3,4,null,6]`
 
 <!--CODE-->
 
-**視覺化 —— 由下而上的貪婪為什麼成立：**
+**陷阱**
+- 在 `left_tail.right = node.right` **之前**寫 `node.right = node.left`，原本的右子樹就丟了：先讀出來，或先暫存。
+- 找尾巴的順序是右 → 左 → 自己，和走訪順序相反：有右半段時，鏈就結束在右半段。有右子節點但沒有左子節點的節點，仍要回傳 `right_tail`。
+- 不回傳尾巴、改在每個節點用 `while cur.right` 走下去找，是 O(n·h)，在歪斜的樹上是 O(n²)。
+
+**不適用時** — 追問要求 O(1) 額外空間：那是 [tree.md § Template 1](./tree.md#template-1-morris-in-order-traversal--lc-94) 的 Morris 重接，不用遞迴，把每棵左子樹最右邊的節點接到右子節點。
+
+<!-- d64aa7d1db0b -->
+## 兩棵樹同步走範例
+
+<!-- ce274ea2cb74 -->
+### Symmetric Tree — LC 101
+
+> **關鍵** — 一棵樹對稱，就是它的左右子樹互為**鏡像**，也就是把 LC 100 用在兩棵子樹上、配對交叉：外側配外側（`a.left`、`b.right`），內側配內側（`a.right`、`b.left`）。
+
+**歸約到**：[binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — 一棵樹和自己比較，子節點交叉配對。它只在一個地方解，遞迴與迭代兩種寫法、試跑和直接配對的 bug 都在：[dfs.md § LC 101](./dfs.md#variation-paired-dual-pointer-dfs--lc-101-symmetric-tree)。
+
+**陷阱**
+- 逐層比較數值、檢查每層是不是回文，會漏掉形狀：`[1,2,2,null,3,null,3]` 去掉 null 後每層數值都是回文，但它不對稱。
+- `a.left` 配 `b.left` 檢查的是相等，不是對稱。
+
+<!-- bc18ce0b527a -->
+### Merge Two Binary Trees — LC 617
+
+> **關鍵** — 兩棵樹都有節點的地方，合併後的節點是兩者之和；只有一棵有的地方，整棵子樹原封不動拿來用，遞迴就停在那裡，不必複製。
+
+**歸約到**：[binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — 同步走訪回傳新節點，而不是布林值。
+
 <!--CODE-->
 
-**狀態轉移規則（每個節點的決策）：**
+**陷阱**
+- 遞迴進單獨的那棵子樹去複製它，成本是 O(n1 + n2)，而不是只算重疊部分；原樣回傳才是重點。
+- 把和寫進 `root1` 再回傳（很多解法這樣做）也會被接受，但它改動了輸入；要說清楚你用的是哪一種。
 
-| 左子狀態 | 右子狀態 | 決策 | 回傳 |
-|:----------:|:-----------:|----------|:------:|
-| 0（未覆蓋） | 任意 | 放攝影機 | 1 |
-| 任意 | 0（未覆蓋） | 放攝影機 | 1 |
-| 1（有攝影機） | 任意非 0 | 被子節點覆蓋 | 2 |
-| 任意非 0 | 1（有攝影機） | 被子節點覆蓋 | 2 |
-| 2（已覆蓋） | 2（已覆蓋） | 自己沒被覆蓋，交給父節點 | 0 |
+<!-- ee50ead6d105 -->
+### Flip Equivalent Binary Trees — LC 951
 
-**關鍵洞見 —— 為什麼 `null → 2`（已覆蓋）？**
-如果 null 回傳 0（未覆蓋），每個葉子都會被迫裝攝影機 —— 太浪費。把 null 當成「已覆蓋」，葉子就會是狀態 0（未覆蓋），逼著它們的**父節點**裝攝影機，這嚴格更好（一次蓋 3 個節點，而不是 1 個）。
+> **關鍵** — 每個節點的子節點都可能被交換過，所以兩種配對都接受：同步檢查 `left-left / right-right`，**或** `left-right / right-left`。
 
-**同樣用「由下而上帶狀態的貪婪」的相似 LC 題目：**
+**歸約到**：[binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — 每個節點試兩種配對，用 `or` 接起來。
 
-| LC # | 題目 | 狀態 | 貪婪洞見 |
-|------|---------|--------|----------------|
-| 968 | Binary Tree Cameras | 0/1/2（未覆蓋／有攝影機／已覆蓋） | 把攝影機往上拖延，裝在葉子的父節點 |
-| 337 | House Robber III | 每個節點 rob/skip | Max(搶自己 + 跳過子節點, 跳過自己 + 子節點的最佳解) |
-| 979 | Distribute Coins in Binary Tree | 每棵子樹多出來的硬幣數 | 每條邊搬一次算 1 步；由下而上累加 |excess| |
-| 1373 | Max Sum BST in Binary Tree | BST 合法／不合法 + 總和 | 由下而上驗證 BST 性質，同時追蹤最大總和 |
+<!--CODE-->
 
-<!-- stale: 9dc58c246256 -->
-## 重點整理
+**陷阱**
+- O(n) 的界依賴數值唯一：有重複值時，兩種配對都可能遞迴很深，最差情況比線性還差。
+- 先把兩棵樹正規化（每個節點的子節點依值排序）在這題也行，但只因為值是唯一的；兩路檢查才是通用寫法。
 
-| 題目 | 模式 | 一定要記住的一件事 |
-|---|---|---|
-| LC 199 | 依深度做 BFS / DFS | 取每層**最後**一個節點（或用 right → left 走訪時取第一個） |
-| LC 222 | 完全樹遞迴 | 比較左右脊的高度 → O(log² N)，不是 O(N) |
-| LC 662 | 用索引編碼的 BFS | 節點 `i` → 子節點 `2i`、`2i+1`；寬度 = 最後 − 最前 + 1 |
-| LC 2415 | 層序 + 交換 | 反轉的是一層的**值**，不是節點 |
-| LC 101 | 鏡像 DFS | 比較 `(a.left, b.right)` 和 `(a.right, b.left)` |
-| LC 100 / 951 | 成對 DFS | LC 951 額外允許左右子樹互換 |
-| LC 98 | 中序／上下界 | 把 `(low, high)` 往下傳 —— 只和直接子節點比較是不夠的 |
-| LC 110 | 後序高度 | 回傳 `-1` 代表「已經不平衡」，提早收工 |
-| LC 545 | 掃三趟 | 左邊界、葉子、反轉的右邊界 —— 記得把角落去重 |
-| LC 104 / 111 | 高度 | 最小深度需要防 null 子節點的判斷；最大深度不用 |
-| LC 124 | 後序 + 全域最大值 | 往上只回傳一條分支，`left + node + right` 記在全域 |
-| LC 1448 | 由上而下帶著目前最大值 | 把路徑上的最大值當參數往下傳 |
-| LC 1110 | 雙狀態 DFS | 父節點死了但自己活著的節點，就是森林的 root |
-| LC 114 | 後序回傳尾巴 | 或用 tree.md 裡 O(1) 空間的 Morris 重接法 |
-| LC 617 / 226 | 結構遞迴 | 往下走的時候建立或交換，再回傳節點 |
-| LC 968 | 由下而上的三狀態貪婪 | `null → 已覆蓋`，這會逼著攝影機裝到葉子的父節點 |
+<!-- 56180fb6b9bc -->
+### Reverse Odd Levels of Binary Tree — LC 2415
+
+> **關鍵** — 在**完美**二元樹裡，一層中第 `i` 個節點和它鏡像位置的節點，可以用同步走兩半的方式找到：外側配外側、內側配內側，和 LC 101 的配對完全一樣；反轉一層就是交換每一對的值。
+
+**歸約到**：[binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100) — LC 101 的鏡像配對，在奇數層交換值而不是比較值。
+
+<!--CODE-->
+
+**陷阱**
+- 交換節點而不是交換值，就得在兩邊重接父節點；這題只需要交換 `val`。
+- `a.left` 配 `b.left` 會把位置 `i` 對到 `i + half`，不是它的鏡像：一層是 `1 … 8` 時會變成 `5 6 7 8 1 2 3 4`，而不是 `8 7 6 5 4 3 2 1`。
+
+**不適用時** — 樹不是完美二元樹，或你偏好直觀的做法：用層序 BFS 收集每個奇數層再反轉它的值（[binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102)），空間 O(w)。

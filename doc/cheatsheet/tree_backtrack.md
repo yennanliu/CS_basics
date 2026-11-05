@@ -1,18 +1,12 @@
-# Tree Backtracking Template (gpt)
+# Tree Backtracking Template
 
-> **Scope** — Root→leaf **path** problems where the path itself is the state and must be undone on the way back up.
-> **See also**: [tree.md](./tree.md) — general tree traversal; [binary_tree.md](./binary_tree.md) — DFS state-flow direction; [backtrack.md](./backtrack.md) — backtracking outside of trees.
+> **Scope** — The choose / explore / undo skeleton behind tree path problems and the path state each one carries, with the variants the root-to-leaf cards do not cover: the path to one node (LC 236), implicit trees (LC 386, LC 388); the root-to-leaf cards themselves live in tree_lca_distance.md.
+> **See also**: [tree_lca_distance.md](./tree_lca_distance.md) — the root-to-leaf path cards (LC 112, 113, 129, 257, 437); [tree.md](./tree.md) — general tree traversal; [binary_tree.md](./binary_tree.md) — DFS state-flow direction; [backtrack.md](./backtrack.md) — backtracking outside of trees.
 
-Great — many **tree path problems** share the same DFS + backtracking structure. The following template works for problems like:
-
-* LeetCode 113 Path Sum II
-* LeetCode 257 Binary Tree Paths
-* LeetCode 129 Sum Root to Leaf Numbers
-* LeetCode 437 Path Sum III (slightly modified)
-
-I'll show the **universal template**, then how each problem plugs into it.
-
----
+Many tree path problems share one DFS skeleton: choose (extend the path state), check the goal
+(usually at a leaf), explore both children, undo. This sheet is the skeleton and the state each
+problem carries; the canonical root-to-leaf cards (LC 112, 113, 129, 257, 437) live in
+[tree_lca_distance.md](./tree_lca_distance.md), and the sections below link to them.
 
 ## LeetCode Problem Lists
 
@@ -86,93 +80,33 @@ Key parts:
 
 ## 3️⃣ Apply to LC 113 (Path Sum II)
 
-For LeetCode 113 Path Sum II:
-
-State = **remaining sum**
-
-```java
-void dfs(TreeNode node, int remain, List<Integer> path) {
-
-    if (node == null) return;
-
-    path.add(node.val);
-
-    if (node.left == null && node.right == null && remain == node.val) {
-        res.add(new ArrayList<>(path));
-    }
-
-    dfs(node.left, remain - node.val, path);
-    dfs(node.right, remain - node.val, path);
-
-    path.remove(path.size() - 1);
-}
-```
+State = **remaining sum**, plus the path list that is appended on entry and popped on exit. The
+worked card, in Python and Java with a dry run and its traps, is
+[tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113),
+which owns the root-to-leaf path family.
 
 ---
 
 ## 4️⃣ Apply to LC 257 (Binary Tree Paths)
 
-For LeetCode 257 Binary Tree Paths:
-
-State = **path string**
-
-```java
-void dfs(TreeNode node, String path) {
-
-    if (node == null) return;
-
-    path += node.val;
-
-    if (node.left == null && node.right == null) {
-        res.add(path);
-        return;
-    }
-
-    path += "->";
-
-    dfs(node.left, path);
-    dfs(node.right, path);
-}
-```
+State = **path string**. A string is immutable, so each call builds its own and there is nothing to
+undo. Worked in [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113),
+under *Path Update Strategies*, next to the mutable-list version it is contrasted with.
 
 ---
 
 ## 5️⃣ Apply to LC 129 (Root → Leaf Numbers)
 
-For LeetCode 129 Sum Root to Leaf Numbers:
-
-State = **number**
-
-```text
-123 means path: 1 → 2 → 3
-```
-
-```java
-void dfs(TreeNode node, int num) {
-
-    if (node == null) return;
-
-    num = num * 10 + node.val;
-
-    if (node.left == null && node.right == null) {
-        total += num;
-        return;
-    }
-
-    dfs(node.left, num);
-    dfs(node.right, num);
-}
-```
+State = **number**: `num * 10 + node.val`, passed by value, so again nothing to undo. Worked as
+[Sum Root to Leaf Numbers — LC 129](./tree_lca_distance.md#sum-root-to-leaf-numbers--lc-129).
 
 ---
 
 ## 6️⃣ Special Case: LC 437 (Path Sum III)
 
-LeetCode 437 Path Sum III is different because paths **can start anywhere**, not only root.
-
-So we run DFS **from every node**.
-
-But the inner DFS still follows the same template.
+LC 437's paths **can start anywhere** going down, not only at the root. Running the template from
+every node works, but costs O(N²) on a skewed tree. The O(N) version backtracks a prefix-sum map
+instead of a list — §1️⃣1️⃣ below.
 
 ---
 
@@ -335,73 +269,11 @@ class Solution(object):
 
 ## 1️⃣1️⃣ Template: Prefix Sum **On The Path** + Undo (LC 437)
 
-Section 6️⃣ noted LC 437 needs DFS from every node — that is `O(N^2)`.
-The `O(N)` version is the **canonical "backtrack a HashMap instead of a list"** template.
-
-**Key Idea**: treat the current root→node path as an array and apply the classic subarray-sum trick.
-`count[prefix]` holds how many ancestors on the **current path** have that running sum.
-The map is the path state, so it must be **undone on the way up**.
-
-```java
-// java
-// LC 437 - Path Sum III
-// IDEA: running sum along the path + HashMap<prefixSum, count>;
-//       number of paths ending at node = count[cur - target]. Undo the map when leaving the node.
-class Solution {
-    // time = O(N), space = O(H)
-    public int pathSum(TreeNode root, int targetSum) {
-        Map<Long, Integer> prefix = new HashMap<>();
-        prefix.put(0L, 1);                       // empty prefix = the path starts at root
-        return dfs(root, 0L, targetSum, prefix);
-    }
-
-    private int dfs(TreeNode node, long cur, int target, Map<Long, Integer> prefix) {
-        if (node == null) return 0;
-
-        cur += node.val;                                       // choose
-        int cnt = prefix.getOrDefault(cur - target, 0);        // goal check
-        prefix.merge(cur, 1, Integer::sum);
-
-        cnt += dfs(node.left, cur, target, prefix)             // explore
-             + dfs(node.right, cur, target, prefix);
-
-        prefix.merge(cur, -1, Integer::sum);                   // undo (backtrack)
-        return cnt;
-    }
-}
-```
-
-```python
-# python
-# LC 437 - Path Sum III
-# IDEA: prefix-sum counter over the current root->node path, decremented on the way back up
-from collections import defaultdict
-
-class Solution(object):
-    # time = O(N), space = O(H)
-    def pathSum(self, root, targetSum):
-        prefix = defaultdict(int)
-        prefix[0] = 1                       # empty prefix
-
-        def dfs(node, cur):
-            if not node:
-                return 0
-            cur += node.val                 # choose
-            cnt = prefix[cur - targetSum]   # goal check
-            prefix[cur] += 1
-
-            cnt += dfs(node.left, cur) + dfs(node.right, cur)   # explore
-
-            prefix[cur] -= 1                # undo (backtrack)
-            return cnt
-
-        return dfs(root, 0)
-```
-
-**Gotchas**
-- `prefix[0] = 1` is what allows a valid path to **start at the root**.
-- Use `long` in Java: node values reach `10^9` and paths can be `1000` deep.
-- Forgetting the decrement counts paths that live in a **sibling** subtree → wrong answer, not a crash.
+§6️⃣'s DFS from every node is O(N²). The O(N) form treats the current root-to-node path as an
+array and applies the subarray-sum trick: a map of the prefix sums **on the current path**, undone
+on the way back up — the map is the path state here, exactly as the list was for LC 113. The worked
+card, with Python, Java, a dry run and the traps (`prefix[0] = 1`, the undo, Java's `long`), is
+[tree_lca_distance § Template 5](./tree_lca_distance.md#template-5-downward-path-count-with-a-prefix-sum-map--lc-437).
 
 ---
 
@@ -575,65 +447,11 @@ class Solution(object):
 
 ## 1️⃣4️⃣ Variation: State Flows **Down**, Structure Changes **Up** (LC 1110)
 
-Same skeleton, but instead of pushing onto a path you pass a **boolean down** and
-return a **rewired subtree up**.
-
-> **Twist**: a node becomes a new forest root iff *(its parent was deleted or it is the tree root)* **and** *it is not itself deleted* —
-> so the "state" you carry is just `parentWasDeleted`. Collect roots **pre-order**, rewire children **post-order**.
-
-```java
-// java
-// LC 1110 - Delete Nodes And Return Forest
-// IDEA: pass "is this node a forest root" down; return null upward for deleted nodes so the parent unlinks it.
-class Solution {
-    // time = O(N), space = O(H)
-    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
-        Set<Integer> toDel = new HashSet<>();
-        for (int v : to_delete) toDel.add(v);
-        List<TreeNode> res = new ArrayList<>();
-        dfs(root, true, toDel, res);
-        return res;
-    }
-
-    private TreeNode dfs(TreeNode node, boolean isRoot, Set<Integer> toDel, List<TreeNode> res) {
-        if (node == null) return null;
-
-        boolean deleted = toDel.contains(node.val);
-        if (isRoot && !deleted) res.add(node);                 // new forest root
-
-        node.left  = dfs(node.left,  deleted, toDel, res);     // children are roots iff I'm deleted
-        node.right = dfs(node.right, deleted, toDel, res);
-
-        return deleted ? null : node;                          // unlink myself from my parent
-    }
-}
-```
-
-```python
-# python
-# LC 1110 - Delete Nodes And Return Forest
-# IDEA: carry "parent was deleted" down, return None up so the parent drops the link
-class Solution(object):
-    # time = O(N), space = O(H)
-    def delNodes(self, root, to_delete):
-        to_del = set(to_delete)
-        res = []
-
-        def dfs(node, is_root):
-            if not node:
-                return None
-            deleted = node.val in to_del
-            if is_root and not deleted:
-                res.append(node)                 # new forest root
-
-            node.left = dfs(node.left, deleted)  # children become roots iff I'm deleted
-            node.right = dfs(node.right, deleted)
-
-            return None if deleted else node     # unlink myself
-
-        dfs(root, True)
-        return res
-```
+Same skeleton, but instead of pushing onto a path you pass a **boolean down** ("my parent was
+deleted, so I start a new tree") and return a **rewired subtree up** (`None` for a deleted node, so
+the parent drops the link). It is tree modification rather than a path problem, so its card lives
+with the other structural edits:
+[binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-).
 
 ---
 

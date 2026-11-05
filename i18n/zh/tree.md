@@ -47,7 +47,7 @@
 - [Array Representation Guide](https://www.prepbytes.com/blog/tree/array-representation-of-binary-tree/)
 - [GeeksforGeeks Implementation](https://www.geeksforgeeks.org/binary-tree-array-implementation/)
 
-<!-- 6161f23261dc -->
+<!-- 1b10dcf730fe -->
 ## Recognition（辨識）
 
 大多數樹題都會**導向別的表**：這張表負責的是走訪方式的*選擇*，以及三個任何單一模式模板都涵蓋不到的技巧。限制條件的線索來自
@@ -57,10 +57,10 @@
 |---|---|---|---|
 | 「以**每個**節點為根時的答案」、「每個節點到其他所有節點的距離總和」 | n ≤ 3 · 10⁴ → O(n)，不是跑 n 次 DFS | [Template 3](#template-3-re-rooting-dp--lc-834) 換根 DP | 只要一個最佳的根（「最小高度樹」，LC 310）→ 剝葉子，[topology_sorting § Template 7](./topology_sorting.md#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees-) |
 | 「第 k 個祖先」、在一棵不會變動的樹上做很多次 LCA 查詢 | n、q ≤ 5 · 10⁴ → 每次查詢 O(log n) | [Template 2](#template-2-binary-lifting--lc-1483-) 倍增法 | 只有一次 LCA 查詢 → 一次 O(n) DFS，[tree_lca_distance.md](./tree_lca_distance.md) |
-| 「O(1) 額外空間」、「不用遞迴也不用堆疊」、「原地攤平」 | 通常是追問，很少是第一題 | [Template 1](#template-1-morris-in-order-traversal--lc-94) Morris 穿線 | 樹連暫時改動都不行（共用、唯讀）→ 迭代堆疊，[tree2 1.2)](./tree2.md#12-inorder-template--lc-94-) |
+| 「O(1) 額外空間」、「不用遞迴也不用堆疊」、「原地攤平」 | 通常是追問，很少是第一題 | [Template 1](#template-1-morris-in-order-traversal--lc-94) Morris 穿線 | 樹連暫時改動都不行（共用、唯讀）→ 迭代堆疊，[binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
 | 父節點必須往下傳的路徑、深度或目前最大值 | 節點 ≤ 10⁵ → 一次 O(n) | [0-3) 由上而下](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems-) | 節點需要兩個子節點的答案 → 由下而上 |
 | 「高度」、「平衡」、「直徑」— 要先拿到兩個子節點的結果 | 節點 ≤ 10⁴ | [0-3) 由下而上](#0-3-top-down-vs-bottom-up-dfs--two-strategies-for-tree-problems-)，再看 [binary_tree.md](./binary_tree.md) | 值是從上面來的（深度）→ 由上而下 |
-| 「一層一層」、「右視圖」、「最小深度」 | 節點 ≤ 10⁴ | BFS，[tree2 1.4)](./tree2.md#14-bfs-template-level-order--lc-102-) | |
+| 「一層一層」、「右視圖」、「最小深度」 | 節點 ≤ 10⁴ | BFS，[binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) | |
 | 「從根到葉的路徑」、「最低共同祖先」、「兩節點之間的距離」 | 節點 ≤ 10⁵ | [tree_lca_distance.md](./tree_lca_distance.md) | 樹是 BST → 依值往下走，[bst.md](./bst.md) |
 | 「合法的 BST」、「第 k 小」 | 節點 ≤ 10⁴ | 中序，[bst.md](./bst.md) | 無序的樹 → 沒有排序可以依靠 |
 | 「序列化／反序列化」、「重複的子樹」 | 節點 ≤ 10⁴ | [tree_codec.md](./tree_codec.md) | |
@@ -337,7 +337,7 @@
 
 <p align="center"><img src="../pic/tree_traverse.png" width="600"></p>
 
-<!-- bcf87060130c -->
+<!-- 697035422434 -->
 ### 1.4) 走訪順序怎麼選
 
 四種基本走訪的**完整程式碼**寫在
@@ -347,9 +347,9 @@
 | 答案取決於… | 走訪 | 為什麼 | 模板 |
 |---|---|---|---|
 | **父節點**，而且在子節點的結果出來之前就要 | **前序** — 根 → 左 → 右 | 狀態往*下*流：一條路徑、一個深度、一個累積前綴 | [tree2 1.1) — LC 144](./tree2.md#11-preorder-template--lc-144) |
-| 這棵樹是 **BST**，而你要的是排序順序 | **中序** — 左 → 根 → 右 | BST 的中序*就是*排序後的序列，所以 LC 98 和 LC 230 各只要一行 | [tree2 1.2) — LC 94](./tree2.md#12-inorder-template--lc-94-) |
+| 這棵樹是 **BST**，而你要的是排序順序 | **中序** — 左 → 根 → 右 | BST 的中序*就是*排序後的序列，所以 LC 98 和 LC 230 各只要一行 | [binary_tree § Template 1 — LC 94](./binary_tree.md#template-1-recursive-pre--in--post-order-traversal--lc-94) |
 | **兩個子節點**，節點才能給出答案 | **後序** — 左 → 右 → 根 | 狀態往*上*流：高度、總和、「這棵子樹合不合法」的判定 | [tree2 1.3) — LC 145](./tree2.md#13-postorder-template--lc-145) |
-| **到根的距離**，或每一層各自的答案 | **層序（BFS）** | 第一次碰到某節點走的一定是最短路徑，而一層就是佇列長度的一次快照 | [tree2 1.4) — LC 102](./tree2.md#14-bfs-template-level-order--lc-102-) |
+| **到根的距離**，或每一層各自的答案 | **層序（BFS）** | 第一次碰到某節點走的一定是最短路徑，而一層就是佇列長度的一次快照 | [binary_tree § Template 2 — LC 102](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102) |
 | 一樣看層，但**方向要交替** | **BFS + 方向旗標** | 反轉那一列就好，不要去反轉走訪本身 | [tree2 1.5) — LC 103](./tree2.md#15-bfs--direction-template--lc-103) |
 
 **一句話的判斷法**：問自己*「這個節點不用聽子節點回報，就能給出答案嗎？」* 可以 →
@@ -357,19 +357,19 @@
 
 <p align="center"><img src="../pic/tree_traverse.png" width="600"></p>
 
-<!-- 910062a9666a -->
+<!-- 3114fa99aba6 -->
 ### 1.4-1) 不需要佇列的走訪
 
 有兩種技巧能拿到一般走訪的答案，卻不用付出它的空間代價。它們不屬於單一模式的模板，所以留在這裡而不是放進目錄：
 
 - **O(1) 空間的逐層串接** — 節點本身已經有 `next` 指標時，那一層自己就能當佇列用。完整寫在
-  [tree2 8.1) — LC 116 / LC 117](./tree2.md#81-o1-space-level-linking-template--lc-117-)。
+  [binary_tree § Template 8 — LC 116 / LC 117](./binary_tree.md#template-8-level-linking-with-o1-space--lc-117-)。
 - **帶座標標註的走訪** — 在任何走訪中帶著 `(row, col)`，最後再排序；走訪順序就變得不重要了，
   這也是為什麼在垂直走訪、俯視／仰視圖與 LC 662 那種寬度索引題上，DFS 與 BFS 可以互換。
   [tree2 8.3) — LC 987](./tree2.md#83-coordinate-map-traversal-template--lc-987)。
 - **Morris 走訪** — 見下方。
 
-<!-- cf599974336e -->
+<!-- 3b0437fd219e -->
 #### Template 1: Morris In-order Traversal — LC 94
 
 **Recognise（辨識）** — 中序（或前序）走訪，追問是「能不能用 **O(1) 額外空間**？」或「**不用遞迴、也不用堆疊**」。時間仍然是 O(n)，省掉的只是 O(h) 的堆疊。節點 ≤ 10⁴，所以這是為了回答追問，不是為了變快。
@@ -400,12 +400,12 @@
 - 提早回傳（例如找到第 k 小就走）會把線留在樹上。在 `[2, 1, 3]` 上做 LC 230、k = 1，會留下 `1.right == 2`，呼叫端可能在這個環上繞不出來。要嘛走完，要嘛回傳前先拆線。
 - 後序需要反轉右脊。很少考；用迭代堆疊就好。
 
-**Not this if（不是這招的情況）** — 走訪時樹是共用或唯讀的（另一個執行緒在讀，或面試官說「不要修改輸入」）。Morris 會寫入樹，哪怕只是暫時的。改用迭代堆疊，[tree2 1.2)](./tree2.md#12-inorder-template--lc-94-)。
+**Not this if（不是這招的情況）** — 走訪時樹是共用或唯讀的（另一個執行緒在讀，或面試官說「不要修改輸入」）。Morris 會寫入樹，哪怕只是暫時的。改用迭代堆疊，[binary_tree § Template 2](./binary_tree.md#template-2-iterative-traversal--stack-in-order-and-queue-level-order--lc-102)。
 
 **Drill（練習）** — LC 94 · LC 144 *（第一次造訪就輸出）* · LC 114 *（重接，見下）* ·
 LC 99 *（用 O(1) 空間修復 BST：兩個順序錯的節點會在 Morris 順序裡現身）*
 
-<!-- 7afbecc327c3 -->
+<!-- 9fcb7ad2b47d -->
 ##### Morris **穿線家族** — 暫時的線 vs 永久的重接
 
 Template 1 的 Morris 走訪與 O(1) 空間的**攤平**（LC 114）共用**同一個核心步驟**：從當前節點出發，找到**左子樹最右邊的節點**（中序前驅），用它空著的 `right` 指標「穿線」到某處。兩者的差別只在拿這條線做什麼：
@@ -421,7 +421,7 @@ Template 1 的 Morris 走訪與 O(1) 空間的**攤平**（LC 114）共用**同�
 
 <!--CODE-->
 
-> 遞迴版的對應寫法 — 後序遞迴，每次呼叫**回傳**它所攤平子樹的**尾端**，讓父節點知道要接在哪裡 — 詳見 [tree_examples 16)](./tree_examples.md#16-flatten-binary-tree-to-linked-list--lc-114)，包括為什麼尾端要依 右 → 左 → 節點 的順序檢查。
+> 遞迴版的對應寫法 — 後序遞迴，每次呼叫**回傳**它所攤平子樹的**尾端**，讓父節點知道要接在哪裡 — 詳見 [tree_examples 16)](./tree_examples.md#flatten-binary-tree-to-linked-list--lc-114)，包括為什麼尾端要依 右 → 左 → 節點 的順序檢查。
 
 > **什麼時候該掏出這招：** 任何「原地、O(1) 空間、沿著右脊重整樹」的題目。`while rightmost.right` 這個找前驅的步驟就是它的招牌。要認出它跟 Morris 走訪是**同一套機械** — 只有線指向哪裡、以及要不要還原，這兩點不同。
 

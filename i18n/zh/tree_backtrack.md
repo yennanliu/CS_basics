@@ -1,19 +1,10 @@
-<!-- 2f9ba9290e64 -->
-# 樹的回溯模板（gpt）
+<!-- ef3f7856ee7f -->
+# 樹的回溯模板
 
-> **範圍** — 根到葉的**路徑**問題：路徑本身就是狀態，回程時必須把它復原。
-> **另見**：[tree.md](./tree.md) — 一般的樹走訪；[binary_tree.md](./binary_tree.md) — DFS 狀態流動的方向；[backtrack.md](./backtrack.md) — 樹以外的回溯。
+> **範圍** — 樹的路徑問題背後那套「選擇 / 探索 / 復原」骨架，以及每題各自帶著的路徑狀態，外加根到葉卡片沒涵蓋的變形：通往單一節點的路徑（LC 236）、隱式的樹（LC 386、LC 388）；根到葉的卡片本身放在 tree_lca_distance.md。
+> **另見**：[tree_lca_distance.md](./tree_lca_distance.md) — 根到葉的路徑卡片（LC 112、113、129、257、437）；[tree.md](./tree.md) — 一般的樹走訪；[binary_tree.md](./binary_tree.md) — DFS 狀態流動的方向；[backtrack.md](./backtrack.md) — 樹以外的回溯。
 
-很多**樹的路徑問題**其實共用同一套 DFS＋回溯骨架。下面這個模板適用於這類題目：
-
-* LeetCode 113 Path Sum II
-* LeetCode 257 Binary Tree Paths
-* LeetCode 129 Sum Root to Leaf Numbers
-* LeetCode 437 Path Sum III（稍微改一下）
-
-先給**通用模板**，再看每題怎麼套進去。
-
----
+很多樹的路徑問題共用同一套 DFS 骨架：選擇（延伸路徑狀態）、檢查目標（通常在葉子）、探索兩個子節點、復原。這份表單講的是骨架，以及每題帶著什麼狀態；標準的根到葉卡片（LC 112、113、129、257、437）放在 [tree_lca_distance.md](./tree_lca_distance.md)，下面各節會連過去。
 
 <!-- 98c3c7f8dbc2 -->
 ## LeetCode 題目清單
@@ -49,49 +40,31 @@
 
 ---
 
-<!-- 4ff19eb4b4da -->
+<!-- 25294c46a6e7 -->
 ## 3️⃣ 套用到 LC 113（Path Sum II）
 
-以 LeetCode 113 Path Sum II 為例：
-
-狀態 = **剩餘的和**
-
-<!--CODE-->
+狀態 = **剩下的總和**，再加上一個進入時 append、離開時 pop 的路徑 list。完整的卡片（Python 與 Java、試跑和陷阱）在 [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113)，那份表單負責整個根到葉路徑家族。
 
 ---
 
-<!-- 61eb3f60cdd5 -->
+<!-- c99cfaf2c53e -->
 ## 4️⃣ 套用到 LC 257（Binary Tree Paths）
 
-以 LeetCode 257 Binary Tree Paths 為例：
-
-狀態 = **路徑字串**
-
-<!--CODE-->
+狀態 = **路徑字串**。字串不可變，每次呼叫各自建出自己的一份，沒有東西要復原。完整解法在 [tree_lca_distance § Template 4](./tree_lca_distance.md#template-4-root-to-leaf-path-with-backtracking--lc-113) 的 *Path Update Strategies*，旁邊就是拿來對照的可變 list 版本。
 
 ---
 
-<!-- c0c4394ec980 -->
+<!-- fa9d26535a99 -->
 ## 5️⃣ 套用到 LC 129（根 → 葉的數字）
 
-以 LeetCode 129 Sum Root to Leaf Numbers 為例：
-
-狀態 = **數字**
-
-<!--CODE-->
-
-<!--CODE-->
+狀態 = **數字**：`num * 10 + node.val`，以值傳遞，所以同樣沒有東西要復原。完整解法是 [Sum Root to Leaf Numbers — LC 129](./tree_lca_distance.md#sum-root-to-leaf-numbers--lc-129)。
 
 ---
 
-<!-- c154e6b15899 -->
+<!-- 527d20a6faea -->
 ## 6️⃣ 特殊情況：LC 437（Path Sum III）
 
-LeetCode 437 Path Sum III 不太一樣，因為路徑**可以從任何節點開始**，不限於根。
-
-所以我們從**每個節點**都跑一次 DFS。
-
-但內層的 DFS 仍然照著同一個模板走。
+LC 437 的路徑往下走時**可以從任何地方開始**，不一定是根。從每個節點各跑一次模板行得通，但在歪斜的樹上是 O(N²)。O(N) 的版本回溯的是一張前綴和 map 而不是 list — 見下面的 §1️⃣1️⃣。
 
 ---
 
@@ -168,24 +141,10 @@ LeetCode 437 Path Sum III 不太一樣，因為路徑**可以從任何節點開�
 
 ---
 
-<!-- 2112fbbfe8fe -->
+<!-- 49244c828335 -->
 ## 1️⃣1️⃣ 模板：**在路徑上**做前綴和＋復原（LC 437）
 
-第 6️⃣ 節提到 LC 437 要從每個節點跑 DFS——那是 `O(N^2)`。
-`O(N)` 的版本，就是那個經典的**「回溯一個 HashMap，而不是一個 list」**模板。
-
-**核心想法**：把當前的根→節點路徑當成一個陣列，套用經典的子陣列和技巧。
-`count[prefix]` 記錄**當前路徑上**有多少個祖先的累積和是這個值。
-這個 map 就是路徑狀態，所以**回程時一定要復原**。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**容易踩到的坑**
-- `prefix[0] = 1` 是讓合法路徑能**從根開始**的關鍵。
-- Java 要用 `long`：節點值可到 `10^9`，路徑可深達 `1000`。
-- 忘記做遞減，會把長在**兄弟**子樹裡的路徑也算進來 → 答案錯，而且不會 crash。
+§6️⃣ 的「從每個節點做 DFS」是 O(N²)。O(N) 的做法把目前根到節點的路徑當成陣列，套用子陣列和的技巧：一張記錄**目前路徑上**前綴和的 map，回程時復原 — 在這裡 map 就是路徑狀態，就像 LC 113 的 list 一樣。完整的卡片（Python、Java、試跑，以及陷阱：`prefix[0] = 1`、復原、Java 的 `long`）在 [tree_lca_distance § Template 5](./tree_lca_distance.md#template-5-downward-path-count-with-a-prefix-sum-map--lc-437)。
 
 ---
 
@@ -232,18 +191,10 @@ LeetCode 437 Path Sum III 不太一樣，因為路徑**可以從任何節點開�
 
 ---
 
-<!-- 63f08040c53e -->
+<!-- 31ba12d9990b -->
 ## 1️⃣4️⃣ 變形：狀態往**下**流，結構往**上**改（LC 1110）
 
-骨架一樣，只是不再把東西 push 進路徑，而是把一個**布林值往下傳**，
-再把**重接好的子樹往上回傳**。
-
-> **轉折**：一個節點會變成新的森林根，條件是*（它的父節點被刪掉，或它本身就是樹根）* **而且** *它自己沒被刪掉*——
-> 所以你要帶的「狀態」就只是 `parentWasDeleted`。用**前序**收集根，用**後序**重接子節點。
-
-<!--CODE-->
-
-<!--CODE-->
+骨架相同，但不是往路徑上 push，而是把一個**布林值往下傳**（「我的父節點被刪了，所以我是一棵新樹的根」），並把**重接好的子樹往上回傳**（被刪的節點回傳 `None`，父節點就把那條連結拿掉）。這是改樹的結構而不是路徑問題，所以它的卡片和其他結構修改放在一起：[binary_tree § Template 10](./binary_tree.md#template-10-post-order-structural-modification--lc-1110-)。
 
 ---
 

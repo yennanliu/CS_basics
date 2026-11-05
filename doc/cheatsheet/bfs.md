@@ -263,30 +263,10 @@ last node of each level)* · LC 103 *(reverse every other level)* · LC 662 *(ca
 
 #### Variation: **return at the first leaf popped** — LC 111 (Minimum Depth of Binary Tree)
 
-> **Twist**: don't traverse the whole tree — BFS reaches the shallowest leaf first, so return the moment a node with no children is dequeued. On a long left-skewed spine DFS visits every node; BFS quits at the first leaf. (Contrast with LC 104 Maximum Depth, where you *must* see every level, so DFS recursion is the cleaner tool.)
+> **Key point** — don't traverse the whole tree: BFS reaches the shallowest leaf first, so return the moment a node with no children is dequeued. On a long left-skewed spine DFS visits every node; BFS quits at the first leaf. (Contrast with LC 104 Maximum Depth, where you *must* see every level, so DFS recursion is the cleaner tool.)
 
-```python
-# python
-# LC 111 - Minimum Depth of Binary Tree
-# IDEA: first dequeued leaf = shallowest leaf -> answer
-# time = O(N) worst case but exits early, space = O(W)
-def minDepth(root):
-    if not root:
-        return 0
-    q = deque([root])
-    depth = 1
-    while q:
-        for _ in range(len(q)):
-            node = q.popleft()
-            if not node.left and not node.right:
-                return depth            # early exit: BFS found the shallowest leaf
-            if node.left:
-                q.append(node.left)
-            if node.right:
-                q.append(node.right)
-        depth += 1
-    return depth
-```
+**Reduces to**: [Template 1](#template-1-level-order-bfs--lc-102-), with an early return at the first leaf.
+Worked in one place, with its traps: [tree_examples.md § LC 111](./tree_examples.md#minimum-depth-of-binary-tree--lc-111).
 
 > Two further level-BFS variations — carrying a **heap index** (LC 662) and **enqueuing the `null` children** (LC 958) — are in [bfs_examples.md](./bfs_examples.md).
 
