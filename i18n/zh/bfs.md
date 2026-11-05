@@ -190,11 +190,12 @@ BFS 的時間複雜度取決於圖的表示法：
 
 **練習** — LC 102 ⭐ · LC 111 *（在第一個葉節點就回傳：見下方變形）* · LC 199 *（保留每層最後一個節點）* · LC 103 *（每隔一層反轉）* · LC 662 *（攜帶堆積索引）*
 
-<!-- 04ce27c321d8 -->
+<!-- 04ef0ef993e1 -->
 #### 變形：**彈出第一個葉節點時就回傳** — LC 111 (Minimum Depth of Binary Tree)
 
-> **轉折**：不必走完整棵樹——BFS 會最先抵達最淺的葉節點，所以一旦出列的節點沒有子節點就立刻回傳。在一條長長的左歪斜脊上，DFS 會拜訪每個節點；BFS 在第一個葉節點就收工。（對照 LC 104 Maximum Depth：那題你*必須*看過每一層，所以 DFS 遞迴才是更俐落的工具。）
+> **關鍵** — 不必走完整棵樹：BFS 會最先抵達最淺的葉節點，所以一旦出列的節點沒有子節點就立刻回傳。在一條長長的左歪斜脊上，DFS 會拜訪每個節點；BFS 在第一個葉節點就收工。（對照 LC 104 Maximum Depth：那題你*必須*看過每一層，所以 DFS 遞迴才是更俐落的工具。）
 
+**歸約到**：[Template 1](#template-1-level-order-bfs--lc-102-)，在第一個葉節點提早回傳。
 只在一個地方解，連同陷阱：[tree_examples.md § LC 111](./tree_examples.md#minimum-depth-of-binary-tree--lc-111)。
 
 > 另外兩個逐層 BFS 的變形——攜帶 **heap index**（LC 662）以及**把 `null` 子節點也入列**（LC 958）——放在 [bfs_examples.md](./bfs_examples.md)。
