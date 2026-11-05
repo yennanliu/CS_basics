@@ -63,7 +63,7 @@ The constraint ruler behind the cue column lives in [complexity_cheatsheet.md](.
 
 **Pattern 2: Maximize Minimum**
 - Goal: Find largest X where some minimum value ≥ X
-- Update: `if valid: left = mid` (try larger), with the upper mid `mid = (l + r + 1) // 2` (Java: `(l + r + 1) / 2`) so the loop always moves
+- Update: `if valid: left = mid` (try larger), with the upper mid `mid = (l + r + 1) // 2` (Java: `(int) (((long) l + r + 1) / 2)`, so the sum cannot overflow) so the loop always moves
 - Examples: **LC 1231** (Divide Chocolate), LC 1552, LC 2064, LC 2226
 - Key: Greedy validation — can we make enough pieces/groups with each ≥ target?
 - **Why BS works**: Monotonic property — smaller X is always easier to satisfy
@@ -1390,7 +1390,7 @@ class Solution:
 
 3. **Wrong boundary update**
    - Minimize: `right = mid` (not `mid - 1`)
-   - Maximize: `left = mid`, with the upper mid `(l + r + 1) // 2` (Java: `/ 2`)
+   - Maximize: `left = mid`, with the upper mid `(l + r + 1) // 2` (Java: `(int) (((long) l + r + 1) / 2)`)
 
 4. **Inefficient validation**
    - Add early termination in validation function

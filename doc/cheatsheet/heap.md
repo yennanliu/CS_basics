@@ -220,9 +220,9 @@ smallest, whose top is the answer.
 
 ```python
 # python
-# LC 215 - Kth Largest Element in an Array
 # IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
 # time = O(n log k), space = O(k)
+# LC 215 - Kth Largest Element in an Array
 import heapq
 
 def findKthLargest(nums, k):
@@ -236,9 +236,9 @@ def findKthLargest(nums, k):
 
 ```java
 // java
-// LC 215 - Kth Largest Element in an Array
 // IDEA: keep a min-heap of the k largest seen so far; its root is the kth largest
 // time = O(n log k), space = O(k)
+// LC 215 - Kth Largest Element in an Array
 public int findKthLargest(int[] nums, int k) {
     PriorityQueue<Integer> minHeap = new PriorityQueue<>();
     for (int num : nums) {
