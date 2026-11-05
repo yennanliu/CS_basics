@@ -685,7 +685,7 @@ moment it has `k` numbers.
 ```python
 # python
 # LC 77 - Combinations
-# IDEA: start_idx + a size gate; stop as soon as len(path) == k
+# IDEA: start_idx + a size gate, and never start a branch that cannot still reach k numbers
 # time = O(C(n,k) * k), space = O(k)   one copy per combination
 def combine(n, k):
     res = []
@@ -695,7 +695,8 @@ def combine(n, k):
         if len(path) == k:
             res.append(path[:])            # path[:] and list(path) are both a copy
             return
-        for i in range(start, n + 1):      # numbers are 1..n, so the bound is n + 1
+        need = k - len(path)
+        for i in range(start, n - need + 2):   # leave room for the need - 1 numbers after i
             path.append(i)
             backtrack(i + 1)
             path.pop()
@@ -707,7 +708,7 @@ def combine(n, k):
 ```java
 // java
 // LC 77 - Combinations
-// IDEA: start_idx + a size gate; stop as soon as path.size() == k
+// IDEA: start_idx + a size gate, and never start a branch that cannot still reach k numbers
 // time = O(C(n,k) * k), space = O(k)
 public List<List<Integer>> combine(int n, int k) {
     List<List<Integer>> res = new ArrayList<>();
@@ -720,7 +721,8 @@ private void backtrack(int start, int n, int k, List<Integer> path, List<List<In
         res.add(new ArrayList<>(path));
         return;
     }
-    for (int i = start; i <= n; i++) {
+    int need = k - path.size();
+    for (int i = start; i <= n - need + 1; i++) {   // leave room for the need - 1 numbers after i
         path.add(i);
         backtrack(i + 1, n, k, path, res);
         path.remove(path.size() - 1);
@@ -729,15 +731,15 @@ private void backtrack(int start, int n, int k, List<Integer> path, List<List<In
 ```
 
 **Complexity**
-- **Time O(C(n,k) · k)**: there are C(n,k) leaves and each copy is O(k). The inner nodes add at
-  most a factor of k more, which the bound absorbs.
+- **Time O(C(n,k) · k)**: there are C(n,k) leaves and each copy is O(k). The cap on `i` means
+  every node visited lies on the way to some leaf, so the inner nodes add at most a factor of k.
 - **Space O(k)**: the recursion stops at depth `k`.
 
 **Traps**
 - `range(start, n)` on a 1-indexed problem: `n` is never chosen, so `n = 4, k = 2` misses
   `[1, 4]`, `[2, 4]`, `[3, 4]`.
-- Without an upper-bound prune the loop also starts branches that cannot reach size `k`. Capping
-  `i` at `n - (k - len(path)) + 1` removes them; the class is unchanged, the constant is not.
+- Dropping the cap on `i`: the loop starts branches that can never reach size `k`. With `k = n`
+  that is every subset, 2ⁿ calls for the one answer; the cap leaves a single path.
 
 **Drill** — LC 77 ⭐ · LC 216 *(a sum constraint on top)* · LC 17 *(one choice list per position)* · LC 1286 *(an iterator over the same order)*
 

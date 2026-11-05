@@ -621,9 +621,9 @@
   // to drill without anyone typing it. Only the Drill Path section is touched,
   // and only text between tags, so links and attributes are never rewritten.
   const VERDICT_TEXT = {
-    en: { ok: 'ok', again: 'again', none: 'not tried',
+    en: { ok: 'ok', again: 'again', none: 'no verdict',
           title: (v, d) => `practice log: ${v}${d ? ' on ' + d : ''}` },
-    zh: { ok: 'ok', again: 'again', none: '未練',
+    zh: { ok: 'ok', again: 'again', none: '未評定',
           title: (v, d) => `練習紀錄：${v}${d ? '（' + d + '）' : ''}` }
   };
 

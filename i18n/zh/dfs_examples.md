@@ -38,7 +38,7 @@
 <!-- 38fdce00d090 -->
 ## 樹的走訪範例
 
-<!-- d8cad3c81535 -->
+<!-- aa0d50684e91 -->
 ### Print Binary Tree — LC 655
 
 > **關鍵** —— 網格的大小只取決於樹高，所以先算樹高，DFS 就只需要把 `(row, col)` 往下傳。每往下一層，到子節點的水平位移減半：
@@ -57,7 +57,7 @@
 | LC | 題目 | 家 |
 |---|---|---|
 | 94 | Binary Tree Inorder Traversal | [dfs § 模板 1](./dfs.md#template-1-tree-traversal--lc-94-)（錨定題） |
-| 100 | Same Tree | [tree_examples.md](./tree_examples.md) |
+| 100 | Same Tree | [binary_tree § Template 12](./binary_tree.md#template-12-two-trees-in-lockstep--lc-100)（錨定題） |
 | 98 | Validate Binary Search Tree | [bst.md](./bst.md) — 用上下界驗證 |
 | 700 | Search in a Binary Search Tree | [bst.md](./bst.md) |
 | 297 | Serialize and Deserialize Binary Tree | [tree_codec.md](./tree_codec.md) |
@@ -112,7 +112,7 @@
 - 查詢很多時，先一次把連通分量標好（像下面的 LC 990），或改用 union-find；
   每次查詢都跑一次 DFS 會重複走同一段路。
 
-<!-- dbeeb66752aa -->
+<!-- 192d7a85b3d2 -->
 ### Satisfiability of Equality Equations — LC 990
 
 > **關鍵** —— `==` 是等價關係：`==` 的邊把變數分成幾個連通分量，除非某個 `!=` 連到**同一個**分量裡的兩個變數，
@@ -126,8 +126,7 @@
 - `a!=a` 本身就無法滿足，而且 `a` 可能沒出現在任何 `==` 裡。先測 `a == b`。
 - 單向的圖會讓遞移性檢查出錯：從 `a==b, b==c` 來看，從 `c` 出發的搜尋找不到任何邊。
   兩個方向都要加。
-- union-find 版本是另一個常見答案，它在
-  [union_find_examples.md](./union_find_examples.md) 裡解過。
+- 併查集是另一個常見答案，同樣 O(n)：先 union 每個 `==`，再拒絕兩個字母同根的 `!=`。這張卡是它的家，`union_find_examples.md` 指向這裡。
 
 **在別處解過**
 

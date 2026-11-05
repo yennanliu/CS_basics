@@ -792,7 +792,7 @@ test('stampDrillVerdicts finds the 中文 heading by its text and labels in Chin
   const html = '<h2 id="練習路徑">練習路徑</h2><p>LC 3 · LC 1</p>';
   const doc = parse(lib.stampDrillVerdicts(html, VERDICTS, 'zh'));
   const [none, ok] = doc.querySelectorAll('.lc-verdict');
-  assert.equal(none.textContent, '未練');
+  assert.equal(none.textContent, '未評定');
   assert.equal(ok.getAttribute('title'), '練習紀錄：ok（2026-10-01）');
 });
 
