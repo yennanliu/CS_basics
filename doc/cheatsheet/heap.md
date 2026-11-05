@@ -591,7 +591,8 @@ def findKthLargest(nums, k):
 
     return min_heap[0]  # the smallest of the k largest = the kth largest
 
-# Same heap, keyed by frequency - LC 347 Top K Frequent Elements
+# Top-k by frequency - LC 347 Top K Frequent Elements: count, then let heapq.nlargest keep
+# a size-k heap keyed by count
 def topKFrequent(nums, k):
     from collections import Counter
     import heapq

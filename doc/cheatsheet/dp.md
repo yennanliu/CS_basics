@@ -151,9 +151,10 @@ def dp_solution(input_data):
 ### Template 1: 1-D Linear DP ⭐⭐⭐⭐⭐ — LC 53
 
 ```python
-# LC 53 - Maximum Subarray
+# python
 # IDEA: dp[i] = best sum of a subarray that ENDS at i: extend the previous run or restart at i
 # time = O(n), space = O(n)
+# LC 53 - Maximum Subarray
 def linear_dp(nums):
     n = len(nums)
     if n == 0:

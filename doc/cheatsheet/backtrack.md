@@ -87,7 +87,7 @@ Working notes per shape — the mnemonic for the loop body, and the gotcha.
     - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
     - (for loop call help func) +  start_idx + for loop + pop(-1)
     - backtrack. find minumum case. transform the problem to `tree-problem`. via `start` remove already used numbers and return all cases
-    - No `contains` check: `start_idx` already uses each element at most once (`contains` is the permutations idiom)
+    - No `contains` check: passing `i + 1` as the next `start_idx` uses each element at most once (passing `i` would reuse it; `contains` is the permutations idiom)
 - `Subsets II`
     - LC 90
     - start idx + backtrack + dedup (seen)
@@ -244,7 +244,7 @@ next start index** — `i` (reuse the current element) or `i + 1` (move past it)
 
 | Pass | Meaning | Analogy | Examples |
 | ---- | ------- | ------- | -------- |
-| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum), LC 518 (Coin Change II) |
+| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum); LC 518 (Coin Change II) is the DP analogue, counted rather than listed |
 | `i + 1` | Use **each element at most once** | **0/1 knapsack**, subsets | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
 
 > Permutations use neither — they revisit earlier elements, so they track a `visited[]`
@@ -274,52 +274,23 @@ The `// ...` lines are elided boilerplate, not code.
 
 ```java
 // java
+// IDEA: choose -> explore -> un-choose; the next start is i + 1, so each element is used at most once
 // time = O(2^n * n), space = O(n)   2^n subsets, O(n) to copy each
 // LC 78 - Subsets
 public List<List<Integer>> subsets(int[] nums) {
-    // ...
-    this.getSubSet(start_idx, nums, cur, res);
-    //System.out.println("(after) res = " + res);
+    List<List<Integer>> res = new ArrayList<>();
+    getSubSet(0, nums, new ArrayList<>(), res);
     return res;
 }
 
-public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res){
-
-    if (!res.contains(cur)){
-        // NOTE !!! init new list via below
-        res.add(new ArrayList<>(cur));
-    }
-
-    if (cur.size() > nums.length){
-        return;
-    }
-
-    for (int i = start_idx; i < nums.length; i++){
-        /**
-         * NOTE !!!
-         *
-         *  for subset,
-         *  we need "!cur.contains(nums[i])"
-         *  -> to NOT add duplicated element
-         */
-        if (!cur.contains(nums[i])){
-            cur.add(nums[i]);
-            /**
-             *  NOTE !!!
-             *
-             *   at LC 78 subset, we need to use `i+1` idx
-             *   in recursive call
-             *
-             *   while at LC 39 Combination Sum,
-             *   we use `i` directly
-             *
-             *
-             *   e.g. next start_idx is ` i+1`
-             */
-            this.getSubSet(i+1, nums, cur, res);
-            // undo
-            cur.remove(cur.size()-1);
-        }
+private void getSubSet(int startIdx, int[] nums, List<Integer> cur, List<List<Integer>> res) {
+    res.add(new ArrayList<>(cur));            // every node of the tree is a subset (copy: cur keeps changing)
+    for (int i = startIdx; i < nums.length; i++) {
+        // No contains() check: passing i + 1 below already uses each element at most once
+        // (distinct values). LC 90's duplicate values need same-level skipping instead.
+        cur.add(nums[i]);
+        getSubSet(i + 1, nums, cur, res);     // LC 39 would pass i (reuse allowed)
+        cur.remove(cur.size() - 1);           // un-choose
     }
 }
 ```

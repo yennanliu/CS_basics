@@ -1,5 +1,7 @@
 # DE FAQ
 
+> **See also**: [`faq_DE_interview.md`](./faq_DE_interview.md) — the data engineering interview map: Spark, Kafka, Hadoop, data modeling, SQL, batch and stream pipelines, schema design, SQL vs NoSQL.
+
 #### 0. Data Engineer Interview Questions With Python
 - https://realpython.com/data-engineer-interview-questions-python/?fbclid=IwAR3gV5Ot3LQDu_cx1ROSrxYh7TJY1W7hNkEGlsWcpbEhbvWVv7U2C5BjgO8
 
