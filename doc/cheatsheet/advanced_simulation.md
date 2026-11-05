@@ -433,10 +433,10 @@ class Robot:
 
 ```java
 // java
-// LC 2532 - Time to Cross a Bridge
-// IDEA: 4 heaps; the bridge serves the right bank first, and on each bank the least efficient worker
-//       (largest left + right, then largest index) crosses first; jump the clock when nobody can move
+// IDEA: 4 heaps; the right bank crosses first, least efficient worker first on each bank
 // time = O((n + k) log k), space = O(k)
+// Least efficient = largest left + right, then largest index; the clock jumps when nobody can move.
+// LC 2532 - Time to Cross a Bridge
 public int findCrossingTime(int n, int k, int[][] time) {
     // waiting: least efficient first -> larger (right + left), then larger index
     Comparator<Integer> leastEfficient = (a, b) -> {
