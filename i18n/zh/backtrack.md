@@ -85,7 +85,7 @@
 | 7 | 限制條件滿足 | ❌ 每層處理一列／一格 | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
 | 8 | 括號／字串建構 | ❌ 用計數器當限制 | [backtrack_examples.md](./backtrack_examples.md#8-generate-parentheses--lc-22) | 20, 22, 93 |
 
-<!-- 24915e8859a0 -->
+<!-- 74995e9772fd -->
 ### 各型態筆記
 
 每種形狀的隨手筆記 — 迴圈主體的口訣，以及會踩到的坑。
@@ -95,7 +95,7 @@
     - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
     - （用 for 迴圈呼叫輔助函式）+ start_idx + for 迴圈 + pop(-1)
     - 回溯。找最小情況，把問題轉成`樹的問題`。用 `start` 把已經用過的數字排掉，回傳所有情況
-    - 不需要 `contains` 檢查：下一層的 `start_idx` 傳 `i + 1`，每個元素就最多用一次（傳 `i` 會重複使用；`contains` 是排列的寫法）
+    - 不需要 `contains` 檢查：下一層的 `start_idx` 傳 `i + 1`，每個元素就最多用一次（傳 `i` 會重複使用）。排列用 `visited[]` 記錄用過的**索引**，不是用值去 `contains`，所以 `[1,1]` 兩個 1 都能用；LC 47 的重複值再另外做同層跳過
 - `Subsets II`
     - LC 90
     - start idx + 回溯 + 去重（seen）
