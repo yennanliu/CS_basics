@@ -252,10 +252,29 @@ def changed_lines(base, path):
     return changed
 
 
+DEFAULT_BASES = ("origin/master", "master")
+
+
+def resolve_base(explicit, candidates=DEFAULT_BASES):
+    """(merge-base sha, ref) for an explicit --base, or the first default that resolves.
+
+    Returns (None, ref) when an explicit ref does not resolve, and (None, None) when no
+    default does — a shallow clone with neither origin/master nor master, such as the
+    skills gate's checkout, which runs this command only to prove it still works.
+    """
+    for ref in ([explicit] if explicit else list(candidates)):
+        mb = git("merge-base", ref, "HEAD")
+        if mb.returncode == 0:
+            return mb.stdout.strip(), ref
+        if explicit:
+            return None, ref
+    return None, None
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    ap.add_argument("--base", default="origin/master",
-                    help="git ref to diff against (default: origin/master)")
+    ap.add_argument("--base", default=None,
+                    help="git ref to diff against (default: origin/master, else master)")
     ap.add_argument("--all", nargs="+", metavar="FILE",
                     help="judge every section of these files, ignoring the diff")
     args = ap.parse_args(argv)
@@ -268,12 +287,14 @@ def main(argv=None):
                 lines = f.read().split("\n")
             problems += check_file(rel, lines, set(), new_sheet=True, whole=True)
     else:
-        mb = git("merge-base", args.base, "HEAD")
-        if mb.returncode != 0:
-            print(f"check_cheatsheet_cards: cannot resolve base '{args.base}': {mb.stderr.strip()}",
-                  file=sys.stderr)
+        base, ref = resolve_base(args.base)
+        if base is None and args.base:
+            print(f"check_cheatsheet_cards: cannot resolve base '{ref}'", file=sys.stderr)
             return 2
-        base = mb.stdout.strip()
+        if base is None:
+            print("cheatsheet cards: no origin/master or master in this checkout, so there is "
+                  "no diff to judge; pass --base <ref> to check one (CI's card job does)")
+            return 0
         names = git("diff", "--name-only", "--diff-filter=AMR", base, "--", SHEET_DIR).stdout.split()
         untracked = git("ls-files", "--others", "--exclude-standard", "--", SHEET_DIR).stdout.split()
         for rel in sorted(set(names) | set(untracked)):

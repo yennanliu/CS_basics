@@ -172,6 +172,19 @@ class LineAndHeadingRules(unittest.TestCase):
         self.assertTrue(run(old, changed={0}))           # its heading changed: rewritten
 
 
+class BaseRef(unittest.TestCase):
+    def test_no_default_base_is_not_an_error(self):
+        self.assertEqual(c.resolve_base(None, candidates=("no/such-ref-1", "no-such-ref-2")), (None, None))
+
+    def test_explicit_base_that_does_not_resolve_is_reported(self):
+        self.assertEqual(c.resolve_base("no/such-ref"), (None, "no/such-ref"))
+
+    def test_explicit_head_resolves(self):
+        sha, ref = c.resolve_base("HEAD")
+        self.assertEqual(ref, "HEAD")
+        self.assertRegex(sha, r"^[0-9a-f]{40}$")
+
+
 class Fences(unittest.TestCase):
     def test_heading_inside_a_long_fence_is_ignored(self):
         text = "````markdown\n```python\nx\n```\n### Template 9: Bad\n````\n"
