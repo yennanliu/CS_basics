@@ -112,15 +112,30 @@ eager vs lazy 的對照表，看 [bst_advanced.md](./bst_advanced.md) 的 `Templ
 
 <!--CODE-->
 
-<!-- cfd9923d762f -->
+<!-- 24850e3e8580 -->
 ### 5) Convert BST to Greater Tree — LC 538
-用**反向中序**（右 → 根 → 左）搭配一個累計和。實作看 `bst.md` 的
-[Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending) 模式。
+
+> **關鍵** — 右 → 節點 → 左依遞減走訪各個值，所以一個累加和就能把每個節點換成
+> 所有大於等於它的值的總和。
+
+**歸約到**：[bst.md § Template 5](./bst.md#template-5-in-order-walk-is-sorted--lc-230)，反過來走（[Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending)）。
+
+<!--CODE-->
 
 <!-- 65d00ed823ae -->
 ### 6) Binary Search Tree to Greater Sum Tree — LC 1038
 和 LC 538 一模一樣——反向中序走訪累加一個累計和。
 看 `bst.md` 的 [Reverse Inorder for Descending](./bst.md#pattern-reverse-inorder-for-descending) 模式。
+
+<!-- acaa762a77a2 -->
+### 7) Range Sum of BST — LC 938
+
+> **關鍵** — 跟 `trimBST` 一樣的三路剪枝：範圍外的 root 會排除整整一邊，
+> 所以只有合併那一步改變，從把子節點接回去，變成把值加起來。
+
+**歸約到**：[bst.md § Template 3b](./bst.md#template-3b-trim-to-a-range--lc-669-) — 求和，而不是重組結構。
+
+<!--CODE-->
 
 <!-- a5612589bfab -->
 ## 根到葉、節點到節點的路徑
