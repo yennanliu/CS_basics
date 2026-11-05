@@ -738,7 +738,7 @@ public int maxEvents(int[][] events) {
 Python side of LC 1353, with the day-jumping vs scan-every-day trade-off written out:
 [heap_examples.md § LC 1353](./heap_examples.md#7-maximum-number-of-events-that-can-be-attended--lc-1353).
 
-**Drill** — LC 252 *(one room: any overlap at all?)* · LC 253 ⭐ · LC 1094 *(capacity, not
+**Drill** — LC 253 ⭐ · LC 252 *(one room: any overlap at all?)* · LC 1094 *(capacity, not
 rooms)* · LC 2406 *(groups = rooms)* · LC 1353 *(one day per event)* · LC 1834 *(single-threaded
 CPU: two orderings)*
 
@@ -948,8 +948,8 @@ public String rearrangeString(String s, int k) {
 answer is `max(n_tasks, (maxCount − 1) × (cooldown + 1) + numberOfTasksWithMaxCount)`, O(n) with no
 heap. Simulate with this template only when the order itself is needed.
 
-**Drill** — LC 767 *(k = 2)* · LC 621 ⭐ *(count idle slots; or the formula)* · LC 358 ·
-LC 1953 *(only "can it be done?")*
+**Drill** — LC 358 ·
+LC 1953 *(only "can it be done?")* · LC 767 *(k = 2)* · LC 621 ⭐ *(count idle slots; or the formula)*
 
 ## Language APIs
 
