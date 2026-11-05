@@ -39,7 +39,7 @@
 
 ## Recognition
 
-Constraint cues follow the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md): every template here is `O(n * W)`, so it fits when `n * W` is around 10⁷ or less.
+Constraint cues follow the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md): the single-item templates here are `O(n * W)`, so they fit when `n * W` is around 10⁷ or less; the group template ([Template 6](#template-6-group-knapsack--lc-4040-)) also loops over each group's options, `O(n * W * |group|)`, so put that factor in the budget too.
 
 | Signal in the statement | Constraint cue | Reach for | Not this if |
 |---|---|---|---|
@@ -169,7 +169,8 @@ backward s=9: dp[9] = dp[6] (old, F)
 - **Odd total**: `[1, 2, 3, 5]` has total 11; `11 // 2 = 5` is reachable (`2 + 3`), so skipping the
   parity check returns `True` for an impossible split.
 - **Mixing up the transition**: `or` for feasibility, `+=` for counts, `max(…, dp[s - w] + v)` for
-  value. A `max` on a boolean table or `or` on a count table compiles and is wrong.
+  value. `or` on a count table compiles and is wrong: it turns every count into 0 or 1. (A `max`
+  on a boolean table happens to equal `or`, so it is harmless, just unclear.)
 - **Large sums**: values × n can pass `int` range in Java when the transition sums values; use
   `long`.
 
@@ -585,7 +586,7 @@ after 6      {0: 6, 1: 6, 2: 7, 3: 6, ...}   -> dp[0] = 6, supports {6} and {1,2
 [Template 1](#template-1-01-knapsack-subset-sum--lc-416-) (LC 416, LC 1049); n ≤ 30 with values up
 to 10⁷ → meet in the middle (LC 2035), the difference table is too wide.
 
-**Drill** — LC 1049 *(the same idea, read with a total key)* · LC 956 · LC 2035 *(meet in the middle)*
+**Drill** — LC 956 · LC 1049 *(the same idea, read with a total key)* · LC 2035 *(meet in the middle)*
 
 ### Template 6: Group Knapsack — LC 4040 ⭐⭐⭐⭐
 
@@ -737,9 +738,9 @@ second gets there with `2 -> 1`. Each cell is the *cheapest* way to that sum.
 group knapsack — "up to `k` times" is the group `{(w, v), (2w, 2v), …, (kw, kv)}`; the binary split
 in the table at the top is the faster spelling.
 
-**Drill** — LC 1155 *(exactly one face: no skip, count with `+=`)* · LC 2585 *(type used
-`0..count` times)* · LC 2218 *(prefix-sum each pile, then `max`)* · LC 4040 *(the menu is derived,
-not given)*
+**Drill** — LC 4040 *(the menu is derived,
+not given)* · LC 1155 *(exactly one face: no skip, count with `+=`)* · LC 2585 *(type used
+`0..count` times)* · LC 2218 *(prefix-sum each pile, then `max`)*
 
 ## LC Examples
 

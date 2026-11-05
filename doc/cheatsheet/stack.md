@@ -307,8 +307,8 @@ surplus `(` — the follow-up an interviewer asks next) are
 **Recognise** — "next greater / warmer / taller to the right", "how many days until", "nearest
 smaller on each side". n ≤ 10⁵ → the O(n²) scan-right-for-each-element times out; O(n) expected.
 
-**Key point** — the stack holds the indices **still waiting for an answer**, their values strictly
-decreasing bottom → top; the first value that beats the top is, by that order, the answer for
+**Key point** — the stack holds the indices **still waiting for an answer**, their values
+decreasing bottom → top with ties allowed; the first value that beats the top is the answer for
 every index it pops.
 
 This sheet keeps **one** short form. The full family (previous-smaller, spans, histogram,
@@ -323,7 +323,7 @@ subarray min/max sums, and the greedy-removal variants) is
 def daily_temperatures(temperatures):
     n = len(temperatures)
     res = [0] * n                 # 0 = no warmer day ahead
-    stack = []                    # indices, temperatures strictly decreasing bottom -> top
+    stack = []                    # indices, temperatures non-increasing bottom -> top (equal ones stay)
     for i, val in enumerate(temperatures):
         while stack and temperatures[stack[-1]] < val:
             j = stack.pop()
@@ -340,7 +340,7 @@ def daily_temperatures(temperatures):
 public int[] dailyTemperatures(int[] temperatures) {
     int n = temperatures.length;
     int[] res = new int[n];                    // 0 = no warmer day ahead
-    Deque<Integer> stack = new ArrayDeque<>(); // indices, temperatures strictly decreasing
+    Deque<Integer> stack = new ArrayDeque<>(); // indices, temperatures non-increasing (equal ones stay)
 
     // Traverse the array from left to right
     for (int i = 0; i < n; i++) {

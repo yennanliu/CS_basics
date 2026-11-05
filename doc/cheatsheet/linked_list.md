@@ -609,8 +609,8 @@ Final:
 **Traps**
 - Walking `prev` from `head` instead of `dummy`: with `left = 1` there is no node before the
   segment, so `[1,2,3]`, left=1, right=2 cannot reconnect its front.
-- Forgetting `new_tail.next = next_node`: the old start still points at the second node, so
-  the tail `5` is lost and the list ends in a 2-cycle.
+- Forgetting `new_tail.next = next_node` loses the tail `5`: the helper already set the old
+  start's `next` to `None`, so the result is `1 -> 4 -> 3 -> 2 -> None`, not a cycle.
 - In LC 25, calling the helper on a final group shorter than k reverses it too; count k nodes
   first (`has_k`) and leave a short tail as it is.
 
