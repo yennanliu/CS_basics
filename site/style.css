@@ -904,8 +904,8 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 /* ── Drill Path verdicts ──────────────────────────────────────────
    build-lib.js stampDrillVerdicts() puts the practice log's latest
    verdict after each LC number in a cheatsheet's Drill Path. Ink only,
-   like the rest of the system: ok is filled, again is outlined, not
-   tried is dim, so the eye goes to what is left.
+   like the rest of the system: ok is filled, again is outlined, nothing
+   judged yet (never logged, or logged without a verdict) is dim.
    ─────────────────────────────────────────────────────────────── */
 .lc-verdict {
   display: inline-block;

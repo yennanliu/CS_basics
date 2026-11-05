@@ -329,7 +329,7 @@ ok('no ok/again in the log is missing from the roadmap', roadmapIds.every(id =>
 ok('every stamped verdict carries its date', stamped.every(id => /^\d{8}$/.test(roadmapData.problems[id].verdictDate)));
 // The cheatsheets' Drill Path badges (build-lib.js stampDrillVerdicts) are the
 // same reading on another page: each one must say what the log says, and a
-// "not tried" badge must not hide an ok or an again.
+// "no verdict" badge must not hide an ok or an again.
 const sheetBadges = [];
 for (const f of fs.readdirSync(`${SITE}/cheatsheets`).filter(f => f.endsWith('.html'))) {
   for (const b of read(`${SITE}/cheatsheets/${f}`).matchAll(/data-lc="(\d+)" data-verdict="(\w+)"/g)) {
