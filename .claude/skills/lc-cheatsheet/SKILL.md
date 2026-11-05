@@ -262,6 +262,7 @@ rule, so an LC-titled heading's correct translation is the English text.
 
 ```bash
 python3 script/check_cheatsheet_cards.py  # every new or rewritten section is card-shaped
+python3 script/check_cheatsheets.py       # no lint count (NOTE !!!, code-first examples, …) rose
 python3 script/check_skills.py            # only if a skill or its page changed
 SKIP_FONTS=1 bash site/build.sh           # the whole _site tree, offline
 node site/e2e-check.js _site              # the gate: anchors, links, descriptions, tables
@@ -271,7 +272,8 @@ npm test --prefix site                    # the unit tests over the built artefa
 A build failure on a new sheet is usually the missing `cheatsheet_meta.json` entry; an
 `e2e-check` failure after a heading edit is usually step 5. A `check_cheatsheet_cards.py`
 failure names the section and the missing or misplaced slot; fix the section, never the
-checker. `.github/workflows/cheatsheet-cards.yml` runs it on every change to
+checker. A `check_cheatsheets.py` failure names the file and the rule whose count rose; when
+a count *fell*, lower the floor with `--update-baseline` in the same change. `.github/workflows/cheatsheet-cards.yml` runs it on every change to
 `doc/cheatsheet/`, so a section that is not card-shaped does not merge. In Claude Code the
 project hook in `.claude/settings.json` also runs it after every edit to a sheet; its message
 is this checker's output for that file, and it means the same thing.

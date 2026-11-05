@@ -12,6 +12,13 @@ name: Cheatsheet card shape
 #   python3 script/test_check_cheatsheet_cards.py
 #   python3 script/check_cheatsheet_cards.py            # vs origin/master
 #
+# A second job ratchets the tree: script/check_cheatsheets.py counts the
+# anti-patterns the review measured, per rule per file, and fails when a count
+# rises above data/cheatsheet_lint_baseline.json.
+#
+#   python3 script/test_check_cheatsheets.py
+#   python3 script/check_cheatsheets.py
+#
 # The rules live in the script rather than a run: block, for the reason CLAUDE.md
 # gives about site/e2e-check.js — so they can be run before pushing.
 on:
@@ -21,13 +28,21 @@ on:
       - 'doc/cheatsheet/**'
       - 'script/check_cheatsheet_cards.py'
       - 'script/test_check_cheatsheet_cards.py'
+      - 'script/check_cheatsheets.py'
+      - 'script/test_check_cheatsheets.py'
+      - 'data/cheatsheet_lint_baseline.json'
+      - 'data/cheatsheet_meta.json'
       - '.github/workflows/cheatsheet-cards.yml'
+  # Any base branch: the review's PRs are stacked, one on the next.
   pull_request:
-    branches: [ master ]
     paths:
       - 'doc/cheatsheet/**'
       - 'script/check_cheatsheet_cards.py'
       - 'script/test_check_cheatsheet_cards.py'
+      - 'script/check_cheatsheets.py'
+      - 'script/test_check_cheatsheets.py'
+      - 'data/cheatsheet_lint_baseline.json'
+      - 'data/cheatsheet_meta.json'
       - '.github/workflows/cheatsheet-cards.yml'
   workflow_dispatch:
 
@@ -64,3 +79,24 @@ jobs:
             BASE=HEAD~1
           fi
           python3 script/check_cheatsheet_cards.py --base "$BASE"
+
+  lint:
+    name: No cheatsheet lint rule got worse
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Test the lint
+        run: python3 script/test_check_cheatsheets.py
+
+      # Fails on a count above the baseline; a count that fell is only a note,
+      # lowered with --update-baseline in the same PR as the fix.
+      - name: Check the counts against the baseline
+        run: python3 script/check_cheatsheets.py

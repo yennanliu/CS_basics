@@ -602,7 +602,8 @@ five things an edit drags behind it, each of which has actually been got wrong h
   that had been fully translated (see [Traditional Chinese docs](#traditional-chinese-docs)).
 
 Like `/lc-python` it never touches `data/progress.txt`, and it stops at the gates rather than
-committing: `python3 script/check_cheatsheet_cards.py`, `bash site/build.sh`,
+committing: `python3 script/check_cheatsheet_cards.py`, `python3 script/check_cheatsheets.py`,
+`bash site/build.sh`,
 `node site/e2e-check.js _site`, `npm test --prefix site`.
 
 **The card gate.** `script/check_cheatsheet_cards.py` judges the **diff** against
@@ -620,6 +621,18 @@ moment Claude Code edits a sheet, handing that file's problems straight back to 
 section is fixed in the turn it was written rather than after a red CI run. Its tests run the
 two sample cards in `00_template.md` through it, so the template and the checker cannot disagree. **Fix the section, never the checker**; `--all
 <file>` audits a whole sheet before a P2-style rewrite.
+
+**The lint ratchet.** [`script/check_cheatsheets.py`](script/check_cheatsheets.py) is the card
+gate's counterpart over the **tree**: it counts, per rule per file, the anti-patterns the review
+measured (`NOTE !!!`, IPython transcripts, `gpt`, blog links, heading emoji, an `### … LC n`
+heading straight over code, subtraction comparators, `(l + r) / 2` in Python, `Examples` after
+`Summary`, a tier ≥ 4 core sheet with no recognition section or `## Drill Path`, an `_examples`
+sheet with no `## Index` or with a `Template N`, an `_advanced` sheet with no `## When Not to
+Use`) and fails when a count rises above
+[`data/cheatsheet_lint_baseline.json`](data/cheatsheet_lint_baseline.json). A count, not a
+line, because "heading over code" has no stable identity. A file not in the baseline is held
+to zero; a count that fell is lowered with `--update-baseline` in the same PR as the fix. The
+same workflow runs it.
 
 `site/pages/lc-cheatsheet.html` is its page on the site — the three ways an edit rots, the
 four modes as a selector, the anchor and translation commands, per-agent install. It is

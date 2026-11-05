@@ -644,6 +644,43 @@ body-only fix to an old section is held to the line rules only. The tests run th
 cards in `00_template.md` through the checker, so the template and the gate cannot drift, and
 assert each rule against a bad section as well as a good one.
 
+## check_cheatsheets.py
+
+The **lint ratchet** over the whole of `doc/cheatsheet/` — step 3 (P7) of the
+[Nov 2026 review](cheatsheet-review-2026-11.md#p7--a-lint-that-ratchets). Where
+`check_cheatsheet_cards.py` asks whether the section you just wrote is a card, this asks
+whether the corpus as a whole got worse while P2–P6 shrink it.
+
+```bash
+python3 script/check_cheatsheets.py                    # fail on any count above the baseline
+python3 script/check_cheatsheets.py --report           # totals per rule
+python3 script/check_cheatsheets.py --verbose          # also list counts that fell
+python3 script/check_cheatsheets.py --update-baseline  # after a fix: lower the floor
+python3 script/check_cheatsheets.py --update-baseline --allow-increase  # only when a rule itself changed
+python3 script/check_cheatsheets.py --strict           # ignore the baseline
+python3 script/test_check_cheatsheets.py               # the gate's own tests
+```
+
+| Rule | What it counts |
+|---|---|
+| `note-wall`, `ipython`, `gpt`, `blog-link` | lines, anywhere in the sheet |
+| `heading-emoji` | headings with an emoji other than the trailing `⭐` run |
+| `code-first-example` | `###`+ headings naming an `LC n` whose first content is a fence |
+| `java-sub-comparator`, `py-float-mid` | `(a, b) -> a - b` in a `java` fence; `(l + r) / 2` in a `python` fence |
+| `examples-after-summary` | `## … Examples` sections after `## Summary` |
+| `no-recognition`, `no-drill-path` | a tier ≥ 4 core sheet (per `cheatsheet_meta.json`) missing either section |
+| `examples-no-index`, `examples-template` | an `_examples` sheet with no `## Index`, or with `Template N` headings |
+| `advanced-no-when-not` | an `_advanced` sheet with no `## When Not to Use` |
+
+[`data/cheatsheet_lint_baseline.json`](../data/cheatsheet_lint_baseline.json) holds **a count
+per rule per file**, not one entry per finding as `check_readme.py`'s does: a rule like "heading
+over code" has no identity that survives an edit above it. A count can only go down — a rise
+fails, a file not listed is held to zero, and a fall is reported until `--update-baseline`
+records it. `--update-baseline` refuses to record a count that rose, so a fix elsewhere cannot carry a regression into the floor; `--allow-increase` is for the one honest case, a rule that now sees more. Some baselined findings are correct on purpose (a `(lo + hi) / 2` in a
+floating-point search, the three overflow examples in `java_trick_strings_sorting`); they stay
+in the baseline rather than in an exemption list. `.github/workflows/cheatsheet-cards.yml` runs
+it as a second job. Judgement rules (one home per problem, V0 is canonical) stay review items.
+
 ## prune_branches.sh
 
 Deletes the remote branches `origin/master` already contains, and lists the rest.
