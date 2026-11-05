@@ -82,13 +82,13 @@ One row per pattern. The **Card** column links to the template that solves the a
 
 | Signal in the statement | Constraint cue | Pattern | Card | Looks like it, but is not |
 |---|---|---|---|---|
-| "how many ways to climb / decode", "rob houses that are not adjacent" | n ≤ 10⁵ | 1-D DP, rolling variables | [dp § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables---lc-198) | choices form a tree with no overlap → plain recursion or backtracking |
-| "can the string be segmented into words" | n ≤ 300 | prefix partition DP | [dp § Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139) | you must list every segmentation → backtracking with memo (LC 140) |
-| "unique paths", "minimum path sum" in a grid | m, n ≤ 200 | 2-D grid DP | [dp § Template 2](./dp.md#template-2-2-d-grid-dp---lc-64) | the path can go in any direction → shortest path (Dijkstra / BFS) |
-| "subset with sum target", "partition into equal sums", "target sum" | n ≤ 200, sum ≤ 10⁴ | 0/1 knapsack | [dp § Template 4](./dp.md#template-4-01-knapsack---lc-416) | items can be reused (coin change, LC 322 / 518) → unbounded knapsack, loop order flips ([dp_loop_order](./dp_loop_order.md)) |
-| "longest increasing subsequence", "Russian dolls" | n ≤ 10⁵ | LIS, O(n log n) with tails | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence---lc-300) | contiguous → sliding window or Kadane |
+| "how many ways to climb / decode", "rob houses that are not adjacent" | n ≤ 10⁵ | 1-D DP, rolling variables | [dp § Template 6](./dp.md#template-6-memoization--tabulation--rolling-variables--lc-198-) | choices form a tree with no overlap → plain recursion or backtracking |
+| "can the string be segmented into words" | n ≤ 300 | prefix partition DP | [dp § Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-) | you must list every segmentation → backtracking with memo (LC 140) |
+| "unique paths", "minimum path sum" in a grid | m, n ≤ 200 | 2-D grid DP | [dp § Template 2](./dp.md#template-2-2-d-grid-dp--lc-64-) | the path can go in any direction → shortest path (Dijkstra / BFS) |
+| "subset with sum target", "partition into equal sums", "target sum" | n ≤ 200, sum ≤ 10⁴ | 0/1 knapsack | [dp § Template 4](./dp.md#template-4-01-knapsack--lc-416-) | items can be reused (coin change, LC 322 / 518) → unbounded knapsack, loop order flips ([dp_loop_order](./dp_loop_order.md)) |
+| "longest increasing subsequence", "Russian dolls" | n ≤ 10⁵ | LIS, O(n log n) with tails | [dp § Template 7](./dp.md#template-7-longest-increasing-subsequence--lc-300-) | contiguous → sliding window or Kadane |
 | "longest common subsequence", "edit distance", "interleaving" | m, n ≤ 1,000 | 2-D string DP over prefixes | [dp_string § LCS deep dive](./dp_string.md#deep-dive-the-prefix-based-indexing-pattern-lcs--variants--) | a common **substring** → reset to 0 on a mismatch |
-| "buy and sell stock with cooldown / fee / k transactions" | n ≤ 10⁵ | state machine DP | [dp § Template 5](./dp.md#template-5-state-machine-dp--lc-121--lc-309) | one transaction → track the running minimum (LC 121) |
+| "buy and sell stock with cooldown / fee / k transactions" | n ≤ 10⁵ | state machine DP | [dp § Template 5](./dp.md#template-5-state-machine-dp--lc-309) | one transaction → track the running minimum (LC 121) |
 | "burst balloons", "minimum cost to merge stones" | n ≤ 300 | interval DP | [dp § Template 3](./dp.md#template-3-interval-dp--lc-312) | the order of operations does not matter → greedy |
 | "visit all nodes", "assign n ≤ 16 items" | n ≤ 16–20 | bitmask DP | [bit_manipulation § 2-3](./bit_manipulation.md#2-3-fill-buckets-one-at-a-time-bitmask-dp--lc-698-) | n in the thousands → it is not bitmask; look for a greedy or a DP on values |
 

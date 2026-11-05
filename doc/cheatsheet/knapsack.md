@@ -37,6 +37,21 @@
 - [knapsack_01_zh.md](./knapsack_01_zh.md) — 0/1 背包中文詳解：state 定義、倒序 trace、LC 494/416 解題流程
 - [Knapsack problem — Wikipedia](https://en.wikipedia.org/wiki/Knapsack_problem)
 
+## Recognition
+
+Constraint cues follow the ruler in [complexity_cheatsheet.md](./complexity_cheatsheet.md): every template here is `O(n * W)`, so it fits when `n * W` is around 10⁷ or less.
+
+| Signal in the statement | Constraint cue | Reach for | Not this if |
+|---|---|---|---|
+| "partition into two subsets with **equal** sum", "can some subset sum to exactly X" | n ≤ 200, values ≤ 100 → sum ≤ 2·10⁴ | [Template 1](#template-1-01-knapsack-subset-sum--lc-416-) 0/1 subset sum | an item may be reused → [Template 4](#template-4-unbounded-min-count--lc-322-) / [Template 2](#template-2-unbounded-count-combinations--lc-518-) |
+| "assign `+` or `-` to each number", "split into two piles, minimise the difference" | sum ≤ 1000 | [Template 1](#template-1-01-knapsack-subset-sum--lc-416-) after the algebra ([LC 494](#target-sum--lc-494), [LC 1049](#last-stone-weight-ii--lc-1049)) | items may be left out *and* you want the balanced height → [Template 5](#template-5-difference-keyed-knapsack--lc-956-) |
+| "number of **combinations** that make up the amount", unlimited coins | amount ≤ 5000 | [Template 2](#template-2-unbounded-count-combinations--lc-518-) items outer | "different sequences are counted as different" → [Template 3](#template-3-unbounded-count-permutations--lc-377-) |
+| "number of possible combinations", but `(1, 2)` and `(2, 1)` are both counted | target ≤ 1000 | [Template 3](#template-3-unbounded-count-permutations--lc-377-) amount outer | the lists themselves are wanted, not a count → [backtrack.md](./backtrack.md) (LC 39) |
+| "**fewest** coins / least number of perfect squares to sum to n" | amount ≤ 10⁴ | [Template 4](#template-4-unbounded-min-count--lc-322-) | the number of ways is asked → [Template 2](#template-2-unbounded-count-combinations--lc-518-) |
+| "two **disjoint** subsets with equal sum, maximise it", items may be discarded | n ≤ 20, sum ≤ 5000 | [Template 5](#template-5-difference-keyed-knapsack--lc-956-) difference key | n ≤ 30 with huge values → meet in the middle (LC 2035) |
+| "each element may be used in **one of several forms**", "one die / one pile / one type" | sum ≤ 10³–10⁴ | [Template 6](#template-6-group-knapsack--lc-4040-) group knapsack | one menu shared by every position, reusable → [Template 4](#template-4-unbounded-min-count--lc-322-) (LC 1449) |
+| "can the string be segmented into dictionary words" | n ≤ 300 | not a sum: the items are concatenated | item-outer is simply wrong here → [dp_loop_order.md](./dp_loop_order.md#1-4-the-commutativity-test--when-item-outer-is-legal-) |
+
 ## Problem Categories
 
 | Category | Question it answers | Answer type | LC |
@@ -50,1001 +65,408 @@
 
 ## Templates & Algorithms
 
+### Template Comparison Table
+
+| Template | When the problem says… | Loop order | Inner direction | Transition |
+|---|---|---|---|---|
+| [1: 0/1 subset sum](#template-1-01-knapsack-subset-sum--lc-416-) | "use each item at most once" | items → capacity | **backward** | `dp[s] = dp[s] or dp[s - w]` |
+| [2: unbounded, combinations](#template-2-unbounded-count-combinations--lc-518-) | "count ways", order does not matter | items → amount | forward | `dp[a] += dp[a - coin]` |
+| [3: unbounded, permutations](#template-3-unbounded-count-permutations--lc-377-) | "count ways", order matters | amount → items | forward | `dp[t] += dp[t - num]` |
+| [4: unbounded, min count](#template-4-unbounded-min-count--lc-322-) | "fewest items", unlimited supply | either | forward | `dp[a] = min(dp[a], dp[a - coin] + 1)` |
+| [5: difference key](#template-5-difference-keyed-knapsack--lc-956-) | two piles, only the gap matters | items → difference | snapshot | three choices per item |
+| [6: group](#template-6-group-knapsack--lc-4040-) | each item has a menu of forms | items → capacity **outer** → options | backward or snapshot | best over the menu |
+
+### Template 1: 0/1 Knapsack (Subset Sum) — LC 416 ⭐⭐⭐⭐⭐
+
+**Recognise** — "partition into two subsets with equal sum", "can some subset reach exactly X",
+"split into two groups", "each element used **at most once**". n ≤ 200 and sum ≤ 2·10⁴ →
+an `O(n * sum)` table is expected.
+
+**Key point** — after item `i` is processed, `dp[s]` is true exactly when some subset of the
+first `i` items sums to `s`. The inner loop runs **backward**, so `dp[s - num]` is still the value
+from *before* this item: each item is offered once per pass, never twice.
+
+- **State**: `dp[s]` = can some subset of the items seen so far sum to exactly `s`
+- **Recurrence**: `dp[s] = dp[s] or dp[s - num]` — skip `num`, or take it on top of `s - num`
+- **Base**: `dp[0] = True` — the empty subset
+- **Order**: items outer, `s` from `target` down to `num`
+- **Answer**: `dp[target]`, with `target = total // 2`
+
+```python
+# python
+# LC 416 - Partition Equal Subset Sum
+# IDEA: 0/1 knapsack on sums -- can a subset reach total / 2? inner loop backward = each num once
+# time = O(n * target), space = O(target)
+def canPartition(nums):
+    total = sum(nums)
+    if total % 2 == 1:                    # an odd total cannot split into two equal halves
+        return False
+    target = total // 2
+    dp = [False] * (target + 1)           # dp[s] = some subset of the nums so far sums to s
+    dp[0] = True                          # the empty subset
+    for num in nums:
+        for s in range(target, num - 1, -1):   # BACKWARD: dp[s - num] is still the old row
+            if dp[s - num]:
+                dp[s] = True
+    return dp[target]
+```
+
+```java
+// java
+// LC 416 - Partition Equal Subset Sum
+// IDEA: 0/1 knapsack on sums -- can a subset reach total / 2? inner loop backward = each num once
+// time = O(n * target), space = O(target)
+public boolean canPartition(int[] nums) {
+    int total = 0;
+    for (int num : nums) {
+        total += num;
+    }
+    if (total % 2 == 1) {                  // an odd total cannot split into two equal halves
+        return false;
+    }
+    int target = total / 2;
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;                          // the empty subset
+    for (int num : nums) {
+        for (int s = target; s >= num; s--) {   // BACKWARD: dp[s - num] is still the old row
+            if (dp[s - num]) {
+                dp[s] = true;
+            }
+        }
+    }
+    return dp[target];
+}
+```
+
+The same loop answers three questions; only the transition changes:
+
+```text
+can we reach s?        dp[s] = dp[s] or dp[s - w]           base dp[0] = True
+how many subsets?      dp[s] += dp[s - w]                   base dp[0] = 1     (LC 494)
+best value within s?   dp[s] = max(dp[s], dp[s - w] + v)    base dp[*] = 0     (classic knapsack)
+```
+
+**Complexity**
+- **Time O(n · target)**: the nested `for num` × `for s in range(target, …)` touches each
+  (item, sum) pair once.
+- **Space O(target)**: one row, `dp = [False] * (target + 1)`, rolled in place — which is only
+  legal because the inner loop runs backward.
+
+**Dry run** — why backward, with one item `3` and `target = 9`:
+
+```text
+forward  s=3: dp[3] = dp[0] = T
+         s=6: dp[6] = dp[3] = T    <- dp[3] was set by THIS item a moment ago: 3 used twice
+         s=9: dp[9] = dp[6] = T    <- and three times
+backward s=9: dp[9] = dp[6] (old, F)
+         s=6: dp[6] = dp[3] (old, F)
+         s=3: dp[3] = dp[0] = T    <- the only sum one 3 can make
+```
+
+**Traps**
+- **Forward inner loop** turns this into unbounded knapsack: `nums = [3]`, `target = 6` reports
+  `True` by using the single `3` twice.
+- **Odd total**: `[1, 2, 3, 5]` has total 11; `11 // 2 = 5` is reachable (`2 + 3`), so skipping the
+  parity check returns `True` for an impossible split.
+- **Mixing up the transition**: `or` for feasibility, `+=` for counts, `max(…, dp[s - w] + v)` for
+  value. A `max` on a boolean table or `or` on a count table compiles and is wrong.
+- **Large sums**: values × n can pass `int` range in Java when the transition sums values; use
+  `long`.
+
+**Not this if** — an item can be reused → [Template 4](#template-4-unbounded-min-count--lc-322-)
+or [Template 2](#template-2-unbounded-count-combinations--lc-518-) (forward loop); items may be
+discarded and the balanced height is wanted → [Template 5](#template-5-difference-keyed-knapsack--lc-956-);
+an item comes in several forms → [Template 6](#template-6-group-knapsack--lc-4040-).
+
+**Drill** — LC 416 ⭐ · LC 1049 *(minimise the gap: largest reachable `s ≤ total // 2`)* ·
+LC 494 *(count subsets: `+=`, after the algebra)* · LC 474 *(two capacities, a 2-D row)* ·
+LC 879 *(count, with a profit axis capped at `minProfit`)*
+
 ### Loop Order: Combinations vs Permutations
 
-**🔑 Key Insight**: In unbounded knapsack problems (like Coin Change), the **order of nested loops** determines whether you count **combinations** or **permutations**.
+In unbounded knapsack the **order of the two loops** decides whether you count **combinations**
+or **permutations**. The transition is the same line, `dp[i] += dp[i - item]`; only the nesting
+moves. [Template 2](#template-2-unbounded-count-combinations--lc-518-) and
+[Template 3](#template-3-unbounded-count-permutations--lc-377-) are the two halves.
 
 > Both orders here are *correct* DPs answering different questions — that is special to sums. When
 > the items are concatenated rather than added (LC 139 Word Break), the item-outer order is not a
 > different question, it is simply wrong: [dp_loop_order.md](./dp_loop_order.md#1-4-the-commutativity-test--when-item-outer-is-legal-).
 
----
-
-#### **🎯 Ultimate Cheat Sheet: When to Use Which Pattern**
-
-| When Problem Says... | Pattern to Use | Loop Order | Direction | DP Transition | Example LC |
-|---------------------|----------------|------------|-----------|---------------|------------|
-| "Count ways" + order doesn't matter | **Combinations** | Item → Target | Forward | `dp[i] += dp[i-item]` | **518** |
-| "Count ways" + order matters | **Permutations** | Target → Item | Forward | `dp[i] += dp[i-item]` | **377** |
-| "Use each item once" + find max/min | **0/1 Knapsack** | Item → Capacity | **Backward** | `dp[w] = max(dp[w], ...)` | **416** |
-| "Unlimited items" + find max/min | **Unbounded Knapsack** | Item → Capacity | Forward | `dp[i] = min(dp[i], ...)` | **322** |
-
-**⚡ Quick Recognition (识别):**
-- See "different sequences" or "different orderings" → **Permutations** (Target outer)
-- See "number of combinations" or "unique ways" → **Combinations** (Item outer)
-- See "each element at most once" → **0/1 Knapsack** (Backward)
-- See "minimum coins" or "fewest items" → **Unbounded Knapsack** (Forward)
-
----
-
-#### **📊 Visual Summary: The Four Core Patterns**
-
-```text
-┌─────────────────────────────────────────────────────────────────────────┐
-│                     DP KNAPSACK PATTERN MATRIX                          │
-└─────────────────────────────────────────────────────────────────────────┘
-
-                          COUNT WAYS              FIND MIN/MAX
-                    ┌──────────────────┬──────────────────────────┐
-                    │                  │                          │
-ORDER MATTERS?      │  PERMUTATIONS    │   Not typically used     │
-(Yes)              │  LC 377          │   (Use Permutations      │
-                    │  Target→Item     │    for counting)         │
-                    │  Forward         │                          │
-                    ├──────────────────┼──────────────────────────┤
-                    │                  │                          │
-ORDER DOESN'T       │  COMBINATIONS    │   UNBOUNDED KNAPSACK     │
-MATTER              │  LC 518          │   LC 322                 │
-(No)                │  Item→Target     │   Item→Capacity          │
-                    │  Forward         │   Forward                │
-                    ├──────────────────┼──────────────────────────┤
-                    │                  │                          │
-USE EACH ONCE       │  Not typical     │   0/1 KNAPSACK           │
-(Constraint)        │  (Can adapt      │   LC 416                 │
-                    │   0/1 pattern)   │   Item→Capacity          │
-                    │                  │   BACKWARD ⚠️            │
-                    └──────────────────┴──────────────────────────┘
-
-Legend:
-  Item→Target     = Outer loop: items,    Inner loop: target
-  Target→Item     = Outer loop: target,   Inner loop: items
-  Forward         = Inner loop: i to target (allows reuse)
-  BACKWARD ⚠️     = Inner loop: target to i (prevents reuse)
-```
-
-**🎯 Decision Flow:**
-```text
-Start
-  │
-  ├─ Question asks "count ways"?
-  │   │
-  │   ├─ YES → Order matters?
-  │   │         ├─ YES → Permutations (Target→Item) [LC 377]
-  │   │         └─ NO  → Combinations (Item→Target) [LC 518]
-  │   │
-  │   └─ NO  → Question asks "min/max"?
-  │             │
-  │             ├─ Each item once?
-  │             │   ├─ YES → 0/1 Knapsack (BACKWARD) [LC 416]
-  │             │   └─ NO  → Unbounded (FORWARD) [LC 322]
-  │             │
-  │             └─ Unknown → Check problem constraints
-```
-
----
-
-#### **📋 Master Pattern Table: DP Transitions by Problem Type**
-
-| Pattern Type | Loop Order | DP Transition | What It Counts | Mental Model | Example | Result |
-|--------------|------------|---------------|----------------|--------------|---------|--------|
-| **COMBINATIONS**<br>(Order doesn't matter) | **ITEM → TARGET**<br><br>`for item in items:`<br>&nbsp;&nbsp;`for i in range(item, target+1):` | `dp[i] += dp[i - item]` | Unique sets<br>[1,2] = [2,1] | "Process all uses of item-1, then all uses of item-2"<br><br>Forces canonical order | LC 518<br>coins=[1,2]<br>amount=3 | **2 ways**<br>{1,1,1}<br>{1,2} |
-| **PERMUTATIONS**<br>(Order matters) | **TARGET → ITEM**<br><br>`for i in range(1, target+1):`<br>&nbsp;&nbsp;`for item in items:` | `dp[i] += dp[i - item]` | Different orderings<br>[1,2] ≠ [2,1] | "For each target, try every item as the 'last' one"<br><br>Allows any order | LC 377<br>nums=[1,2]<br>target=3 | **3 ways**<br>{1,1,1}<br>{1,2}<br>{2,1} |
-| **0/1 KNAPSACK**<br>(Use each once) | **ITEM → CAPACITY**<br>(backwards)<br><br>`for item in items:`<br>&nbsp;&nbsp;`for w in range(W, weight-1, -1):` | `dp[w] = max(dp[w],`<br>`dp[w-weight[i]] + value[i])` | Max/min with constraint<br>Each item used ≤ 1 time | "Must iterate backwards to avoid using same item twice in one pass" | LC 416<br>Partition<br>Subset | True/False<br>or Max value |
-| **UNBOUNDED KNAPSACK**<br>(Unlimited use) | **ITEM → CAPACITY**<br>(forwards)<br><br>`for item in items:`<br>&nbsp;&nbsp;`for w in range(weight, W+1):` | `dp[w] = max(dp[w],`<br>`dp[w-weight[i]] + value[i])` | Max/min without constraint<br>Each item used unlimited | "Iterate forwards - can use updated values in same pass" | LC 322<br>Coin Change<br>(min coins) | Min count<br>or -1 |
-
----
-
-#### **💻 Code Templates by Pattern**
-
-```java
-// java
-// IDEA: the four knapsack loop orders side by side — each differs only in nesting/direction
-// time = O(n * W), space = O(W)
-// ============================================
-// PATTERN 1: COMBINATIONS (Item → Target)
-// ============================================
-// LC 518: Coin Change II
-public int countCombinations(int target, int[] items) {
-    int[] dp = new int[target + 1];
-    dp[0] = 1;  // Base: one way to make 0
-
-    // OUTER: Items/Coins
-    for (int item : items) {
-        // INNER: Target/Amount (forward)
-        for (int i = item; i <= target; i++) {
-            dp[i] += dp[i - item];  // ← Same transition
-        }
-    }
-    return dp[target];
-}
-
-// ============================================
-// PATTERN 2: PERMUTATIONS (Target → Item)
-// ============================================
-// LC 377: Combination Sum IV
-public int countPermutations(int target, int[] items) {
-    int[] dp = new int[target + 1];
-    dp[0] = 1;  // Base: one way to make 0
-
-    // OUTER: Target/Amount
-    for (int i = 1; i <= target; i++) {
-        // INNER: Items/Coins
-        for (int item : items) {
-            if (i >= item) {
-                dp[i] += dp[i - item];  // ← Same transition
-            }
-        }
-    }
-    return dp[target];
-}
-
-// ============================================
-// PATTERN 3: 0/1 KNAPSACK (Item → Capacity BACKWARDS)
-// ============================================
-// LC 416: Partition Equal Subset Sum
-public boolean canPartition(int[] nums, int target) {
-    boolean[] dp = new boolean[target + 1];
-    dp[0] = true;  // Base: can make 0
-
-    // OUTER: Items
-    for (int num : nums) {
-        // INNER: Capacity (BACKWARDS to prevent reuse)
-        for (int w = target; w >= num; w--) {
-            dp[w] = dp[w] || dp[w - num];  // ← Different transition (OR)
-        }
-    }
-    return dp[target];
-}
-
-// ============================================
-// PATTERN 4: UNBOUNDED KNAPSACK (Item → Capacity FORWARDS)
-// ============================================
-// LC 322: Coin Change (minimum coins)
-public int minCoins(int target, int[] coins) {
-    int[] dp = new int[target + 1];
-    Arrays.fill(dp, target + 1);  // Infinity
-    dp[0] = 0;  // Base: 0 coins for 0 amount
-
-    // OUTER: Items/Coins
-    for (int coin : coins) {
-        // INNER: Target (FORWARDS allows reuse)
-        for (int i = coin; i <= target; i++) {
-            dp[i] = Math.min(dp[i], dp[i - coin] + 1);  // ← Different transition (MIN)
-        }
-    }
-    return dp[target] > target ? -1 : dp[target];
-}
-```
-
-**🔑 Key Observations:**
-1. **Same DP Transition (`dp[i] += dp[i - item]`)** for:
-   - Combinations (Item → Target)
-   - Permutations (Target → Item)
-   - **Only difference**: Loop order!
-
-2. **Different DP Transitions** for:
-   - 0/1 Knapsack: `dp[w] = dp[w] || dp[w - num]` (boolean OR or MAX)
-   - Unbounded Knapsack: `dp[i] = min(dp[i], dp[i - coin] + 1)` (MIN/MAX)
-
-3. **Direction Matters** for knapsack:
-   - Backwards → prevents reuse (0/1)
-   - Forwards → allows reuse (unbounded)
-
----
-
-#### **🎯 Pattern Selection Decision Tree**
-
-```text
-Question: What does the problem ask for?
-
-├─ "Count number of ways/combinations to reach target"
-│  ├─ Order matters? (e.g., [1,2] ≠ [2,1])
-│  │  ├─ YES → Use PERMUTATIONS pattern (Target → Item)
-│  │  │         Example: LC 377 Combination Sum IV
-│  │  └─ NO  → Use COMBINATIONS pattern (Item → Target)
-│  │            Example: LC 518 Coin Change II
-│  │
-│  └─ Can reuse items?
-│     ├─ YES → Unbounded, iterate forwards
-│     └─ NO  → 0/1 Knapsack, iterate backwards
-│
-└─ "Find minimum/maximum value"
-   ├─ Can reuse items?
-   │  ├─ YES → Unbounded Knapsack (forwards)
-   │  │         Example: LC 322 Coin Change (min coins)
-   │  └─ NO  → 0/1 Knapsack (backwards)
-   │            Example: LC 416 Partition Equal Subset Sum
-   │
-   └─ Always use (Item → Capacity) order
-```
-
----
-
-### **Deep Dive: 0/1 Knapsack & Subset Sum Pattern** 🎒
-
-This pattern is fundamental and appears in many disguised forms. Last Stone Weight II is a great example of recognizing when a problem is secretly a subset sum problem.
-
-#### **When to Use This Pattern**
-
-Use **0/1 Knapsack / Subset Sum** when you see:
-
-| Indicator | What It Means | Example |
-|-----------|--------------|---------|
-| "Partition" or "split into two groups" | Divide items into subsets | LC 1049 (Last Stone Weight II) |
-| "Maximize/minimize the difference" | Find optimal partition | LC 1049, 494 |
-| "Can you achieve sum X?" | Check if specific sum possible | LC 416 (Equal Subset Partition) |
-| "Each item used at most once" | 0/1 constraint (not unlimited) | All of above |
-| "Minimize difference between groups" | Partition into balanced groups | LC 1049 |
-
-**Key Recognition**: If you see "partition" or "divide into two groups" → think **0/1 Knapsack**.
-
-#### **Core Idea: The Mathematical Transformation** 🧮
-
-**Problem**: Partition array into two groups and minimize difference.
-
-```text
-Given: stones = [2, 7, 4, 1, 8, 1]
-Total sum = 23
-
-Goal: Split into two groups with min |sum1 - sum2|
-
-Mathematical insight:
-  Let sum1 = S (sum of group 1)
-  Then sum2 = total - S (sum of group 2)
-  
-  Difference = |sum1 - sum2| = |S - (total - S)| = |2S - total|
-  
-  To minimize this: Maximize S such that S ≤ total/2
-  
-  Result = total - 2*S (where S is the largest achievable sum ≤ total/2)
-```
-
-**Why This Works**:
-- Find the largest subset sum that doesn't exceed `total / 2`
-- This gives the most balanced partition possible
-- The remaining group has sum = `total - S`
-- Their difference = `(total - S) - S = total - 2*S`
-
-#### **Pattern: Two Variants**
-
-**Variant 1: Boolean DP (Can we achieve this sum?)**
-
-```java
-// java
-// LC 1049 - Last Stone Weight II
-// IDEA: variant 1 — boolean subset sum; can we reach exactly `sum`?
-// time = O(n * total), space = O(total)
-public int lastStoneWeightII(int[] stones) {
-    int total = 0;
-    for (int stone : stones) {
-        total += stone;
-    }
-
-    int target = total / 2;
-    
-    // dp[j] = can we achieve sum j?
-    boolean[] dp = new boolean[target + 1];
-    dp[0] = true;  // Base: always can make sum 0 (choose nothing)
-
-    // For each stone
-    for (int stone : stones) {
-        // Iterate BACKWARDS to prevent using same stone twice
-        for (int j = target; j >= stone; j--) {
-            dp[j] = dp[j] || dp[j - stone];  // Can achieve j if:
-                                              // (already could) OR (could make j-stone and add this stone)
-        }
-    }
-
-    // Find largest achievable sum ≤ target
-    for (int j = target; j >= 0; j--) {
-        if (dp[j]) {
-            return total - 2 * j;
-        }
-    }
-
-    return 0;
-}
-```
-
-**Variant 2: Integer DP (Maximum value achievable)**
-
-```java
-// java
-// LC 1049 - Last Stone Weight II
-// IDEA: variant 2 — maximise the achievable subset sum <= total/2, answer = total - 2*best
-// time = O(n * total), space = O(total)
-public int lastStoneWeightII(int[] stones) {
-    int total = 0;
-    for (int stone : stones) {
-        total += stone;
-    }
-
-    int target = total / 2;
-    
-    // dp[j] = maximum sum we can achieve ≤ j
-    int[] dp = new int[target + 1];
-    dp[0] = 0;  // Base: can make sum 0
-
-    // For each stone
-    for (int stone : stones) {
-        // Iterate BACKWARDS to prevent reuse
-        for (int j = target; j >= stone; j--) {
-            // Either skip this stone (dp[j])
-            // Or include it and add to best we could do with j-stone (dp[j-stone] + stone)
-            dp[j] = Math.max(dp[j], dp[j - stone] + stone);
-        }
-    }
-
-    return total - 2 * dp[target];
-}
-```
-
-#### **Why Iterate BACKWARDS? (The Critical Detail)**
-
-```text
-❌ WRONG: Forward iteration (causes reuse)
-for (int j = stone; j <= target; j++) {
-    dp[j] = dp[j] || dp[j - stone];
-}
-Problem: When we update dp[j], we're using the NEW value of dp[j-stone]
-         which might have already been updated by the same stone in this iteration.
-         This allows using the same stone multiple times!
-
-Example with stone=3, target=9:
-  j=3: dp[3] = dp[0] = true ✓
-  j=6: dp[6] = dp[3] = true ✓ BUT dp[3] was just updated by the same stone!
-  j=9: dp[9] = dp[6] = true ✓ Again, using same stone multiple times!
-
-✅ CORRECT: Backward iteration (prevents reuse)
-for (int j = target; j >= stone; j--) {
-    dp[j] = dp[j] || dp[j - stone];
-}
-Reason: We process from right to left, so dp[j-stone] is always from the PREVIOUS iteration
-        (before this stone was considered). So we use each stone only once.
-
-Example with stone=3, target=9:
-  j=9: dp[9] = dp[6] (old value from previous stone) ✓
-  j=6: dp[6] = dp[3] (old value from previous stone) ✓
-  j=3: dp[3] = dp[0] (old value from previous stone) ✓
-```
-
-#### **Complete Example: Last Stone Weight II**
-
-```text
-stones = [2, 7, 4, 1, 8, 1]
-total = 23
-target = 23 / 2 = 11
-
-Initial: dp = [T, F, F, F, F, F, F, F, F, F, F, F]
-
-After stone 2:
-  dp[2] = T (can make sum 2)
-  dp = [T, F, T, F, F, F, F, F, F, F, F, F]
-
-After stone 7:
-  dp[9] = T (can make 2+7)
-  dp[7] = T
-  dp[2] = T (unchanged)
-  dp = [T, F, T, F, F, F, F, T, F, T, F, F]
-
-After stone 4:
-  dp[11] = T (can make 7+4)
-  dp[9] = T (unchanged)
-  dp[6] = T (can make 2+4)
-  dp[4] = T
-  dp = [T, F, T, F, T, F, T, T, F, T, F, T]
-
-... continue for remaining stones ...
-
-Final: Find largest j ≤ 11 where dp[j] = T
-       Result = 23 - 2 * j
-```
-
-#### **Similar LeetCode Problems** 📚
-
-| Problem | Goal | Transformation | Complexity |
-|---------|------|-----------------|-----------|
-| **LC 1049: Last Stone II** | Min weight of last stone | Partition into two groups, minimize difference | O(n × sum/2) |
-| **LC 416: Partition Equal Subset** | Can partition into equal sums? | Can achieve sum = total/2? | O(n × sum/2) |
-| **LC 494: Target Sum** | Count ways to reach target | Treat as: group(+) sum1, group(-) sum2; solve sum1 - sum2 = target | O(n × sum) |
-| **LC 879: Profitable Schemes** | Count valid profit schemes | DP on (company count, profit) | O(n × k × p) |
-
-**Transformation Examples**:
-
-**LC 416 (Partition Equal Subset)**:
-```text
-Question: Can we partition into two equal subsets?
-Answer: Can we achieve sum = total/2?
-DP: boolean[] dp where dp[j] = can we make sum j?
-Return: dp[total/2]
-```
-
-**LC 494 (Target Sum)**:
-```text
-Question: Assign +/- to reach target T
-Transformation: Let sum1 = sum of items with +
-                Let sum2 = sum of items with -
-                sum1 - sum2 = T
-                sum1 + sum2 = total (all items)
-                
-                Solving: sum1 = (total + T) / 2
-
-Feasibility first (both are required before the DP runs):
-    abs(T) > total          -> 0 ways: even all-plus or all-minus cannot reach T
-    (total + T) is odd      -> 0 ways: sum1 would not be an integer
-
-So: This is 0/1 knapsack! Find count of subsets with sum = (total + T) / 2
-DP: int[] dp where dp[j] = count of ways to make sum j
-Return: dp[(total + T) / 2]
-```
-
-```java
-// java
-// LC 494 - Target Sum
-// IDEA: reduce "assign +/-" to "count subsets summing to (total + T) / 2", then 0/1 knapsack
-// time = O(n * target), space = O(target)
-public int findTargetSumWays(int[] nums, int target) {
-    int total = 0;
-    for (int x : nums) total += x;
-
-    // NOTE !!! guard before the division — otherwise `sub` is negative or non-integral
-    if (Math.abs(target) > total || ((total + target) % 2) != 0) return 0;
-
-    int sub = (total + target) / 2;
-    int[] dp = new int[sub + 1];
-    dp[0] = 1;                                  // one way to make 0: pick nothing
-    for (int num : nums) {
-        for (int j = sub; j >= num; j--) {      // backward -> each num used at most once
-            dp[j] += dp[j - num];
-        }
-    }
-    return dp[sub];
-}
-```
-
-#### **Common Pitfalls** ⚠️
-
-1. **Iterating forwards instead of backwards**
-   - Will allow reusing same item multiple times
-   - Use backwards iteration for 0/1 knapsack
-
-2. **Wrong DP transition**
-   - For boolean: `dp[j] = dp[j] || dp[j - weight]`
-   - For integer sum: `dp[j] = Math.max(dp[j], dp[j - weight] + weight)`
-   - For counting ways: `dp[j] += dp[j - weight]`
-   - Don't mix these up!
-
-3. **Not recognizing the "partition" pattern**
-   - "Difference between groups" → Think partition
-   - "Split into two teams" → Think partition
-   - "Divide array" → Think partition
-
-4. **Integer overflow with sum**
-   - When total sum is large, watch for overflow
-   - Consider using long if needed
-
----
-
-#### **⚡ Quick Reference: Loop Order → Problem Type**
-
-| Outer Loop | Inner Loop | Pattern Name | Use When | Problems |
-|------------|------------|--------------|----------|----------|
-| **Items/Coins** | **Target/Amount** | Combinations | Count unique sets (order doesn't matter) | LC 518 |
-| **Target/Amount** | **Items/Coins** | Permutations | Count sequences (order matters) | LC 377 |
-| **Items** (backwards) | **Capacity** | 0/1 Knapsack | Each item used once, find max/min | LC 416, 494 |
-| **Items** (forwards) | **Capacity** | Unbounded Knapsack | Unlimited items, find max/min | LC 322 |
-
----
-
-#### **Quick Comparison Table**
-
-| Aspect | Combinations (LC 518) | Permutations (LC 377) |
-|--------|----------------------|----------------------|
-| **Loop Order** | Coin → Amount | Amount → Coin |
-| **Order Matters?** | ❌ No: [1,2] = [2,1] | ✅ Yes: [1,2] ≠ [2,1] |
-| **Problem Type** | Coin Change II | Combination Sum IV |
-| **Outer Loop** | `for (int coin : coins)` | `for (int i = 1; i <= target; i++)` |
-| **Inner Loop** | `for (int i = coin; i <= amount; i++)` | `for (int num : nums)` |
-| **Example** | amount=3, coins=[1,2] → 2 ways | target=3, nums=[1,2] → 3 ways |
-
----
-
-#### **Pattern 1: Combinations (Outer: Coins, Inner: Amount)**
-```java
-// java
-// IDEA: coins outer, amount inner -> each coin is offered once, so sets are counted
-// time = O(n * amount), space = O(amount)
-// LC 518: Coin Change II - Count combinations
-// Example: [1,2] and [2,1] are the SAME combination
-public int change(int amount, int[] coins) {
-    int[] dp = new int[amount + 1];
-    dp[0] = 1; // Base case: 1 way to make amount 0
-
-    // OUTER LOOP: Iterate through each coin
-    // This ensures we process all uses of one coin before moving to the next,
-    // which prevents duplicate combinations like [1,2] and [2,1].
-    for (int coin : coins) {
-        // INNER LOOP: Update dp table for all amounts reachable by this coin
-        for (int i = coin; i <= amount; i++) {
-            // Number of ways to make amount 'i' is:
-            // (Current ways) + (Ways to make 'i - coin')
-            dp[i] += dp[i - coin];
-        }
-    }
-
-    return dp[amount];
-}
-```
-
-**Why This Works**:
-- Process coins one at a time (e.g., first all 1s, then all 2s, then all 5s)
-- By the time you use coin `2`, you've finished all calculations with coin `1`
-- Impossible to place a `1` after a `2`, forcing non-decreasing order
-- Result: Only **combinations** (order doesn't matter)
-
-**Example Trace**: `coins = [1,2], amount = 3`
-```text
-After coin 1: dp = [1, 1, 1, 1]  // {}, {1}, {1,1}, {1,1,1}
-After coin 2: dp = [1, 1, 2, 2]  // + {2}, {1,2}
-Result: 2 combinations → {1,1,1}, {1,2}
-```
-
-#### **Pattern 2: Permutations (Outer: Amount, Inner: Coins)**
-```java
-// java
-// IDEA: amount outer, coins inner -> every coin is retried at every amount, so orderings count
-// time = O(n * target), space = O(target)
-// LC 377: Combination Sum IV - Count permutations
-// Example: [1,2] and [2,1] are DIFFERENT permutations
-public int combinationSum4(int[] nums, int target) {
-    int[] dp = new int[target + 1];
-    dp[0] = 1;
-
-    // OUTER LOOP: Iterate through each amount
-    // For each amount, try all coins to see which was "last added"
-    for (int i = 1; i <= target; i++) {
-        // INNER LOOP: Try each coin for current amount
-        for (int num : nums) {
-            if (i >= num) {
-                dp[i] += dp[i - num];
-            }
-        }
-    }
-
-    return dp[target];
-}
-```
-
-**Why This Counts Permutations**:
-- For each amount, ask: "What was the **last coin** I added?"
-- Every coin can be the "last" coin at each step
-- Result: **Permutations** (order matters)
-
-**Example Trace**: `nums = [1,2], target = 3`
-```text
-dp[1]: Use 1 → [1] (1 way)
-dp[2]: Use 1 → [1,1], Use 2 → [2] (2 ways)
-dp[3]: From dp[2] add 1 → [1,1,1], [2,1]
-       From dp[1] add 2 → [1,2]
-Result: 3 permutations → {1,1,1}, {1,2}, {2,1}
-```
-
-#### **Comparison Table**
-
-| Loop Order | Result Type | Problem Example | Use Case |
-|------------|-------------|-----------------|----------|
-| **Outer: Coin**<br>Inner: Amount | **Combinations**<br>(Order doesn't matter) | LC 518 Coin Change II | Count unique coin combinations |
-| **Outer: Amount**<br>Inner: Coin | **Permutations**<br>(Order matters) | LC 377 Combination Sum IV | Count different orderings |
-
-#### **🔥 Side-by-Side Code Comparison**
-
-**LC 518: Coin Change II (Combinations)**
-```java
-// java
-// LC 518 - Coin Change II
-// IDEA: combinations — coins outer
-// time = O(n * amount), space = O(amount)
-public int change(int amount, int[] coins) {
-    int[] dp = new int[amount + 1];
-    dp[0] = 1; // Base: 1 way to make 0
-
-    // CRITICAL: Coin outer loop = COMBINATIONS
-    for (int coin : coins) {              // ← Process coins one by one
-        for (int i = coin; i <= amount; i++) {  // ← Update all amounts for this coin
-            dp[i] += dp[i - coin];
-        }
-    }
-    return dp[amount];
-}
-
-// Example: amount=3, coins=[1,2]
-// Result: 2 combinations
-// {1,1,1}, {1,2}  (Note: [1,2] and [2,1] counted as same)
-```
-
-**LC 377: Combination Sum IV (Permutations)**
-```java
-// java
-// LC 377 - Combination Sum IV
-// IDEA: permutations — amount outer
-// time = O(n * target), space = O(target)
-public int combinationSum4(int[] nums, int target) {
-    int[] dp = new int[target + 1];
-    dp[0] = 1; // Base: 1 way to make 0
-
-    // CRITICAL: Amount outer loop = PERMUTATIONS
-    for (int i = 1; i <= target; i++) {   // ← Process each amount
-        for (int num : nums) {            // ← Try every number for this amount
-            if (i >= num) {
-                dp[i] += dp[i - num];
-            }
-        }
-    }
-    return dp[target];
-}
-
-// Example: target=3, nums=[1,2]
-// Result: 3 permutations
-// {1,1,1}, {1,2}, {2,1}  (Note: [1,2] and [2,1] are different)
-```
-
-#### **🔍 Detailed Trace Comparison: Why Loop Order Matters**
-
-**Example: nums/coins = [1, 2], target/amount = 3**
-
-**LC 518 (Combinations - Coin Outer):**
-```text
-Initialize: dp = [1, 0, 0, 0]
-
-Process coin 1:
-  i=1: dp[1] += dp[0] = 1    → [1, 1, 0, 0]  // ways: {1}
-  i=2: dp[2] += dp[1] = 1    → [1, 1, 1, 0]  // ways: {1,1}
-  i=3: dp[3] += dp[2] = 1    → [1, 1, 1, 1]  // ways: {1,1,1}
-
-Process coin 2:
-  i=2: dp[2] += dp[0] = 1+1=2 → [1, 1, 2, 1]  // ways: {1,1}, {2}
-  i=3: dp[3] += dp[1] = 1+1=2 → [1, 1, 2, 2]  // ways: {1,1,1}, {1,2}
-                                              // Note: Can't get {2,1} because
-                                              // all coin-1 uses are done before coin-2
-
-Final: dp[3] = 2  ✅ Only {1,1,1} and {1,2}
-```
-
-**LC 377 (Permutations - Amount Outer):**
-```text
-Initialize: dp = [1, 0, 0, 0]
-
-i=1 (building sum 1):
-  Try 1: dp[1] += dp[0] = 1   → [1, 1, 0, 0]  // ways: {1}
-  Try 2: skip (2 > 1)
-
-i=2 (building sum 2):
-  Try 1: dp[2] += dp[1] = 1   → [1, 1, 1, 0]  // {1} + 1 = {1,1}
-  Try 2: dp[2] += dp[0] = 1+1=2 → [1, 1, 2, 0]  // {} + 2 = {2}
-
-i=3 (building sum 3):
-  Try 1: dp[3] += dp[2] = 2   → [1, 1, 2, 2]  // {1,1} + 1 = {1,1,1}
-                                              // {2} + 1 = {2,1}  ✅
-  Try 2: dp[3] += dp[1] = 2+1=3 → [1, 1, 2, 3]  // {1} + 2 = {1,2}  ✅
-
-Final: dp[3] = 3  ✅ All three: {1,1,1}, {1,2}, {2,1}
-```
-
-**Key Insight:**
-- **LC 518 (Coin Outer)**: Once you finish processing coin-1, you never revisit it. This forces a canonical order (all 1s before all 2s), preventing duplicates like {1,2} and {2,1}.
-- **LC 377 (Amount Outer)**: For each sum, you ask "what was the **last** number added?" Every number can be "last", allowing both {1,2} and {2,1}.
-
----
-
-#### **When to Use Which**
-
-**Use Combinations (Coin → Amount)** when:
-- Problem asks for "number of ways" without considering order
-- [1,2,5] and [2,1,5] should be counted once
-- Keywords: "combinations", "unique sets"
-
-**Use Permutations (Amount → Coin)** when:
-- Problem asks for different sequences/orderings
-- [1,2] and [2,1] should be counted separately
-- Keywords: "permutations", "different orderings", "sequences"
-
-#### **Complete Java Example: LC 518 Coin Change II**
-```java
-// java
-// LC 518 - Coin Change II
-// IDEA: count the ways to form each amount; coins outer keeps `{1,2}` and `{2,1}` as one
-// time = O(n * amount), space = O(amount)
-public int change(int amount, int[] coins) {
-    // dp[i] = total number of combinations that make up amount i
-    int[] dp = new int[amount + 1];
-
-    // Base case: There is exactly 1 way to make 0 amount (empty set)
-    dp[0] = 1;
-
-    // CRITICAL: Coin outer loop = COMBINATIONS
-    for (int coin : coins) {
-        for (int i = coin; i <= amount; i++) {
-            dp[i] += dp[i - coin];
-        }
-    }
-
-    return dp[amount];
-}
-```
-
-**Test Cases**:
-```text
-Input: amount = 5, coins = [1,2,5]
-Output: 4
-Combinations: {5}, {2,2,1}, {2,1,1,1}, {1,1,1,1,1}
-
-Input: amount = 3, coins = [2]
-Output: 0
-Explanation: Cannot make 3 with only coins of 2
-```
-
-#### **📚 Problem References**
-
-| Problem | LC # | Loop Order | What it Counts | File Reference |
-|---------|------|------------|----------------|----------------|
-| **Coin Change II** | 518 | Coin → Amount | Combinations (order doesn't matter) | `leetcode_java/.../CoinChange2.java` |
-| **Combination Sum IV** | 377 | Amount → Coin | Permutations (order matters) | `leetcode_java/.../CombinationSumIV.java` |
-
-**💡 Memory Trick:**
-- **"Coin first" = Combinations** (both start with 'C')
-- **"Amount first" = Arrangements/Permutations** (both start with 'A')
-
----
-
-#### **📝 Final Summary: Complete Pattern Comparison**
-
-| Aspect | LC 518: Coin Change II<br>(Combinations) | LC 377: Combination Sum IV<br>(Permutations) |
+| Aspect | LC 518: Coin Change II (combinations) | LC 377: Combination Sum IV (permutations) |
 |--------|------------------------------------------|---------------------------------------------|
 | **What it counts** | Unique sets (order doesn't matter) | Different sequences (order matters) |
 | **Example** | [1,2] = [2,1] (same) | [1,2] ≠ [2,1] (different) |
-| **Outer Loop** | `for (int coin : coins)` | `for (int i = 1; i <= target; i++)` |
-| **Inner Loop** | `for (int i = coin; i <= amount; i++)` | `for (int num : nums)` |
-| **DP Transition** | `dp[i] += dp[i - coin]` | `dp[i] += dp[i - num]` |
+| **Outer Loop** | `for coin in coins` | `for t in range(1, target + 1)` |
+| **Inner Loop** | `for a in range(coin, amount + 1)` | `for num in nums` |
+| **DP Transition** | `dp[a] += dp[a - coin]` | `dp[t] += dp[t - num]` |
 | **Base Case** | `dp[0] = 1` | `dp[0] = 1` |
-| **Result for<br>nums=[1,2], target=3** | **2** combinations:<br>{1,1,1}, {1,2} | **3** permutations:<br>{1,1,1}, {1,2}, {2,1} |
-| **Why it works** | Processing coin-1 completely before coin-2 forces canonical order → no {2,1} | For each sum, try every number as "last" → allows all orderings |
-| **File Reference** | `CoinChange2.java` | `CombinationSumIV.java` |
+| **Result for nums=[1,2], target=3** | **2**: {1,1,1}, {1,2} | **3**: {1,1,1}, {1,2}, {2,1} |
+| **Why it works** | every use of coin 1 is placed before coin 2 is offered → only non-decreasing sequences | for each sum, every number is tried as the *last* one → every ordering |
 
-**🔥 The ONLY Difference:**
-```java
-// java
-// IDEA: the two nestings printed together — the only difference is which loop is outer
-// time = O(n * amount), space = O(amount)
-// LC 518: Combinations
-for (int coin : coins)              // ← ITEM OUTER
-    for (int i = coin; i <= amount; i++)
+Memory trick: **C**oin outer counts **C**ombinations; **A**mount outer counts **A**rrangements.
 
-// LC 377: Permutations
-for (int i = 1; i <= target; i++)   // ← TARGET OUTER
-    for (int num : nums)
+### Template 2: Unbounded Count, Combinations — LC 518 ⭐⭐⭐⭐
+
+**Recognise** — "the number of **combinations** that make up that amount", "you may assume an
+infinite number of each coin", and `{1,2}` / `{2,1}` are one answer. amount ≤ 5000, coins ≤ 300 →
+`O(n * amount)`.
+
+**Key point** — coins are the **outer** loop, so when coin `c` is being offered every earlier coin
+is already finished: a sum can only be built in non-decreasing coin order, and each multiset is
+counted once. The inner loop runs **forward**, so `dp[a - coin]` may already include this coin —
+that is the unlimited supply.
+
+```python
+# python
+# LC 518 - Coin Change II
+# IDEA: coins OUTER (each multiset built in one canonical order), amount inner FORWARD (reuse)
+# time = O(n * amount), space = O(amount)
+def change(amount, coins):
+    dp = [0] * (amount + 1)        # dp[a] = combinations of the coins so far that sum to a
+    dp[0] = 1                      # one way to make 0: take nothing
+    for coin in coins:
+        for a in range(coin, amount + 1):   # forward: dp[a - coin] may already use this coin
+            dp[a] += dp[a - coin]
+    return dp[amount]
 ```
 
-**Both use the EXACT SAME transition: `dp[i] += dp[i - item]`**
+```java
+// java
+// LC 518 - Coin Change II
+// IDEA: coins OUTER (each multiset built in one canonical order), amount inner FORWARD (reuse)
+// time = O(n * amount), space = O(amount)
+public int change(int amount, int[] coins) {
+    int[] dp = new int[amount + 1];
+    dp[0] = 1;                                  // one way to make 0: take nothing
+    for (int coin : coins) {
+        for (int a = coin; a <= amount; a++) {  // forward: dp[a - coin] may already use this coin
+            dp[a] += dp[a - coin];
+        }
+    }
+    return dp[amount];
+}
+```
 
----
+**Complexity**
+- **Time O(n · amount)**: `for coin` × `for a in range(coin, amount + 1)`, one addition each.
+- **Space O(amount)**: the single row `dp`.
 
-### Why the Guard Is `if (i - coin >= 0)`, Not `if (i == coin)`
+**Dry run** — `coins = [1, 2]`, `amount = 3`:
 
-**🔑 The Question**: Why use `if (i >= coin)` instead of `if (i == coin)`?
+```text
+start          dp = [1, 0, 0, 0]
+coin 1  a=1..3 dp = [1, 1, 1, 1]     {1} {1,1} {1,1,1}
+coin 2  a=2    dp[2] += dp[0] -> 2   {1,1} {2}
+        a=3    dp[3] += dp[1] -> 2   {1,1,1} {1,2}   -- no {2,1}: coin 1 is finished
+answer  dp[3] = 2
+```
 
-This is a fundamental concept in understanding how Dynamic Programming builds on previously solved **subproblems**.
+**Traps**
+- **Swapping the loops** silently answers LC 377: `coins = [1, 2]`, `amount = 3` returns 3.
+- **`dp[0] = 0`**: every count stays 0. The empty combination is the one way to make 0.
+- **Backward inner loop** turns it into 0/1: `amount = 4`, `coins = [2]` returns 0 instead of 1.
 
-#### **The Short Answer**
-- `i == coin` only checks if a **single coin** matches the amount
-- `i >= coin` checks if a coin can be **combined** with a previous sum to reach the amount
+**Not this if** — the statement counts `(1, 2)` and `(2, 1)` separately →
+[Template 3](#template-3-unbounded-count-permutations--lc-377-); each item at most once →
+[Template 1](#template-1-01-knapsack-subset-sum--lc-416-) with `+=`.
 
-#### **The Logic of `i - coin >= 0`**
+**Drill** — LC 518 · LC 1641 *(vowel strings = combinations with repetition)* · LC 2585
+*(each type at most `count` times: bounded, read as a group)*
 
-When we calculate `dp[i]`, we aren't just looking for one coin that equals `i`. We are looking for a coin `coin` that, when subtracted from `i`, leaves a remainder that we **already know how to solve**.
+### Template 3: Unbounded Count, Permutations — LC 377 ⭐⭐⭐⭐
 
-- **`i`**: The total amount we are trying to reach right now
-- **`coin`**: The value of the coin we just picked up
-- **`i - coin`**: The "remainder" or the amount left over
+**Recognise** — "the number of possible combinations that add up to target", with the note that
+**different sequences are counted as different**; "number of ways to climb with steps from a set".
+target ≤ 1000 → `O(n * target)`.
 
-If `i - coin >= 0`, the coin fits and the remainder is a subproblem we have **already calculated**, because we fill the table from `0` up to `amount`. The `== 0` case is not special-cased: it reads `dp[0]`, which the base case already set. That is exactly why the guard is `>=` and not `>`.
+**Key point** — the amount is the **outer** loop, so `dp[t]` asks *which number came last?* and
+tries every number at every sum: `dp[t] = Σ dp[t - num]`. Two sequences that differ only in order
+end in different numbers at some step, so both are counted.
 
-**The DP looks back at `dp[i - coin]`** to reuse that solution!
+```python
+# python
+# LC 377 - Combination Sum IV
+# IDEA: amount OUTER, numbers inner -- dp[t] sums over the number placed LAST, so orders differ
+# time = O(n * target), space = O(target)
+def combinationSum4(nums, target):
+    dp = [0] * (target + 1)        # dp[t] = ordered sequences summing to t
+    dp[0] = 1                      # the empty sequence
+    for t in range(1, target + 1):
+        for num in nums:           # try every number as the last one
+            if t - num >= 0:
+                dp[t] += dp[t - num]
+    return dp[target]
+```
 
-#### **A Concrete Example**
+```java
+// java
+// LC 377 - Combination Sum IV
+// IDEA: amount OUTER, numbers inner -- dp[t] sums over the number placed LAST, so orders differ
+// time = O(n * target), space = O(target)
+public int combinationSum4(int[] nums, int target) {
+    int[] dp = new int[target + 1];
+    dp[0] = 1;                                  // the empty sequence
+    for (int t = 1; t <= target; t++) {
+        for (int num : nums) {                  // try every number as the last one
+            if (t - num >= 0) {
+                dp[t] += dp[t - num];
+            }
+        }
+    }
+    return dp[target];
+}
+```
 
-Imagine `coins = [2]` and we want to find `dp[4]` (how to make 4 cents).
+**Complexity**
+- **Time O(target · n)**: `for t` × `for num`, one addition each.
+- **Space O(target)**: the single row `dp`.
 
-1. We try the coin `coin = 2`
-2. `i - coin` is `4 - 2 = 2`
-3. Since `2 > 0`, we don't stop. We look at `dp[2]`
-4. We already calculated `dp[2] = 1` (it took one 2-cent coin to make 2 cents)
-5. So, `dp[4] = dp[2] + 1 = 2`
+**Dry run** — `nums = [1, 2]`, `target = 3`:
 
-**If we only used `if (i - coin == 0)`:**
-- We would only ever find that `dp[2] = 1`
-- When we got to `dp[4]`, the condition `4 - 2 == 0` would be **false**
-- We would incorrectly conclude that we can't make 4 cents!
+```text
+t=1  last 1: dp[0]=1                    dp[1] = 1   {1}
+t=2  last 1: dp[1]=1, last 2: dp[0]=1   dp[2] = 2   {1,1} {2}
+t=3  last 1: dp[2]=2, last 2: dp[1]=1   dp[3] = 3   {1,1,1} {2,1} {1,2}
+```
 
-#### **The Three Scenarios**
+**Traps**
+- **Items outer** gives the combinations count: `nums = [1, 2, 3]`, `target = 4` returns 4, not 7.
+- **Intermediate overflow**: on the judge's tests some `dp[t]` below `target` exceed 32 bits. The
+  answer is promised to fit, and every step is an addition, so Java's wrapping `int` still ends on
+  the right value; in C++ signed overflow is undefined — use `unsigned`.
+- **Negative numbers** (the follow-up) make the count infinite: `[1, -1]` loops forever. The
+  template assumes positive numbers.
 
-When checking `i - coin`:
+**Not this if** — order does not matter → [Template 2](#template-2-unbounded-count-combinations--lc-518-);
+the sequences themselves are wanted → [backtrack.md](./backtrack.md).
 
-| Result of `i - coin` | Meaning | Action |
-| --- | --- | --- |
-| **Negative** (`< 0`) | The coin is too big for this amount | Skip this coin |
-| **Zero** (`== 0`) | This single coin matches the amount perfectly | `dp[i] = 1` |
-| **Positive** (`> 0`) | This coin fits, and we need to check the "remainder" | `dp[i] = dp[remainder] + 1` |
+**Drill** — LC 377 · LC 70 ⭐ *(nums = {1, 2})* · LC 2466 *(steps `zero` and `one`, sum over a range)*
 
-The last two rows are the **same line of code** — `dp[i] = dp[i - coin] + 1` — because `dp[0]` is
-already seeded to `0`. That is why one guard, `i - coin >= 0`, covers both.
+### Template 4: Unbounded Min Count — LC 322 ⭐⭐⭐⭐⭐
 
-#### **💡 Key Insight**
+**Recognise** — "the **fewest** number of coins", "least number of perfect square numbers",
+unlimited supply of each, return -1 if impossible. amount ≤ 10⁴, coins ≤ 12 → `O(n * amount)`.
+Greedy (largest coin first) is the tempting wrong answer.
 
-The condition `if (i >= coin)` covers both the case where a coin matches exactly **and** the case where a coin is just one piece of a larger puzzle.
+**Key point** — `dp[a]` is the fewest coins summing to exactly `a`, for every `a` below the current
+one. The last coin is *some* `coin ≤ a`, and the rest is the already-solved `dp[a - coin]`; take the
+minimum over the choices. Order does not matter for a minimum, so either loop nesting works.
 
-#### **Complete Example with Trace**
-
-**Input**: `coins = [1,2,5], amount = 11`
-
-**Setup**:
-- **DP Array**: `int[12]` (Indices 0 to 11)
-- **Initialization**: `dp[0] = 0`, all others = `12` (our "Infinity")
-
-**Step-by-Step Trace**:
-
-**Amounts 1 through 4**:
-- **At `i=1`**: Only coin `1` fits (`1 >= 1`). `dp[1] = dp[0] + 1 = 1`
-- **At `i=2`**:
-  - Coin `1`: `dp[2] = dp[1] + 1 = 2`
-  - Coin `2`: `dp[2] = dp[0] + 1 = 1` (Winner: Min is 1)
-- **At `i=3`**:
-  - Coin `1`: `dp[3] = dp[2] + 1 = 2`
-  - Coin `2`: `dp[3] = dp[1] + 1 = 2`
-  - `dp[3] = 2` (e.g., `2+1` or `1+1+1`)
-- **At `i=4`**:
-  - Coin `1`: `dp[4] = dp[3] + 1 = 3`
-  - Coin `2`: `dp[4] = dp[2] + 1 = 2`
-  - `dp[4] = 2` (e.g., `2+2`)
-
-**Amount 5 (The first big jump)**:
-- Coin `1`: `dp[5] = dp[4] + 1 = 3`
-- Coin `2`: `dp[5] = dp[3] + 1 = 3`
-- **Coin `5`**: `dp[5] = dp[0] + 1 = 1`
-- **Result**: `dp[5] = 1` (Matches perfectly)
-
-**Amount 10**:
-- Coin `1`: `dp[10] = dp[9] + 1 = 4`
-- Coin `2`: `dp[10] = dp[8] + 1 = 4`
-- **Coin `5`**: `dp[10] = dp[5] + 1 = 2`
-- **Result**: `dp[10] = 2` (this represents `5+5`)
-
-**The Final Goal: Amount 11**:
-1. **Try Coin `1`**:
-   - Remainder: `11 - 1 = 10`
-   - Look up `dp[10]`: It is `2`
-   - Calculation: `dp[11] = dp[10] + 1 = 3`
-
-2. **Try Coin `2`**:
-   - Remainder: `11 - 2 = 9`
-   - Look up `dp[9]`: It is `3` (e.g., `5+2+2`)
-   - Calculation: `dp[11] = dp[9] + 1 = 4`
-
-3. **Try Coin `5`**:
-   - Remainder: `11 - 5 = 6`
-   - Look up `dp[6]`: It is `2` (e.g., `5+1`)
-   - Calculation: `dp[11] = dp[6] + 1 = 3`
-
-**Final Comparison**: `dp[11] = min(3, 4, 3) = 3`
-
-#### **Why the remainder `i - coin > 0` worked**
-
-When calculating for **11**, the algorithm didn't have to "re-solve" how to make 10 or 6. It just looked at the table:
-- "Oh, I know the best way to make **10** is **2** coins (`5+5`)"
-- "If I add my **1** coin to that, I get **11** using **3** coins (`5+5+1`)"
-
-#### **Summary Table (Simplified)**
-
-| i | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | **11** |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| **dp[i]** | 0 | 1 | 1 | 2 | 2 | 1 | 2 | 2 | 3 | 3 | 2 | **3** |
-
-#### **The DP Code Pattern**
+```python
+# python
+# LC 322 - Coin Change
+# IDEA: dp[a] = min over the last coin of dp[a - coin] + 1; INF = amount + 1 marks "unreachable"
+# time = O(amount * n), space = O(amount)
+def coinChange(coins, amount):
+    INF = amount + 1                  # more coins than any real answer can use
+    dp = [INF] * (amount + 1)         # dp[a] = fewest coins summing to exactly a
+    dp[0] = 0                         # zero coins make 0
+    for a in range(1, amount + 1):
+        for coin in coins:
+            if a - coin >= 0:         # the coin fits; dp[a - coin] is already final
+                dp[a] = min(dp[a], dp[a - coin] + 1)
+    return -1 if dp[amount] == INF else dp[amount]
+```
 
 ```java
 // java
 // LC 322 - Coin Change
-// IDEA: min coins per amount; order is irrelevant so either nesting works
-// time = O(n * amount), space = O(amount)
+// IDEA: dp[a] = min over the last coin of dp[a - coin] + 1; INF = amount + 1 marks "unreachable"
+// time = O(amount * n), space = O(amount)
 public int coinChange(int[] coins, int amount) {
-    if (amount == 0) return 0;
-
-    // dp[i] = min coins to make amount i
+    int INF = amount + 1;                       // more coins than any real answer can use
     int[] dp = new int[amount + 1];
-
-    // Initialize with "Infinity" (amount + 1 is safe)
-    Arrays.fill(dp, amount + 1);
-
-    // Base case: 0 coins needed for 0 amount
-    dp[0] = 0;
-
-    // Iterate through every amount from 1 to amount
-    for (int i = 1; i <= amount; i++) {
-        // For each amount, try every coin
+    Arrays.fill(dp, INF);
+    dp[0] = 0;                                  // zero coins make 0
+    for (int a = 1; a <= amount; a++) {
         for (int coin : coins) {
-            // CRITICAL CONDITION: Check if coin fits
-            if (i >= coin) {
-                // DP equation: Min of (current value) OR
-                // (1 coin + coins needed for remainder)
-                dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+            if (a - coin >= 0) {                // the coin fits; dp[a - coin] is already final
+                dp[a] = Math.min(dp[a], dp[a - coin] + 1);
             }
         }
     }
-
-    // If value is still "Infinity", we couldn't reach it
-    return dp[amount] > amount ? -1 : dp[amount];
+    return dp[amount] == INF ? -1 : dp[amount];
 }
 ```
 
-**Reference**: See `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CoinChange.java:356-408` for detailed implementation.
+**Complexity**
+- **Time O(amount · n)**: `for a in range(1, amount + 1)` × `for coin in coins`.
+- **Space O(amount)**: the single row `dp`.
 
----
+**Dry run** — `coins = [1, 2, 5]`, `amount = 11`. Each `dp[a]` reads cells to its left that are
+already final:
 
-### **Deep Dive: Difference-Keyed Knapsack — LC 956** 🏗️ ⭐⭐⭐⭐
+| a | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | **11** |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| **dp[a]** | 0 | 1 | 1 | 2 | 2 | 1 | 2 | 2 | 3 | 3 | 2 | **3** |
 
-#### **When to Use a Difference Key**
+`dp[11] = min(dp[10] + 1, dp[9] + 1, dp[6] + 1) = min(3, 4, 3) = 3` → `5 + 5 + 1`.
 
-Every problem above indexes the table by a **total** — `dp[capacity]`, `dp[amount]`, `dp[sum]`.
-Some problems instead split the items into **two groups and only care how far apart the groups
-are**. Then the total is irrelevant and the right key is the **difference**:
+Why the guard is `a - coin >= 0` and not `a == coin`:
+
+| `a - coin` | Meaning | What the one line does |
+| --- | --- | --- |
+| **Negative** (`< 0`) | the coin is too big for this amount | skipped by the guard |
+| **Zero** (`== 0`) | this single coin is the whole amount | `dp[0] + 1 = 1` — `dp[0]` is seeded |
+| **Positive** (`> 0`) | the coin fits; the remainder is a solved subproblem | `dp[a - coin] + 1` |
+
+**Traps**
+- **`if a == coin`** only ever finds one-coin answers: `coins = [2]`, `amount = 4` returns -1
+  instead of 2, because `dp[4]` never reads `dp[2]`.
+- **Returning `dp[amount]` without the `INF` check**: `coins = [2]`, `amount = 3` returns 4.
+- **Greedy**: `coins = [1, 3, 4]`, `amount = 6` — largest-first takes `4 + 1 + 1` = 3 coins; the
+  DP finds `3 + 3` = 2.
+- **`Integer.MAX_VALUE` as INF in Java**: `dp[a - coin] + 1` overflows to negative and wins every
+  `min`. `amount + 1` is safe.
+
+**Not this if** — the number of *ways* is asked → [Template 2](#template-2-unbounded-count-combinations--lc-518-);
+each coin usable once → [Template 1](#template-1-01-knapsack-subset-sum--lc-416-) with `min`
+and a backward loop.
+
+**Drill** — LC 322 ⭐ · LC 279 *(the coins are the squares ≤ n)* · LC 1449 *(maximise digit count
+first, then build the largest string)*
+
+### Template 5: Difference-Keyed Knapsack — LC 956 ⭐⭐⭐⭐
+
+**Recognise** — "split into two **disjoint** subsets with **equal** sum, return the largest
+possible sum", where items may be **left out**; more generally, two piles where only the **gap**
+between them matters. n ≤ 20 and sum ≤ 5000 → `O(n * sum)`.
+
+**Key point** — key the table by the **difference** between the two piles, not by a total:
+`dp[d]` is the tallest *taller* pile over every way to place some of the items so far into two
+piles that differ by exactly `d`. Each item has **three** choices — skip, taller pile, shorter
+pile — and the answer is `dp[0]`.
 
 ```text
-dp[capacity] = best value     ->   "how much have I packed?"
+dp[capacity] = best value     ->   "how much have I packed?"     (Templates 1-4)
 dp[difference] = best height  ->   "how unbalanced are the two piles?"
-```
 
-Recognise it by the shape of the answer:
-
-- "split into two subsets with **equal** sum, maximise that sum" (LC 956 — the two steel supports)
-- "minimise `|sum(A) - sum(B)|`" (LC 1049 Last Stone Weight II, LC 2035 Partition Array Into Two
-  Arrays)
-- "make two piles equal, items may be **left out**"
-
-> **LC 416 / LC 1049 are the same family solved with a total.** With small sums you can key on
-> `sum` and read `dp[total/2]` at the end. LC 956 cannot: it wants the *height* of the balanced pair,
-> and rods can be discarded — so the value you carry and the value you key by are different things.
-> That is exactly what the difference key buys.
-
-#### **The State**
-
-```text
-dp[d] = the tallest achievable TALLER side, over all ways to split some subset
-        of the rods so far into two piles differing by exactly d
-
-dp[0] = 0   (two empty piles, difference 0, height 0)
-answer = dp[0] after all rods -- difference 0 means equal, and we kept the max height
-```
-
-Each rod has **three** choices, not two, and this is where it differs from 0/1 knapsack:
-
-```text
 skip it            ->  (d,        taller)                 unchanged
 put on TALLER      ->  (d + x,    taller + x)             the gap widens
 put on SHORTER     ->  (|d - x|,  max(taller, shorter+x)) the gap closes, and may flip sides
                        where shorter = taller - d
 ```
 
-The `|d - x|` and the `max(...)` together handle the case where the short pile overtakes the tall
-one — the two piles swap roles and the difference reflects back off zero.
+The `|d - x|` and the `max(...)` together handle the short pile overtaking the tall one: the
+piles swap roles and the difference reflects back off zero.
+
+```python
+# python
+# LC 956 - Tallest Billboard
+# IDEA: dict from difference -> tallest "taller side"; only reachable differences are stored
+# time = O(n * sum), space = O(sum)
+def tallestBillboard(rods):
+    dp = {0: 0}                        # difference -> height of the taller support
+    for x in rods:
+        prev = dict(dp)                # snapshot: each rod is placed at most once
+        for d, taller in prev.items():
+            shorter = taller - d
+            dp[d + x] = max(dp.get(d + x, 0), taller + x)       # x on the taller side
+            nd = abs(d - x)                                    # x on the shorter side
+            dp[nd] = max(dp.get(nd, 0), max(taller, shorter + x))
+    return dp[0]                       # difference 0 = equal supports
+```
 
 ```java
 // java
@@ -1054,23 +476,24 @@ one — the two piles swap roles and the difference reflects back off zero.
 // time = O(n * sum), space = O(sum)
 public int tallestBillboard(int[] rods) {
     int sum = 0;
-    for (int r : rods) sum += r;
-
+    for (int r : rods) {
+        sum += r;
+    }
     int[] dp = new int[sum + 1];
-    Arrays.fill(dp, -1);          // NOTE !!! -1 = unreachable; 0 is a real, reachable height
+    Arrays.fill(dp, -1);          // -1 = unreachable; 0 is a real, reachable height
     dp[0] = 0;
-
     for (int x : rods) {
         int[] prev = dp.clone();  // "skip x" is prev carried forward, already in dp
         for (int d = 0; d <= sum; d++) {
-            if (prev[d] < 0) continue;
-            int taller = prev[d], shorter = taller - d;
-
-            // 1) x joins the taller pile -> gap widens by x
-            if (d + x <= sum) dp[d + x] = Math.max(dp[d + x], taller + x);
-
-            // 2) x joins the shorter pile -> gap becomes |d - x|, piles may swap
-            int nd = Math.abs(d - x);
+            if (prev[d] < 0) {
+                continue;
+            }
+            int taller = prev[d];
+            int shorter = taller - d;
+            if (d + x <= sum) {                       // x joins the taller pile
+                dp[d + x] = Math.max(dp[d + x], taller + x);
+            }
+            int nd = Math.abs(d - x);                 // x joins the shorter pile
             dp[nd] = Math.max(dp[nd], Math.max(taller, shorter + x));
         }
     }
@@ -1078,29 +501,11 @@ public int tallestBillboard(int[] rods) {
 }
 ```
 
-```python
-# python
-# LC 956 - Tallest Billboard
-# IDEA: dict from difference -> tallest "taller side"; only reachable differences are stored
-# time = O(n * sum), space = O(sum)
-def tallestBillboard(rods):
-    dp = {0: 0}                        # difference -> height of the taller support
+**Complexity**
+- **Time O(n · sum)**: `for x in rods` × at most `sum + 1` differences in `prev`.
+- **Space O(sum)**: one entry per reachable difference, plus the `prev` snapshot.
 
-    for x in rods:
-        prev = dict(dp)                # snapshot: each rod is used at most once
-        for d, taller in prev.items():
-            shorter = taller - d
-
-            nd, nt = d + x, taller + x                 # x on the taller side
-            dp[nd] = max(dp.get(nd, 0), nt)
-
-            nd2 = abs(d - x)                           # x on the shorter side
-            dp[nd2] = max(dp.get(nd2, 0), max(taller, shorter + x))
-
-    return dp[0]
-```
-
-#### **Trace — `rods = [1, 2, 3, 6]`**
+**Dry run** — `rods = [1, 2, 3, 6]`:
 
 ```text
 start        {0: 0}
@@ -1113,42 +518,26 @@ after 6      {0: 6, 1: 6, 2: 7, 3: 6, ...}   -> dp[0] = 6, supports {6} and {1,2
 `dp[0]` jumps from `0` to `3` when the third rod balances `{3}` against `{1,2}`, and to `6` when the
 `6` balances the whole rest.
 
-#### **Common Pitfalls — difference key** ⚠️
+**Traps**
+- **Initialising the array to `0` instead of `-1`**: a zero-filled array claims every difference is
+  reachable for free; `rods = [1, 2]` then returns 1 instead of 0.
+- **Mutating `dp` while iterating it** (Python) or forgetting the `clone()` (Java): without the
+  snapshot one rod lands on both piles in one pass.
+- **Storing the shorter side instead of the taller**: either convention works, but the transitions
+  differ — derive `shorter = taller - d` from the one you chose.
+- **`d + x` past the array** in Java: cap at `sum`; a difference above the total is meaningless.
 
-- **Initialising the array to `0` instead of `-1`.** Height `0` at difference `d` is a *legal* state
-  only for `d = 0`; a zero-filled array claims every difference is reachable for free and the answer
-  comes out too large.
-- **Mutating `dp` while iterating it** (Python) or forgetting the `clone()` (Java). Without the
-  snapshot a rod can be placed on both piles in one pass.
-- **Storing the shorter side instead of the taller.** Either convention works, but the transition
-  formulas are different — pick one and derive `shorter = taller - d` from it consistently.
-- **`d + x` overflowing the array.** Cap the loop at `sum`; a difference larger than the total is
-  meaningless.
+**Not this if** — no item may be discarded and only feasibility is asked → a total key is enough,
+[Template 1](#template-1-01-knapsack-subset-sum--lc-416-) (LC 416, LC 1049); n ≤ 30 with values up
+to 10⁷ → meet in the middle (LC 2035), the difference table is too wide.
 
-#### **Similar LeetCode Problems — two-pile splits** 📚
+**Drill** — LC 1049 *(the same idea, read with a total key)* · LC 956 · LC 2035 *(meet in the middle)*
 
-| Problem | Key |
-|---|---|
-| LC 1049 Last Stone Weight II | minimise the difference — the same table, read the smallest reachable `d` |
-| LC 416 Partition Equal Subset Sum | feasibility only — a boolean `dp[sum]` is enough |
-| LC 2035 Partition Array Into Two Arrays | `n <= 30`, so meet-in-the-middle beats a difference table |
-| LC 494 Target Sum | signs instead of piles — algebra turns it back into a subset-sum on the total |
+### Template 6: Group Knapsack — LC 4040 ⭐⭐⭐⭐
 
-
-### **Deep Dive: Group 0/1 Knapsack — LC 4040** 🎁 ⭐⭐⭐⭐
-
-#### **When an Item Becomes a Group**
-
-In plain 0/1 knapsack an item is a single `(weight, value)` pair and the decision is
-**take / skip**. In a **group knapsack** each item arrives as a *menu* of mutually exclusive
-options, and the decision is **which one, or none**:
-
-```text
-0/1     item i  ->  (w, v)                       take it or don't
-group   item i  ->  {(w, c), (w', c'), ...}      take AT MOST ONE of these
-```
-
-Recognise it whenever an item can be **used in one of several forms**:
+**Recognise** — an item can be **used in one of several forms**, or not at all: one die and its
+faces, one pile and its prefixes, one element and every value it can be transformed into. The
+capacity is still a sum ≤ 10³–10⁴ → `O(n * W * |group|)`.
 
 | Problem | The group is… | Per-group rule |
 |---|---|---|
@@ -1156,34 +545,12 @@ Recognise it whenever an item can be **used in one of several forms**:
 | LC 1155 Number of Dice Rolls With Target Sum | one die and its faces `1..f` | **exactly** 1 |
 | LC 2218 Maximum Value of K Coins From Piles | one pile and each of its prefixes (`0..k` coins) | ≤ 1 |
 | LC 2585 Number of Ways to Earn Points | one question type used `0, 1, … count` times | ≤ 1 |
-| LC 474 Ones and Zeroes | — *(counter-example)* | plain 0/1 with a 2-D capacity, no menu |
 
-> **Bounded knapsack is a group knapsack.** "Usable up to `k` times" is the group
-> `{(w, v), (2w, 2v), …, (kw, kv)}`; the binary split in the table at the top of this file is
-> just the faster way to spell the same thing.
-
-#### **The State — same axis, new inner choice**
-
-The capacity axis does not change. Only what happens inside it does:
-
-```text
-0/1     dp[s] = best( dp[s],  dp[s - w] + v )                 ONE candidate
-group   dp[s] = best( dp[s],  best over the item's options )  |group| candidates
-```
-
-LC 4040 asks for a **minimum cost**, so the table is seeded with `INF` rather than `0`/`False`:
-
-```text
-dp[s] = fewest operations to make SOME subset of the elements seen so far sum to exactly s
-dp[0] = 0, everything else INF
-answer = dp[sum], or -1 if it never left INF
-```
-
-#### **The One Rule: at most one option per group** ⚠️
-
-Backward iteration is what stops an item being reused in plain 0/1 — but it does **not** stop two
-*different* options of the same group from both being taken. Two loop orders enforce the group
-rule; a third, the one that looks most like the 0/1 template, is wrong:
+**Key point** — the capacity axis does not change; only the inner choice does:
+`dp[s] = best(dp[s], best over the item's options of dp[s - w] + c)`. Every option of one item
+must read the state from **before** that item, so at most one form is taken — either by
+snapshotting `dp`, or by putting the **capacity loop outside** the options loop and running it
+backward.
 
 ```text
 ✅ snapshot         read prev, write into a copy   every option competes against the state BEFORE the item
@@ -1193,97 +560,48 @@ rule; a third, the one that looks most like the 0/1 template, is wrong:
                         for s in W..w:
 ```
 
-The failure is not subtle. `nums = [5], sum = 3`: the group for `5` is `{(2, 1), (1, 2)}`
-(`5 -> 2`, and `5 -> 2 -> 1`). The answer is `-1` — one element cannot be two members of a subset —
-but the options-outer loop happily builds `2 + 1 = 3` and reports `3`.
-
-```python
-# python
-# The group knapsack skeleton -- both correct orders, minimisation flavour
-# time = O(n * W * |group|), space = O(W)
-def group_knapsack(groups, W):
-    INF = float('inf')
-    dp = [INF] * (W + 1)
-    dp[0] = 0
-
-    for options in groups:                       # options = [(weight, cost), ...]
-
-        # form A -- snapshot: dp is read-only for the whole group
-        new_dp = dp[:]
-        for w, c in options:
-            for s in range(w, W + 1):
-                if dp[s - w] != INF:
-                    new_dp[s] = min(new_dp[s], dp[s - w] + c)
-        dp = new_dp
-
-        # form B -- in place, capacity OUTER and backward (no copy needed)
-        # for s in range(W, -1, -1):
-        #     for w, c in options:
-        #         if s >= w and dp[s - w] != INF:
-        #             dp[s] = min(dp[s], dp[s - w] + c)
-
-    return dp[W]
-```
-
-#### **Building LC 4040's Group: only the two pure chains**
-
-The modelling half of the problem is deciding what the menu contains. An element `x` may be
-doubled and halved, **but all its multiplications must come before all its divisions** — and that
-rule collapses the menu to two straight chains:
+LC 4040's menu: an element `x` may be doubled and halved, **but all multiplications come before
+all divisions**. A mixed run `k` doublings then `j` halvings lands on `x * 2^(k-j)` — which a pure
+chain reaches at cost `|k - j|` instead of `k + j` — so the menu is just the two pure chains, each
+cut once it stops being useful:
 
 ```text
-x, 2x, 4x, ...        k doublings, cost k
-x, x//2, x//4, ...    k halvings,  cost k
-```
+x, 2x, 4x, ...        k doublings, cost k   (stop past sum: it only grows)
+x, x//2, x//4, ...    k halvings,  cost k   (stop at 0: it never helps a positive sum)
 
-A mixed run is never worth it: `k` doublings then `j` halvings lands on `x * 2^(k-j)` — doubling
-loses no low bits, so the halvings undo it exactly — which a pure chain already reaches at cost
-`|k - j|` instead of `k + j`. Only **divide-then-multiply** could reach something genuinely new
-(`5 -> 2 -> 4`, which no pure chain gives), and that is precisely what the problem forbids.
-
-```text
 x = 10, sum = 13  ->  (10, 0), (5, 1), (2, 2), (1, 3)      20 is already over sum
 x =  2, sum = 13  ->  (2, 0), (4, 1), (8, 2), (1, 1)
 ```
 
-Cut both chains as soon as they stop being useful — the doubling chain past `sum` (it only grows),
-the halving chain at `0` (it can never help a positive sum).
-
 ```python
 # python
 # LC 4040 - Minimum Operations to Form Subset Sum I
-# IDEA: group 0/1 knapsack -- each x is a menu of (value, ops); take at most one entry per x
+# IDEA: group knapsack -- each x is a menu of (value, ops); a snapshot of dp lets at most one
+#       entry per x be taken
 # time = O(n * sum * log(max(x, sum))), space = O(sum)
 def minOperations(nums, sum):
     INF = float('inf')
     dp = [INF] * (sum + 1)                 # dp[s] = min ops for a subset summing to s
     dp[0] = 0
-
     for x in nums:
-        options = []
-        if x <= sum:
-            options.append((x, 0))         # NOTE !!! keep x untouched -- the zero-cost option
+        options = []                       # the menu for x: (value, ops)
         value, op = x, 0
-        while value <= sum:                # x, 2x, 4x, ...
-            if op > 0:
-                options.append((value, op))
+        while value <= sum:                # x itself (0 ops), 2x, 4x, ...
+            options.append((value, op))
             value *= 2
             op += 1
         value, op = x, 0
         while value > 0:                   # x//2, x//4, ...
-            value, op = value // 2, op + 1
-            if value == 0:
-                break
-            if value <= sum:
+            value //= 2
+            op += 1
+            if 0 < value <= sum:
                 options.append((value, op))
-
-        new_dp = dp[:]                     # NOTE !!! snapshot => x is used at most once,
-        for value, cost in options:        #          in at most one of its forms
+        new_dp = dp[:]                     # snapshot: every option reads the pre-x state
+        for value, cost in options:
             for s in range(value, sum + 1):
                 if dp[s - value] != INF:
                     new_dp[s] = min(new_dp[s], dp[s - value] + cost)
         dp = new_dp
-
     return -1 if dp[sum] == INF else dp[sum]
 ```
 
@@ -1293,27 +611,35 @@ def minOperations(nums, sum):
 // IDEA: same group knapsack, written in place with the capacity loop OUTER and backward
 // time = O(n * sum * log(max(x, sum))), space = O(sum)
 public int minOperations(int[] nums, int sum) {
-    final int INF = Integer.MAX_VALUE / 2;
+    final int INF = Integer.MAX_VALUE / 2;     // + cost cannot overflow
     int[] dp = new int[sum + 1];
     Arrays.fill(dp, INF);
     dp[0] = 0;
-
     for (int x : nums) {
         List<int[]> options = new ArrayList<>();
-        for (long v = x, op = 0; v <= sum; v *= 2, op++)      // x, 2x, 4x, ...  (op = 0 keeps x)
-            options.add(new int[]{(int) v, (int) op});
-        for (long v = x, op = 0; v > 0; ) {                   // x/2, x/4, ...
-            v /= 2;
+        long value = x;
+        int op = 0;
+        while (value <= sum) {                 // x itself (0 ops), 2x, 4x, ...
+            options.add(new int[]{(int) value, op});
+            value *= 2;
             op++;
-            if (v == 0) break;
-            if (v <= sum) options.add(new int[]{(int) v, (int) op});
         }
-
-        for (int s = sum; s >= 0; s--) {                      // NOTE !!! capacity OUTER, backward
-            for (int[] o : options) {                         //          options INNER
-                int value = o[0], cost = o[1];
-                if (s >= value && dp[s - value] != INF)
-                    dp[s] = Math.min(dp[s], dp[s - value] + cost);
+        value = x;
+        op = 0;
+        while (value > 0) {                    // x/2, x/4, ...
+            value /= 2;
+            op++;
+            if (value > 0 && value <= sum) {
+                options.add(new int[]{(int) value, op});
+            }
+        }
+        for (int s = sum; s >= 0; s--) {       // capacity OUTER, backward
+            for (int[] option : options) {     // options INNER: one form per x
+                int v = option[0];
+                int cost = option[1];
+                if (s >= v && dp[s - v] != INF) {
+                    dp[s] = Math.min(dp[s], dp[s - v] + cost);
+                }
             }
         }
     }
@@ -1321,47 +647,168 @@ public int minOperations(int[] nums, int sum) {
 }
 ```
 
-#### **Trace — `nums = [10, 2]`, `sum = 13`**
+**Complexity**
+- **Time O(n · sum · |menu|)**: `for x` × `for s` × the options, and each chain has
+  `O(log(max(x, sum)))` entries because it doubles or halves.
+- **Space O(sum)**: `dp` plus one snapshot `new_dp` (none in the Java form).
+
+**Dry run** — `nums = [10, 2]`, `sum = 13`:
 
 ```text
-groups       10 -> (10,0) (5,1) (2,2) (1,3)
-              2 -> (2,0)  (4,1) (8,2) (1,1)
-
 start        {0:0}
 after 10     {0:0, 1:3, 2:2, 5:1, 10:0}
 after 2      {0:0, 1:1, 2:0, 3:3, 4:1, 5:1, 6:2, 7:1, 8:2, 9:2, 10:0, 11:1, 12:0, 13:3}
-                                                                                  ^
                                               dp[13] = dp[5] + 2 = 1 + 2 -> 10->5 and 2->4->8
 ```
 
-Note `dp[1]` improving from `3` to `1`: the first group reached `1` only as `10 -> 5 -> 2 -> 1`,
-the second gets there with `2 -> 1`. Each row is the *cheapest* way to that sum, not a set of them.
+`dp[1]` improves from `3` to `1`: the first group reached `1` only as `10 -> 5 -> 2 -> 1`, the
+second gets there with `2 -> 1`. Each cell is the *cheapest* way to that sum.
 
-#### **Common Pitfalls — group knapsack** ⚠️
+**Traps**
+- **Options outer with an in-place `dp`** — the 0/1 muscle memory. `nums = [5]`, `sum = 3`: the menu
+  is `{(2, 1), (1, 2)}` and that loop builds `2 + 1 = 3` from one element, reporting 3 instead of -1.
+- **Dropping the zero-cost option**: without `(x, 0)`, `nums = [4]`, `sum = 4` returns -1.
+- **Enumerating mixed chains** is wasted work *here*; if divide-then-multiply were allowed
+  (`5 -> 2 -> 4`) the two pure chains would be **incomplete**. Re-read the rule before reusing the
+  shortcut.
+- **Unbounded chains**: the doubling chain never returns once it passes `sum`, and a halved `0`
+  never helps — both are infinite loops without the cut.
+- **`dp[sum]` without the `INF` check** returns a sentinel instead of -1; in Java keep `INF` at
+  `MAX_VALUE / 2`.
 
-- **Options outer with an in-place `dp`.** The 0/1 muscle memory, and it silently mixes two forms
-  of one element — see the `nums = [5], sum = 3` case above.
-- **Dropping the zero-cost option.** Without `(x, 0)` the element can only be used *transformed*,
-  so `nums = [4], sum = 4` returns `-1`.
-- **Enumerating mixed chains.** Wasted work here — but the pruning argument is a property of *this*
-  problem's ordering rule. If divide-then-multiply were allowed the two pure chains would be
-  **incomplete**, so re-read the rule before reusing the shortcut.
-- **Not bounding the chains.** The doubling chain never returns once it passes `sum`, and a halved
-  value of `0` cannot contribute to a positive sum; both are infinite/dead loops otherwise.
-- **Reading `dp[sum]` without the `INF` check**, which returns a huge sentinel instead of `-1`. In
-  Java also keep `INF` at `MAX_VALUE / 2` so `dp[...] + cost` cannot overflow.
+**Not this if** — one unbounded menu shared by every position (LC 1449) →
+[Template 4](#template-4-unbounded-min-count--lc-322-), not a group; the capacity is a pair
+`(zeros, ones)` but each item has one form (LC 474) → plain
+[Template 1](#template-1-01-knapsack-subset-sum--lc-416-) with a 2-D row. Bounded knapsack *is* a
+group knapsack — "up to `k` times" is the group `{(w, v), (2w, 2v), …, (kw, kv)}`; the binary split
+in the table at the top is the faster spelling.
 
-#### **Similar LeetCode Problems — groups & menus** 📚
+**Drill** — LC 1155 *(exactly one face: no skip, count with `+=`)* · LC 2585 *(type used
+`0..count` times)* · LC 2218 *(prefix-sum each pile, then `max`)* · LC 4040 *(the menu is derived,
+not given)*
 
-| Problem | Key |
-|---|---|
-| LC 1155 Number of Dice Rolls With Target Sum | **exactly** one face per die — so no "skip", and `dp` is a count: `dp[i][t] += dp[i-1][t-f]` |
-| LC 2218 Maximum Value of K Coins From Piles | group = prefixes of a pile; prefix-sum each pile first, then it is this template with `max` |
-| LC 2585 Number of Ways to Earn Points | group = "use this type `j` times", `j = 0..count` — bounded knapsack read as a group |
-| LC 1449 Form Largest Integer With Digits That Add up to Target | one *unbounded* menu shared by all positions — a group knapsack it is **not**; compare the loop order |
-| LC 474 Ones and Zeroes | plain 0/1, but the capacity is a `(zeros, ones)` pair — the other way an item's axis can grow |
-| LC 4040 Minimum Operations to Form Subset Sum I | the menu is *derived*, not given — most of the work is proving which options are reachable and cheapest |
+## LC Examples
 
+### Last Stone Weight II — LC 1049
+
+> **Key point** — smashing stones is splitting them into two piles and subtracting:
+> `|S - (total - S)| = total - 2S`. Minimising it means finding the **largest reachable subset sum
+> `S ≤ total // 2`**, which is a feasibility question.
+
+**Reduces to**: [Template 1](#template-1-01-knapsack-subset-sum--lc-416-) — the same boolean row,
+read from `total // 2` downward instead of only at `total // 2`.
+
+```python
+# python
+# LC 1049 - Last Stone Weight II
+# IDEA: 0/1 subset sum up to total // 2; the answer is total - 2 * (largest reachable sum)
+# time = O(n * total), space = O(total)
+def lastStoneWeightII(stones):
+    total = sum(stones)
+    half = total // 2
+    dp = [False] * (half + 1)             # dp[s] = some subset of the stones sums to s
+    dp[0] = True
+    for stone in stones:
+        for s in range(half, stone - 1, -1):   # backward: each stone once
+            if dp[s - stone]:
+                dp[s] = True
+    for s in range(half, -1, -1):         # the most balanced split
+        if dp[s]:
+            return total - 2 * s
+```
+
+```java
+// java
+// LC 1049 - Last Stone Weight II
+// IDEA: 0/1 subset sum up to total / 2; the answer is total - 2 * (largest reachable sum)
+// time = O(n * total), space = O(total)
+public int lastStoneWeightII(int[] stones) {
+    int total = 0;
+    for (int stone : stones) {
+        total += stone;
+    }
+    int half = total / 2;
+    boolean[] dp = new boolean[half + 1];
+    dp[0] = true;
+    for (int stone : stones) {
+        for (int s = half; s >= stone; s--) {   // backward: each stone once
+            if (dp[s - stone]) {
+                dp[s] = true;
+            }
+        }
+    }
+    for (int s = half; s >= 0; s--) {           // the most balanced split
+        if (dp[s]) {
+            return total - 2 * s;
+        }
+    }
+    return total;                               // unreachable: dp[0] is always true
+}
+```
+
+```text
+stones = [2, 7, 4, 1, 8, 1], total = 23, half = 11
+
+after 2      reachable {0, 2}
+after 7      reachable {0, 2, 7, 9}
+after 4      reachable {0, 2, 4, 6, 7, 9, 11}
+...          11 stays reachable  ->  answer = 23 - 2 * 11 = 1
+```
+
+### Target Sum — LC 494
+
+> **Key point** — let `P` be the sum of the numbers given `+`. Then `P - (total - P) = T`, so
+> `P = (total + T) / 2`: counting sign assignments is counting **subsets that sum to `P`**. Two
+> guards come first — `abs(T) > total` and an odd `total + T` both mean 0 ways.
+
+**Reduces to**: [Template 1](#template-1-01-knapsack-subset-sum--lc-416-) — with the counting
+transition `dp[s] += dp[s - num]` and `dp[0] = 1`.
+
+```python
+# python
+# LC 494 - Target Sum
+# IDEA: reduce "assign +/-" to "count subsets summing to (total + T) / 2", then 0/1 knapsack
+# time = O(n * P), space = O(P)
+def findTargetSumWays(nums, target):
+    total = sum(nums)
+    if abs(target) > total or (total + target) % 2 == 1:   # P negative or not an integer
+        return 0
+    plus = (total + target) // 2
+    dp = [0] * (plus + 1)                 # dp[s] = subsets of the nums so far summing to s
+    dp[0] = 1                             # the empty subset
+    for num in nums:
+        for s in range(plus, num - 1, -1):    # backward: each num once
+            dp[s] += dp[s - num]
+    return dp[plus]
+```
+
+```java
+// java
+// LC 494 - Target Sum
+// IDEA: reduce "assign +/-" to "count subsets summing to (total + T) / 2", then 0/1 knapsack
+// time = O(n * P), space = O(P)
+public int findTargetSumWays(int[] nums, int target) {
+    int total = 0;
+    for (int num : nums) {
+        total += num;
+    }
+    if (Math.abs(target) > total || (total + target) % 2 != 0) {   // P negative or not an integer
+        return 0;
+    }
+    int plus = (total + target) / 2;
+    int[] dp = new int[plus + 1];
+    dp[0] = 1;                                  // the empty subset
+    for (int num : nums) {
+        for (int s = plus; s >= num; s--) {     // backward: each num once
+            dp[s] += dp[s - num];
+        }
+    }
+    return dp[plus];
+}
+```
+
+A zero in `nums` is handled for free: `range(plus, -1, -1)` includes `s = 0`, so `dp[0]` doubles —
+`[0, 0, 1]`, `T = 1` gives 4.
 
 ## Pattern Selection Strategy
 
@@ -1390,6 +837,14 @@ Does one item offer SEVERAL mutually exclusive options?
                ├─ YES (permutations, {1,2} != {2,1})  ──► amount outer, items inner  [377]
                └─ Min/max only (order irrelevant)     ──► either nesting             [322, 279]
 ```
+
+## Drill Path
+
+| Stage | Problems (easy → hard) | What it adds |
+|---|---|---|
+| **Core** ⭐ | LC 322 · LC 416 | the min-count row and the backward 0/1 row, once each |
+| **Practice** | LC 279 · LC 518 · LC 377 · LC 1049 · LC 494 · LC 474 | loop order for counts, the partition algebra, a 2-D capacity |
+| **Stretch** | LC 1155 · LC 956 · LC 879 · LC 1449 · LC 4040 | group menus, a difference key, a capped profit axis, rebuilding the answer |
 
 ## Summary
 

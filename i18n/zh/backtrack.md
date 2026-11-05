@@ -28,7 +28,7 @@
 - **演算法**：DFS + 遞迴
 - **常用資料結構**：`dict`（去重用的 counter）、`set`（visited／限制條件）、`array`／`list`（路徑）
 
-<!-- 68a1fcb84fec -->
+<!-- 54c8d6147fcb -->
 ### 每個回溯都要追蹤的 3 件事
 
 | 元素 | 意義 |
@@ -39,7 +39,7 @@
 
 <p align="center"><img src="../pic/backtrack1.png"></p>
 
-> 上面那三列直接對應到 [Template 1](#template-1-choose--explore--un-choose-) —
+> 上面那三列直接對應到 [Template 1](#template-1-choose--explore--un-choose--lc-216-) —
 > `path` 是路徑，`for` 迴圈是選擇清單，最上面那個 `if` 是結束條件。
 
 <!-- 70ca8b3d8efc -->
@@ -67,7 +67,30 @@
     - [Partition to k equal sum subsets](https://labuladong.online/algo/practice-in-action/partition-to-k-equal-sum-subsets/)
 - [LeetCode — A general approach to backtracking (Java)](https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/)
 
-<!-- 9b476c11819d -->
+<!-- 8ab630113977 -->
+## 辨識
+
+輸入規模是第一個線索：回溯是指數時間，所以限制條件都很小
+（限制尺規見 [complexity_cheatsheet.md](./complexity_cheatsheet.md)）。
+
+| 題目敘述裡的訊號 | 限制條件線索 | 該拿 | 不是這個的情況 |
+|---|---|---|---|
+| 「回傳 k 個數的**所有**組合」、「找出所有合法的選法」 | n ≤ 20 | [Template 1](#template-1-choose--explore--un-choose--lc-216-) 選擇 → 探索 → 取消選擇 | 只問**個數**或是非 → [dp.md](./dp.md) |
+| 「同一個數字可以被選無限次」vs「每個數字只能用一次」 | target ≤ 500 | [Template 2](#template-2-start_idx--i-vs-i--1--lc-39-) `i` vs `i + 1` | 順序有差（`[1, 3]` ≠ `[3, 1]`）→ [Template 5](#template-5-permutations--lc-46-) |
+| 「回傳所有可能的子集」、「冪集合」 | n ≤ 10 | [Template 3](#template-3-subsets--lc-78-) 每個節點都記錄 | 輸入有重複 → [Template 4](#template-4-subsets-ii-skip-same-level-duplicates--lc-90-) |
+| 「可能包含重複」、「不能有重複的子集／組合」 | n ≤ 10 | [Template 4](#template-4-subsets-ii-skip-same-level-duplicates--lc-90-) 排序 + 同層跳過 | |
+| 「所有可能的排列」、「每一種順序」 | n ≤ 8 | [Template 5](#template-5-permutations--lc-46-) `used[]`，每層從 0 開始 | 答案是集合而不是順序 → [Template 3](#template-3-subsets--lc-78-) |
+| 「從 1..n 選 k 個數的所有組合」 | C(n, k) 小 | [Template 6](#template-6-combinations--lc-77) 長度關卡 | |
+| 「**總和等於 target** 的所有不重複組合」 | n ≤ 100，target ≤ 30 | [Template 7](#template-7-combination-sum--lc-39--lc-40-) 排序 + `break` + 跳過 | 只問方法數 → [knapsack.md](./knapsack.md) |
+| 「把 s **切分**成每段都是回文／合法 IP 段／單字」 | n ≤ 16 | [Template 8](#template-8-palindrome-partitioning--lc-131-) 選擇切在哪 | 只問能不能、或最少切幾刀 → [dp.md](./dp.md) |
+| 「相鄰格子依序組成」、「同一格不能用超過一次」 | m, n ≤ 6 | [Template 9](#template-9-grid--word-search--lc-79-) 標記、遞迴、還原 | 同一個盤面查很多字 → [backtrack_advanced.md](./backtrack_advanced.md) Trie |
+| 「擺 n 個互不攻擊的皇后」 | n ≤ 9 | [Template 10](#template-10-n-queens--lc-51) 每層一列 + 3 個集合 | |
+| 「填滿格子，使每列、每行、每宮⋯」 | 固定 9×9 | [Template 11](#template-11-sudoku-solver--lc-37) 每層一格 | |
+| 每個選擇都帶一條限制（「`perm[i]` 能被 `i` 整除」） | n ≤ 15 | [Template 12](#template-12-pruning-at-the-choice--lc-526-) 遞迴前就檢查 | 同一個狀態會重複出現 → 位元遮罩 DP，[dp_bitmask.md](./dp_bitmask.md) |
+| 「分成**總和相等的 k 個子集**」、「拼成正方形」 | n ≤ 16 | [Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473) k 個桶，由大到小 | |
+| 在樹或格子上同時往下帶著路徑**和**累計和 | | [Template 14](#template-14-when-to-undo--mutable-vs-immutable-state--lc-113-) 只復原可變的那部分 | |
+
+<!-- b9966b324afd -->
 ## 題型分類
 
 四種形狀幾乎涵蓋所有回溯題。下面這張分類表決定你**該拿哪份模板**；
@@ -77,7 +100,7 @@
 | # | 形狀 | 要 `start_idx` 嗎？ | 標準模板 | LC |
 |---|-------|--------------|--------------------|----|
 | 1 | 子集（Subsets） | ✅ `i + 1` | [Template 3](#template-3-subsets--lc-78-) / [Template 4](#template-4-subsets-ii-skip-same-level-duplicates--lc-90-) | 78, 90 |
-| 2 | 排列（Permutations） | ❌ `visited[]` | [Template 5](#template-5-permutations--lc-46-) | 46, 47 |
+| 2 | 排列（Permutations） | ❌ `used[]` | [Template 5](#template-5-permutations--lc-46-) | 46, 47 |
 | 3 | 組合（Combinations） | ✅ `i + 1` | [Template 6](#template-6-combinations--lc-77) | 77, 216 |
 | 4 | 組合總和 | ✅ `i`（可重複用）或 `i + 1` | [Template 7](#template-7-combination-sum--lc-39--lc-40-) | 39, 40 |
 | 5 | 切分 | ✅ 在子字串／桶上用 `i + 1` | [Template 8](#template-8-palindrome-partitioning--lc-131-) / [Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473) | 131, 698, 473 |
@@ -85,185 +108,336 @@
 | 7 | 限制條件滿足 | ❌ 每層處理一列／一格 | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
 | 8 | 括號／字串建構 | ❌ 用計數器當限制 | [backtrack_examples.md](./backtrack_examples.md#8-generate-parentheses--lc-22) | 20, 22, 93 |
 
-<!-- 302702699eaa -->
+<!-- 67c7c1285ca0 -->
 ### 各型態筆記
 
 每種形狀的隨手筆記 — 迴圈主體的口訣，以及會踩到的坑。
 
 - 型態 1) : `Subsets`（子集）
     - 題目 : LC 78, 90, 17
-    - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
-    - （用 for 迴圈呼叫輔助函式）+ start_idx + for 迴圈 + pop(-1)
-    - 回溯。找最小情況，把問題轉成`樹的問題`。用 `start` 把已經用過的數字排掉，回傳所有情況
+    - [代碼隨想錄（leetcode-master）— 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
+    - 呼叫輔助函式 + `start_idx` + for 迴圈 + `pop()`
+    - 樹上的每個節點都記錄；`start_idx` 把已經用過的數字排除在外
     - 不需要 `contains` 檢查：`start_idx` 已經保證每個元素最多用一次（`contains` 是排列的寫法）
 - `Subsets II`
     - LC 90
-    - start idx + 回溯 + 去重（seen）
-    - 去重 : 用 dict counter 或用索引都行
+    - `start_idx` + 回溯 + 同層去重
+    - 去重：排序後跳過 `i > start and a[i] == a[i-1]`，或改成對計數器迴圈
 
-- 型態 2) : `Permutations（排列組合）`（全排列）
+- 型態 2) : `Permutations`（排列）
     - 題目 : LC 46, 47
-    - （用 for 迴圈呼叫輔助函式）+ contains + pop(-1)
-    - 回溯。用 `contains` 把已經用過的數字排掉，回傳所有情況
+    - 呼叫輔助函式 + `used[]` + `pop()`
+    - 每層都從 0 開始迴圈；`used[]` 把已經在路徑上的數字排除在外
     - **不需要**用 start_idx
 
-- 型態 3) : `Combinations（組成）`
+- 型態 3) : `Combinations`（組合）
     - LC 77
-    - （用 for 迴圈呼叫輔助函式）+ start_idx + for 迴圈 + 檢查 len == k + pop(-1)
+    - 呼叫輔助函式 + `start_idx` + for 迴圈 + `len(path) == k` 就停 + `pop()`
 
 - 型態 4) : `Others`
 
-- 括號（Parentheses，括弧）
+- 括號（Parentheses）
     - LC 20, LC 22
 
 <!-- ddc7f484e4af -->
 ## 模板與演算法
 
-<!-- cfbdb38c5722 -->
+<!-- f37ff7da1c13 -->
 ### 模板對照表
 
 | 模板 | 形狀 | 迴圈／下一個索引 | 復原 | LC |
 |---|---|---|---|---|
-| 1 | 選擇 → 探索 → 取消選擇 | `for i in start..n` | `path.pop()` | — |
-| 2 | `start_idx` 控制 | `i`（可重用）vs `i + 1`（只用一次） | — | 39 vs 40 |
-| 3 | 子集 | **每個**節點都記錄，用 `i + 1` | `remove(last)` | 78 |
-| 4 | 子集 II | `i > start && a[i] == a[i-1]` 就跳過 | `remove(last)` | 90 |
-| 5 | 排列 | 掃**全部**，跳過 `visited[i]` | `pop()` + `visited[i] = False` | 46, 47 |
+| 1 | 選擇 → 探索 → 取消選擇 | `for i in start..n` | `path.pop()` | 216 |
+| 2 | `start_idx` 控制 | `i`（可重用）vs `i + 1`（只用一次） | `path.pop()` | 39 vs 40 |
+| 3 | 子集 | **每個**節點都記錄，用 `i + 1` | `path.pop()` | 78 |
+| 4 | 子集 II | `i > start && a[i] == a[i-1]` 就跳過 | `path.pop()` | 90 |
+| 5 | 排列 | 掃**全部**，跳過 `used[i]` | `pop()` + `used[i] = False` | 46, 47 |
 | 6 | 組合 | `len(path) == k` 就停 | `pop()` | 77 |
 | 7 | 組合總和 | `i` 可重用／`i + 1` 只用一次，加 `break` 剪枝 | `pop()` | 39, 40 |
-| 8 | 回文切分 | `for end in start+1..n`，過回文這關 | `remove(last)` | 131 |
+| 8 | 回文切分 | `for end in start..n-1`，過回文這關 | `pop()` | 131 |
 | 9 | 格子／單字搜尋 | 每格往四個方向走 | 還原該格 | 79 |
 | 10 | N 皇后 | 每層放一列，三個限制集合 | 三個集合都要移除 | 51 |
 | 11 | 數獨 | 每層填一個空格，列／行／宮格集合 | 重設格子與集合 | 37 |
-| 12 | 剪枝 | 遞迴前先 `break` / `continue` | — | 39, 40 |
+| 12 | 在選擇時剪枝 | 遞迴前先檢查，排序過的候選用 `break` | — | 526 |
 | 13 | k 桶切分 | 對每個桶試一次，先由大到小排序 | `buckets[i] -= v` | 698, 473 |
 | 14 | 可變 vs 不可變狀態 | — | **只有**可變狀態要復原 | 113, 1740 |
 
-<!-- 71af99a660eb -->
-### Template 1: choose → explore → un-choose ⭐⭐⭐⭐⭐
+<!-- 304badec218b -->
+### Template 1: choose → explore → un-choose — LC 216 ⭐⭐⭐⭐⭐
 
-標準的「選擇 → 探索 → 取消選擇」骨架，拿去改就能用：
+**辨識** — 「回傳**所有**組合／每一種合法的選法⋯」、「找出**任一個**滿足⋯的安排」。輸入很小：
+子集題 n ≤ 10–20（2^n），排列題 n ≤ 8–10（n!）。這種上限就是題目在告訴你：指數搜尋是預期中的解法。
 
-<!--CODE-->
+**關鍵點** — `path` 永遠恰好存著決策樹上從根走到目前節點所做的選擇：每一次 `append`
+都在遞迴呼叫返回後配一次 `pop`，所以迴圈換到下一個選擇時，路徑又回到父節點的那條。
 
-<!--CODE-->
-
-只要轉兩個旋鈕，這份模板就能變成所有變體：
-- **`start_idx`** — 控制搜尋空間（組合／子集 vs 排列）
-- **提早結束／剪枝** — 砍掉不可能得到合法答案的分支
-
-<!-- b70e438b4f7c -->
-#### 跳過重複 — 同一層才跳的規則 ⭐⭐⭐⭐⭐
-
-我們**不是**每個重複值都跳 — 只跳出現在*同一層遞迴*的重複值。
-同一條規則的三種寫法（片段，不是可直接執行的類別）：
+每個回溯都要追蹤的三件事直接對應到程式碼：`path` 是**路徑**，`for` 迴圈是**選擇清單**，
+最上面那個 `if` 是**結束條件**。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!--CODE-->
+**複雜度**
+- **時間 O(C(9,k) · k)**：`for digit` 迴圈配上 `digit + 1`，1..9 的每個 k 元子集最多走到一次，
+  而每個葉節點的 `path[:]` 花 O(k)。一般而言回溯是 **O(b^d · w)**：分支數 `b` 來自 `for` 迴圈，
+  深度 `d` 來自結束條件，`w` 是在葉節點做的工作。
+- **空間 O(k)**：遞迴最多 `k` 層，`path` 最多存 `k` 個數字（輸出的 list 不算）。
 
-<!-- c4bac375b8c2 -->
-### Template 2: `start_idx` — `i` vs `i + 1` ⭐⭐⭐⭐⭐
+**陷阱**
+- `res.append(path)` 沒有複製：每一筆都是同一個 list，最後一次 `pop()` 之後它就空了，
+  所以 LC 216 `k = 3, n = 7` 回傳 `[[]]`。
+- 忘了 `pop()`：下一條分支接著上一條分支的路徑繼續長，路徑只會變長，再也不會在對的總和上
+  剛好長度 `k` —— `k = 3, n = 9` 回傳 `[]`。
+- `break` 之所以合法，只因為選擇是**排序過的**（`range` 遞增）。在沒排序的候選上，它會略過
+  後面合法的選擇；改用 `continue`，或先排序。
 
-`start_idx`（或叫 `index` 之類的）是用來**控制搜尋空間**的 — 用來**避免重複**，並讓產生的結果保持順序。
+**練習** — LC 216 ⭐ · LC 77 *（沒有總和，只看長度 `k`）* · LC 17 *（選擇清單是該數字對應的字母）* · LC 22 *（選擇清單是「左括號或右括號」，由計數把關）*
 
--> 什麼時候要用 `start_idx`：
+<!-- 09165d102c1d -->
+### Template 2: `start_idx` — `i` vs `i + 1` — LC 39 ⭐⭐⭐⭐⭐
 
-- 你在產生**組合／子集**
-- 你想**避免重複**
-- 你想**保留選擇的順序**
+**辨識** — 「組合」、「子集」、「每個數字只能用**一次**」或「同一個數字可以被選**無限次**」，
+而且 `[2, 3]` 跟 `[3, 2]` 算同一個答案。
 
-一旦確定需要 `start_idx`，下一個問題就是**下一層要傳什麼當起始索引** —
-`i`（可以重複用當前元素）還是 `i + 1`（跳過它）。
+**關鍵點** — 迴圈從 `start_idx` 開始，所以一條路徑上的選擇永遠依索引順序排列：每個集合只會以
+一種順序被建出來一次。下一層傳什麼起點決定能不能重用 —— `i` 讓當前元素還能再選（無限），
+`i + 1` 跳過它（只用一次）。
 
 | 傳什麼 | 意義 | 類比 | 例子 |
 | ---- | ------- | ------- | -------- |
 | `i`     | **同一個元素可以再用一次** | **完全背包**（數量無限） | LC 39 (Combination Sum), LC 518 (Coin Change II) |
 | `i + 1` | **每個元素最多用一次** | **0/1 背包**、子集 | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
 
-> 排列兩個都不用 — 它會回頭用前面的元素，所以改成維護一個 `visited[]`
-> 陣列／`contains` 檢查，而不是 `start_idx`（見 [Problem Categories](#problem-categories)）。
-> LC 377（Combination Sum IV）也一樣：順序有差，所以每一層都從 0 開始迴圈；
-> 而且它只要計數，是 DP 而不是回溯。
+<!--CODE-->
 
 <!--CODE-->
 
-> **重點**：可以重複用 → `i`；只能用一次 → `i + 1`。
+**複雜度**
+- **時間 O(n^(T/M + 1))**：樹的每一層最多有 `n` 個選擇（`for i` 迴圈），而因為傳回去的是 `i`，
+  深度要等 `remain` 用完才結束 —— 最多選 `T/M` 次最小的候選。
+- **空間 O(T/M)**：遞迴深度與 `path` 長度都以 `T/M` 為上限。
 
-<!-- e00686992f8b -->
+**陷阱**
+- 在 LC 39 傳 `i + 1`：`[2, 3, 6, 7], 7` 會漏掉 `[2, 2, 3]`，因為 2 不能再重複。
+- 傳 `0` 而不是 `start`：`[2, 3]` 和 `[3, 2]` 都會被建出來，LC 39 `[2, 3, 6, 7], 7`
+  回傳 `[[2, 2, 3], [2, 3, 2], [3, 2, 2], [7]]`。
+- 在 LC 78 傳 `i`：同一個元素被無限次加進去，遞迴永遠不會結束。
+
+**不適用的情況** — 選擇的順序有差（`[1, 3]` 和 `[3, 1]` 是不同答案）：那是排列，追蹤的是
+`used[]` 而不是 `start_idx`（[Template 5](#template-5-permutations--lc-46-)）。LC 377（Combination Sum IV）
+也一樣：順序有差，所以每一層都從 0 開始迴圈；而且它只要**計數**，是 DP 而不是回溯。
+
+**練習** — LC 39 ⭐ · LC 40 *（`i + 1` 加上跳過重複）* · LC 216 *（固定長度 k）* · LC 518 *（只要個數：背包 DP）*
+
+<!-- 2a838572ed1c -->
 ### Template 3: Subsets — LC 78 ⭐⭐⭐⭐⭐
 
-在**每個**節點都把路徑記下來（前序），並且傳 `i + 1`，讓每個元素只用一次。
-那些 `// ...` 是省略掉的樣板碼，不是真的程式碼。
+**辨識** — 「回傳所有可能的子集（冪集合）」、「解集合不能包含重複的子集」；元素互不相同。
+n ≤ 10 → 2^n · n 大約 10⁴。
+
+**關鍵點** — 決策樹上的每個節點都是一個子集，不只葉節點：在每次呼叫**進入時**就記錄 `path`
+（前序）。`i + 1` 讓每個元素最多用一次，索引順序讓每個子集剛好出現一次。
 
 <!--CODE-->
 
 <!--CODE-->
 
-<!-- f0f4c281df0c -->
+**複雜度**
+- **時間 O(2^n · n)**：樹上每個子集對應一個節點，共 2^n 個，每個節點的 `path[:]` 最多複製 `n` 個元素。
+- **空間 O(n)**：遞迴深度與 `path` 都最多 `n`（不含輸出）。
+
+**手算**
+
+<!--CODE-->
+
+**陷阱**
+- 為了「避免重複」加上 `res.contains(path)` / `path not in res` 檢查：`start_idx` 已經保證每個子集
+  只出現一次，而這個掃描讓每次記錄都變成 O(2^n · n)。
+- 加上 `path.contains(nums[i])` 檢查：那是排列的寫法；`i + 1` 已經讓每個元素最多用一次。
+- 只在葉節點記錄（`if start == len(nums)`）只會留下以最後一個元素結尾的子集：
+  `[1, 2, 3]` 回傳 `[[1, 2, 3], [1, 3], [2, 3], [3]]`。
+
+**不適用的情況** — 輸入有重複（`[1, 2, 2]`）：排序後跳過同層的重複，
+[Template 4](#template-4-subsets-ii-skip-same-level-duplicates--lc-90-)。
+
+**練習** — LC 78 ⭐ · LC 90 *（有重複）* · LC 1863 *（所有子集 XOR 的總和）* · LC 2597 *（選中的元素之間有限制）*
+
+<!-- edd411ecdf81 -->
 ### Template 4: Subsets II (skip same-level duplicates) — LC 90 ⭐⭐⭐⭐⭐
 
+**辨識** — 跟 Template 3 一樣的敘述，但「nums **可能包含重複**」而且「不能有重複的子集」。n ≤ 10。
+
+**關鍵點** — 排序後，相等的值會擠在一起。兩個兄弟節點選了同一個值，會長出一模一樣的子樹，
+所以每一層只拿一串相同值裡的**第一個**（`i > start and nums[i] == nums[i-1]`）；更深的一層
+仍然可以拿下一個複本。
+
 <!--CODE-->
 
-<!-- f4f874156b70 -->
+<!--CODE-->
+
+**複雜度**
+- **時間 O(2^n · n)**：最壞情況（所有值都不同）樹就是 Template 3 那棵；跳過只會刪掉節點。
+  `sort` 是 O(n log n)，被吃掉了。
+- **空間 O(n)**：遞迴深度與 `path`。
+
+**陷阱**
+- 用 `i > 0` 而不是 `i > start`：在 `path = [1, 2]`、start = 2 時，第二個 `2` 被跳過，所以
+  `[1, 2, 2]` 的結果裡沒有 `[1, 2, 2]`。
+- 沒有 `sort()`：`[2, 1, 2]` 的兩個 2 分開了，`[2, 1]` 和 `[1, 2]` 都會出現。
+
+**不適用的情況** — 答案是有重複元素的排列（LC 47）：跳過要用 `used[]` 的寫法 `!used[i-1]`，見下方。
+
+**練習** — LC 90 ⭐ · LC 40 *（同樣的跳過，加上 target）* · LC 47 *（排列版本的跳過）* · LC 491 *（輸入沒排序：改用每層一個 `set`）*
+
+<!-- 447b789a5d86 -->
+#### 跳過重複 — 同一層才跳的規則 ⭐⭐⭐⭐⭐
+
+我們**不是**每個重複值都跳 — 只跳出現在*同一層遞迴*的重複值。兩個兄弟選了相等的值，會長出
+一模一樣的子樹；父節點和子節點選了相等的值，建出的是 `[2, 2]`，那是另一個答案。同一條規則的三種寫法：
+
+| 寫法 | 什麼時候跳 | 要排序嗎？ | 用在 |
+|---|---|---|---|
+| 以索引為準 | `i > start and a[i] == a[i-1]` | 要 | LC 40, LC 90 |
+| 以 visited 為準 | `i > 0 and a[i] == a[i-1] and not used[i-1]` | 要 | LC 47, LC 996 |
+| 以計數器為準 | 對**不同的**值迴圈，`count[x] > 0` 時拿一個 | 不用 | LC 47 |
+
+在以 visited 為準的寫法裡，`not used[i-1]` 代表前一個複本在這一層試過、而且已經復原了，
+所以 `a[i]` 會重複它的子樹；`used[i-1]` 代表它在目前路徑上、高一層，`a[i]` 是它合法的下一個複本。
+
+<!-- 5aeb3a594c6e -->
 ### Template 5: Permutations — LC 46 ⭐⭐⭐⭐⭐
 
-<!--CODE-->
+**辨識** — 「回傳所有可能的**排列**」、「每一種安排／順序」、「可以任意順序回傳」；
+`[1, 2]` 和 `[2, 1]` 是不同答案。n ≤ 6–8 → n! · n 沒問題。
+
+**關鍵點** — 順序有差，所以每一層都可以選**任何**還不在路徑上的元素：迴圈從 0 開始，
+防止元素出現兩次的是 `used[i]`（不是 `start_idx`）。`used` 在選擇時設定、取消選擇時清掉，
+所以它永遠恰好描述 `path`。
 
 <!--CODE-->
 
-<!-- 0387a8800b4f -->
+<!--CODE-->
+
+**複雜度**
+- **時間 O(n! · n)**：樹的第 `d` 層試 `n - d` 個沒用過的元素，所以有 n! 個葉節點，每個複製花 O(n)。
+  `for i` 迴圈在每個節點都掃過全部 `n` 個索引。
+- **空間 O(n)**：`used`、`path` 與遞迴深度。
+
+**陷阱**
+- 用 `path.contains(nums[i])` 取代 `used[i]`：每個選擇多一次 O(n) 檢查，而且值一重複就錯 ——
+  `[1, 1, 2]` 永遠放不下第二個 `1`，回傳 `[]`。
+- 記錄前先做 `res.contains(path)` 檢查：每個葉節點一次 O(n! · n) 的掃描，而且元素互不相同時根本不需要。
+- 清掉 `used[i]` 卻沒 pop（或反過來）：`used` 不再描述 `path`，後面的排列會變太長或少一個元素。
+
+**不適用的情況** — 答案是集合而不是順序（`[1, 2]` = `[2, 1]`）：傳 `start_idx`，
+[Template 3](#template-3-subsets--lc-78-) / [Template 6](#template-6-combinations--lc-77)。
+
+**練習** — LC 46 ⭐ · LC 47 *（有重複：見下方）* · LC 784 *（每個字母兩種選擇）* · LC 526 *（在選擇時剪枝：[Template 12](#template-12-pruning-at-the-choice--lc-526-)）* · LC 996 *（相鄰兩數的和必須是平方數）*
+
+<!-- 0fc997b4eb36 -->
 #### 有重複元素的排列 — LC 47
 
-用 `Counter` 取代 `visited[]`：選的時候減一，取消選擇時加回去。
-另一種寫法（排序 + `i > 0 and a[i] == a[i-1] and not used[i-1]`）就是
-[跳過重複](#duplicate-skipping--the-same-level-skip-rule-)裡的那段 Java。
+> **關鍵點** — 對 `Counter` 裡**不同的**值迴圈，而不是對索引迴圈，所以兩個相等的值永遠不會
+> 是兄弟，同一個排列也不會被建兩次。
+
+**化約成**：[Template 5](#template-5-permutations--lc-46-) —— 用 `count[value]` 取代
+`used[i]`：選的時候減一，取消選擇時加回去。排序 + `used[]` 的另一種寫法，就是
+[跳過重複](#duplicate-skipping--the-same-level-skip-rule-)裡以 visited 為準的那一列。
 
 <!--CODE-->
 
-<!-- 2b14f9f7b748 -->
+<!-- 008beea00f64 -->
 ### Template 6: Combinations — LC 77
 
-`start_idx` 加上一個長度關卡。一旦 `len(path) == k` 就停。
+**辨識** — 「回傳從 1..n 中選 **k** 個數的所有組合」。長度固定；順序不重要。C(n, k) 小，例如 n ≤ 20。
+
+**關鍵點** — 就是 Template 1 加上結束條件 `len(path) == k`：`start_idx` 讓每個組合都維持遞增順序，
+所以每個組合剛好被建一次，而且一湊滿 `k` 個數遞迴就停。
 
 <!--CODE-->
 
-<!-- 3cc6345cef39 -->
+<!--CODE-->
+
+**複雜度**
+- **時間 O(C(n,k) · k)**：有 C(n,k) 個葉節點，每次複製 O(k)。內部節點最多再多一個 k 倍，被這個上界吸收。
+- **空間 O(k)**：遞迴在深度 `k` 就停。
+
+**陷阱**
+- 在從 1 開始編號的題目寫 `range(start, n)`：`n` 永遠選不到，所以 `n = 4, k = 2` 會漏掉
+  `[1, 4]`、`[2, 4]`、`[3, 4]`。
+- 沒有上界剪枝時，迴圈也會開出湊不滿 `k` 個的分支。把 `i` 的上限設成 `n - (k - len(path)) + 1`
+  就能砍掉它們；複雜度等級不變，常數會變。
+
+**練習** — LC 77 ⭐ · LC 216 *（再加一個總和限制）* · LC 17 *（每個位置一份選擇清單）* · LC 1286 *（以同樣順序做成迭代器）*
+
+<!-- 640e17e6ff25 -->
 ### Template 7: Combination Sum — LC 39 / LC 40 ⭐⭐⭐⭐
 
-遞迴呼叫傳 `i` 代表*可以重複用*（LC 39）；傳 `i + 1` 代表*只能用一次*（LC 40）。
-LC 40 還額外需要同一層的重複跳過。
+**辨識** — 「找出 `candidates` 中所有**總和等於 `target`** 的不重複組合」。LC 39：「同一個數字可以被選無限次」。
+LC 40：「每個數字只能用**一次**」，而且輸入可能有重複。
+
+**關鍵點** — `sort()` 之後，兩種剪枝都是安全的：某個候選一超過就 `break`（後面的都更大），以及同一層
+跳過跟左邊鄰居相等的值（它會重複鄰居的子樹）。LC 39 傳 `i`；LC 40 傳 `i + 1` —— LC 39 的程式碼在
+[Template 2](#template-2-start_idx--i-vs-i--1--lc-39-)；下面這份是 LC 40。
 
 <!--CODE-->
 
 <!--CODE-->
 
-**Python — LC 40，兩種剪枝都上**（先 `sort()`，`break` 才合法）：
+**複雜度**
+- LC 40 是 **時間 O(2^n · n)**：用 `i + 1` 時每個候選只有選或不選，所以最多 2^n 條路徑，每條複製 O(n)。
+  LC 39 能重複用，所以改成 O(n^(T/M + 1))（Template 2）。
+- **空間 O(n)**：遞迴深度與 `path`（LC 39：O(T/M)）。
 
-<!--CODE-->
+**陷阱**
+- 沒有 `sort()` 就 `break`：`[10, 1, 2, 7, 6, 1, 5], 8` 一碰到 `10` 就停，回傳 `[]`。
+- LC 40 沒有跳過重複：同一個輸入裡的兩個 `1` 會讓 `[1, 2, 5]` 和 `[1, 7]` 各出現兩次。
+- 用 `i > 0` 而不是 `i > start` 來跳，會漏掉 `[1, 1, 6]`。
 
-<!-- ff4f2a2d182b -->
+**練習** — LC 39 ⭐ · LC 40 ⭐ · LC 216 *（固定長度 k，數字 1–9）* · LC 377 *（順序有差而且只問個數：DP）*
+
+<!-- 55e23166d15e -->
 ### Template 8: Palindrome Partitioning — LC 131 ⭐⭐⭐⭐⭐
 
-<!-- 6fb0dfd3c15c -->
-#### 核心想法 — 選的是「切在哪」，不是「拿哪個」
+**辨識** — 「把 `s` **切分**成**每一段**都是回文／合法 IP 段／字典裡的單字；回傳**所有**可能的切法」。n ≤ 16。
 
-這一頁其他每份模板選的都是**要拿哪個元素**，切分題選的則是**要切在哪裡**。站在索引
-`start` 上，選擇清單就是剩餘字串的每一個前綴 —— `end` 從 `start+1` 跑到 `n` 的
-`s[start:end]`。只有通過合法性關卡（這裡是：*它是迴文嗎？*）的前綴才拿，然後從 `end`
-往下對**剩下的部分**遞迴。字串用完了，代表每一段都過了關卡，這條路徑就是一組完整解。
+**關鍵點** — 這一頁其他每份模板選的都是**要拿哪個元素**，切分題選的則是**要切在哪裡**。站在
+`start` 上，選擇清單就是剩餘字串的每一個前綴 `s[start..end]`；只有通過關卡的才拿，然後從
+`end + 1` 往下遞迴。走到 `start == n` 代表每一段都過了關卡，`path` 就是一組完整解。
 
-這個重新框定就是整題的全部。長度 `n` 的字串在字元之間有 `n - 1` 個縫隙，一個切分
-其實就是**挑一個要切開的縫隙子集** —— 所以 LC 131 是
-[LC 78 Subsets](#template-3-subsets--lc-78-) 換了層皮，只是多了 `isPalindrome`
-這個過濾器。複雜度也是從這裡來的：`2^(n-1)` 種候選切分，每種花 `O(n)` 檢查與複製
-→ `O(2^n · n)`。
+這個重新框定就是整題的全部。長度 `n` 的字串有 `n - 1` 個縫隙，一個切分其實就是**挑一個要切開的
+縫隙子集** —— 所以 LC 131 是 [LC 78 Subsets](#template-3-subsets--lc-78-) 換了層皮，只是多了
+`is_palindrome` 這個過濾器。
 
 <!--CODE-->
 
-<!-- 212755170525 -->
+<!--CODE-->
+
+**複雜度**
+- **時間 O(2^n · n)**：`2^(n-1)` 種候選切分（`n - 1` 個縫隙的子集），每一段的 `is_palindrome` 關卡與複製都花 O(n)。
+- **空間 O(n)**：遞迴深度與 `path` 最多 `n` 段。
+
+**手算**
+
+<!--CODE-->
+
+**陷阱**
+- **要從 `end + 1` 遞迴，不是從 `start + 1`。** 切掉一段 2 個字元的片段後，`start + 1` 會把它的
+  第二個字元再吃一次：`"aab"` 會回傳 `["aa", "a", "b"]`。這就是切分題版本的
+  [Template 2](#template-2-start_idx--i-vs-i--1--lc-39-) `i` vs `i + 1` 問題。
+- **在葉節點要複製路徑**（`path[:]` / `new ArrayList<>(path)`），否則每個答案都是同一個被清空的 list。
+  傳 `path + [piece]` 的切片寫法可以繞過這件事 —— 每次呼叫都是全新的 list，這也是它不需要 `pop()`
+  的原因；見 [Template 14](#template-14-when-to-undo--mutable-vs-immutable-state--lc-113-)。
+- 對 `s[i:]` 遞迴的切片寫法讀起來乾淨，但每次呼叫都是 O(n) 的複製；改成帶著 `start` 走。
+
+**不適用的情況** — 題目只問切分**存不存在**（LC 139），或**最少**要切幾刀（LC 132）：把每種切法都列舉
+出來是浪費，拿掉路徑就變成對 `start` 的 DP。這就是 [Key Properties](#key-properties) 裡那個典型的
+**回溯 → DP** 轉折。
+
+**練習** — LC 131 ⭐ · LC 93 *（關卡 = 合法 IP 段，剛好 4 段）* · LC 140 *（關卡 = 字典單字，對 `start` 記憶化）* · LC 842 *（關卡取決於前兩段）*
+
+<!-- b97c5d377b5d -->
 #### 模式 — 一個關卡，三個旋鈕
 
 形狀是固定的；轉動三個旋鈕就能變成其他每一道切分題：
@@ -271,25 +445,8 @@ LC 40 還額外需要同一層的重複跳過。
 | 旋鈕 | LC 131 | 換成⋯ |
 |------|--------|--------|
 | **關卡** `is_valid(piece)` | `piece == piece[::-1]` | `0 <= int(piece) <= 255` 且不能有前導零 → LC 93；`piece in wordDict` → LC 140 |
-| **切分範圍** `for end in …` | 每一個前綴，`start+1 .. n` | 有長度上限 —— IP 的每段 `<= 3`，字典斷詞 `<= maxWordLen` |
+| **切分範圍** `for end in …` | 每一個前綴，`start .. n-1` | 有長度上限 —— IP 的每段 `<= 3`，字典斷詞 `<= maxWordLen` |
 | **結束條件** | `start == n` | `start == n` **而且** `len(path) == 4`（LC 93 要求剛好四段） |
-
-真的會出錯的兩件事：
-
-- **要從 `end` 遞迴，不是從 `start + 1`。** 切掉一段 2 個字元的片段後，`start + 1`
-  會把它的第二個字元再吃一次。這就是切分題版本的
-  [Template 2](#template-2-start_idx--i-vs-i--1-) `i` vs `i + 1` 問題。
-- **在葉節點要複製路徑**（`path[:]` / `new ArrayList<>(path)`）。下面的 Python 版本
-  用傳 `path + [piece]` 繞過這件事 —— 每次呼叫都是全新的 list，這也是它不需要
-  `pop()` 的原因；見 [Template 14](#template-14-when-to-undo--mutable-vs-immutable-state-)。
-
-<!--CODE-->
-
-<!--CODE-->
-
-> Python 這種寫法是切字串（`s[i:]`）而不是帶著索引走。讀起來比較乾淨，但每次切片都是
-> 一次 `O(n)` 的複製 —— 在 Java 就照上面那樣傳 `start`，用
-> `s.substring(start, i + 1)`。
 
 <!-- cb5aedc6b78e -->
 #### 讓關卡變成 O(1) — 預先算好的迴文表 ⭐⭐⭐
@@ -301,7 +458,7 @@ LC 40 還額外需要同一層的重複跳過。
 
 <!--CODE-->
 
-<!-- 4c3f3253305f -->
+<!-- 4d924bd74945 -->
 #### 類似題 — 切分題家族
 
 | LC | 題目 | 跟 LC 131 差在哪 |
@@ -316,20 +473,42 @@ LC 40 還額外需要同一層的重複跳過。
 | 291 | Word Pattern II | 切分 + 一個 `char -> piece` 的雙射，回溯時**必須**復原 |
 | 698 | Partition to K Equal Sum Subsets | 切的是**多重集合分成 k 桶**，不是把序列切成連續片段 —— 是另一份模板（[Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473)） |
 
-> LC 131 → LC 132 就是 [Key Properties](#key-properties) 裡那個典型的
-> **回溯 → DP** 轉折：問題一旦不再要*所有*切分、而是要*最好*的那一個，把它們全部列舉
-> 出來就是浪費。
-
-<!-- daad7c059aef -->
+<!-- a5c421ef73f0 -->
 ### Template 9: Grid / Word Search — LC 79 ⭐⭐⭐⭐
 
-標記格子、往四個方向遞迴、再把格子還原。用 `visited[][]` 矩陣的版本，以及
-計數／取最大值的變體（LC 980、LC 1219），放在
+**辨識** — 「單字由**依序相鄰**格子裡的字母組成」、「同一格**不能用超過一次**」、「每格最多走一次的路徑」。
+m, n ≤ 6 加上一個短單字：每個起點 4^L 沒問題。
+
+**關鍵點** — 一個格子在**目前**路徑上時被標記，路徑一離開它就還原。在第一個遞迴呼叫之前標記一次、
+在最後一個之後還原一次，所以底下每個呼叫都看得到標記，每條兄弟路徑都會發現這格又空出來了。
+
+用 `visited[][]` 矩陣的版本，以及計數／取最大值的變體（LC 980、LC 1219），放在
 [backtrack_examples.md §3](./backtrack_examples.md#3-word-search--lc-79-)。
 
 <!--CODE-->
 
-<!-- 4fd07581e103 -->
+<!--CODE-->
+
+**複雜度**
+- **時間 O(m · n · 4^L)**：雙層迴圈把每一格都當起點試一次，每個 `dfs` 往 4 個方向分支（第一步之後是 3 個，
+  因為上一格已被標記），最多 `L` 層。
+- **空間 O(L)**：遞迴深度最多是單字長度；盤面是就地標記的。
+
+**陷阱**
+- 標記之後直接 `return dfs(...) or dfs(...)`：還原那一行永遠到不了，所以失敗的起點會把 `"#"` 留給之後每一個起點。
+  `[["B", "A", "A"]]`、`"AAB"` 會回傳 `False`：從中間那個 `A` 出發的嘗試標記了右邊的 `A`，而右邊那個起點正好需要它。
+  先存下 `found`、還原，**然後**才回傳。
+- 在四個呼叫之間還原（`mark; dfs(down); restore; dfs(up) …`）：之後的分支可以走回這格重複使用 ——
+  `"ABCB"` 回傳 `True`。
+- 在邊界檢查*之後*才檢查 `idx == len(word)`：結尾落在盤面最後一格的單字會被拒絕，因為下一個呼叫在能回報成功之前就先出界了。
+
+**不適用的情況** — 同一個盤面要查很多單字（LC 212）：每個單字跑一次 DFS 會重複走同樣的前綴；改走 Trie
+（[backtrack_advanced.md](./backtrack_advanced.md)）。而如果格子永遠不需要**釋放**（數島嶼、flood fill），
+那就是普通的 DFS 加上永久的 visited 標記。
+
+**練習** — LC 79 ⭐ · LC 1219 *（在所有路徑中取最大）* · LC 980 *（數走遍每一格的路徑）* · LC 212 *（很多單字：Trie 剪枝）*
+
+<!-- df017eb657d7 -->
 #### 標記能維持多久 — 它底下的每一個呼叫都看得到，旁邊的都看不到（LC 1219） ⭐⭐⭐⭐
 
 執行 `grid[y][x] = -1` 之後，**誰會看到這個 `-1`，又會看到什麼時候？** 把這件事搞清楚，
@@ -368,7 +547,7 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 同一個物件的參考（reference）—— 所以任何一個 frame 的寫入，所有其他 frame 都看得到，直到
 有人把它寫回去。`cur_gold` 是 `int`：`+=` 只是讓區域名稱指向新物件，每個 frame 各自持有
 一份，沒有東西需要還原。這跟
-[Template 14](#template-14-when-to-undo--mutable-vs-immutable-state-) 裡 LC 113 的
+[Template 14](#template-14-when-to-undo--mutable-vs-immutable-state--lc-113-) 裡 LC 113 的
 `cur_sum` 與 `cache` 是同一條規則。
 
 **把這段時間窗弄錯的兩種寫法** —— 都拿題目自己的範例跑過：
@@ -383,90 +562,137 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 > （在哪裡檢查、在哪裡累加）在
 > [dfs.md Template 9](./dfs.md#template-9-grid-dfs-with-restore-backtracking--lc-1219)。
 
-<!-- 6da5f131a07a -->
+<!-- 9576a601b97c -->
 ### Template 10: N-Queens — LC 51
 
-經典回溯，搜尋空間 O(n!)，靠追蹤行與對角線來剪枝。
+**辨識** — 「擺 **n** 個皇后／棋子，使任兩個都不互相攻擊」、「回傳所有不同的棋盤配置」；每列一個棋子是必然的。n ≤ 9。
+
+**關鍵點** — 遞迴深度 = 列，所以兩個皇后永遠不會在同一列。三個集合存著已被佔用的行與兩條對角線
+（一條對角線上 `row - col` 固定，另一條上 `row + col` 固定），所以「這格會被攻擊嗎？」就是三次 O(1) 查詢。
 
 <!--CODE-->
 
-**關鍵剪枝**：三個 O(1) 的集合取代了 O(n) 的行／對角線掃描。時間：O(n!)，空間：O(n)。
+<!--CODE-->
 
-<!-- aab73f0bdc4a -->
+**複雜度**
+- **時間 O(n!)**：第 0 列試 `n` 行，第 1 列最多 `n - 1` 個空行，依此類推；三個集合的檢查是 O(1)，
+  所以每個節點花 O(1)，外加組出一個完成棋盤的 O(n²)。
+- **空間 O(n²)**：棋盤。集合與遞迴是 O(n)。
+
+**陷阱**
+- 只檢查 `cols`：在同一條對角線上的兩個皇后會通過，`n = 4` 回傳全部 24 種排列，而不是它的 2 個棋盤。
+- 在 Java 拿 `row - col` 當陣列索引：在主對角線下方它是負的；要位移 `n - 1`。
+- 還原了棋盤卻沒還原集合（或三個集合只還原了一個）：後面的列會看到不存在的攻擊，`n = 4` 一個棋盤都回傳不出來。
+
+**練習** — LC 51 ⭐ · LC 52 *（只計數：不用棋盤）* · LC 1001 *（同樣的對角線鍵，改成查詢）*
+
+<!-- 45f5693dda3b -->
 ### Template 11: Sudoku Solver — LC 37
 
-一格一格回溯；用列／行／宮格集合剪枝。
+**辨識** — 「填滿空格，使每一列、每一行與每個 3×3 宮格都剛好包含 1–9」、「輸入**剛好只有一個**解」。盤面固定 9×9。
+
+**關鍵點** — 遞迴依固定順序走過空格，每一層一格。`rows`、`cols` 與 `boxes` 永遠恰好存著盤面上的數字，
+所以每次檢查候選都是 O(1)；第一次把所有空格都填滿時，盤面就是答案 —— 一路往上回傳 `True`。
 
 <!--CODE-->
 
-> 再往前推一步 — 一放下數字就把它從同伴格的候選中消掉，某格候選歸零就立刻宣告失敗 —
-> 那就是**限制傳播（constraint propagation）**，在
-> [backtrack_advanced.md](./backtrack_advanced.md#template-4-constraint-propagation-early-termination)。
+<!--CODE-->
 
-<!-- 1de13297915e -->
-### Template 12: Pruning Techniques ⭐⭐⭐⭐
+**複雜度**
+- **時間 O(9^m)**：`m` 個空格每格最多試 9 個數字；三張表讓每次檢查是 O(1)。實務上限制條件把它砍到每個盤面幾毫秒。
+- **空間 O(m)**：`empty` 串列與遞迴深度；三張表固定 3 × 81。
 
-**定義**：透過砍掉不可能通往合法解的分支，來縮小搜尋空間的最佳化手法。
+**陷阱**
+- 沒有把 `True` 往上回傳：盤面解完了迴圈還繼續跑，還原那幾行把它清掉，函式結束時盤面又是原來的空格。
+- 在 Python 用 `/` 寫宮格索引 `(r // 3) * 3 + c // 3`：得到浮點數索引，`TypeError`。
 
-**剪枝的種類**：
+**不適用的情況** — 單純回溯在盤面上太慢（更難的變體、或很多盤面）：放下一個數字就把它**傳播**到同伴格，
+某格候選歸零就立刻失敗 —— [backtrack_advanced.md](./backtrack_advanced.md#template-4-constraint-propagation-early-termination)。
 
-**1. 限制條件剪枝**
-- 一違反限制就提早結束
-- 遞迴呼叫前先檢查合法性
+**練習** — LC 36 *（只做合法性檢查）* · LC 37 ⭐ · LC 51 *（同樣每條限制一個集合的想法）*
 
-**2. 界限剪枝**
-- 用上界／下界排除掉不夠好的路徑
-- 分支界限法（branch and bound）
+<!-- f159a62e66f1 -->
+### Template 12: Pruning at the Choice — LC 526 ⭐⭐⭐⭐
 
-**3. 對稱性剪枝**
-- 跳過等價的狀態以避免重複
-- 排序輸入來處理排列
+**辨識** — 暴力搜尋樹是 n! 或 2^n，n ≤ 15–20，而且**每個選擇都帶一條限制**（「`perm[i]` 能被 `i` 整除或整除 `i`」、
+「總和不能超過 target」），讓大多數分支在走到葉節點之前很久就被排除。
 
-**4. 記憶化剪枝**
-- 把子問題的結果快取起來
-- 避免重算同樣的狀態
-
-**常見剪枝樣式** — 這是大綱不是可執行的程式碼：`current_sum`、`target_length`、
-`is_valid` 與 `result` 都是佔位，實際由題目決定。
+**關鍵點** — 在遞迴**之前**、在做選擇的當下就檢查限制，而不是等到葉節點。不合格的分支根本不會進去，
+它底下的整棵子樹成本為零 —— 實際搜尋的只有「合法前綴」構成的那棵樹。
 
 <!--CODE-->
 
-**實作剪枝 — LC 39 Combination Sum**（先 `sort()` 才能用 `break`）：
-
 <!--CODE-->
 
-<!-- 9cda879f11e0 -->
+**複雜度**
+- 最壞 **時間 O(n!)** —— `n` 層裡每一層的 `for value` 迴圈 —— 但整除性的 `continue` 在大多數分支的根就把它砍掉：
+  `n = 15` 呼叫不到一百萬次，不剪枝則是 15! ≈ 1.3 × 10¹² 個葉節點。
+- **空間 O(n)**：`used` 與遞迴深度。
+
+**陷阱**
+- 先組出完整排列再在葉節點檢查：答案正確，但 `n = 15` 要走過全部 15! 個葉節點，永遠跑不完。
+- 在只有 `continue` 才正確的地方用 `break`：這些值並不是依「是否通過檢查」排序的，一個值不通過不代表下一個也不通過。
+
+**不適用的情況** — 同一個**狀態**會經由不同路徑重複出現（這裡是：某個位置上已用過的值的集合）：
+對 `used` 的位元遮罩做記憶化，就變成 DP —— O(n · 2^n)（[dp_bitmask.md](./dp_bitmask.md)）。
+
+**練習** — LC 526 ⭐ · LC 39 *（排序過的候選：超過就 `break`）* · LC 40 *（再加上跳過重複）* · LC 698 *（三種剪枝一起上：[Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473)）*
+
+<!-- 6e58ee357914 -->
+#### 剪枝的四種類型
+
+| 類型 | 砍掉什麼 | 寫法 | LC |
+|---|---|---|---|
+| **限制條件** | 已經違反規則的選擇 | 遞迴前先檢查，`continue` | 51, 526 |
+| **界限** | 已經不可能達到目標的分支 | 排序，總和一超過就 `break` | 39, 40, 216 |
+| **對稱性** | 會重複兄弟子樹的分支 | 排序後 `i > start and a[i] == a[i-1]`；跳過總和相同的桶 | 40, 90, 698 |
+| **記憶化** | 經由另一條路徑又走到的狀態 | 對狀態快取，而不是對路徑 | 140, 698 |
+
+剪枝能砍分支、降常數；它**不會**改變最壞情況的複雜度等級。
+
+<!-- 1a96b78c6668 -->
 ### Template 13: k-Bucket Partitioning — LC 698 / LC 473
 
-把每個數字分配到 `k` 個桶的其中一個。三個剪枝讓它變得可行：`sum % k != 0` 直接失敗、
-由**大到小**排序讓大數字提早爆掉，以及用 `break` 而不是再去試第二個*空*桶
-（那只是把同一種分法換個標籤而已）。
+**辨識** — 「把陣列分成 **k 個非空子集**，且每個子集總和相等」、「用上每一根火柴拼成正方形」。n ≤ 16，k ≤ n。
+
+**關鍵點** — 對**數字**遞迴，每個數字試它放得進的每一個桶。接下來只跟桶的**總和**有關，所以兩個總和相同的桶
+可以互換：試第一個，其餘跳過。由大到小排序，讓太大的數字在樹的頂端就失敗。
 
 <!--CODE-->
+
+<!--CODE-->
+
+**複雜度**
+- 最壞 **時間 O(k^n)**：`n` 個數字每個最多試 `k` 個桶。三種剪枝（`total % k`、由大到小、跳過相同總和的桶）
+  讓它實務上很快，但不改變複雜度等級。
+- **空間 O(n)**：遞迴深度；`buckets` 是 O(k)。
+
+**陷阱**
+- 由小到大排序：小數字先把每個桶都填了一部分，之後才發現大數字放不下。在
+  `[3, 3, 10, 2, 6, 5, 10, 6, 8, 3, 2, 1, 6, 10, 7, 2], k = 6`（無解）上要大約 200 萬次呼叫，由大到小只要 163 次。
+- 沒有跳過總和相同的桶：k 個空桶讓每種切法都有 k! 種換標籤的版本：同一個輸入要大約 50 萬次呼叫，而不是 163 次。
+- 忽略 `backtrack(index + 1)` 的結果：成功之後還原照跑、迴圈繼續，函式回傳 `False` —— 連 LC 698 的
+  第一個範例 `[4, 3, 2, 3, 5, 2, 1], k = 4` 都是。
+
+**不適用的情況** — n ≤ 16 而單純搜尋超時：對已用數字的位元遮罩做記憶化（`dp[mask]` = 目前這個桶的填充量），
+就是 O(n · 2^n) —— [dp_bitmask.md](./dp_bitmask.md)。
+
+**練習** — LC 698 ⭐ · LC 473 *（k 固定為 4）* · LC 2305 *（讓最大的桶最小）* · LC 1723 *（同一題，換成工作與工人）*
 
 > **變體 — LC 473 (Matchsticks to Square)**：*就是同一份 k 桶模板，只是把 `k`
 > 寫死成 4*，且 `target = 周長 // 4`。同樣的三個剪枝照用：`sum % 4 != 0` 或
 > `max(nums) > target` 就直接失敗、先由**大到小**排序，以及復原之後
 > `if buckets[i] == 0: break`（再去試第二個*空*桶只是把同一種分法換個標籤）。
 
-<!-- bbd8ff969510 -->
-#### 一成功就立刻把 `true` 往上回傳
+<!-- ea36ca2144bc -->
+### Template 14: When to Undo — Mutable vs Immutable State — LC 113 ⭐⭐⭐⭐
 
-判定型問題（「到底*能不能*切分？」）只要有一條分支成功就馬上回傳 —
-不要拿到 `true` 之後還繼續跑迴圈：
+**辨識** — 任何沿著遞迴往下帶著**兩種**狀態的回溯：一個累計的數字（總和、長度、深度），和一個集合
+（路徑、visited 集合、盤面）。問題在於哪一個需要復原那一行。
 
-<!--CODE-->
-
-<!-- 401b0130cabc -->
-### Template 14: When to Undo — Mutable vs Immutable State ⭐⭐⭐⭐
-
-<!--CODE-->
-
-**重要提醒：什麼時候「不需要」回溯**
-
-<!--CODE-->
-
-**什麼時候要回溯（復原）**：
+**關鍵點** — 只有**以參考共用**的狀態需要復原。`list`、`set`、盤面或 `StringBuilder` 是每個 frame 都寫進去的
+同一個物件，所以子層的改動父層看得到，直到它被復原為止。`int` 或 `str` 是在本地重新綁定
+（`cur_sum += x` 在這個 frame 產生一個新值），父層的那份從來沒變，所以沒有東西要復原。
 
 | 資料型別 | 需要回溯？ | 原因 |
 |-----------|-----------------|--------|
@@ -474,44 +700,48 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 | 可變物件（`List`、`Set`、`Map`、`StringBuilder` 等） | ✅ 要 | 傳參考；改動會影響到所有遞迴呼叫 |
 | 不可變物件（`String`、`Integer` 等） | ❌ 不用 | 改動會產生新的實例 |
 
-**Python 版的對照 — `int` 累加值 vs `list` 路徑（LC 113 Path Sum II）** ⭐
-
-同一條規則在 Python 也成立。在一個**同時**帶著累計總和（`cur_sum`，一個 `int`）
-**和**路徑（`cache`，一個 `list`）的 DFS 裡，我們會 `cache.pop()`，但從來不去
-「減回」`cur_sum`：
-
-- **`cur_sum`（`int`）— 不用回溯。** 整數是**不可變**的。`cur_sum += root.val`
-  並不會就地改掉父層的整數；它是**把本地的 `cur_sum` 重新綁定**到一個全新的
-  int 物件。子層的 frame 結束後，父層的 `cur_sum` 完全沒被動到。
-- **`cache`（`list`）— 需要回溯。** 整棵遞迴樹從頭到尾只有**一個** list 實例。
-  子層的 `append` 父層看得到，所以我們**必須** `pop()` 才能把狀態還原給兄弟分支。
+<!--CODE-->
 
 <!--CODE-->
 
-**記憶體走一遍** — 父層在 `cur_sum = 5`、`cache = [5]`，往下走進一個值為 `3` 的子節點：
+**複雜度**
+- **時間 O(n²)**：每個節點走一次，最多 O(n) 個根到葉的符合路徑，每條複製最多 `n` 個值（`cache[:]`）。
+- **空間 O(n)**：一個共用的 `cache` 加上遞迴深度，兩者最多都是樹高。
+
+**手算** — 父層在 `cur_sum = 5`、`cache = [5]`，往下走進一個值為 `3` 的子節點：
 
 | | 往下走進子節點 | 回到父層 |
 |---|---|---|
 | **`cache`（list）** | `cache.append(3)` → `[5, 3]`（同一個物件） | 沒有 `pop()` 就會停在 `[5, 3]` → **父層被汙染 → 一定要回溯** |
 | **`cur_sum`（int）** | `cur_sum + 3` → `8`（新的 int，是區域變數） | 子層 frame 被銷毀 → 父層的 `cur_sum` 還是 `5` → **不需要回溯** |
 
-> 另見 [python_trick.md §1-54](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) — `str`／`tuple`／`int`（不可變，不用回溯）vs `list.append`（可變，需要 `pop`）。
-
-**為什麼一定要 `cache.pop()`** — 拿一棵三個節點的樹走一遍：
-
-假設樹長這樣：
+拿 `1 → (2, 3)` 這棵樹，先不 `cache.pop()` 走一遍，再加上它走一遍：
 
 <!--CODE-->
 
-沒有 `cache.pop()`：
+**陷阱**
+- 沒有 `cache.pop()`：左子節點的值漏進右子節點的路徑，就像上面那樣；LC 113 的第一個範例會把
+  `[5, 4, 11, 2]` 回報成 `[5, 4, 11, 7, 2]`。
+- 連 `int` 也復原（呼叫之後寫 `cur_sum -= root.val`）：在 Python 無害，但代表心智模型錯了 —— 而如果它是
+  欄位（`self.cur_sum`），情況就反過來：欄位**是**共用的，的確需要復原。
+- `res.append(cache)` 沒有複製：每個答案都是同一個 list，到最後是空的。
+- 同一條規則也決定 LC 79 的索引：`dfs(..., idx + 1)` 傳的是一個新的 `int`，所以不用寫 `idx -= 1`；
+  LC 1740 的 `dist + 1` 同樣不需要復原。
 
-<!--CODE-->
+**不適用的情況** — 每次呼叫都傳一個**新的**集合（`path + [node.val]`）：每條分支都有自己的副本，不需要 `pop()`
+—— [tree_backtrack.md](./tree_backtrack.md) 用的就是這種形式。代價是每次呼叫 O(n) 的複製，換掉的是「共用一個 list 加回溯」。
+另見 [python_trick.md §1-54](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md)。
 
-有 `cache.pop()`：
+**練習** — LC 112 *（不用保留路徑：完全不需要復原）* · LC 113 ⭐ · LC 257 *（字串路徑：不可變，不用復原）* · LC 1219 *（可變的格子標記：必須復原）*
 
-<!--CODE-->
+<!-- 4848549f9b2b -->
+## 練習路徑
 
-> **另一種寫法（不用明確 pop）：** 每次呼叫都傳一份*新的* list（`path + [node.val]`），這樣每條分支都有自己的副本 — 就不需要 `pop()` 了；[tree_backtrack.md](./tree_backtrack.md) 用的就是這種形式。代價是多了複製成本，換掉的是「共用一個 list 加回溯」。
+| 階段 | 題目（由易到難） | 新增了什麼 |
+|---|---|---|
+| **核心** ⭐ | LC 78 · LC 39 · LC 40 · LC 46 · LC 17 · LC 22 · LC 79 · LC 131 · LC 51 | 子集、可重用 vs 只用一次、跳過重複、排列、每個位置一份選擇清單、用計數當限制、格子標記再還原、切分、每層一列 |
+| **練習** | LC 77 · LC 90 · LC 216 · LC 47 · LC 93 · LC 526 · LC 1219 · LC 113 | 長度關卡、子集與排列裡的重複、IP 段切分、在選擇時剪枝、在格子路徑中取最大、可變／不可變的復原 |
+| **進階** | LC 698 · LC 473 · LC 37 · LC 212 · LC 980 · LC 301 | k 個桶、第一次填滿就停的解題器、Trie 剪枝的格子搜尋、走遍每一格、刪除額度 |
 
 <!-- ea4fa3974f42 -->
 ## 總結與速查
@@ -585,7 +815,463 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 > 最壞情況的量級在上面的 [Time Complexity by Problem Type](#time-complexity-by-problem-type)
 > 表格裡；這張表講的是**靠什麼把它剪掉**。
 
-<!-- ee19773d92ef -->
+<!-- 8486fab09056 -->
+### 相關主題
+
+- [backtrack_examples.md](./backtrack_examples.md) — 這裡每份模板對應的 LC 實作解
+- [backtrack_advanced.md](./backtrack_advanced.md) — 用 Trie 剪枝的格子搜尋（LC 212）、運算式建構（LC 282）、刪除次數預算（LC 301）、記憶化／通用切分
+- [tree_backtrack.md](./tree_backtrack.md) — 在明確的樹上做根到葉的路徑回溯
+- [dfs.md](./dfs.md) — 沒有復原步驟的 DFS 走訪
+- [dp.md](./dp.md) / [knapsack.md](./knapsack.md) — 同一套搜尋的記憶化版本
+
+<!-- stale: 68a1fcb84fec -->
+### 每個回溯都要追蹤的 3 件事
+
+| 元素 | 意義 |
+| ------- | ------- |
+| **路徑**（Route） | 到目前為止做過的選擇（也就是當前路徑） |
+| **選擇清單**（Choice list） | 此刻還能做的選擇 |
+| **結束條件** | 決策樹的葉節點 — 記下路徑然後返回 |
+
+<p align="center"><img src="../pic/backtrack1.png"></p>
+
+> 上面那三列直接對應到 [Template 1](#template-1-choose--explore--un-choose-) —
+> `path` 是路徑，`for` 迴圈是選擇清單，最上面那個 `if` 是結束條件。
+
+<!-- stale: 9b476c11819d -->
+## 題型分類
+
+四種形狀幾乎涵蓋所有回溯題。下面這張分類表決定你**該拿哪份模板**；
+程式碼在 [Templates & Algorithms](#templates--algorithms)，
+完整解答在 [backtrack_examples.md](./backtrack_examples.md)。
+
+| # | 形狀 | 要 `start_idx` 嗎？ | 標準模板 | LC |
+|---|-------|--------------|--------------------|----|
+| 1 | 子集（Subsets） | ✅ `i + 1` | [Template 3](#template-3-subsets--lc-78-) / [Template 4](#template-4-subsets-ii-skip-same-level-duplicates--lc-90-) | 78, 90 |
+| 2 | 排列（Permutations） | ❌ `visited[]` | [Template 5](#template-5-permutations--lc-46-) | 46, 47 |
+| 3 | 組合（Combinations） | ✅ `i + 1` | [Template 6](#template-6-combinations--lc-77) | 77, 216 |
+| 4 | 組合總和 | ✅ `i`（可重複用）或 `i + 1` | [Template 7](#template-7-combination-sum--lc-39--lc-40-) | 39, 40 |
+| 5 | 切分 | ✅ 在子字串／桶上用 `i + 1` | [Template 8](#template-8-palindrome-partitioning--lc-131-) / [Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473) | 131, 698, 473 |
+| 6 | 格子／單字搜尋 | ❌ 標記格子再還原 | [Template 9](#template-9-grid--word-search--lc-79-) | 79, 980, 1219 |
+| 7 | 限制條件滿足 | ❌ 每層處理一列／一格 | [Template 10](#template-10-n-queens--lc-51) / [Template 11](#template-11-sudoku-solver--lc-37) | 51, 37 |
+| 8 | 括號／字串建構 | ❌ 用計數器當限制 | [backtrack_examples.md](./backtrack_examples.md#8-generate-parentheses--lc-22) | 20, 22, 93 |
+
+<!-- stale: 302702699eaa -->
+### 各型態筆記
+
+每種形狀的隨手筆記 — 迴圈主體的口訣，以及會踩到的坑。
+
+- 型態 1) : `Subsets`（子集）
+    - 題目 : LC 78, 90, 17
+    - [代碼隨想錄 - 0078.子集](https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md)
+    - （用 for 迴圈呼叫輔助函式）+ start_idx + for 迴圈 + pop(-1)
+    - 回溯。找最小情況，把問題轉成`樹的問題`。用 `start` 把已經用過的數字排掉，回傳所有情況
+    - 不需要 `contains` 檢查：`start_idx` 已經保證每個元素最多用一次（`contains` 是排列的寫法）
+- `Subsets II`
+    - LC 90
+    - start idx + 回溯 + 去重（seen）
+    - 去重 : 用 dict counter 或用索引都行
+
+- 型態 2) : `Permutations（排列組合）`（全排列）
+    - 題目 : LC 46, 47
+    - （用 for 迴圈呼叫輔助函式）+ contains + pop(-1)
+    - 回溯。用 `contains` 把已經用過的數字排掉，回傳所有情況
+    - **不需要**用 start_idx
+
+- 型態 3) : `Combinations（組成）`
+    - LC 77
+    - （用 for 迴圈呼叫輔助函式）+ start_idx + for 迴圈 + 檢查 len == k + pop(-1)
+
+- 型態 4) : `Others`
+
+- 括號（Parentheses，括弧）
+    - LC 20, LC 22
+
+<!-- stale: cfbdb38c5722 -->
+### 模板對照表
+
+| 模板 | 形狀 | 迴圈／下一個索引 | 復原 | LC |
+|---|---|---|---|---|
+| 1 | 選擇 → 探索 → 取消選擇 | `for i in start..n` | `path.pop()` | — |
+| 2 | `start_idx` 控制 | `i`（可重用）vs `i + 1`（只用一次） | — | 39 vs 40 |
+| 3 | 子集 | **每個**節點都記錄，用 `i + 1` | `remove(last)` | 78 |
+| 4 | 子集 II | `i > start && a[i] == a[i-1]` 就跳過 | `remove(last)` | 90 |
+| 5 | 排列 | 掃**全部**，跳過 `visited[i]` | `pop()` + `visited[i] = False` | 46, 47 |
+| 6 | 組合 | `len(path) == k` 就停 | `pop()` | 77 |
+| 7 | 組合總和 | `i` 可重用／`i + 1` 只用一次，加 `break` 剪枝 | `pop()` | 39, 40 |
+| 8 | 回文切分 | `for end in start+1..n`，過回文這關 | `remove(last)` | 131 |
+| 9 | 格子／單字搜尋 | 每格往四個方向走 | 還原該格 | 79 |
+| 10 | N 皇后 | 每層放一列，三個限制集合 | 三個集合都要移除 | 51 |
+| 11 | 數獨 | 每層填一個空格，列／行／宮格集合 | 重設格子與集合 | 37 |
+| 12 | 剪枝 | 遞迴前先 `break` / `continue` | — | 39, 40 |
+| 13 | k 桶切分 | 對每個桶試一次，先由大到小排序 | `buckets[i] -= v` | 698, 473 |
+| 14 | 可變 vs 不可變狀態 | — | **只有**可變狀態要復原 | 113, 1740 |
+
+<!-- stale: 71af99a660eb -->
+### Template 1: choose → explore → un-choose ⭐⭐⭐⭐⭐
+
+標準的「選擇 → 探索 → 取消選擇」骨架，拿去改就能用：
+
+<!--CODE-->
+
+<!--CODE-->
+
+只要轉兩個旋鈕，這份模板就能變成所有變體：
+- **`start_idx`** — 控制搜尋空間（組合／子集 vs 排列）
+- **提早結束／剪枝** — 砍掉不可能得到合法答案的分支
+
+<!-- stale: b70e438b4f7c -->
+#### 跳過重複 — 同一層才跳的規則 ⭐⭐⭐⭐⭐
+
+我們**不是**每個重複值都跳 — 只跳出現在*同一層遞迴*的重複值。
+同一條規則的三種寫法（片段，不是可直接執行的類別）：
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- stale: c4bac375b8c2 -->
+### Template 2: `start_idx` — `i` vs `i + 1` ⭐⭐⭐⭐⭐
+
+`start_idx`（或叫 `index` 之類的）是用來**控制搜尋空間**的 — 用來**避免重複**，並讓產生的結果保持順序。
+
+-> 什麼時候要用 `start_idx`：
+
+- 你在產生**組合／子集**
+- 你想**避免重複**
+- 你想**保留選擇的順序**
+
+一旦確定需要 `start_idx`，下一個問題就是**下一層要傳什麼當起始索引** —
+`i`（可以重複用當前元素）還是 `i + 1`（跳過它）。
+
+| 傳什麼 | 意義 | 類比 | 例子 |
+| ---- | ------- | ------- | -------- |
+| `i`     | **同一個元素可以再用一次** | **完全背包**（數量無限） | LC 39 (Combination Sum), LC 518 (Coin Change II) |
+| `i + 1` | **每個元素最多用一次** | **0/1 背包**、子集 | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
+
+> 排列兩個都不用 — 它會回頭用前面的元素，所以改成維護一個 `visited[]`
+> 陣列／`contains` 檢查，而不是 `start_idx`（見 [Problem Categories](#problem-categories)）。
+> LC 377（Combination Sum IV）也一樣：順序有差，所以每一層都從 0 開始迴圈；
+> 而且它只要計數，是 DP 而不是回溯。
+
+<!--CODE-->
+
+> **重點**：可以重複用 → `i`；只能用一次 → `i + 1`。
+
+<!-- stale: e00686992f8b -->
+### Template 3: Subsets — LC 78 ⭐⭐⭐⭐⭐
+
+在**每個**節點都把路徑記下來（前序），並且傳 `i + 1`，讓每個元素只用一次。
+那些 `// ...` 是省略掉的樣板碼，不是真的程式碼。
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- stale: f0f4c281df0c -->
+### Template 4: Subsets II (skip same-level duplicates) — LC 90 ⭐⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!-- stale: f4f874156b70 -->
+### Template 5: Permutations — LC 46 ⭐⭐⭐⭐⭐
+
+<!--CODE-->
+
+<!--CODE-->
+
+<!-- stale: 0387a8800b4f -->
+#### 有重複元素的排列 — LC 47
+
+用 `Counter` 取代 `visited[]`：選的時候減一，取消選擇時加回去。
+另一種寫法（排序 + `i > 0 and a[i] == a[i-1] and not used[i-1]`）就是
+[跳過重複](#duplicate-skipping--the-same-level-skip-rule-)裡的那段 Java。
+
+<!--CODE-->
+
+<!-- stale: 2b14f9f7b748 -->
+### Template 6: Combinations — LC 77
+
+`start_idx` 加上一個長度關卡。一旦 `len(path) == k` 就停。
+
+<!--CODE-->
+
+<!-- stale: 3cc6345cef39 -->
+### Template 7: Combination Sum — LC 39 / LC 40 ⭐⭐⭐⭐
+
+遞迴呼叫傳 `i` 代表*可以重複用*（LC 39）；傳 `i + 1` 代表*只能用一次*（LC 40）。
+LC 40 還額外需要同一層的重複跳過。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**Python — LC 40，兩種剪枝都上**（先 `sort()`，`break` 才合法）：
+
+<!--CODE-->
+
+<!-- stale: ff4f2a2d182b -->
+### Template 8: Palindrome Partitioning — LC 131 ⭐⭐⭐⭐⭐
+
+<!-- stale: 6fb0dfd3c15c -->
+#### 核心想法 — 選的是「切在哪」，不是「拿哪個」
+
+這一頁其他每份模板選的都是**要拿哪個元素**，切分題選的則是**要切在哪裡**。站在索引
+`start` 上，選擇清單就是剩餘字串的每一個前綴 —— `end` 從 `start+1` 跑到 `n` 的
+`s[start:end]`。只有通過合法性關卡（這裡是：*它是迴文嗎？*）的前綴才拿，然後從 `end`
+往下對**剩下的部分**遞迴。字串用完了，代表每一段都過了關卡，這條路徑就是一組完整解。
+
+這個重新框定就是整題的全部。長度 `n` 的字串在字元之間有 `n - 1` 個縫隙，一個切分
+其實就是**挑一個要切開的縫隙子集** —— 所以 LC 131 是
+[LC 78 Subsets](#template-3-subsets--lc-78-) 換了層皮，只是多了 `isPalindrome`
+這個過濾器。複雜度也是從這裡來的：`2^(n-1)` 種候選切分，每種花 `O(n)` 檢查與複製
+→ `O(2^n · n)`。
+
+<!--CODE-->
+
+<!-- stale: 212755170525 -->
+#### 模式 — 一個關卡，三個旋鈕
+
+形狀是固定的；轉動三個旋鈕就能變成其他每一道切分題：
+
+| 旋鈕 | LC 131 | 換成⋯ |
+|------|--------|--------|
+| **關卡** `is_valid(piece)` | `piece == piece[::-1]` | `0 <= int(piece) <= 255` 且不能有前導零 → LC 93；`piece in wordDict` → LC 140 |
+| **切分範圍** `for end in …` | 每一個前綴，`start+1 .. n` | 有長度上限 —— IP 的每段 `<= 3`，字典斷詞 `<= maxWordLen` |
+| **結束條件** | `start == n` | `start == n` **而且** `len(path) == 4`（LC 93 要求剛好四段） |
+
+真的會出錯的兩件事：
+
+- **要從 `end` 遞迴，不是從 `start + 1`。** 切掉一段 2 個字元的片段後，`start + 1`
+  會把它的第二個字元再吃一次。這就是切分題版本的
+  [Template 2](#template-2-start_idx--i-vs-i--1-) `i` vs `i + 1` 問題。
+- **在葉節點要複製路徑**（`path[:]` / `new ArrayList<>(path)`）。下面的 Python 版本
+  用傳 `path + [piece]` 繞過這件事 —— 每次呼叫都是全新的 list，這也是它不需要
+  `pop()` 的原因；見 [Template 14](#template-14-when-to-undo--mutable-vs-immutable-state-)。
+
+<!--CODE-->
+
+<!--CODE-->
+
+> Python 這種寫法是切字串（`s[i:]`）而不是帶著索引走。讀起來比較乾淨，但每次切片都是
+> 一次 `O(n)` 的複製 —— 在 Java 就照上面那樣傳 `start`，用
+> `s.substring(start, i + 1)`。
+
+<!-- stale: 4c3f3253305f -->
+#### 類似題 — 切分題家族
+
+| LC | 題目 | 跟 LC 131 差在哪 |
+|----|------|------------------|
+| 93 | Restore IP Addresses | 關卡 = `0..255` 且無前導零；切分長度上限 3；結束條件還要求剛好 4 段（[實作解](./backtrack_examples.md#9-restore-ip-addresses--lc-93)） |
+| 140 | Word Break II | 關卡 = `piece in wordDict`；要對 `start` 做記憶化，否則 `"aaaa…aaab"` 會爆掉（[實作解](./backtrack_examples.md#11-word-break-ii--lc-140)） |
+| 139 | Word Break | 同一套搜尋，但它只問*能不能* —— 把路徑拿掉就塌縮成對 `start` 的 DP／BFS |
+| 132 | Palindrome Partitioning II | 問的是**最少切幾刀**，不是所有切法 —— 什麼都不用列舉，直接對 `start` 做 DP |
+| 842 | Split Array into Fibonacci Sequence | 關卡 = 「這一段等於前兩段相加」，所以遞迴要帶著前兩個值當狀態 |
+| 306 | Additive Number | LC 842 的是非題雙胞胎 —— 第一次成功就回傳，不用收集 |
+| 816 | Ambiguous Coordinates | 兩層切分：先切成 2 段，再在每一段裡面插小數點 |
+| 291 | Word Pattern II | 切分 + 一個 `char -> piece` 的雙射，回溯時**必須**復原 |
+| 698 | Partition to K Equal Sum Subsets | 切的是**多重集合分成 k 桶**，不是把序列切成連續片段 —— 是另一份模板（[Template 13](#template-13-k-bucket-partitioning--lc-698--lc-473)） |
+
+> LC 131 → LC 132 就是 [Key Properties](#key-properties) 裡那個典型的
+> **回溯 → DP** 轉折：問題一旦不再要*所有*切分、而是要*最好*的那一個，把它們全部列舉
+> 出來就是浪費。
+
+<!-- stale: daad7c059aef -->
+### Template 9: Grid / Word Search — LC 79 ⭐⭐⭐⭐
+
+標記格子、往四個方向遞迴、再把格子還原。用 `visited[][]` 矩陣的版本，以及
+計數／取最大值的變體（LC 980、LC 1219），放在
+[backtrack_examples.md §3](./backtrack_examples.md#3-word-search--lc-79-)。
+
+<!--CODE-->
+
+<!-- stale: 9d6a0265c544 -->
+#### 標記能維持多久 — 它底下的每一個呼叫都看得到，旁邊的都看不到（LC 1219） ⭐⭐⭐⭐
+
+執行 `grid[y][x] = -1` 之後，**誰會看到這個 `-1`，又會看到什麼時候？** 把這件事搞清楚，
+mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，不是以單一次呼叫來想：
+
+> **規則** — 在 frame A 裡標記的格子，會對 A 發出的**每一個**遞迴呼叫都保持標記 —— 四個方向
+> 全部，以及它們再往下發出的每一個呼叫 —— 直到**最後一個**呼叫返回後才還原。A 的子樹以外
+> 永遠看不到這個標記：A 的呼叫者的其他分支看不到，下一個起點也看不到。
+
+<!--CODE-->
+
+**實際追蹤** — `grid = [[1, 2], [3, 4]]`，從 `(0, 0)` 啟動一次，格子寫成 `(row, col)`，
+縮排 = 遞迴深度。這是上面程式碼在每次標記與還原後加上 print 的真實輸出；撞牆或碰到 `-1`
+而直接返回的呼叫不會顯示。
+
+<!--CODE-->
+
+從中讀出三件事：
+
+1. **`(0,0)` 從第 1 步到第 14 步都是 `-1`** —— 跨越它的*兩條*分支（往右在 2–7，往下在
+   8–13）。標記屬於這個 frame，所以它的四個呼叫共用同一個標記；正是這點讓一條路徑不會
+   踩回自己已經佔用的格子。
+2. **`(0,1)` 在第 7 步、也就是 `(0,0)` 嘗試下一個方向之前就被還原** —— 所以第 10 步
+   先往下走的那條路徑能走到 `(0,1)`，再收集一次它的 `2`。兄弟分支是*不同的路徑*，一條
+   用過的格子，另一條必須還能使用。這就是要還原的全部理由。
+3. **還原的順序與標記的順序相反**（5、6、7 · 11、12、13 · 14）。每個 frame 只還原它自己
+   標記的那一格，所以呼叫堆疊一層層退回時，grid 也一格格復原。
+
+| 正在執行的程式碼 | 看到 `(0,0)` 是 `-1`？ | 原因 |
+|---|---|---|
+| `(0,0)` 的四個呼叫，以及它們底下的每一個呼叫 | ✅ 是 | 它們在標記與還原之間執行 |
+| 外層迴圈的下一個起點，例如 `dfs(0, 1)` | ❌ 否 | `(0,0)` 返回前已經還原自己 |
+| 兄弟分支，例如第 8 步的 `(1,0)` 看向 `(0,1)` | — | `(0,1)` 是空的：它自己的 frame 在第 7 步已還原 |
+
+**為什麼子呼叫看得到父呼叫的標記。** 整個遞迴只有一個 `grid` list，每個 frame 拿到的都是
+同一個物件的參考（reference）—— 所以任何一個 frame 的寫入，所有其他 frame 都看得到，直到
+有人把它寫回去。`cur_gold` 是 `int`：`+=` 只是讓區域名稱指向新物件，每個 frame 各自持有
+一份，沒有東西需要還原。這跟
+[Template 14](#template-14-when-to-undo--mutable-vs-immutable-state-) 裡 LC 113 的
+`cur_sum` 與 `cache` 是同一條規則。
+
+**把這段時間窗弄錯的兩種寫法** —— 都拿題目自己的範例跑過：
+
+| 錯誤 | 結果 |
+|---|---|
+| 完全不還原 | 第一次啟動就把黃金清掉，之後每個起點都受影響 —— Example 1 回傳 `23`，不是 `24` |
+| 在四個呼叫**之間**還原（`mark; dfs(right); undo; dfs(left) ...`） | 第一條分支返回後，之後的分支可以走回這格，這格又能再走回去 —— Example 1 直接 `RecursionError` |
+
+> 標記**一次**，在第一個遞迴呼叫之前；還原**一次**，在最後一個之後。任何在中間就返回的寫法
+> —— 例如上面的 `return (dfs(...) or dfs(...))` —— 一樣會跳過還原。這題完整的三種寫法比較
+> （在哪裡檢查、在哪裡累加）在
+> [dfs.md Template 9](./dfs.md#template-9-grid-dfs--backtracking--3-styles-compared-lc-1219-path-with-maximum-gold)。
+
+<!-- stale: 6da5f131a07a -->
+### Template 10: N-Queens — LC 51
+
+經典回溯，搜尋空間 O(n!)，靠追蹤行與對角線來剪枝。
+
+<!--CODE-->
+
+**關鍵剪枝**：三個 O(1) 的集合取代了 O(n) 的行／對角線掃描。時間：O(n!)，空間：O(n)。
+
+<!-- stale: aab73f0bdc4a -->
+### Template 11: Sudoku Solver — LC 37
+
+一格一格回溯；用列／行／宮格集合剪枝。
+
+<!--CODE-->
+
+> 再往前推一步 — 一放下數字就把它從同伴格的候選中消掉，某格候選歸零就立刻宣告失敗 —
+> 那就是**限制傳播（constraint propagation）**，在
+> [backtrack_advanced.md](./backtrack_advanced.md#template-4-constraint-propagation-early-termination)。
+
+<!-- stale: 1de13297915e -->
+### Template 12: Pruning Techniques ⭐⭐⭐⭐
+
+**定義**：透過砍掉不可能通往合法解的分支，來縮小搜尋空間的最佳化手法。
+
+**剪枝的種類**：
+
+**1. 限制條件剪枝**
+- 一違反限制就提早結束
+- 遞迴呼叫前先檢查合法性
+
+**2. 界限剪枝**
+- 用上界／下界排除掉不夠好的路徑
+- 分支界限法（branch and bound）
+
+**3. 對稱性剪枝**
+- 跳過等價的狀態以避免重複
+- 排序輸入來處理排列
+
+**4. 記憶化剪枝**
+- 把子問題的結果快取起來
+- 避免重算同樣的狀態
+
+**常見剪枝樣式** — 這是大綱不是可執行的程式碼：`current_sum`、`target_length`、
+`is_valid` 與 `result` 都是佔位，實際由題目決定。
+
+<!--CODE-->
+
+**實作剪枝 — LC 39 Combination Sum**（先 `sort()` 才能用 `break`）：
+
+<!--CODE-->
+
+<!-- stale: 9cda879f11e0 -->
+### Template 13: k-Bucket Partitioning — LC 698 / LC 473
+
+把每個數字分配到 `k` 個桶的其中一個。三個剪枝讓它變得可行：`sum % k != 0` 直接失敗、
+由**大到小**排序讓大數字提早爆掉，以及用 `break` 而不是再去試第二個*空*桶
+（那只是把同一種分法換個標籤而已）。
+
+<!--CODE-->
+
+> **變體 — LC 473 (Matchsticks to Square)**：*就是同一份 k 桶模板，只是把 `k`
+> 寫死成 4*，且 `target = 周長 // 4`。同樣的三個剪枝照用：`sum % 4 != 0` 或
+> `max(nums) > target` 就直接失敗、先由**大到小**排序，以及復原之後
+> `if buckets[i] == 0: break`（再去試第二個*空*桶只是把同一種分法換個標籤）。
+
+<!-- stale: bbd8ff969510 -->
+#### 一成功就立刻把 `true` 往上回傳
+
+判定型問題（「到底*能不能*切分？」）只要有一條分支成功就馬上回傳 —
+不要拿到 `true` 之後還繼續跑迴圈：
+
+<!--CODE-->
+
+<!-- stale: 401b0130cabc -->
+### Template 14: When to Undo — Mutable vs Immutable State ⭐⭐⭐⭐
+
+<!--CODE-->
+
+**重要提醒：什麼時候「不需要」回溯**
+
+<!--CODE-->
+
+**什麼時候要回溯（復原）**：
+
+| 資料型別 | 需要回溯？ | 原因 |
+|-----------|-----------------|--------|
+| 基本型別（`int`、`char`、`boolean` 等） | ❌ 不用 | 傳值；每次遞迴呼叫都有自己的副本 |
+| 可變物件（`List`、`Set`、`Map`、`StringBuilder` 等） | ✅ 要 | 傳參考；改動會影響到所有遞迴呼叫 |
+| 不可變物件（`String`、`Integer` 等） | ❌ 不用 | 改動會產生新的實例 |
+
+**Python 版的對照 — `int` 累加值 vs `list` 路徑（LC 113 Path Sum II）** ⭐
+
+同一條規則在 Python 也成立。在一個**同時**帶著累計總和（`cur_sum`，一個 `int`）
+**和**路徑（`cache`，一個 `list`）的 DFS 裡，我們會 `cache.pop()`，但從來不去
+「減回」`cur_sum`：
+
+- **`cur_sum`（`int`）— 不用回溯。** 整數是**不可變**的。`cur_sum += root.val`
+  並不會就地改掉父層的整數；它是**把本地的 `cur_sum` 重新綁定**到一個全新的
+  int 物件。子層的 frame 結束後，父層的 `cur_sum` 完全沒被動到。
+- **`cache`（`list`）— 需要回溯。** 整棵遞迴樹從頭到尾只有**一個** list 實例。
+  子層的 `append` 父層看得到，所以我們**必須** `pop()` 才能把狀態還原給兄弟分支。
+
+<!--CODE-->
+
+**記憶體走一遍** — 父層在 `cur_sum = 5`、`cache = [5]`，往下走進一個值為 `3` 的子節點：
+
+| | 往下走進子節點 | 回到父層 |
+|---|---|---|
+| **`cache`（list）** | `cache.append(3)` → `[5, 3]`（同一個物件） | 沒有 `pop()` 就會停在 `[5, 3]` → **父層被汙染 → 一定要回溯** |
+| **`cur_sum`（int）** | `cur_sum + 3` → `8`（新的 int，是區域變數） | 子層 frame 被銷毀 → 父層的 `cur_sum` 還是 `5` → **不需要回溯** |
+
+> 另見 [python_trick.md §1-54](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) — `str`／`tuple`／`int`（不可變，不用回溯）vs `list.append`（可變，需要 `pop`）。
+
+**為什麼一定要 `cache.pop()`** — 拿一棵三個節點的樹走一遍：
+
+假設樹長這樣：
+
+<!--CODE-->
+
+沒有 `cache.pop()`：
+
+<!--CODE-->
+
+有 `cache.pop()`：
+
+<!--CODE-->
+
+> **另一種寫法（不用明確 pop）：** 每次呼叫都傳一份*新的* list（`path + [node.val]`），這樣每條分支都有自己的副本 — 就不需要 `pop()` 了；[tree_backtrack.md](./tree_backtrack.md) 用的就是這種形式。代價是多了複製成本，換掉的是「共用一個 list 加回溯」。
+
+<!-- stale: ee19773d92ef -->
 ### 面試訊號 → 模式
 
 | 聽到這種話… | 就拿出… |
@@ -596,12 +1282,3 @@ mark-and-restore 才會正確；而答案要以*呼叫框（frame）*來想，�
 | 「把字串切成合法的片段」 | 用索引的回溯加上 is_valid 檢查 |
 | 「產生合法的括號」 | 把左右括號的計數當作限制 |
 | 「太慢了？剪得更狠一點」 | 遞迴前先做限制傳播 |
-
-<!-- 8486fab09056 -->
-### 相關主題
-
-- [backtrack_examples.md](./backtrack_examples.md) — 這裡每份模板對應的 LC 實作解
-- [backtrack_advanced.md](./backtrack_advanced.md) — 用 Trie 剪枝的格子搜尋（LC 212）、運算式建構（LC 282）、刪除次數預算（LC 301）、記憶化／通用切分
-- [tree_backtrack.md](./tree_backtrack.md) — 在明確的樹上做根到葉的路徑回溯
-- [dfs.md](./dfs.md) — 沒有復原步驟的 DFS 走訪
-- [dp.md](./dp.md) / [knapsack.md](./knapsack.md) — 同一套搜尋的記憶化版本

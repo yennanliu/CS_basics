@@ -24,7 +24,7 @@ recursion trace, and the neighbouring problems that reuse the same loop with one
 
 | § | Problem | Instantiates |
 |---|---------|--------------|
-| 1 | LC 17 Letter Combinations | [Template 1](./backtrack.md#template-1-choose--explore--un-choose-) — index-driven choice list |
+| 1 | LC 17 Letter Combinations | [Template 1](./backtrack.md#template-1-choose--explore--un-choose--lc-216-) — index-driven choice list |
 | 2 | LC 39 Combination Sum (+ LC 216) | [Template 7](./backtrack.md#template-7-combination-sum--lc-39--lc-40-) |
 | 3 | LC 79 Word Search (+ LC 980, 1219) | [Template 9](./backtrack.md#template-9-grid--word-search--lc-79-) |
 | 4 | LC 78 Subsets | [Template 3](./backtrack.md#template-3-subsets--lc-78-) |
@@ -1152,7 +1152,7 @@ class Solution(object):
 > Listed here because it is the *decision* twin of LC 140 below — but note the solution is a
 > **BFS over start indices**, not a backtrack: there is nothing to undo.
 >
-> The DP spelling is [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139), and the
+> The DP spelling is [dp.md Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-), and the
 > one thing it is easy to get wrong there is the loop nest — `for i: for word:` is correct,
 > `for word: for i:` silently returns `False` on `"applepenapple"`:
 > [dp_loop_order.md](./dp_loop_order.md#2-lc-139-word-break--one-recurrence-five-orders-).
@@ -1372,8 +1372,8 @@ private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> vi
 
 | If the example above felt unfamiliar | Go back to |
 |---|---|
-| why `path.pop()` / when it is not needed | [Template 14](./backtrack.md#template-14-when-to-undo--mutable-vs-immutable-state-) |
-| `i` vs `i + 1` in the recursive call | [Template 2](./backtrack.md#template-2-start_idx--i-vs-i--1-) |
+| why `path.pop()` / when it is not needed | [Template 14](./backtrack.md#template-14-when-to-undo--mutable-vs-immutable-state--lc-113-) |
+| `i` vs `i + 1` in the recursive call | [Template 2](./backtrack.md#template-2-start_idx--i-vs-i--1--lc-39-) |
 | skipping duplicate values | [Duplicate skipping](./backtrack.md#duplicate-skipping--the-same-level-skip-rule-) |
 | `break` vs `continue` when pruning | [Sort, dedup, prune — when](./backtrack.md#sort-dedup-prune--when) |
 | picking the right shape from the problem statement | [Decision Table](./backtrack.md#decision-table--which-backtrack-shape-) |

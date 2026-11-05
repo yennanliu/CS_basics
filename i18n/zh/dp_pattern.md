@@ -209,12 +209,12 @@ LC 2926 Maximum Balanced Subsequence Sum（LIS 的形狀，但用線段樹取代
 **Java：**
 <!--CODE-->
 
-<!-- 1a73a16d8404 -->
+<!-- cb85a165b789 -->
 ### 常見題目：
 - LC 322: Coin Change（最少硬幣數）
 - LC 518: Coin Change II（方案數）
 - LC 377: Combination Sum IV
-- LC 139: Word Break（同一條遞迴式的前綴切分寫法 —— [Template 1b](./dp.md#template-1b-prefix-partition-dp---lc-139)）
+- LC 139: Word Break（同一條遞迴式的前綴切分寫法 —— [Template 1b](./dp.md#template-1b-prefix-partition-dp--lc-139-)）
   - 這裡的巢狀順序**不能互換**：`for i: for word:` 正確，`for word: for i:` 錯誤 —— [dp_loop_order.md](./dp_loop_order.md)
 - LC 140: Word Break II（同樣的 `dp[i]` 切分判斷，但記憶化的是**句子清單**而不是布林值）
 - LC 472: Concatenated Words（拿*其他*單字當字典，對每個單字跑 Word Break；先依長度排序，字典裡就只會有比較短的字）
