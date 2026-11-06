@@ -25,6 +25,12 @@
     "  why        optional: the one takeaway the two cost reasons do not already say",
     "  trap       the wrong answer people actually give, and why it is wrong",
     "",
+    "patterns (top level): every topic's patterns, as { topic: { pattern name: question id } }.",
+    "  Each pattern names the one question that represents it; together they are the",
+    "  page's \"Pattern coverage\" set, so a pattern with no question here is a pattern",
+    "  the quiz does not cover. The build fails on an unknown id, an id filed under the",
+    "  wrong topic, an id named twice, or a topic with questions but no patterns.",
+    "",
     "site/build-quiz.js validates every entry (unique id, README-known lc, parseable",
     "answers, cost lines inside the snippet) and fails the build rather than shipping",
     "a question nobody can score.",
@@ -9189,6 +9195,629 @@
         }
       },
       "trap": "Comparing every interval in one list with every interval in the other is `O(mn)`. Both lists are sorted and disjoint, so whichever interval ends first can never meet anything later in the other list."
+    },
+    {
+      "id": "kmp-strstr",
+      "lc": 28,
+      "topic": "Strings",
+      "vars": "n = len(haystack), m = len(needle)",
+      "code": [
+        "def strStr(haystack, needle):",
+        "    if not needle:",
+        "        return 0",
+        "    m = len(needle)",
+        "    lps = [0] * m",
+        "    k = 0",
+        "    for i in range(1, m):",
+        "        while k > 0 and needle[i] != needle[k]:",
+        "            k = lps[k - 1]",
+        "        if needle[i] == needle[k]:",
+        "            k += 1",
+        "        lps[i] = k",
+        "    k = 0",
+        "    for i, ch in enumerate(haystack):",
+        "        while k > 0 and ch != needle[k]:",
+        "            k = lps[k - 1]",
+        "        if ch == needle[k]:",
+        "            k += 1",
+        "        if k == m:",
+        "            return i - m + 1",
+        "    return -1"
+      ],
+      "time": "O(n + m)",
+      "space": "O(m)",
+      "cost": {
+        "time": {
+          "lines": [7, 14],
+          "why": "Each `for` step raises `k` by at most one and every `while` step lowers it, so the fallbacks across a whole pass can never outnumber the rises: `O(m)` to build `lps`, `O(n)` to scan."
+        },
+        "space": {
+          "lines": [5],
+          "why": "`lps` holds one prefix length per character of the needle."
+        }
+      },
+      "trap": "A `while` inside a `for` reads like `O(n * m)`. It is amortised: `k` can only fall as far as it has risen, which is what makes KMP linear where the naive scan is not."
+    },
+    {
+      "id": "repeated-dna-rolling-hash",
+      "lc": 187,
+      "topic": "Strings",
+      "vars": "n = len(s); the window length L = 10 is a constant",
+      "code": [
+        "def findRepeatedDnaSequences(s):",
+        "    L = 10",
+        "    code = {'A': 0, 'C': 1, 'G': 2, 'T': 3}",
+        "    mask = (1 << 2 * L) - 1",
+        "    seen, repeated = set(), set()",
+        "    h = 0",
+        "    for i, ch in enumerate(s):",
+        "        h = ((h << 2) | code[ch]) & mask",
+        "        if i >= L - 1:",
+        "            if h in seen:",
+        "                repeated.add(s[i - L + 1:i + 1])",
+        "            seen.add(h)",
+        "    return list(repeated)"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [7, 8],
+          "why": "One pass; `h` drops the oldest character and adds the newest with a shift and a mask, `O(1)` per step, instead of re-hashing the window."
+        },
+        "space": {
+          "lines": [12],
+          "why": "`seen` can hold one hash per window position, up to n of them."
+        }
+      },
+      "why": "A rolling hash updates the window's fingerprint in `O(1)` as it slides, so the cost no longer scales with the window length.",
+      "trap": "Hashing every window from scratch costs `O(L)` each, `O(n * L)` in all. With `L` fixed at 10 that is still linear here; the rolling update is what keeps it linear when `L` is part of the input."
+    },
+    {
+      "id": "subarrays-k-distinct-exact",
+      "lc": 992,
+      "topic": "Two Pointers & Sliding Window",
+      "vars": "n = len(nums), k = the number of distinct values asked for",
+      "code": [
+        "def subarraysWithKDistinct(nums, k):",
+        "    def at_most(limit):",
+        "        count = {}",
+        "        left = 0",
+        "        total = 0",
+        "        for right, x in enumerate(nums):",
+        "            count[x] = count.get(x, 0) + 1",
+        "            while len(count) > limit:",
+        "                count[nums[left]] -= 1",
+        "                if count[nums[left]] == 0:",
+        "                    del count[nums[left]]",
+        "                left += 1",
+        "            total += right - left + 1",
+        "        return total",
+        "    return at_most(k) - at_most(k - 1)"
+      ],
+      "time": "O(n)",
+      "space": "O(k)",
+      "cost": {
+        "time": {
+          "lines": [6, 8, 15],
+          "why": "`at_most` is one sliding window — `right` and `left` each move at most n times — and it runs twice."
+        },
+        "space": {
+          "lines": [7],
+          "why": "The `while` keeps `count` at no more than `limit + 1` distinct keys, so it never holds more than `k + 1` entries."
+        }
+      },
+      "why": "\"Exactly k\" is not monotone, so one window cannot count it. \"At most k\" is, and exactly(k) = atMost(k) − atMost(k − 1).",
+      "trap": "Two windows sounds like `O(n^2)` or `O(n * k)`. It is two independent linear passes, `2n`, which is `O(n)`."
+    },
+    {
+      "id": "critical-connections-tarjan",
+      "lc": 1192,
+      "topic": "Advanced Graphs",
+      "vars": "V = n nodes, E = len(connections)",
+      "code": [
+        "def criticalConnections(n, connections):",
+        "    graph = [[] for _ in range(n)]",
+        "    for a, b in connections:",
+        "        graph[a].append(b)",
+        "        graph[b].append(a)",
+        "    disc = [-1] * n",
+        "    low = [0] * n",
+        "    bridges = []",
+        "    timer = 0",
+        "",
+        "    def dfs(node, parent):",
+        "        nonlocal timer",
+        "        disc[node] = low[node] = timer",
+        "        timer += 1",
+        "        for nxt in graph[node]:",
+        "            if nxt == parent:",
+        "                continue",
+        "            if disc[nxt] == -1:",
+        "                dfs(nxt, node)",
+        "                low[node] = min(low[node], low[nxt])",
+        "                if low[nxt] > disc[node]:",
+        "                    bridges.append([node, nxt])",
+        "            else:",
+        "                low[node] = min(low[node], disc[nxt])",
+        "",
+        "    dfs(0, -1)",
+        "    return bridges"
+      ],
+      "time": "O(V + E)",
+      "space": "O(V + E)",
+      "cost": {
+        "time": {
+          "lines": [3, 15],
+          "why": "The `disc[nxt] == -1` guard enters each node once, and each edge is scanned once from each end: one DFS, `O(V + E)`."
+        },
+        "space": {
+          "lines": [2, 19],
+          "why": "The adjacency list stores every edge twice, and the recursion can go `V` deep on a path-shaped graph."
+        }
+      },
+      "why": "`low[node]` is the earliest discovery time reachable from node's subtree using one back edge; an edge is a bridge when the child's `low` cannot reach back above its parent.",
+      "trap": "Removing each edge and re-checking connectivity is `O(E * (V + E))`. Tarjan finds every bridge in the single DFS that computes `low`."
+    },
+    {
+      "id": "floyd-warshall-city",
+      "lc": 1334,
+      "topic": "Advanced Graphs",
+      "vars": "n = number of cities, e = len(edges)",
+      "code": [
+        "def findTheCity(n, edges, distanceThreshold):",
+        "    INF = float('inf')",
+        "    dist = [[INF] * n for _ in range(n)]",
+        "    for i in range(n):",
+        "        dist[i][i] = 0",
+        "    for a, b, w in edges:",
+        "        dist[a][b] = dist[b][a] = w",
+        "    for k in range(n):",
+        "        for i in range(n):",
+        "            for j in range(n):",
+        "                if dist[i][k] + dist[k][j] < dist[i][j]:",
+        "                    dist[i][j] = dist[i][k] + dist[k][j]",
+        "    best, best_count = -1, n + 1",
+        "    for i in range(n):",
+        "        reachable = 0",
+        "        for j in range(n):",
+        "            if dist[i][j] <= distanceThreshold:",
+        "                reachable += 1",
+        "        if reachable <= best_count:",
+        "            best, best_count = i, reachable",
+        "    return best"
+      ],
+      "time": "O(n^3)",
+      "space": "O(n^2)",
+      "cost": {
+        "time": {
+          "lines": [8, 9, 10],
+          "why": "Three nested loops of n each around an `O(1)` relaxation: `n^3`. The counting loop after it is `O(n^2)` and is absorbed."
+        },
+        "space": {
+          "lines": [3],
+          "why": "`dist` is an n × n matrix of every pair's shortest distance."
+        }
+      },
+      "why": "Floyd–Warshall answers all pairs at once: after round `k`, `dist[i][j]` is the shortest path using only cities `0..k` in between.",
+      "trap": "Running Dijkstra from every city is `O(n * e log n)`, which can beat `O(n^3)` on a sparse graph. Floyd–Warshall's cost ignores `e` entirely: it is `n^3` whether the graph is sparse or complete."
+    },
+    {
+      "id": "kruskal-connecting-cities",
+      "lc": 1135,
+      "topic": "Advanced Graphs",
+      "vars": "V = n cities, E = len(connections)",
+      "code": [
+        "def minimumCost(n, connections):",
+        "    parent = list(range(n + 1))",
+        "",
+        "    def find(x):",
+        "        while parent[x] != x:",
+        "            parent[x] = parent[parent[x]]",
+        "            x = parent[x]",
+        "        return x",
+        "",
+        "    total, used = 0, 0",
+        "    for a, b, cost in sorted(connections, key=lambda edge: edge[2]):",
+        "        root_a, root_b = find(a), find(b)",
+        "        if root_a != root_b:",
+        "            parent[root_a] = root_b",
+        "            total += cost",
+        "            used += 1",
+        "    return total if used == n - 1 else -1"
+      ],
+      "time": "O(E log E)",
+      "space": "O(V + E)",
+      "accept": {
+        "time": [
+          "O(E log V)"
+        ]
+      },
+      "cost": {
+        "time": {
+          "lines": [11],
+          "why": "`sorted` costs `O(E log E)`; the `find` calls after it, with path halving, add less than that."
+        },
+        "space": {
+          "lines": [2, 11],
+          "why": "`parent` has one slot per city, and `sorted` builds a new list of all E edges."
+        }
+      },
+      "why": "Kruskal takes edges cheapest first and keeps one only when it joins two different components — union-find answers that question in near-constant time.",
+      "trap": "`O(E log V)` is also right: E ≤ V², so log E ≤ 2 log V and the two are the same class. What is wrong is pricing the loop alone and forgetting the sort."
+    },
+    {
+      "id": "h-index-counting-sort",
+      "lc": 274,
+      "topic": "Sorting",
+      "vars": "n = len(citations)",
+      "code": [
+        "def hIndex(citations):",
+        "    n = len(citations)",
+        "    buckets = [0] * (n + 1)",
+        "    for c in citations:",
+        "        buckets[min(c, n)] += 1",
+        "    papers = 0",
+        "    for h in range(n, -1, -1):",
+        "        papers += buckets[h]",
+        "        if papers >= h:",
+        "            return h",
+        "    return 0"
+      ],
+      "time": "O(n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [4, 7],
+          "why": "One pass to fill the buckets and one pass over at most n + 1 of them."
+        },
+        "space": {
+          "lines": [3],
+          "why": "`buckets` has n + 1 counters, whatever the citation values are."
+        }
+      },
+      "why": "The answer can never exceed n, so every count above n behaves the same — capping at n bounds the key range and makes counting sort possible.",
+      "trap": "Sorting the citations first is the usual answer and costs `O(n log n)`. Counting sort is linear only because the cap turns an unbounded value range into n + 1 buckets."
+    },
+    {
+      "id": "segment-tree-range-sum",
+      "lc": 307,
+      "topic": "Design",
+      "vars": "n = len(nums)",
+      "note": "Time is for one `update` or one `sumRange` call; space is the whole structure.",
+      "code": [
+        "class NumArray:",
+        "    def __init__(self, nums):",
+        "        self.n = len(nums)",
+        "        self.tree = [0] * (2 * self.n)",
+        "        for i, x in enumerate(nums):",
+        "            self.tree[self.n + i] = x",
+        "        for i in range(self.n - 1, 0, -1):",
+        "            self.tree[i] = self.tree[2 * i] + self.tree[2 * i + 1]",
+        "",
+        "    def update(self, index, val):",
+        "        i = index + self.n",
+        "        self.tree[i] = val",
+        "        while i > 1:",
+        "            i //= 2",
+        "            self.tree[i] = self.tree[2 * i] + self.tree[2 * i + 1]",
+        "",
+        "    def sumRange(self, left, right):",
+        "        total = 0",
+        "        lo, hi = left + self.n, right + self.n + 1",
+        "        while lo < hi:",
+        "            if lo % 2 == 1:",
+        "                total += self.tree[lo]",
+        "                lo += 1",
+        "            if hi % 2 == 1:",
+        "                hi -= 1",
+        "                total += self.tree[hi]",
+        "            lo //= 2",
+        "            hi //= 2",
+        "        return total"
+      ],
+      "time": "O(log n)",
+      "space": "O(n)",
+      "cost": {
+        "time": {
+          "lines": [13, 20],
+          "why": "Both loops halve their index every step (`i //= 2`, `lo //= 2`), climbing one tree level at a time: `log n` levels."
+        },
+        "space": {
+          "lines": [4],
+          "why": "The tree is a flat array of `2n` nodes: the n leaves and their n − 1 parents."
+        }
+      },
+      "why": "A segment tree stores the sum of every power-of-two block, so any range is covered by `O(log n)` blocks and a point change touches one block per level.",
+      "trap": "A prefix-sum array answers `sumRange` in `O(1)` but makes `update` `O(n)`; a plain array is the reverse. The segment tree trades both down to `O(log n)`."
+    },
+    {
+      "id": "beautiful-arrangement-bitmask",
+      "lc": 526,
+      "topic": "Dynamic Programming",
+      "vars": "n = the input",
+      "code": [
+        "def countArrangement(n):",
+        "    dp = [0] * (1 << n)",
+        "    dp[0] = 1",
+        "    for mask in range(1 << n):",
+        "        pos = bin(mask).count('1') + 1",
+        "        if pos > n:",
+        "            continue",
+        "        for num in range(1, n + 1):",
+        "            bit = 1 << (num - 1)",
+        "            if mask & bit:",
+        "                continue",
+        "            if num % pos == 0 or pos % num == 0:",
+        "                dp[mask | bit] += dp[mask]",
+        "    return dp[(1 << n) - 1]"
+      ],
+      "time": "O(n * 2^n)",
+      "space": "O(2^n)",
+      "cost": {
+        "time": {
+          "lines": [4, 8],
+          "why": "`2^n` masks, and for each one the inner loop tries n numbers."
+        },
+        "space": {
+          "lines": [2],
+          "why": "`dp` has one entry per subset of the numbers already placed: `2^n`."
+        }
+      },
+      "why": "Which numbers are used is all the future depends on — the position is just how many bits are set — so a bitmask over the used set is the whole state.",
+      "trap": "Backtracking over permutations is `O(n!)`. Bitmask DP merges every ordering that used the same set, which is what brings `n!` down to `n * 2^n`."
     }
-  ]
+  ],
+  "patterns": {
+    "Advanced Graphs": {
+      "Topological order from derived edges": "alien-dictionary",
+      "Eulerian path (Hierholzer's)": "reconstruct-itinerary",
+      "Minimum spanning tree (Prim's)": "min-cost-connect-points",
+      "Minimum spanning tree (Kruskal's)": "kruskal-connecting-cities",
+      "Dijkstra on a minimax path": "swim-in-rising-water",
+      "BFS with extra state": "grid-obstacle-elimination",
+      "All-pairs shortest paths (Floyd–Warshall)": "floyd-warshall-city",
+      "Bridges (Tarjan's low-link)": "critical-connections-tarjan"
+    },
+    "Arrays & Hashing": {
+      "Hash map complement lookup": "two-sum-hash",
+      "Canonical key grouping": "group-anagrams",
+      "Hash set sequence starts": "longest-consecutive",
+      "Prefix sum + hash map": "subarray-sum-k",
+      "Prefix and suffix products": "product-except-self",
+      "Running minimum, one pass": "best-time-stock",
+      "Boyer–Moore voting": "majority-element-boyer-moore",
+      "Index as hash (cyclic placement)": "first-missing-positive",
+      "In-place state encoding": "game-of-life-in-place",
+      "Expand around center": "longest-palindrome-expand"
+    },
+    "Backtracking": {
+      "Subsets (include / exclude)": "subsets",
+      "Subsets with duplicates": "subsets-ii",
+      "Permutations": "permutations",
+      "Permutations with duplicates": "permutations-ii-dedup",
+      "Combinations with pruning": "combinations-pruned",
+      "Combination sum, reuse allowed": "combination-sum",
+      "Bounded generation (parentheses)": "generate-parentheses",
+      "Cartesian product (phone letters)": "letter-combinations",
+      "Constraint placement (N-Queens)": "n-queens",
+      "Grid path search": "word-search",
+      "Partition a string": "palindrome-partitioning",
+      "Assign to k buckets": "partition-k-subsets",
+      "Enumerate paths in a DAG": "all-paths-dag",
+      "Backtracking with memo (all sentences)": "word-break-ii"
+    },
+    "Binary Search": {
+      "Classic search on a sorted array": "binary-search-iterative",
+      "Lower and upper bound": "search-range",
+      "Rotated sorted array": "search-rotated",
+      "Search on the answer": "koko-bananas",
+      "Slope / peak condition": "find-peak-element",
+      "2D matrix as a flat array": "search-2d-matrix",
+      "Partition two sorted arrays": "median-two-sorted-arrays",
+      "Patience sorting (LIS)": "lis-patience",
+      "Prefix sums + bisect": "random-pick-weight"
+    },
+    "Bit Manipulation": {
+      "XOR cancellation": "single-number-xor",
+      "Clear the lowest set bit": "hamming-weight",
+      "DP over bits (i >> 1)": "counting-bits",
+      "Bit-by-bit shift and build": "reverse-bits",
+      "Common prefix by shifting": "bitwise-and-range"
+    },
+    "Complexity Drills": {
+      "Exponential recursion tree": "fib-naive",
+      "Triangular nested loops": "triangular-nested-loop",
+      "Geometric series of work": "halving-work-loop",
+      "Doubling loop": "doubling-loop"
+    },
+    "Design": {
+      "Auxiliary min stack": "min-stack",
+      "Hash map + doubly linked list (LRU)": "lru-cache",
+      "Frequency buckets (LFU)": "lfu-cache",
+      "Hash map + binary search on time": "time-based-kv-store",
+      "Queue from two stacks (amortised)": "queue-using-stacks",
+      "Lazy iterator with a stack": "bst-iterator-amortised",
+      "Array + index map (O(1) remove)": "randomized-set",
+      "2D prefix sums": "range-sum-2d-immutable",
+      "Segment tree (point update, range sum)": "segment-tree-range-sum",
+      "Length-prefixed encoding": "encode-decode-strings",
+      "Bucketed hash table": "design-hashmap"
+    },
+    "Dynamic Programming": {
+      "1D recurrence": "climbing-stairs",
+      "Take or skip (house robber)": "house-robber",
+      "Kadane's maximum subarray": "kadane",
+      "Track max and min (products)": "max-product-subarray",
+      "Decode counting": "decode-ways",
+      "Unbounded knapsack (minimum)": "coin-change-dp",
+      "Unbounded knapsack (count)": "coin-change-ii",
+      "0/1 knapsack (feasibility)": "partition-equal-subset-sum",
+      "0/1 knapsack (count with offset)": "target-sum",
+      "LIS, quadratic DP": "lis-dp",
+      "Word segmentation": "word-break-dp",
+      "Grid paths with a rolling row": "unique-paths-rolling",
+      "Square DP on a grid": "maximal-square-rolling",
+      "Two-string DP (LCS)": "lcs-dp",
+      "Edit distance": "edit-distance",
+      "Pattern matching (regex)": "regex-matching",
+      "Palindrome substrings by center": "palindromic-substrings",
+      "Palindromic subsequence (interval)": "longest-palindromic-subseq",
+      "Interval DP (last to burst)": "burst-balloons",
+      "Catalan / split-point DP": "unique-bsts-catalan",
+      "State machine DP": "stock-with-cooldown",
+      "Memoised DFS on a grid": "longest-increasing-path-matrix",
+      "Sort + DP + binary search": "job-scheduling",
+      "Bitmask DP over used sets": "beautiful-arrangement-bitmask"
+    },
+    "Graphs": {
+      "DFS flood fill": "num-islands-dfs",
+      "Multi-source BFS": "rotting-oranges",
+      "Reverse reachability from borders": "pacific-atlantic",
+      "BFS on an implicit graph": "word-ladder",
+      "Topological sort (Kahn's)": "course-schedule",
+      "Peel leaves (tree centers)": "minimum-height-trees",
+      "Two-coloring (bipartite)": "is-graph-bipartite",
+      "Union-find components": "connected-components-union-find",
+      "Graph copy with a hash map": "clone-graph",
+      "Weighted DFS (ratios)": "evaluate-division",
+      "Dijkstra's shortest path": "dijkstra-network-delay",
+      "Bellman–Ford with k rounds": "cheapest-flights-k-stops"
+    },
+    "Greedy": {
+      "Farthest reach": "jump-game",
+      "Level-by-level reach (min jumps)": "jump-game-ii",
+      "Running surplus with reset": "gas-station",
+      "Last occurrence partition": "partition-labels",
+      "Two passes, left then right": "candy",
+      "Range of possible states": "valid-parenthesis-string",
+      "Sort then insert by rank": "queue-reconstruction",
+      "Group from the smallest": "hand-of-straights",
+      "Track two minimums": "increasing-triplet",
+      "Next permutation": "next-permutation"
+    },
+    "Heap": {
+      "Top-k with a size-k heap": "kth-largest-heap",
+      "K-way merge": "merge-k-lists",
+      "Frontier expansion over sorted pairs": "k-pairs-smallest-sums",
+      "Two heaps (running median)": "median-data-stream",
+      "Sort + max-heap of what is unlocked": "ipo-two-heaps",
+      "Heapify, then pop k": "heapify-then-pop",
+      "Greedy scheduling by count": "task-scheduler"
+    },
+    "Intervals": {
+      "Sort by start and merge": "merge-intervals",
+      "Insert into sorted intervals": "insert-interval",
+      "Greedy by end time": "non-overlapping-intervals",
+      "Min-heap of end times (rooms)": "meeting-rooms-ii",
+      "Two-pointer intersection": "interval-list-intersections",
+      "Difference array sweep": "car-pooling",
+      "Offline queries, sorted + heap": "minimum-interval-query"
+    },
+    "Linked List": {
+      "Iterative reversal": "reverse-linked-list",
+      "Reverse in k-groups": "reverse-k-group",
+      "Fast and slow pointers (cycle)": "linked-list-cycle",
+      "Floyd's cycle entry": "linked-list-cycle-entry",
+      "Floyd on an array as a list": "find-duplicate-floyd",
+      "Dummy head merge": "merge-two-lists",
+      "Two pointers with a gap": "remove-nth-from-end",
+      "Middle, reverse, weave": "reorder-list",
+      "Hash map node copy": "copy-list-random-pointer",
+      "Merge sort on a list": "sort-list",
+      "Switch heads to align lengths": "intersection-two-lists",
+      "Digit-wise add with carry": "add-two-numbers"
+    },
+    "Math & Geometry": {
+      "Transpose then reverse (rotate)": "rotate-image",
+      "Layer-by-layer spiral": "spiral-matrix",
+      "First row and column as markers": "set-matrix-zeroes",
+      "Staircase search": "search-2d-matrix-ii",
+      "Fast exponentiation": "pow-fast-exponentiation",
+      "Cycle detection on a number sequence": "happy-number",
+      "Grade-school multiplication": "multiply-strings"
+    },
+    "Python Pitfalls": {
+      "Slicing copies": "binary-search-slicing",
+      "String concatenation in a loop": "string-concat-loop",
+      "Membership test on a list": "list-membership-loop",
+      "pop(0) on a list": "pop-front-loop",
+      "Sorting inside a loop": "sort-inside-loop"
+    },
+    "Sorting": {
+      "Sort to compare": "valid-anagram-sort",
+      "Merge sort": "merge-sort",
+      "Dutch national flag (3-way partition)": "sort-colors",
+      "Quickselect": "quickselect-kth-largest",
+      "Counting sort with a capped range": "h-index-counting-sort",
+      "Custom comparator": "largest-number-compare",
+      "Fenwick tree counting": "count-smaller-fenwick"
+    },
+    "Stack": {
+      "Matching brackets": "valid-parentheses",
+      "Monotonic stack: next greater": "daily-temperatures",
+      "Monotonic stack: largest rectangle": "largest-rectangle-histogram",
+      "Contribution counting": "sum-subarray-minimums",
+      "Greedy monotonic removal": "remove-k-digits",
+      "Collision simulation": "asteroid-collision",
+      "Stack of indices for spans": "longest-valid-parentheses",
+      "Amortised span stack": "online-stock-span",
+      "Postfix evaluation": "eval-rpn",
+      "Infix with precedence": "basic-calculator-ii",
+      "Nested decoding": "decode-string",
+      "Path normalisation": "simplify-path",
+      "Sort then stack (fleets)": "car-fleet",
+      "Stack of stacks by frequency": "max-freq-stack"
+    },
+    "Strings": {
+      "KMP prefix function": "kmp-strstr",
+      "Rolling hash (Rabin–Karp)": "repeated-dna-rolling-hash"
+    },
+    "Trees": {
+      "Recursive depth (DFS)": "max-depth-tree",
+      "Level-order BFS": "level-order-traversal",
+      "Index-numbered BFS (width)": "max-width-binary-tree",
+      "Structural comparison": "same-tree",
+      "Subtree matching": "subtree-of-another-tree",
+      "Top-down recomputation": "balanced-binary-tree-naive",
+      "Postorder returning height (diameter)": "diameter-binary-tree",
+      "Postorder max gain": "max-path-sum",
+      "Tree DP: take or skip": "house-robber-tree",
+      "BST bounds validation": "validate-bst",
+      "BST inorder (k-th smallest)": "kth-smallest-bst",
+      "BST deletion": "delete-node-bst",
+      "Divide and conquer build": "sorted-array-to-bst",
+      "Build from two traversals": "build-tree-preorder-inorder",
+      "Lowest common ancestor": "lca-binary-tree",
+      "LCA in a BST": "lca-bst",
+      "Prefix sums on root paths": "path-sum-iii",
+      "Root-to-leaf paths (copy cost)": "path-sum-ii-copies",
+      "Tree as a graph (parent links + BFS)": "nodes-distance-k",
+      "Serialize and deserialize": "serialize-deserialize-tree",
+      "Morris-style in-place rewiring": "flatten-tree-morris",
+      "O(1)-space level links": "next-right-pointers-o1"
+    },
+    "Tries": {
+      "Trie insert and search": "trie-insert",
+      "Wildcard DFS over a trie": "word-dictionary-wildcard",
+      "Trie + grid backtracking": "word-search-ii-trie",
+      "Trie + DP": "extra-characters-trie"
+    },
+    "Two Pointers & Sliding Window": {
+      "Opposite-end pointers on sorted input": "two-sum-sorted",
+      "Sort + fix one + two pointers (k-sum)": "three-sum",
+      "Greedy shrink of the shorter side": "container-with-most-water",
+      "Left and right running maxima": "trapping-rain-water",
+      "Read/write pointers (in-place compaction)": "move-zeroes",
+      "Merge from the back": "merge-sorted-array",
+      "Reverse in three steps": "rotate-array",
+      "Fixed-size window with counts": "permutation-in-string",
+      "Variable window, longest valid": "longest-substring-no-repeat",
+      "Variable window, shortest valid": "min-size-subarray-sum",
+      "Window with a need/have map": "min-window-substring",
+      "Window with a max-frequency count": "longest-repeating-replacement",
+      "Exactly K = at most K − at most K−1": "subarrays-k-distinct-exact",
+      "Monotonic deque window": "sliding-window-maximum"
+    }
+  }
 }

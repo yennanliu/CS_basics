@@ -35,7 +35,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
   - `pages/` - Hand-maintained static pages (LC Explorer/Similar/Review-Plan/Random-Picker/Roadmap/Complexity-Quiz/Big-O, Skills, Suggest-Review, 404)
   - `pages/lc-big-o.html` - The Big-O comparison: plots the nine classes plus any typed expression, an ops-at-n table with the largest n per ~1 s budget, and a compare-two tool. It evaluates through `complexity.js`'s `compile()` / `log2Eval()` — the quiz's parser — in log2 space, so n! at n = 10⁶ stays a finite number. It ships in English and 繁體中文: `lc-big-o.html` / `lc-big-o.zh.html` are thin shells holding only their static prose, and both load `site/lc-big-o.js` + `site/lc-big-o.css`, whose `STRINGS` table is picked by `<html lang>` — so a fix to the tool lands in both languages at once. `site/test/big-o-page.test.js` boots both shells and fails on a key one language lacks or an id the shells disagree on
   - `pages/agent-skills.html` - The hub for every agent skill: a searchable directory of the `lc-*` skills, the practice loop they form, and an install builder. First entry of the navbar's **agent skills** group, and the landing page's only link to the skills; a new skill page gets a card here too
-  - `pages/lc-complexity-quiz.html` - The Complexity Quiz, in English and 繁體中文 the same way as the Big-O page: `lc-complexity-quiz.html` / `.zh.html` are thin shells, and both load `site/lc-complexity-quiz.js` + `.css`, whose `STRINGS` table and fetched bank (`data/complexity-quiz.json` / `.zh.json`) are picked by `<html lang>`. After a check, each bound's `cost.lines` light up in the snippet beside its one-sentence reason. `site/test/quiz-page.test.js` boots both shells against the real bank
+  - `pages/lc-complexity-quiz.html` - The Complexity Quiz (classic, essentials and pattern-coverage sets; results download as JSON / CSV), in English and 繁體中文 the same way as the Big-O page: `lc-complexity-quiz.html` / `.zh.html` are thin shells, and both load `site/lc-complexity-quiz.js` + `.css`, whose `STRINGS` table and fetched bank (`data/complexity-quiz.json` / `.zh.json`) are picked by `<html lang>`. After a check, each bound's `cost.lines` light up in the snippet beside its one-sentence reason. `site/test/quiz-page.test.js` boots both shells against the real bank
   - `nav.js` / `roadmap.js` / `complexity.js` - Browser scripts copied to `_site/`; unit-tested under `site/test/`
   - `style.css` - Stylesheet for the generated doc pages
   - `nav.css` - Navbar, skip link and the `prefers-reduced-motion` opt-out. Loaded by **every** page family
@@ -874,6 +874,16 @@ the opt-in *Interview essentials* set — frequently asked problems whose bound 
 misjudge. `build-quiz.js` fails on a pack not in its `PACKS`, and
 `site/test/quiz-page.test.js` fails if an essentials question re-asks an LC number the
 classic set already has, since *Both sets* would then ask it twice.
+
+A third choice, **Pattern coverage** (`?set=patterns`), is not a pack but a view across
+both: the top-level `patterns` block in `data/complexity_quiz.json` lists every topic's
+patterns as `{ topic: { pattern name: question id } }`, one representative question each, and
+the set is exactly those questions. The page names a question's pattern only after it is
+checked. `build-quiz.js` fails on an id the bank lacks, an id filed under the wrong topic, an
+id or name used twice, or a topic with questions and no patterns, and the 繁體中文 name of
+every pattern lives in `complexity_quiz.zh.json`'s `patterns`. A new question that is a new
+pattern gets an entry there. The report downloads the run as JSON or CSV (`exportPayload` /
+`toCsv`), so a reader can compare attempts.
 
 `accept` is for answers that are genuinely defensible (`O(h)` vs `O(n)` for a tree's recursion stack), not for spelling variants — `O(n log n)`, `nlogn` and `N·logN` already grade the same, and so does `O(n log n + n)`: the grader drops a term another one **provably** dominates (per variable, so `O(m + n^2)` keeps both). It also reads `max(m, n)`, `min(m, n)`, division and fractional powers (`n^1.5` = `n sqrt n`), and refuses to grade — rather than marks wrong — an answer it cannot read.
 

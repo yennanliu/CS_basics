@@ -13,17 +13,20 @@ body {
   margin: 0;
   font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
   background: var(--bg); color: var(--text);
-  font-size: 15px; line-height: 1.55;
+  font-size: 16px; line-height: 1.55;
   transition: background 0.2s, color 0.2s;
 }
 a { color: inherit; }
 a, button { touch-action: manipulation; }
 
-.container { max-width: 860px; margin: 2.5rem auto 4rem; padding: 0 1.5rem; }
+/* Wide on purpose: the question screen puts the snippet and the verdict side by
+   side from 1100px up, and the setup and report screens split into two columns,
+   so the page uses the width a desktop gives it instead of a 860px strip. */
+.container { max-width: 1320px; margin: 2.5rem auto 4rem; padding: 0 2rem; }
 
 .page-header { text-align: center; margin-bottom: 2rem; }
-.page-header h1 { margin: 0 0 0.4rem; font-size: 1.9rem; }
-.page-header p { color: var(--text-light); margin: 0; font-size: 0.92rem; }
+.page-header h1 { margin: 0 0 0.4rem; font-size: 2.2rem; }
+.page-header p { color: var(--text-light); margin: 0; font-size: 1rem; }
 
 /* ── Shared bits ─────────────────────────────────────────────────────── */
 .panel {
@@ -102,7 +105,7 @@ select:focus, input:focus { outline: none; border-color: var(--text); }
 pre.code {
   background: var(--sunken); border: 1px solid var(--border);
   padding: 1rem 1.1rem; margin: 0 0 0.9rem;
-  overflow-x: auto; font-size: 0.85rem; line-height: 1.5; tab-size: 4;
+  overflow-x: auto; font-size: 0.92rem; line-height: 1.55; tab-size: 4;
 }
 pre.code .c { color: var(--code-c); font-style: italic; }
 pre.code .s { color: var(--code-s); }
@@ -159,6 +162,38 @@ table.breakdown td.num { text-align: right; white-space: nowrap; color: var(--te
 .missed-detail { color: var(--text-light); margin-top: 0.25rem; }
 
 .loading, .empty { text-align: center; color: var(--text-light); padding: 3rem 1rem; }
+
+/* ── Wide layouts ────────────────────────────────────────────────────── */
+/* Below each breakpoint every block simply stacks, as it always did. */
+.pattern-tag { font-size: 0.9rem; margin: 0 0 0.8rem; }
+.pattern-tag b {
+  text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.08em;
+  color: var(--text-light); margin-right: 0.5rem;
+}
+.badge.pattern { text-transform: none; letter-spacing: 0; }
+
+.export { border-top: 1px solid var(--border); padding-top: 1.1rem; text-align: center; }
+.export .hint { margin-bottom: 0.8rem; }
+.export-btns { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+
+@media (min-width: 1000px) {
+  .setup-grid:not([hidden]) {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem; align-items: start;
+  }
+  .setup-grid .rules { margin: 0; }
+  .report-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+}
+@media (min-width: 1100px) {
+  /* The snippet keeps the larger share — it is what you are reading — and the
+     answers and the verdict sit beside it, so checking never scrolls the code
+     away from the lines it highlights. */
+  .q-body { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1.75rem; align-items: start; }
+  .q-code-col { position: sticky; top: 1rem; }
+  .q-answer-col .answers { margin-top: 0; }
+  /* The column is too narrow for buttons and the hint on one row. */
+  .q-answer-col .actions .keyhint { order: 10; flex-basis: 100%; }
+}
 
 @media (max-width: 640px) {
   .container { padding: 0 14px; margin-top: 1.5rem; }

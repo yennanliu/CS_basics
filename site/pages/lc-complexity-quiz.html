@@ -37,7 +37,7 @@
   <div class="loading" id="loading"></div>
 
   <!-- ── Setup ──────────────────────────────────────────────────────────── -->
-  <div id="setup" hidden>
+  <div id="setup" class="setup-grid" hidden>
     <div class="rules">
       <p>
         Answers are free text — <code>O(n log n)</code>, <code>nlogn</code> and
@@ -57,6 +57,13 @@
         frequently asked problems whose bound is easy to misjudge — amortised stacks
         and sliding windows, output-sensitive backtracking, a log taken over the
         answer range rather than n. Link straight to it with <code>?set=essentials</code>.
+      </p>
+      <p>
+        <b>Pattern coverage</b> takes one question for every pattern in every topic —
+        each heap pattern, each sliding-window shape, each DP family — across both sets,
+        so a full run leaves no pattern unpriced. The pattern is named once you check.
+        Link to it with <code>?set=patterns</code>. When you finish, download the results
+        as JSON or CSV to compare with your next attempt.
       </p>
     </div>
 
@@ -94,34 +101,40 @@
         <span class="badge" id="qTopic"></span>
       </div>
 
-      <pre class="code" id="qCode"></pre>
-      <div class="legend" id="legend" hidden><span class="t"><i></i>sets the time</span><span class="s"><i></i>sets the space</span></div>
-      <p class="hint" id="qVars"></p>
-      <p class="hint" id="qNote"></p>
-
-      <div class="answers">
-        <div>
-          <label class="label" for="timeInput">Time complexity</label>
-          <input type="text" id="timeInput" placeholder="O(…)" autocomplete="off"
-                 autocorrect="off" autocapitalize="off" spellcheck="false">
-          <div class="input-msg" id="timeMsg" role="status"></div>
+      <div class="q-body">
+        <div class="q-code-col">
+          <pre class="code" id="qCode"></pre>
+          <div class="legend" id="legend" hidden><span class="t"><i></i>sets the time</span><span class="s"><i></i>sets the space</span></div>
+          <p class="hint" id="qVars"></p>
+          <p class="hint" id="qNote"></p>
         </div>
-        <div>
-          <label class="label" for="spaceInput">Space complexity</label>
-          <input type="text" id="spaceInput" placeholder="O(…)" autocomplete="off"
-                 autocorrect="off" autocapitalize="off" spellcheck="false">
-          <div class="input-msg" id="spaceMsg" role="status"></div>
+
+        <div class="q-answer-col">
+          <div class="answers">
+            <div>
+              <label class="label" for="timeInput">Time complexity</label>
+              <input type="text" id="timeInput" placeholder="O(…)" autocomplete="off"
+                     autocorrect="off" autocapitalize="off" spellcheck="false">
+              <div class="input-msg" id="timeMsg" role="status"></div>
+            </div>
+            <div>
+              <label class="label" for="spaceInput">Space complexity</label>
+              <input type="text" id="spaceInput" placeholder="O(…)" autocomplete="off"
+                     autocorrect="off" autocapitalize="off" spellcheck="false">
+              <div class="input-msg" id="spaceMsg" role="status"></div>
+            </div>
+          </div>
+
+          <div class="verdict" id="verdict" hidden></div>
+
+          <div class="actions">
+            <button class="btn" id="checkBtn">Check</button>
+            <button class="btn" id="nextBtn" hidden>Next →</button>
+            <span class="spacer"></span>
+            <span class="keyhint"><kbd>enter</kbd> to check, again to continue</span>
+            <button class="btn btn-quiet" id="quitBtn">End quiz</button>
+          </div>
         </div>
-      </div>
-
-      <div class="verdict" id="verdict" hidden></div>
-
-      <div class="actions">
-        <button class="btn" id="checkBtn">Check</button>
-        <button class="btn" id="nextBtn" hidden>Next →</button>
-        <span class="spacer"></span>
-        <span class="keyhint"><kbd>enter</kbd> to check, again to continue</span>
-        <button class="btn btn-quiet" id="quitBtn">End quiz</button>
       </div>
     </div>
   </div>
@@ -134,8 +147,17 @@
         <div class="sub" id="scoreSub"></div>
         <div class="verdict-word" id="scoreWord"></div>
       </div>
+      <div class="export">
+        <span class="label">Keep a copy</span>
+        <p class="hint">Every answer, the right one beside it, and the score — to compare with next time.</p>
+        <div class="export-btns">
+          <button class="btn btn-quiet" id="exportJsonBtn">Download JSON</button>
+          <button class="btn btn-quiet" id="exportCsvBtn">Download CSV</button>
+        </div>
+      </div>
     </div>
 
+    <div class="report-grid">
     <div class="panel">
       <span class="label">Where the marks went</span>
       <table class="breakdown"><thead>
@@ -146,6 +168,7 @@
     <div class="panel" id="missedPanel">
       <span class="label">Worth a second look</span>
       <div id="missedList"></div>
+    </div>
     </div>
 
     <div class="actions">

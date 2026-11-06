@@ -22,8 +22,10 @@
       all: 'Everything',
       allN: function (n) { return 'all ' + n; },
       // The "Question set" dropdown, keyed by the pack names build-quiz.js
-      // emits, plus `all` for both at once.
-      packs: { classic: 'Classic set', essentials: 'Interview essentials', all: 'Both sets' },
+      // emits, plus `patterns` (one question per pattern, across both packs)
+      // and `all` for every question at once.
+      packs: { classic: 'Classic set', essentials: 'Interview essentials',
+               patterns: 'Pattern coverage', all: 'Every question' },
       packOption: function (label, n) { return label + ' (' + n + ')'; },
       pool: function (available, asked) {
         return available + ' question' + (available === 1 ? '' : 's') + ' in this pool · '
@@ -43,6 +45,7 @@
       noLines: 'no line',
       keyIdea: 'Key idea',
       trap: 'Common slip',
+      pattern: 'Pattern',
       solution: 'full solution ↗',
       cheatsheet: 'complexity cheatsheet',
       cheatsheetHref: 'cheatsheets/complexity_cheatsheet.html',
@@ -80,7 +83,7 @@
       loadFailed: '無法載入題庫。',
       all: '全部',
       allN: function (n) { return '全部 ' + n; },
-      packs: { classic: '經典題組', essentials: '面試必備', all: '兩組都要' },
+      packs: { classic: '經典題組', essentials: '面試必備', patterns: '題型全覆蓋', all: '全部題目' },
       packOption: function (label, n) { return label + '（' + n + '）'; },
       pool: function (available, asked) {
         return '此範圍共 ' + available + ' 題 · 抽出 ' + asked + ' 題 · 共 ' + (asked * 2) + ' 分';
@@ -99,6 +102,7 @@
       noLines: '無',
       keyIdea: '重點',
       trap: '常見錯誤',
+      pattern: '題型',
       solution: '完整解法 ↗',
       cheatsheet: '複雜度速查表',
       cheatsheetHref: 'cheatsheets/complexity_cheatsheet.zh.html',
@@ -258,21 +262,39 @@
 
   // ── Setup screen ───────────────────────────────────────────────────────
 
-  // `?set=essentials` (or classic / all) picks the question set from a link —
-  // the flag form of the dropdown. It wins over the stored preference for
-  // this visit but is not saved, so a shared link does not rewrite anyone's
-  // default.
+  /**
+   * `?set=essentials` (or classic / patterns / all) picks the question set from a link —
+   * the flag form of the dropdown. It wins over the stored preference for
+   * this visit but is not saved, so a shared link does not rewrite anyone's
+   * default.
+   */
   function packFromUrl() {
     try {
       var value = new URLSearchParams(window.location.search).get('set');
-      return value && (value === 'all' || packs.indexOf(value) !== -1) ? value : null;
+      return value && sets().indexOf(value) !== -1 ? value : null;
     } catch (e) { return null; }
   }
 
-  function packPool() {
-    if (prefs.pack === 'all') return bank;
-    return bank.filter(function (q) { return q.pack === prefs.pack; });
+  /**
+   * Pattern coverage is not a pack: it is the one question that represents
+   * each pattern (build-quiz.js stamps `pattern` on it), drawn from both packs.
+   */
+  function hasPatterns() { return bank.some(function (q) { return q.pattern; }); }
+
+  /** Every choice the dropdown offers, in order. */
+  function sets() {
+    return packs.concat(hasPatterns() ? ['patterns'] : [], packs.length > 1 || hasPatterns() ? ['all'] : []);
   }
+
+  /** The questions in one choice of the Question set dropdown: a pack, `patterns` or `all`. */
+  function inSet(set) {
+    if (set === 'all') return bank;
+    if (set === 'patterns') return bank.filter(function (q) { return q.pattern; });
+    return bank.filter(function (q) { return q.pack === set; });
+  }
+
+  /** The questions in the currently chosen set, before Focus narrows them. */
+  function packPool() { return inSet(prefs.pack); }
 
   function pool() {
     var questions = packPool();
@@ -297,15 +319,15 @@
     el('topicSelect').value = prefs.topic;
   }
 
+  /** Fills the Question set dropdown with every set and its size, hiding it when there is nothing to choose. */
   function renderPacks() {
-    var choices = packs.concat(packs.length > 1 ? ['all'] : []);
+    var choices = sets();
     el('packSelect').innerHTML = choices.map(function (p) {
-      var n = p === 'all' ? bank.length : bank.filter(function (q) { return q.pack === p; }).length;
-      return '<option value="' + esc(p) + '">' + esc(S.packOption(S.packs[p] || p, n)) + '</option>';
+      return '<option value="' + esc(p) + '">' + esc(S.packOption(S.packs[p] || p, inSet(p).length)) + '</option>';
     }).join('');
     el('packSelect').value = prefs.pack;
     // A bank with a single set has nothing to choose between.
-    el('packRow').hidden = packs.length < 2;
+    el('packRow').hidden = choices.length < 2;
   }
 
   function askedCount() {
@@ -342,8 +364,10 @@
     return out;
   }
 
+  /** Starts a run over `questions`, recording the set and Focus it was drawn from for the export. */
   function startQuiz(questions) {
-    run = { questions: questions, at: 0, results: [], checked: false };
+    run = { questions: questions, at: 0, results: [], checked: false,
+            set: prefs.pack, focus: prefs.topic, startedAt: new Date() };
     show('setup', false);
     show('report', false);
     show('quiz', true);
@@ -461,6 +485,7 @@
     return true;
   }
 
+  /** Grades the current answer, highlights the lines that set each bound and writes the verdict. */
   function check() {
     if (run.checked) return;
     var badTime = unreadable('time');
@@ -484,7 +509,12 @@
     el('qCode').className = 'code graded';
     show('legend', true);
 
-    var html = dimension('time', got.time, said.time, q) + dimension('space', got.space, said.space, q);
+    // The pattern is named only once the answer is in: shown up front it would
+    // be half the answer.
+    var html = q.pattern
+      ? '<p class="pattern-tag"><b>' + S.pattern + '</b>' + esc(q.pattern) + '</p>'
+      : '';
+    html += dimension('time', got.time, said.time, q) + dimension('space', got.space, said.space, q);
     if (q.why) html += '<p class="takeaway"><b>' + S.keyIdea + '</b>' + prose(q.why) + '</p>';
     if (q.trap) html += '<p class="takeaway trap"><b>' + S.trap + '</b>' + prose(q.trap) + '</p>';
 
@@ -552,6 +582,7 @@
     }).join('');
   }
 
+  /** Lists every question with a missed bound, its pattern, and the reason for each missed bound. */
   function renderMissed(results) {
     var missed = results.filter(function (r) { return !r.got.time || !r.got.space; });
     show('missedPanel', missed.length > 0);
@@ -566,14 +597,128 @@
       return '<div class="missed-item">'
         + '<div class="missed-head"><span class="name">'
         + (q.links.lc ? '<a href="' + esc(q.links.lc) + '" target="_blank" rel="noopener">' + esc(name) + '</a>' : esc(name))
-        + '</span><span class="badge">' + esc(topicLabel(q.topic)) + '</span></div>'
+        + '</span><span class="badge">' + esc(topicLabel(q.topic)) + '</span>'
+        + (q.pattern ? '<span class="badge pattern">' + esc(q.pattern) + '</span>' : '')
+        + '</div>'
         + parts.map(function (p) { return '<div class="missed-detail">' + p + '</div>'; }).join('')
         + '</div>';
     }).join('');
   }
 
+  // ── Export ─────────────────────────────────────────────────────────────
+  //
+  // The report is gone the moment the tab closes, and nothing here is stored
+  // server-side. A download is the record: JSON to read back in a script, CSV
+  // to open in a spreadsheet next to the last attempt.
+
+  /** Zero-pads a date part to two digits. */
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+  /** A local `YYYY-MM-DDTHH:MM:SS` stamp — the reader's clock, which is what they will compare attempts by. */
+  function localStamp(d) {
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate())
+      + 'T' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds());
+  }
+
+  /** One plain object per answered question — the shape both formats share. */
+  function resultRows(results) {
+    return results.map(function (r, i) {
+      var q = r.question;
+      return {
+        n: i + 1,
+        id: q.id,
+        lc: q.lc,
+        title: q.title,
+        difficulty: q.difficulty,
+        topic: q.topic,
+        pattern: q.pattern || '',
+        yourTime: r.said.time.trim(),
+        yourSpace: r.said.space.trim(),
+        time: q.time,
+        space: q.space,
+        timeCorrect: !!r.got.time,
+        spaceCorrect: !!r.got.space
+      };
+    });
+  }
+
+  /** Everything a download holds: when, which set and Focus, the score, and one row per answered question. */
+  function exportPayload() {
+    var results = run.results;
+    var timeRight = results.filter(function (r) { return r.got.time; }).length;
+    var spaceRight = results.filter(function (r) { return r.got.space; }).length;
+    var total = results.length * 2;
+    return {
+      quiz: 'complexity',
+      lang: LANG,
+      takenAt: localStamp(run.startedAt),
+      set: run.set,
+      focus: run.focus,
+      asked: run.questions.length,
+      answered: results.length,
+      score: {
+        marks: timeRight + spaceRight,
+        total: total,
+        percent: total ? Math.round((timeRight + spaceRight) / total * 100) : 0,
+        fullyRight: results.filter(function (r) { return r.got.time && r.got.space; }).length,
+        time: timeRight,
+        space: spaceRight
+      },
+      results: resultRows(results)
+    };
+  }
+
+  var CSV_COLUMNS = ['n', 'id', 'lc', 'title', 'difficulty', 'topic', 'pattern',
+    'yourTime', 'yourSpace', 'time', 'space', 'timeCorrect', 'spaceCorrect'];
+
+  /** RFC 4180: quote a field holding a comma, quote or newline, doubling quotes. */
+  function csvField(value) {
+    var text = value === null || value === undefined ? '' : String(value);
+    return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
+  }
+
+  /** The payload as CSV: a header row, then one row per answered question, CRLF line ends. */
+  function toCsv(payload) {
+    var lines = [CSV_COLUMNS.join(',')];
+    payload.results.forEach(function (row) {
+      lines.push(CSV_COLUMNS.map(function (c) { return csvField(row[c]); }).join(','));
+    });
+    return lines.join('\r\n') + '\r\n';
+  }
+
+  /** A download name that sorts by time and says which set it came from. */
+  function fileName(payload, ext) {
+    return 'complexity-quiz-' + payload.takenAt.replace(/:/g, '').replace('T', '-') + '-' + payload.set + '.' + ext;
+  }
+
+  /** Saves `text` as a file named `name` through a temporary object URL. */
+  function download(name, type, text) {
+    var blob = new Blob([text], { type: type });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+  }
+
+  /** Downloads the current run's results as `json` or `csv`. */
+  function exportAs(format) {
+    var payload = exportPayload();
+    if (format === 'json') {
+      download(fileName(payload, 'json'), 'application/json', JSON.stringify(payload, null, 2) + '\n');
+    } else {
+      // The BOM is what makes Excel read the file as UTF-8 — without it a 繁中
+      // pattern name opens as mojibake.
+      download(fileName(payload, 'csv'), 'text/csv;charset=utf-8', '\ufeff' + toCsv(payload));
+    }
+  }
+
   // ── Wiring ─────────────────────────────────────────────────────────────
 
+  /** Attaches every event handler the page uses. Runs once, after the bank loads. */
   function wire() {
     el('countChips').addEventListener('click', function (event) {
       var chip = event.target.closest('[data-count]');
@@ -610,6 +755,8 @@
         .filter(function (r) { return !r.got.time || !r.got.space; })
         .map(function (r) { return r.question; })));
     });
+    el('exportJsonBtn').addEventListener('click', function () { exportAs('json'); });
+    el('exportCsvBtn').addEventListener('click', function () { exportAs('csv'); });
     el('restartBtn').addEventListener('click', function () {
       show('report', false);
       show('setup', true);
@@ -649,6 +796,7 @@
 
   // ── Boot ───────────────────────────────────────────────────────────────
 
+  /** Takes the fetched bank, restores preferences (a `?set=` link wins for this visit) and shows the setup screen. */
   function boot(data) {
     bank = data.questions || [];
     topicLabels = data.topicLabels || {};
@@ -656,7 +804,7 @@
     bank.forEach(function (q) { if (!q.pack) q.pack = 'classic'; });
     packs = data.packs && data.packs.length ? data.packs : ['classic'];
     loadPrefs();
-    if (prefs.pack !== 'all' && packs.indexOf(prefs.pack) === -1) prefs.pack = packs[0];
+    if (sets().indexOf(prefs.pack) === -1) prefs.pack = packs[0];
     savedPack = prefs.pack;
     savedTopic = prefs.topic;
     prefs.pack = packFromUrl() || prefs.pack;
@@ -680,5 +828,12 @@
 
   // Exposed for site/test/quiz-page.test.js, which checks both tables carry
   // the same keys.
-  window.CSQuiz = { STRINGS: STRINGS, lineRange: lineRange };
+  // exportPayload / toCsv are reached through it too, so the test can read
+  // what a download would hold without a real file.
+  window.CSQuiz = {
+    STRINGS: STRINGS,
+    lineRange: lineRange,
+    exportPayload: function () { return exportPayload(); },
+    toCsv: toCsv
+  };
 })();
