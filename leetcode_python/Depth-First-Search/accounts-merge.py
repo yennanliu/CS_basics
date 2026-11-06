@@ -51,73 +51,196 @@ class Solution(object):
 # IDEA: UNION FIND (gpt)
 from collections import defaultdict
 
+
 class UF:
+    """
+    Union Find (Disjoint Set Union)
+
+    用來判斷兩個 account 是否屬於同一個集合，
+    以及將兩個集合合併。
+    """
+
     def __init__(self, n):
+        # parents[i] 代表 account i 的 parent
+        #
+        # 一開始每個 account 都是自己的 parent：
+        # account 0 -> parent 0
+        # account 1 -> parent 1
+        # account 2 -> parent 2
         self.parents = list(range(n))
+
+        # rank 用來協助合併較淺的 tree
         self.rank = [1] * n
 
     def get_parent(self, x):
-        # Path compression
+        """
+        找出 x 所屬集合的 root。
+        使用 Path Compression，讓之後的查詢更快。
+        """
+
         if self.parents[x] != x:
             self.parents[x] = self.get_parent(self.parents[x])
 
         return self.parents[x]
 
     def union(self, x, y):
+        """
+        將 x 和 y 所屬的兩個集合合併。
+        """
+
         root_x = self.get_parent(x)
         root_y = self.get_parent(y)
 
+        # 如果 root 相同，代表已經在同一個集合，不需要合併
         if root_x == root_y:
             return
 
-        # Union by rank
+        # Union by Rank：
+        # 將比較矮的 tree 接到比較高的 tree
         if self.rank[root_x] < self.rank[root_y]:
             root_x, root_y = root_y, root_x
 
         self.parents[root_y] = root_x
 
+        # 如果兩棵 tree 高度相同，合併後 rank + 1
         if self.rank[root_x] == self.rank[root_y]:
             self.rank[root_x] += 1
 
     def is_same_parent(self, x, y):
+        """
+        判斷 x 和 y 是否屬於同一個集合。
+        """
+
         return self.get_parent(x) == self.get_parent(y)
 
 
 class Solution(object):
+
     def accountsMerge(self, accounts):
-        """
-        :type accounts: List[List[str]]
-        :rtype: List[List[str]]
-        """
+
         if not accounts:
             return []
 
+        # 總共有多少個 accounts
         n = len(accounts)
+
+        # 初始化 Union Find
+        # 每個 account 一開始都是獨立的集合
         uf = UF(n)
 
-        # email -> account index
+
+        """
+        NOTE !!!
+
+        email_to_id: {email: accout_idx}
+
+        """
+        # HashMap:
+        # key   = email
+        # value = account index
+        #
+        # 記錄每個 email 第一次出現在哪個 account。
         email_to_id = {}
 
-        # Step 1: Union accounts sharing the same email
+        # --------------------------------------------------
+        # Step 1: 使用 HashMap 找出重複 email，並 union accounts
+        # --------------------------------------------------
+
+        """
+
+        建立 email → account index 的 mapping
+
+        example:
+
+        -> input 
+                    ```
+                    accounts = [
+                        ["John", "a@mail.com", "b@mail.com"],
+                        ["John", "b@mail.com", "c@mail.com"],
+                        ["Mary", "d@mail.com"]
+                    ]
+                    ```
+
+        -> built map:
+
+                    ```
+                    email_to_id = {
+                        "a@mail.com": 0,
+                        "b@mail.com": 0,
+                        "c@mail.com": 1,
+                        "d@mail.com": 2
+                    }
+                    ```
+        """
+
         for i, account in enumerate(accounts):
+
+            # account[0] 是 name
+            # account[1:] 是這個 account 所有的 emails
             for email in account[1:]:
+
                 if email in email_to_id:
+
+                    """
+                    NOTE !!!
+
+                    what we `union` is:
+
+                        ->  `account_id` and email
+                    """
+
+                    # 這個 email 之前出現過。
+                    # 代表目前 account i 和之前的 account
+                    # email_to_id[email] 屬於同一個人。
                     uf.union(i, email_to_id[email])
+
                 else:
+
+                    # 第一次看到這個 email，
+                    # 記錄它所屬的 account index。
                     email_to_id[email] = i
 
-        # Step 2: Group emails by Union-Find root
+        # --------------------------------------------------
+        # Step 2: 將 emails 按照 Union Find 的 root 分組
+        # --------------------------------------------------
+
+        
+        """
+        NOTE !!!
+
+        groups: {account_idx: set(email_1, email_2, ...)}
+        
+        """
+        # key   = root account index
+        # value = 這個 group 所有不重複的 emails
+        #
+        # defaultdict(set) 的意思：
+        # 如果 key 不存在，就自動建立一個空的 set。
         groups = defaultdict(set)
 
         for email, account_id in email_to_id.items():
+
+            # 找出這個 account 最後屬於哪個集合
             root = uf.get_parent(account_id)
+
+            # 把 email 放到對應 root 的 group
+            #
+            # set 可以自動去除重複 email
             groups[root].add(email)
 
-        # Step 3: Build the final result
+        # --------------------------------------------------
+        # Step 3: 整理最終輸出
+        # --------------------------------------------------
+
         res = []
 
         for root, emails in groups.items():
+
+            # 同一個 group 裡的 account 都屬於同一個人
+            # 因此可以使用 root account 的 name
             name = accounts[root][0]
+
+            # emails 必須依照字母順序排序
             res.append([name] + sorted(emails))
 
         return res
