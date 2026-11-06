@@ -297,7 +297,7 @@ const CORPORA = [
     nested: false,
     skip: new Set(['README']),
     tracker: 'doc/behavioral-zh-progress.md',
-    label: 'Behavioral',
+    label: 'Behavioral guide',
   },
 ];
 

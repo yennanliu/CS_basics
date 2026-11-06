@@ -1,6 +1,7 @@
-# 繁體中文 Behaviorals — Translation Progress
+# 繁體中文 Behavioral guides — Translation Progress
 
-undefined
+The behavioral-interview guides under [`doc/behavioral/`](./behavioral/) are the
+only markdown tree.
 A translation is a *sparse overlay* of translated sections in
 `i18n/zh/behavioral/<id>.md`, and the site composes the two into a full Chinese
 document at build time — see the *Traditional Chinese docs* section of
@@ -14,7 +15,8 @@ node script/zh.js status --write
 
 ## How a translation is stored
 
-undefined
+These guides are prose end to end, with no fenced code today, so nearly every
+line is translated. A fence added later is still never stored twice:
 
 ```text
 doc/behavioral/<id>.md
@@ -25,7 +27,7 @@ i18n/zh/behavioral/<id>.md
    │  <!-- hash --> + the translated section
    │  compose — English structure, translated prose, original code
    ▼
-_site/cheatsheets/<page>.zh.html
+_site/behavioral/<page>.zh.html
 ```
 
 Each section is keyed by a hash of **its English text**. Edit one section of an
@@ -35,12 +37,14 @@ half-translated document renders with English gaps rather than failing.
 
 ## Known limitations
 
-undefined
+- **Principle and rubric names stay in English** — `Customer Obsession`,
+  `STAR`, `Bar Raiser`, `Strong hire` — with a 中文 gloss beside them, because
+  they are the words the interviewer will use. The questions themselves are translated.
 
 
 ## Status — 45 / 45 sections (100%)
 
-| Behavioral | Sections | 繁體中文 |
+| Behavioral guide | Sections | 繁體中文 |
 |---|---:|:---:|
 | [amazon_leadership_principles](./behavioral/amazon_leadership_principles.md) | 27 | [✅](../i18n/zh/behavioral/amazon_leadership_principles.md) |
 | [googleyness](./behavioral/googleyness.md) | 18 | [✅](../i18n/zh/behavioral/googleyness.md) |

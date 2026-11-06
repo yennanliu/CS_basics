@@ -814,8 +814,9 @@ const BEHAVIORAL_TEXT = {
       'Googleyness &amp; Leadership round and Amazon\'s Leadership Principles. Each guide lists the ' +
       'classic questions, what each one is really asking, the answer pattern, and how the interviewer ' +
       'reads it.',
-    tip: '<strong>💡 Tip:</strong> The same six to eight stories answer both rubrics. Build the bank ' +
-      'once, then map it to each company\'s traits.',
+    tip: '<strong>💡 Tip:</strong> One story bank answers both rubrics. Six to eight stories cover ' +
+      'Google\'s single behavioral round; Amazon asks in every round and frowns on a reused story, ' +
+      'so grow the bank to eight to ten before an Amazon loop.',
     source: 'View the guides on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/behavioral">GitHub</a>.',
     description: n => `${n} behavioral-interview guides: Googleyness & Leadership and Amazon's ` +
       'Leadership Principles — classic questions, answer patterns and the interviewer\'s view.'
@@ -825,8 +826,9 @@ const BEHAVIORAL_TEXT = {
     intro: '軟體工程師面試最常遇到的兩套行為面試評分標準：Google 的 Googleyness &amp; Leadership ' +
       '與 Amazon 的 Leadership Principles。每份指南都列出經典題目、每題真正想問什麼、回答模式，' +
       '以及面試官如何解讀你的回答。',
-    tip: '<strong>💡 提示：</strong>同一組六到八個故事就能回答這兩套標準。先建好故事庫，' +
-      '再對應到各公司的特質。',
+    tip: '<strong>💡 提示：</strong>同一個故事庫就能回答這兩套標準。六到八個故事足以應付 Google ' +
+      '的單一行為面試輪；Amazon 每一輪都會問，而且不喜歡重複使用的故事，' +
+      '所以面 Amazon 前把故事庫擴充到八到十個。',
     source: '在 <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/behavioral">GitHub</a> 上瀏覽這些指南。',
     description: n => `${n} 份行為面試指南的繁體中文版：Googleyness & Leadership 與 Amazon ` +
       'Leadership Principles——經典題目、回答模式與面試官觀點。',
