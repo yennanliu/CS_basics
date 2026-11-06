@@ -283,6 +283,25 @@ const cheatsheetFiles = fs.existsSync(cheatsheetDir)
 
 const faqFiles = fs.existsSync(faqDir) ? walkDir(faqDir).sort() : [];
 
+// The behavioral-interview guides: one flat directory, one page per company's
+// rubric. Listed in BEHAVIORAL_META's order, so the index and the prev/next
+// ladder read Google first — the loop this repo is preparing for.
+const behavioralDir = 'doc/behavioral';
+const BEHAVIORAL_META = {
+  googleyness: { category: 'Google' },
+  amazon_leadership_principles: { category: 'Amazon' }
+};
+const behavioralFiles = fs.existsSync(behavioralDir)
+  ? fs.readdirSync(behavioralDir)
+      .filter(f => f.endsWith('.md') && f !== 'README.md')
+      .map(f => path.basename(f, '.md'))
+      .sort((a, b) => {
+        const order = Object.keys(BEHAVIORAL_META);
+        const rank = slug => (order.includes(slug) ? order.indexOf(slug) : order.length);
+        return rank(a) - rank(b) || a.localeCompare(b);
+      })
+  : [];
+
 // doc/faq/java/faq_OOP.md → faqs/java_faq_OOP.html: the subdirectory is folded
 // into the filename because every FAQ page is written to one flat directory.
 function faqPageName(filePath) {
@@ -305,6 +324,9 @@ for (const file of cheatsheetFiles) {
 }
 for (const filePath of faqFiles) {
   registerPage(filePath, `faqs/${faqPageName(filePath)}.html`);
+}
+for (const slug of behavioralFiles) {
+  registerPage(`${behavioralDir}/${slug}.md`, `behavioral/${slug}.html`);
 }
 
 // ── Data collection ─────────────────────────────────────────────────────────
@@ -727,6 +749,114 @@ for (const faq of zhFaqs) {
   });
 }
 
+// ── Behavioral interview guides ──────────────────────────────────────────────
+//
+// Googleyness and Amazon's Leadership Principles: prose, not code, so nearly the
+// whole document is translated. Same overlay, same composer as the FAQs; the
+// family differs only in its category, which comes from BEHAVIORAL_META rather
+// than a subdirectory.
+
+const behaviorals = [];
+
+if (behavioralFiles.length > 0) {
+  const srcOf = slug => `${behavioralDir}/${slug}.md`;
+  const lastModMap = buildLastModifiedMap(behavioralFiles.map(srcOf));
+
+  for (const slug of behavioralFiles) {
+    const filePath = srcOf(slug);
+    const category = (BEHAVIORAL_META[slug] || {}).category || 'General';
+    const raw = fs.readFileSync(filePath, 'utf8');
+    let htmlContent = ensureHeadingIds(renderContent(raw, behavioralDir, 'behavioral'));
+    const enHeadingIds = headingIds(htmlContent);
+    const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
+    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
+    htmlContent = annotated;
+    const pageTitle = h1Title || slug;
+    const docHeadings = extractHeadings(htmlContent);
+    const description = summariseDoc(raw, docHeadings);
+
+    searchRecords.push({
+      title: pageTitle,
+      url: `behavioral/${slug}.html`,
+      category,
+      type: 'Behavioral',
+      summary: description,
+      headings: docHeadings.slice(0, 40)
+    });
+
+    behaviorals.push({
+      file: slug,
+      src: filePath,
+      enHeadingIds,
+      title: pageTitle,
+      category,
+      description,
+      content: buildPageContent({
+        title: pageTitle,
+        htmlContent,
+        toc: generateTOC(htmlContent),
+        lastMod: lastModMap.get(filePath) || null,
+        indexHref: 'behavioral.html',
+        indexLabel: 'Behavioral',
+        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${filePath}`,
+        titleId,
+        meta: `<span class="cat-chip">${category}</span>`,
+        legend: hasPriority ? PRIORITY_LEGEND : ''
+      })
+    });
+  }
+}
+
+const BEHAVIORAL_TEXT = {
+  en: {
+    h1: 'Behavioral Interview',
+    intro: 'The two behavioral rubrics a software-engineering loop is most likely to meet — Google\'s ' +
+      'Googleyness &amp; Leadership round and Amazon\'s Leadership Principles. Each guide lists the ' +
+      'classic questions, what each one is really asking, the answer pattern, and how the interviewer ' +
+      'reads it.',
+    tip: '<strong>💡 Tip:</strong> One story bank answers both rubrics. Six to eight stories cover ' +
+      'Google\'s single behavioral round; Amazon asks in every round and frowns on a reused story, ' +
+      'so grow the bank to eight to ten before an Amazon loop.',
+    source: 'View the guides on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/behavioral">GitHub</a>.',
+    description: n => `${n} behavioral-interview guides: Googleyness & Leadership and Amazon's ` +
+      'Leadership Principles — classic questions, answer patterns and the interviewer\'s view.'
+  },
+  zh: {
+    h1: '行為面試',
+    intro: '軟體工程師面試最常遇到的兩套行為面試評分標準：Google 的 Googleyness &amp; Leadership ' +
+      '與 Amazon 的 Leadership Principles。每份指南都列出經典題目、每題真正想問什麼、回答模式，' +
+      '以及面試官如何解讀你的回答。',
+    tip: '<strong>💡 提示：</strong>同一個故事庫就能回答這兩套標準。六到八個故事足以應付 Google ' +
+      '的單一行為面試輪；Amazon 每一輪都會問，而且不喜歡重複使用的故事，' +
+      '所以面 Amazon 前把故事庫擴充到八到十個。',
+    source: '在 <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/behavioral">GitHub</a> 上瀏覽這些指南。',
+    description: n => `${n} 份行為面試指南的繁體中文版：Googleyness & Leadership 與 Amazon ` +
+      'Leadership Principles——經典題目、回答模式與面試官觀點。',
+    categories: { General: '綜合', Google: 'Google', Amazon: 'Amazon' }
+  }
+};
+
+const zhBehaviorals = composeZhPages({
+  corpus: 'behavioral',
+  pages: behaviorals,
+  outDir: 'behavioral',
+  indexHref: 'behavioral.zh.html',
+  indexLabel: BEHAVIORAL_TEXT.zh.h1,
+  describe: (raw, headings) => summariseDoc(raw, headings),
+  meta: page => `<span class="cat-chip">${BEHAVIORAL_TEXT.zh.categories[page.category] || page.category}</span>`
+});
+
+for (const page of zhBehaviorals) {
+  searchRecords.push({
+    title: page.title,
+    url: `behavioral/${page.file}.zh.html`,
+    category: page.category,
+    type: 'Behavioral (中文)',
+    summary: page.description,
+    headings: page.headings
+  });
+}
+
 // ── HTML template ─────────────────────────────────────────────────────────────
 
 // Where the site is served from. Needed for the absolute URLs that canonical,
@@ -970,7 +1100,9 @@ const ENTRY_GROUPS = [
     ['lc-complexity-quiz.html', 'Complexity quiz',
      `Read a snippet, name its time and space.${quizQuestions ? ` ${quizQuestions} questions,` : ''} each with the trap it sets.`],
     ['lc-random-picker.html', 'Random picker',
-     'One problem, drawn from the list and difficulty you choose — for when choosing is the thing stopping you.']
+     'One problem, drawn from the list and difficulty you choose — for when choosing is the thing stopping you.'],
+    ['behavioral.html', 'Behavioral interview',
+     'Googleyness and Amazon\'s Leadership Principles — the classic questions, what each one probes, and the story bank that answers them.']
   ]],
   ['Look something up', 'The index the rest of it is built from.', [
     ['problems.html', 'Problem index',
@@ -1277,6 +1409,52 @@ if (zhFaqs.length > 0) {
     }));
   });
   console.log(`✓ Created ${zhFaqs.length} 繁體中文 FAQ pages`);
+}
+
+if (behaviorals.length > 0) {
+  const grouped = groupByCategory(behaviorals);
+  const order = [...new Set(behaviorals.map(b => b.category))];
+  const foot = t => `\n<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
+  <p>${t.tip}</p>
+  <p>${t.source}</p>
+</div>`;
+  const translatedBehaviorals = new Set(zhBehaviorals.map(b => b.file));
+  const bilingualIndex = zhBehaviorals.length > 0;
+  const en = BEHAVIORAL_TEXT.en;
+
+  fs.writeFileSync('_site/behavioral.html', htmlTemplate(en.h1,
+    `<h1>${en.h1}</h1><p class="intro">${en.intro}</p>` +
+    buildIndexGrid(grouped, order, 'behavioral') + foot(en),
+    'behavioral', '', Object.assign({ url: 'behavioral.html', description: en.description(behaviorals.length) },
+      bilingualIndex ? { lang: 'en', langAlt: 'behavioral.zh.html' } : {})));
+
+  fs.mkdirSync('_site/behavioral', { recursive: true });
+  behaviorals.forEach((page, idx) => {
+    const body = page.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/') + buildPrevNext(behaviorals, idx);
+    fs.writeFileSync(`_site/behavioral/${page.file}.html`, htmlTemplate(page.title, body, 'behavioral', '../',
+      Object.assign({ url: `behavioral/${page.file}.html`, description: page.description },
+        translatedBehaviorals.has(page.file) ? { lang: 'en', langAlt: `${page.file}.zh.html` } : {})));
+  });
+
+  if (bilingualIndex) {
+    const zh = BEHAVIORAL_TEXT.zh;
+    fs.writeFileSync('_site/behavioral.zh.html', htmlTemplate(zh.h1,
+      `<h1>${zh.h1}</h1><p class="intro">${zh.intro}</p>` +
+      buildIndexGrid(groupByCategory(zhBehaviorals), order, 'behavioral',
+        { lang: 'zh', catName: c => zh.categories[c] || c }) + foot(zh),
+      'behavioral', '', { lang: 'zh', langAlt: 'behavioral.html', url: 'behavioral.zh.html',
+        description: zh.description(zhBehaviorals.length) }));
+
+    const zhPages = zhBehaviorals.map(b => ({ ...b, file: `${b.file}.zh` }));
+    zhPages.forEach((page, idx) => {
+      const body = page.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/') + buildPrevNext(zhPages, idx);
+      fs.writeFileSync(`_site/behavioral/${page.file}.html`, htmlTemplate(page.title, body, 'behavioral', '../', {
+        lang: 'zh', langAlt: `${zhBehaviorals[idx].file}.html`,
+        url: `behavioral/${page.file}.html`, description: page.description
+      }));
+    });
+  }
+  console.log(`✓ Created behavioral.html and ${behaviorals.length} guides (${zhBehaviorals.length} in 繁體中文)`);
 }
 
 if (fs.existsSync('doc/pattern_recognition.md')) {

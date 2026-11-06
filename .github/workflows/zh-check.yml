@@ -13,6 +13,7 @@ name: Cheatsheet translation check
 #
 #   node --test site/test/i18n.test.js site/test/i18n.corpus.test.js
 #   node script/zh.js check cheatsheet
+#   node script/zh.js check behavioral
 #
 # To fix a failure: `node script/zh.js sync <id>` parks what an English edit
 # invalidated, `node script/zh.js todo <id>` lists what is owed, or run
@@ -28,6 +29,7 @@ on:
     branches: [ master ]
     paths:
       - 'doc/cheatsheet/**'
+      - 'doc/behavioral/**'
       - 'i18n/**'
       - 'site/i18n.js'
       - 'script/zh.js'
@@ -38,6 +40,7 @@ on:
     branches: [ master ]
     paths:
       - 'doc/cheatsheet/**'
+      - 'doc/behavioral/**'
       - 'i18n/**'
       - 'site/i18n.js'
       - 'script/zh.js'
@@ -75,3 +78,8 @@ jobs:
       # links or images differ from its English.
       - name: Check every cheatsheet is fully translated
         run: node script/zh.js check cheatsheet
+
+      # The behavioral guides are prose end to end, so an English edit that lands
+      # without its Chinese leaves a visibly half-English page. Same gate.
+      - name: Check every behavioral guide is fully translated
+        run: node script/zh.js check behavioral

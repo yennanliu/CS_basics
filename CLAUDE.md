@@ -19,6 +19,7 @@ CS_basics is a comprehensive computer science fundamentals repository containing
 - `data_structure/` - Data structure implementations (Java, JS, Python, Scala)
 - `system_design/` - System design patterns, templates, and case studies
 - `doc/` - Documentation, cheat sheets, interview resources, and study materials
+  - `doc/behavioral/` - Behavioral-interview guides (Googleyness & Leadership, Amazon Leadership Principles), built to `behavioral/*.html` in English and 繁體中文 — see [Behavioral interview guides](#behavioral-interview-guides)
 - `ref_code/` - Reference code examples
 - `script/` - Utility scripts
 - `site/` - GitHub Pages build tooling
@@ -966,6 +967,7 @@ between counterparts; `cheatsheets.html` ↔ `cheatsheets.zh.html` and
 |---|---|---|---|
 | Cheatsheets | `doc/cheatsheet/<slug>.md` | `i18n/zh/<slug>.md` | [`doc/cheatsheet-zh-progress.md`](doc/cheatsheet-zh-progress.md) |
 | FAQs | `doc/faq/<path>.md` | `i18n/zh/faq/<path>.md` | [`doc/faq-zh-progress.md`](doc/faq-zh-progress.md) |
+| Behavioral | `doc/behavioral/<slug>.md` | `i18n/zh/behavioral/<slug>.md` | [`doc/behavioral-zh-progress.md`](doc/behavioral-zh-progress.md) |
 
 **[`site/i18n.js`'s `CORPORA` is the only place that table lives.](site/i18n.js)**
 `script/zh.js`, `build-site.js` and `site/test/i18n.corpus.test.js` all read it, so
@@ -1059,6 +1061,28 @@ translation**; the fallback to English is for a page mid-edit, not for `master`.
 It exists because nothing used to go red: by Sep 2026, 26 sheets carried 174
 English sections and `binary_search.zh.html` showed 11 of its 66 in English. The
 FAQs are not gated; `check faq` runs by hand.
+
+---
+
+## Behavioral interview guides
+
+`doc/behavioral/` holds the non-coding round: `googleyness.md` (Google's Googleyness &
+Leadership round) and `amazon_leadership_principles.md` (the sixteen LPs). Each follows one
+shape — the round at a glance → what the interviewer scores → the answer pattern (STAR, plus
+clarify → options → decide → follow through for hypotheticals) → the interviewer's
+perspective → classic questions grouped by trait or principle, each with *what they want to
+know* → a worked example → a story bank → a checklist. Keep a new guide in that shape.
+
+`build-site.js` builds them to `behavioral/<slug>.html` with a `behavioral.html` index;
+`BEHAVIORAL_META` there sets each guide's category and the reading order, and a new file gets
+an entry. They are the third corpus in `site/i18n.js`'s `CORPORA`, so the 繁體中文 overlay
+lives in `i18n/zh/behavioral/` and the pages pair up through the 中文 / EN button. The guides
+are prose end to end — no code to share between languages — so nearly every line is
+translated, and `zh-check.yml` gates the tree at 100% like the cheatsheets
+(`node script/zh.js check behavioral`): **an English edit lands with its translation.**
+Interview questions are translated; principle names (`Customer Obsession`), `STAR`, `Bar
+Raiser` and the hire ratings stay in English with a 中文 gloss, because that is what the
+interviewer will say.
 
 ---
 

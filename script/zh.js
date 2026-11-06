@@ -227,6 +227,8 @@ const TRACKER_INTRO = {
   cheatsheet: `The cheatsheets under [\`doc/cheatsheet/\`](./cheatsheet/) are the only
 markdown tree.`,
   faq: `The interview FAQs under [\`doc/faq/\`](./faq/) are the only markdown tree.`,
+  behavioral: `The behavioral-interview guides under [\`doc/behavioral/\`](./behavioral/) are the
+only markdown tree.`,
 };
 
 // How much of a tree is code, which is the reason the overlay stores none of it.
@@ -235,6 +237,8 @@ const TRACKER_CODE_NOTE = {
 in both languages — so it is never stored twice:`,
   faq: `Two fifths of these documents is fenced code — Java, SQL, shell, config — and it
 must read identically in both languages, so it is never stored twice:`,
+  behavioral: `These guides are prose end to end, with no fenced code today, so nearly every
+line is translated. A fence added later is still never stored twice:`,
 };
 
 const TRACKER_LIMITS = {
@@ -249,7 +253,13 @@ const TRACKER_LIMITS = {
   ([\`後端面試題總整理.md\`](./faq/backend/後端面試題總整理.md) among them). Their
   sections still need an entry each to count as translated, and that entry is
   usually the text already there.`,
+  behavioral: `- **Principle and rubric names stay in English** — \`Customer Obsession\`,
+  \`STAR\`, \`Bar Raiser\`, \`Strong hire\` — with a 中文 gloss beside them, because
+  they are the words the interviewer will use. The questions themselves are translated.`,
 };
+
+// Where build-site.js writes each tree's composed pages.
+const TRACKER_SITE_DIR = { cheatsheet: 'cheatsheets', faq: 'faqs', behavioral: 'behavioral' };
 
 /** The generated preamble of one tree's progress doc. */
 function trackerHead(c) {
@@ -280,7 +290,7 @@ ${c.storeDir}/<id>.md
    │  <!-- hash --> + the translated section
    │  compose — English structure, translated prose, original code
    ▼
-_site/${c.name === 'faq' ? 'faqs' : 'cheatsheets'}/<page>.zh.html
+_site/${TRACKER_SITE_DIR[c.name]}/<page>.zh.html
 \`\`\`
 
 Each section is keyed by a hash of **its English text**. Edit one section of an
