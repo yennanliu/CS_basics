@@ -1,7 +1,7 @@
 # Union Find — Worked Examples
 
 > **Scope** — The worked-solution archive behind [union_find.md](./union_find.md): seventeen problems grouped by what a node represents — a vertex, a grid cell, or a variable carrying a ratio — since that is the only thing that changes between them.
-> **See also**: [union_find.md](./union_find.md) — the parent sheet: the DSU template, the five patterns, the optimisations and the traps; [graph.md](./graph.md) — graph representation in general; [topology_sorting.md](./topology_sorting.md) — the directed counterpart; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — which of the two a problem wants.
+> **See also**: [union_find.md](./union_find.md) — the parent sheet: the DSU template, the six patterns, the optimisations and the traps; [graph.md](./graph.md) — graph representation in general; [topology_sorting.md](./topology_sorting.md) — the directed counterpart; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — which of the two a problem wants.
 
 ## LeetCode Problem Lists
 
@@ -11,12 +11,12 @@
 ## Overview
 
 This is the long tail of [union_find.md](./union_find.md). The parent keeps the template, the
-five patterns and the traps; this file keeps the problems that *apply* them.
+six patterns and the traps; this file keeps the problems that *apply* them.
 
 ### Key Properties
 - **Complexity**: every solution below is near-O(α(n)) per operation with path compression and union by rank — effectively O(1); where a solution is dominated by something else (a sort, a BFS) its own comment says so
 - **Core Idea**: the DSU never changes. What changes is what a node *is*, and when two of them merge — which is why these are grouped by that rather than by difficulty
-- **When to Use**: after the parent's pattern table has told you which of the five shapes the problem is
+- **When to Use**: after the parent's pattern table has told you which of the six shapes the problem is
 
 
 ## Cycle Detection & Redundancy
@@ -1261,82 +1261,13 @@ class Solution(object):
 
 ### 15) Accounts Merge — LC 721 — union-find over emails
 
-> Union emails belonging to the same person; group by root; sort and format.
+> **Key point** — a shared email is one `union`, and the DSU supplies the transitivity. What you
+> union is a choice: the **account id** (via an `email → first owner` map) or the **email itself**
+> (each account a star around its first email). Both are correct.
 
-```java
-// LC 721 - Accounts Merge
-// IDEA: Union-Find — union all emails in same account; group by root
-// time = O(N * M * α(N*M)), space = O(N*M)
-public List<List<String>> accountsMerge(List<List<String>> accounts) {
-    Map<String, String> parent = new HashMap<>();
-    Map<String, String> emailToName = new HashMap<>();
-    // init
-    for (List<String> acc : accounts)
-        for (int i = 1; i < acc.size(); i++) {
-            parent.put(acc.get(i), acc.get(i));
-            emailToName.put(acc.get(i), acc.get(0));
-        }
-    // union
-    for (List<String> acc : accounts)
-        for (int i = 2; i < acc.size(); i++)
-            union(parent, acc.get(1), acc.get(i));
-    // group by root
-    Map<String, TreeSet<String>> groups = new HashMap<>();
-    for (String email : parent.keySet())
-        groups.computeIfAbsent(find(parent, email), k -> new TreeSet<>()).add(email);
-    List<List<String>> result = new ArrayList<>();
-    for (Map.Entry<String, TreeSet<String>> entry : groups.entrySet()) {
-        List<String> list = new ArrayList<>();
-        list.add(emailToName.get(entry.getKey()));
-        list.addAll(entry.getValue());
-        result.add(list);
-    }
-    return result;
-}
-private String find(Map<String, String> parent, String x) {
-    if (!parent.get(x).equals(x)) parent.put(x, find(parent, parent.get(x)));
-    return parent.get(x);
-}
-private void union(Map<String, String> parent, String x, String y) {
-    parent.put(find(parent, x), find(parent, y));
-}
-```
-```python
-# python
-# LC 721 - Accounts Merge
-# IDEA: union every email in an account to the account's FIRST email, then group by root.
-#       The name is looked up from any email in the group.
-# time = O(N*M*alpha + N*M log(N*M)) for the sort, space = O(N*M)
-class Solution(object):
-    def accountsMerge(self, accounts):
-        parent = {}
-        email_to_name = {}
-
-        def find(x):
-            parent.setdefault(x, x)
-            while parent[x] != x:
-                parent[x] = parent[parent[x]]
-                x = parent[x]
-            return x
-
-        def union(a, b):
-            parent[find(a)] = find(b)
-
-        for acc in accounts:
-            name, emails = acc[0], acc[1:]
-            for e in emails:
-                parent.setdefault(e, e)
-                email_to_name[e] = name
-                ### union to the FIRST email, which links the whole account in one pass
-                union(emails[0], e)
-
-        groups = {}
-        for e in parent:
-            groups.setdefault(find(e), []).append(e)
-
-        return [[email_to_name[root]] + sorted(mails)
-                for root, mails in groups.items()]
-```
+**Reduces to**: [union_find.md § Template 6: Merge by a Shared Attribute](./union_find.md#template-6-merge-by-a-shared-attribute--lc-721-),
+LC 721's one worked home — both node choices are solved there, in Python and Java, with the dry
+run and the traps.
 
 > **Variation — LC 839 Similar String Groups**: same "union then group by root" shape, but the edges are *not given*. All strings are anagrams, so run the O(N² · L) pairwise check — `union(i, j)` iff `s[i] == s[j]` or they differ at **exactly 2** positions — then the answer is the component count.
 

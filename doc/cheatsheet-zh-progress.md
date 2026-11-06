@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 4628 / 4628 sections (100%)
+## Status — 4633 / 4633 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -79,7 +79,7 @@ half-translated document renders with English gaps rather than failing.
 | [bit_manipulation_examples](./cheatsheet/bit_manipulation_examples.md) | 28 | [✅](../i18n/zh/bit_manipulation_examples.md) |
 | [bst](./cheatsheet/bst.md) | 55 | [✅](../i18n/zh/bst.md) |
 | [bst_advanced](./cheatsheet/bst_advanced.md) | 22 | [✅](../i18n/zh/bst_advanced.md) |
-| [bst_examples](./cheatsheet/bst_examples.md) | 8 | [✅](../i18n/zh/bst_examples.md) |
+| [bst_examples](./cheatsheet/bst_examples.md) | 11 | [✅](../i18n/zh/bst_examples.md) |
 | [code_interview_general_cheatsheet](./cheatsheet/code_interview_general_cheatsheet.md) | 2 | [✅](../i18n/zh/code_interview_general_cheatsheet.md) |
 | [combinatorics_math_patterns](./cheatsheet/combinatorics_math_patterns.md) | 42 | [✅](../i18n/zh/combinatorics_math_patterns.md) |
 | [complexity_cheatsheet](./cheatsheet/complexity_cheatsheet.md) | 38 | [✅](../i18n/zh/complexity_cheatsheet.md) |
@@ -178,9 +178,9 @@ half-translated document renders with English gaps rather than failing.
 | [tree_backtrack](./cheatsheet/tree_backtrack.md) | 17 | [✅](../i18n/zh/tree_backtrack.md) |
 | [tree_codec](./cheatsheet/tree_codec.md) | 27 | [✅](../i18n/zh/tree_codec.md) |
 | [tree_construction](./cheatsheet/tree_construction.md) | 16 | [✅](../i18n/zh/tree_construction.md) |
-| [tree_examples](./cheatsheet/tree_examples.md) | 26 | [✅](../i18n/zh/tree_examples.md) |
+| [tree_examples](./cheatsheet/tree_examples.md) | 27 | [✅](../i18n/zh/tree_examples.md) |
 | [tree_lca_distance](./cheatsheet/tree_lca_distance.md) | 40 | [✅](../i18n/zh/tree_lca_distance.md) |
 | [trie](./cheatsheet/trie.md) | 28 | [✅](../i18n/zh/trie.md) |
 | [trie_examples](./cheatsheet/trie_examples.md) | 11 | [✅](../i18n/zh/trie_examples.md) |
-| [union_find](./cheatsheet/union_find.md) | 24 | [✅](../i18n/zh/union_find.md) |
+| [union_find](./cheatsheet/union_find.md) | 25 | [✅](../i18n/zh/union_find.md) |
 | [union_find_examples](./cheatsheet/union_find_examples.md) | 29 | [✅](../i18n/zh/union_find_examples.md) |

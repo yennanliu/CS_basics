@@ -170,8 +170,8 @@
 - 本來就已經連通的節點
 - 不合法的索引
 
-<!-- 1a53266406b4 -->
-### 0-4) 併查集的五大模式 ⭐⭐⭐⭐
+<!-- d9b936b10ad8 -->
+### 0-4) 併查集的六大模式 ⭐⭐⭐⭐
 
 底下每一題都是同一個模板，差別只在對這個問題的答案不同：*「什麼算一個節點，什麼時候把兩個節點合併？」* 難的全在這個問題上；DSU 本身從頭到尾都沒變。
 
@@ -182,11 +182,69 @@
 | 3 | **多餘的邊** | 一個頂點 | 同上，但要*回傳*第一條 union 失敗的邊 | [1) LC 684](./union_find_examples.md#1-redundant-connection--lc-684)、[2) LC 685](./union_find_examples.md#2-redundant-connection-ii--lc-685--dsu-on-a-directed-graph-) |
 | 4 | **二維格子連通性** | 一個格子，壓平成 `row * cols + col` | 只跟右邊與下面的鄰居合併，這樣每一對只會被考慮一次 | [9) LC 200](./union_find_examples.md#9-number-of-islands--lc-200--grid--1d-via-row--cols--col)、[10) LC 130](./union_find_examples.md#10-surrounded-regions--lc-130--a-virtual-border-node) |
 | 5 | **加權併查集** | 一個變數 | 邊上帶著到父節點的*比值*，路徑壓縮時一路相乘 | [12) LC 399](./union_find_examples.md#12-evaluate-division--lc-399--weighted-union-find-with-ratios-) |
+| 6 | **依共用屬性合併** | 一筆紀錄的 id——或屬性本身 | 某筆紀錄出現了一個先前已有主人的屬性時（`first_owner` 對照表） | [Template 6: LC 721](#template-6-merge-by-a-shared-attribute--lc-721-)、[15) LC 721](./union_find_examples.md#15-accounts-merge--lc-721--union-find-over-emails) |
 
 另外兩種結構性變形，改的是*什麼時候跑*演算法，而不是合併什麼：
 
 - **排序邊（Kruskal 風格）** — 由便宜到貴依序處理邊，一旦你在意的那兩個端點連上就停。[13) LC 1631](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style)。
 - **離線倒放** — 併查集不能*拆開*，所以當題目在移除東西時，就把過程倒過來重播、改成一個個加回去。[14) LC 803](./union_find_examples.md#14-bricks-falling-when-hit--lc-803--offline-reverse-union-find-)。
+
+<!-- 54c27af28fa9 -->
+### Template 6: 依共用屬性合併 — LC 721 ⭐⭐⭐⭐
+
+**Recognise** — 「兩個 X 若**共用**某個 Y 就屬於同一組」（一個 email、一列或一行、一個質因數、一個同義詞），而且這個關係有**遞移性**：A 跟 B 共用、B 跟 C 共用，那 A 和 C 就是同一組，即使它們之間什麼都沒共用。題目不給邊——邊是由「值相等」隱含出來的。n ≤ 10³–10⁵ 筆紀錄、每筆只有少數幾個屬性 → 任何兩兩比對（O(n²) 次紀錄比較）都是陷阱；預期是 O(屬性總數)。
+
+**Key point** — 永遠不要拿紀錄彼此比對。把屬性走一遍，維護一個 `first_owner[attribute] = record id` 對照表：第一筆出現某屬性的紀錄擁有它，之後任何出現同一屬性的紀錄都跟這個主人 union。所以一個共用屬性就是一次 `union`，遞移性由 DSU 免費提供。
+
+**節點是什麼——唯一要做的決定。** DSU 裝哪一種東西都可以，兩種都正確；差別在於你得一路帶著什麼到最後：
+
+| 節點是 | Union 什麼 | 需要的對照表 | 答案的標籤從哪來 | 適用時機 |
+|---|---|---|---|---|
+| **紀錄 id**（帳號索引） | 目前的紀錄跟 `first_owner[attr]` | `attr → 第一個主人 id` | root 自己那筆紀錄（`accounts[root][0]`） | 紀錄有索引；用陣列 DSU，不用字串當 key |
+| **屬性**（email 本身） | 一筆紀錄的每個屬性跟該紀錄的第一個屬性（星狀） | `attr → 標籤`，外加以屬性為 key 的 dict DSU | 組內任一屬性（`email_to_name[root]`） | 沒有索引——屬性*就是*身分；當輸入直接給你成對的值時，這也是唯一的選擇（LC 737 的單字、LC 1061 的字母） |
+| **兩者**，放在同一個 DSU | 紀錄 id 跟它的每個屬性，屬性位移到自己的 id 區段 | 除了位移之外不需要 | — | 屬性值的範圍小且已知（LC 947：第 `c` 行變成節點 `c + 10001`） |
+
+下面先是紀錄 id 的寫法（Python 與 Java），接著是同一題以屬性當節點的寫法。這張卡是 LC 721 唯一的題解所在；範例文件只指向這裡。
+
+<!--CODE-->
+
+<!--CODE-->
+
+**以 email 當節點。** 同一題，DSU 裡完全不放帳號索引：一個帳號的每個 email 都跟該帳號的第一個 email union（星狀，`len(account) - 1` 次 union，而不是兩兩相連），名字則從 email 讀回來，因為到最後已經沒有索引可用。
+
+<!--CODE-->
+
+**Complexity**
+- **時間 O(E log E)**，E = email 總數：屬性迴圈對每個 email 做一次 dict 查詢、至多一次 `union`，合計 O(E · α(n))；對各組做 `sorted(emails)`——各組恰好把 E 個不同的 email 分割開——這個 O(E log E) 才是主導項。
+- **空間 O(E)**：`email_owner` 每個不同的 email 存一次；`parent` / `size` 是 O(n) ≤ O(E)。
+  以 email 當節點的寫法界限相同，只是 `parent` 改以 E 個 email 為 key。
+
+**Dry run**
+
+<!--CODE-->
+
+**Traps**
+- **用帳號分組，而不是用 `email_owner`。** 走訪 `accounts`、把每個 email 掛到 `find(i)` 底下，會讓共用的 email 被收兩次（`[John a x x y y z]`）；要從主人對照表把每個 email 只歸檔一次，或改用 set 收集。
+- **用名字合併。** 兩個沒有共同 email 的 John 是兩個人——LC 721 範例 1 就把 `johnnybravo` 分開。名字只是要印出的標籤，絕不是 union 的 key。
+- **兩兩比對帳號**找共同 email：O(n² · k)，而且遞移那一步仍然需要 DSU 或 BFS。主人對照表讓每個共用 email 都只是一次 O(1) 的 union。
+- **在長鏈上用遞迴 `find` 或 DFS。** 1000 個帳號、每個跟下一個共用一個 email，就是 1000 層深的路徑；Python 預設遞迴上限是 1000。上面的迴圈寫法，或 DFS 用顯式 stack，都不受影響。
+- **屬性當節點時 id 區段重疊**（LC 947）：第 `5` 列和第 `5` 行是不同的東西。把其中一個區段位移（`col + 10001`），或用 `('r', 5)` / `('c', 5)` 當 dict 的 key。
+
+**Not this if** — 那個「共用屬性」是必須檢驗的*相似性*，而不是可以 hash 的相等值（LC 839：兩個字串相同、或恰好差兩個位置，才相連）。沒有主人對照表可建；就是 O(n² · L) 的兩兩檢查，再做一般的元件計數。而當屬性帶有方向或順序（`a` 必須在 `b` 之前），那是[拓樸排序](./topology_sorting.md)，不是併查集。
+
+**Drill** — 先是同一招換一個屬性，再來是「連結直接給你」的近親題。只有第一組需要 `first_owner`：那裡的連結是從相等的值*找出來*的。第二組的輸入已經把成對關係寫明，直接 union 即可，這張卡在那裡教的只有節點選擇（值本身就是節點）：
+
+| LC | 兩者如何相連 | 節點選擇 |
+|---|---|---|
+| 721 Accounts Merge | **共用值**：一個 email | 帳號 id（或 email） |
+| 947 Most Stones Removed with Same Row or Column | **共用值**：一列或一行 | 列與行，彼此位移錯開 |
+| 952 Largest Component Size by Common Factor | **共用值**：一個質因數，透過 `first_owner[factor]` | 數字的索引 |
+| 2709 Greatest Common Divisor Traversal | **共用值**：一個質因數，同 952 | 索引；答案 = 只有一個元件 |
+| 990 Satisfiability of Equality Equations | **明確成對**：先 union 所有 `a==b`，再拿完成的 DSU 檢查每個 `a!=b` | 變數本身——26 個字母，一個陣列 |
+| 1061 Lexicographically Smallest Equivalent String | **明確成對**：`s1[i]` ~ `s2[i]` | 字母本身，root = 組內最小者 |
+| 737 Sentence Similarity II | **明確成對**：每一組相似詞對 | 單字本身，dict DSU |
+
+LC 721 · LC 990 · LC 1061 · LC 737 · LC 947 · LC 952 · LC 2709，由易到難。
 
 <!-- 9d7579d7fac6 -->
 ## 1) 範例題目與程式碼索引
@@ -217,11 +275,11 @@
   - Java：`leetcode_java/src/main/java/LeetCodeJava/DFS/EvaluateDivision.java:421`
   - 模式：存比值，路徑壓縮時把比值一路相乘
 
-<!-- e8f9a91289c6 -->
+<!-- 525286220e93 -->
 ### 進階應用
 - **LC 130** – Surrounded Regions：用一個虛擬節點串起所有邊界區域
 - **LC 547** – Friend Circles：在朋友關係矩陣裡找分群
-- **LC 721** – Accounts Merge：依共用的 email 把帳號分群
+- **LC 721** – Accounts Merge：依共用的 email 把帳號分群——[Template 6](#template-6-merge-by-a-shared-attribute--lc-721-) 的錨點題
 - **LC 886** – Possible Bipartition：偵測二分圖的衝突
 - **LC 1135** – Connecting Cities：用 Kruskal 演算法求 MST
 - **LC 1319** – Network Connections：把所有節點連起來所需的最少操作數
