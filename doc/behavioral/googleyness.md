@@ -1,7 +1,7 @@
 # Googleyness & Leadership Interview
 
 > **Scope** — The Google behavioral round: what it scores, how the interviewer reads an answer, the classic questions grouped by the trait each one probes, and an answer pattern for both "tell me about a time" and "what would you do if" questions.
-> **See also**: [amazon_leadership_principles.md](./amazon_leadership_principles.md) — the Amazon loop, which asks about the same stories through sixteen named principles.
+> **See also**: [amazon_leadership_principles.md](./amazon_leadership_principles.md) — the Amazon loop, which asks about the same stories through sixteen named principles; [mock_question_bank.md](./mock_question_bank.md) — twenty-five classic questions with sample answers, for mock practice.
 
 ## 1. The Round at a Glance
 

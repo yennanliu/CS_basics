@@ -289,7 +289,8 @@ const faqFiles = fs.existsSync(faqDir) ? walkDir(faqDir).sort() : [];
 const behavioralDir = 'doc/behavioral';
 const BEHAVIORAL_META = {
   googleyness: { category: 'Google' },
-  amazon_leadership_principles: { category: 'Amazon' }
+  amazon_leadership_principles: { category: 'Amazon' },
+  mock_question_bank: { category: 'General' }
 };
 const behavioralFiles = fs.existsSync(behavioralDir)
   ? fs.readdirSync(behavioralDir)
@@ -813,25 +814,27 @@ const BEHAVIORAL_TEXT = {
     intro: 'The two behavioral rubrics a software-engineering loop is most likely to meet — Google\'s ' +
       'Googleyness &amp; Leadership round and Amazon\'s Leadership Principles. Each guide lists the ' +
       'classic questions, what each one is really asking, the answer pattern, and how the interviewer ' +
-      'reads it.',
+      'reads it. The mock question bank turns them into a drill set: twenty-five classic questions, ' +
+      'each with a complete sample answer and the follow-ups to rehearse.',
     tip: '<strong>💡 Tip:</strong> One story bank answers both rubrics. Six to eight stories cover ' +
       'Google\'s single behavioral round; Amazon asks in every round and frowns on a reused story, ' +
       'so grow the bank to eight to ten before an Amazon loop.',
     source: 'View the guides on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/behavioral">GitHub</a>.',
-    description: n => `${n} behavioral-interview guides: Googleyness & Leadership and Amazon's ` +
-      'Leadership Principles — classic questions, answer patterns and the interviewer\'s view.'
+    description: n => `${n} behavioral-interview guides: Googleyness & Leadership, Amazon's ` +
+      'Leadership Principles and a 25-question mock bank — classic questions, sample answers and the interviewer\'s view.'
   },
   zh: {
     h1: '行為面試',
     intro: '軟體工程師面試最常遇到的兩套行為面試評分標準：Google 的 Googleyness &amp; Leadership ' +
       '與 Amazon 的 Leadership Principles。每份指南都列出經典題目、每題真正想問什麼、回答模式，' +
-      '以及面試官如何解讀你的回答。',
+      '以及面試官如何解讀你的回答。模擬題庫則把它們變成練習題組：二十五道經典題目，' +
+      '每題附完整的範例回答與要演練的追問。',
     tip: '<strong>💡 提示：</strong>同一個故事庫就能回答這兩套標準。六到八個故事足以應付 Google ' +
       '的單一行為面試輪；Amazon 每一輪都會問，而且不喜歡重複使用的故事，' +
       '所以面 Amazon 前把故事庫擴充到八到十個。',
     source: '在 <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/behavioral">GitHub</a> 上瀏覽這些指南。',
-    description: n => `${n} 份行為面試指南的繁體中文版：Googleyness & Leadership 與 Amazon ` +
-      'Leadership Principles——經典題目、回答模式與面試官觀點。',
+    description: n => `${n} 份行為面試指南的繁體中文版：Googleyness & Leadership、Amazon ` +
+      'Leadership Principles 與 25 題模擬題庫——經典題目、範例回答與面試官觀點。',
     categories: { General: '綜合', Google: 'Google', Amazon: 'Amazon' }
   }
 };

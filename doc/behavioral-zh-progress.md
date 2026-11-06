@@ -42,9 +42,10 @@ half-translated document renders with English gaps rather than failing.
   they are the words the interviewer will use. The questions themselves are translated.
 
 
-## Status — 45 / 45 sections (100%)
+## Status — 82 / 82 sections (100%)
 
 | Behavioral guide | Sections | 繁體中文 |
 |---|---:|:---:|
 | [amazon_leadership_principles](./behavioral/amazon_leadership_principles.md) | 27 | [✅](../i18n/zh/behavioral/amazon_leadership_principles.md) |
 | [googleyness](./behavioral/googleyness.md) | 18 | [✅](../i18n/zh/behavioral/googleyness.md) |
+| [mock_question_bank](./behavioral/mock_question_bank.md) | 37 | [✅](../i18n/zh/behavioral/mock_question_bank.md) |

@@ -51,6 +51,7 @@ const REQUIRED = [
   'index.html', 'problems.html', 'resources.html', 'cheatsheets.html', 'faqs.html',
   'behavioral.html', 'behavioral.zh.html', 'behavioral/googleyness.html', 'behavioral/googleyness.zh.html',
   'behavioral/amazon_leadership_principles.html', 'behavioral/amazon_leadership_principles.zh.html',
+  'behavioral/mock_question_bank.html', 'behavioral/mock_question_bank.zh.html',
   'patterns.html', 'search.html', 'lc-roadmap.html', 'agent-skills.html', 'skills.html', 'lc-python.html',
   'lc-java.html', 'lc-cheatsheet.html', 'lc-log.html', 'lc-again.html',
   'lc-zh-translate.html', 'lc-algo-demo.html', 'lc-site-data.html', 'lc-faq-add.html',

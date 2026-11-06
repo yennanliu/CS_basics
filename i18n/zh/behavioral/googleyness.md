@@ -1,8 +1,8 @@
-<!-- dc1190b20122 -->
+<!-- 06fdbf321cc4 -->
 # Googleyness 與領導力面試
 
 > **範圍** — Google 的行為面試輪：評分什麼、面試官如何解讀回答、依每題所考察的特質分組的經典題目，以及「請說說你曾經…」與「如果…你會怎麼做」兩類題目的回答模式。
-> **另見**：[amazon_leadership_principles.md](./amazon_leadership_principles.md) — Amazon 的面試流程，用十六條具名原則問同樣的故事。
+> **另見**：[amazon_leadership_principles.md](./amazon_leadership_principles.md) — Amazon 的面試流程，用十六條具名原則問同樣的故事；[mock_question_bank.md](./mock_question_bank.md) — 二十五道附範例回答的經典題目，供模擬練習使用。
 
 <!-- 712786a9d58a -->
 ## 1. 這一輪的概況
