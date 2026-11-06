@@ -307,6 +307,7 @@ function buildQuiz(bank, readme) {
 
 // ── Entry point ──────────────────────────────────────────────────────────────
 
+/** Builds both banks from data/ and README into _site/data/, and prints the per-topic and per-set counts. */
 function main() {
   const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/complexity_quiz.json'), 'utf8'));
   const readme = parseReadmeProblems(fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8'));

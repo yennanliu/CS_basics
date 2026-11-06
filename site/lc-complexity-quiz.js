@@ -262,10 +262,12 @@
 
   // ── Setup screen ───────────────────────────────────────────────────────
 
-  // `?set=essentials` (or classic / all) picks the question set from a link —
-  // the flag form of the dropdown. It wins over the stored preference for
-  // this visit but is not saved, so a shared link does not rewrite anyone's
-  // default.
+  /**
+   * `?set=essentials` (or classic / patterns / all) picks the question set from a link —
+   * the flag form of the dropdown. It wins over the stored preference for
+   * this visit but is not saved, so a shared link does not rewrite anyone's
+   * default.
+   */
   function packFromUrl() {
     try {
       var value = new URLSearchParams(window.location.search).get('set');
@@ -273,21 +275,25 @@
     } catch (e) { return null; }
   }
 
-  // Pattern coverage is not a pack: it is the one question that represents
-  // each pattern (build-quiz.js stamps `pattern` on it), drawn from both packs.
+  /**
+   * Pattern coverage is not a pack: it is the one question that represents
+   * each pattern (build-quiz.js stamps `pattern` on it), drawn from both packs.
+   */
   function hasPatterns() { return bank.some(function (q) { return q.pattern; }); }
 
-  // Every choice the dropdown offers, in order.
+  /** Every choice the dropdown offers, in order. */
   function sets() {
     return packs.concat(hasPatterns() ? ['patterns'] : [], packs.length > 1 || hasPatterns() ? ['all'] : []);
   }
 
+  /** The questions in one choice of the Question set dropdown: a pack, `patterns` or `all`. */
   function inSet(set) {
     if (set === 'all') return bank;
     if (set === 'patterns') return bank.filter(function (q) { return q.pattern; });
     return bank.filter(function (q) { return q.pack === set; });
   }
 
+  /** The questions in the currently chosen set, before Focus narrows them. */
   function packPool() { return inSet(prefs.pack); }
 
   function pool() {
@@ -313,6 +319,7 @@
     el('topicSelect').value = prefs.topic;
   }
 
+  /** Fills the Question set dropdown with every set and its size, hiding it when there is nothing to choose. */
   function renderPacks() {
     var choices = sets();
     el('packSelect').innerHTML = choices.map(function (p) {
@@ -357,6 +364,7 @@
     return out;
   }
 
+  /** Starts a run over `questions`, recording the set and Focus it was drawn from for the export. */
   function startQuiz(questions) {
     run = { questions: questions, at: 0, results: [], checked: false,
             set: prefs.pack, focus: prefs.topic, startedAt: new Date() };
@@ -477,6 +485,7 @@
     return true;
   }
 
+  /** Grades the current answer, highlights the lines that set each bound and writes the verdict. */
   function check() {
     if (run.checked) return;
     var badTime = unreadable('time');
@@ -573,6 +582,7 @@
     }).join('');
   }
 
+  /** Lists every question with a missed bound, its pattern, and the reason for each missed bound. */
   function renderMissed(results) {
     var missed = results.filter(function (r) { return !r.got.time || !r.got.space; });
     show('missedPanel', missed.length > 0);
@@ -601,14 +611,16 @@
   // server-side. A download is the record: JSON to read back in a script, CSV
   // to open in a spreadsheet next to the last attempt.
 
+  /** Zero-pads a date part to two digits. */
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
 
+  /** A local `YYYY-MM-DDTHH:MM:SS` stamp — the reader's clock, which is what they will compare attempts by. */
   function localStamp(d) {
     return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate())
       + 'T' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds());
   }
 
-  // One plain object per answered question — the shape both formats share.
+  /** One plain object per answered question — the shape both formats share. */
   function resultRows(results) {
     return results.map(function (r, i) {
       var q = r.question;
@@ -630,6 +642,7 @@
     });
   }
 
+  /** Everything a download holds: when, which set and Focus, the score, and one row per answered question. */
   function exportPayload() {
     var results = run.results;
     var timeRight = results.filter(function (r) { return r.got.time; }).length;
@@ -658,12 +671,13 @@
   var CSV_COLUMNS = ['n', 'id', 'lc', 'title', 'difficulty', 'topic', 'pattern',
     'yourTime', 'yourSpace', 'time', 'space', 'timeCorrect', 'spaceCorrect'];
 
-  // RFC 4180: quote a field holding a comma, quote or newline, doubling quotes.
+  /** RFC 4180: quote a field holding a comma, quote or newline, doubling quotes. */
   function csvField(value) {
     var text = value === null || value === undefined ? '' : String(value);
     return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
   }
 
+  /** The payload as CSV: a header row, then one row per answered question, CRLF line ends. */
   function toCsv(payload) {
     var lines = [CSV_COLUMNS.join(',')];
     payload.results.forEach(function (row) {
@@ -672,10 +686,12 @@
     return lines.join('\r\n') + '\r\n';
   }
 
+  /** A download name that sorts by time and says which set it came from. */
   function fileName(payload, ext) {
     return 'complexity-quiz-' + payload.takenAt.replace(/:/g, '').replace('T', '-') + '-' + payload.set + '.' + ext;
   }
 
+  /** Saves `text` as a file named `name` through a temporary object URL. */
   function download(name, type, text) {
     var blob = new Blob([text], { type: type });
     var url = URL.createObjectURL(blob);
@@ -688,6 +704,7 @@
     setTimeout(function () { URL.revokeObjectURL(url); }, 0);
   }
 
+  /** Downloads the current run's results as `json` or `csv`. */
   function exportAs(format) {
     var payload = exportPayload();
     if (format === 'json') {
@@ -701,6 +718,7 @@
 
   // ── Wiring ─────────────────────────────────────────────────────────────
 
+  /** Attaches every event handler the page uses. Runs once, after the bank loads. */
   function wire() {
     el('countChips').addEventListener('click', function (event) {
       var chip = event.target.closest('[data-count]');
@@ -778,6 +796,7 @@
 
   // ── Boot ───────────────────────────────────────────────────────────────
 
+  /** Takes the fetched bank, restores preferences (a `?set=` link wins for this visit) and shows the setup screen. */
   function boot(data) {
     bank = data.questions || [];
     topicLabels = data.topicLabels || {};
