@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { PACKS, answerStrings, resolveQuestion, buildQuiz, buildZh } = require('../build-quiz.js');
+const { PACKS, answerStrings, resolveQuestion, resolvePatterns, buildQuiz, buildZh } = require('../build-quiz.js');
 const { parseReadmeProblems } = require('../build-roadmap.js');
 const CSComplexity = require('../complexity.js');
 
@@ -225,6 +225,42 @@ test('buildQuiz rejects a duplicate id', () => {
   );
 });
 
+// ── Patterns ──────────────────────────────────────────────────────────────
+
+test('buildQuiz stamps each pattern on the question that represents it', () => {
+  const built = buildQuiz({
+    questions: [question({ id: 'a' }), question({ id: 'b' })],
+    patterns: { 'Arrays & Hashing': { 'Hash map complement lookup': 'a' } },
+  }, README);
+  assert.equal(built.questions.find(q => q.id === 'a').pattern, 'Hash map complement lookup');
+  assert.equal(built.questions.find(q => q.id === 'b').pattern, '', 'an unnamed question is in no pattern');
+  assert.equal(buildQuiz({ questions: [question()] }, README).questions[0].pattern, '',
+    'a bank with no patterns block has no Pattern coverage set');
+});
+
+test('resolvePatterns rejects a taxonomy that would misreport coverage', () => {
+  const qs = [question({ id: 'a' }), question({ id: 'b', topic: 'Heap' })];
+  const ok = { 'Arrays & Hashing': { P: 'a' }, Heap: { Q: 'b' } };
+  assert.equal(resolvePatterns(ok, qs).get('b'), 'Q');
+  assert.throws(() => resolvePatterns({ 'Arrays & Hashing': { P: 'zz' }, Heap: { Q: 'b' } }, qs), /"zz", which is not in the bank/);
+  assert.throws(() => resolvePatterns({ 'Arrays & Hashing': { P: 'b' }, Heap: { Q: 'b' } }, qs), /whose topic is "Heap"/);
+  assert.throws(() => resolvePatterns({ 'Arrays & Hashing': { P: 'a', R: 'a' }, Heap: { Q: 'b' } }, qs), /reuses "a"/);
+  assert.throws(() => resolvePatterns({ 'Arrays & Hashing': { P: 'a' }, Heap: { P: 'b' } }, qs), /named twice/);
+  assert.throws(() => resolvePatterns({ 'Arrays & Hashing': { P: 'a' } }, qs), /topic "Heap" has questions but no patterns/);
+});
+
+test('buildZh names every pattern, and nothing else', () => {
+  const built = buildQuiz({
+    questions: [question({ vars: 'n = len(nums)' })],
+    patterns: { 'Arrays & Hashing': { 'Hash map complement lookup': 'sample' } },
+  }, README);
+  const overlay = Object.assign(zhOverlay({ vars: 'n' }), { patterns: { 'Hash map complement lookup': '雜湊表找補數' } });
+  assert.equal(buildZh(built, overlay).questions[0].pattern, '雜湊表找補數');
+  assert.throws(() => buildZh(built, zhOverlay({ vars: 'n' })), /no name for the pattern/);
+  overlay.patterns.Extra = '多餘';
+  assert.throws(() => buildZh(built, overlay), /names a pattern "Extra"/);
+});
+
 test('buildQuiz rejects an empty bank', () => {
   assert.throws(() => buildQuiz({ questions: [] }, README), /no questions/);
 });
@@ -237,6 +273,11 @@ test('data/complexity_quiz.json builds against the real README', () => {
   const built = buildQuiz(bank, readme);
 
   assert.ok(built.questions.length >= 25, 'the bank should be big enough to draw 25 without repeats');
+  // The Pattern coverage set: every topic has at least one named pattern, and
+  // it is a real subset — one question per pattern, not the whole bank again.
+  const covered = built.questions.filter(q => q.pattern);
+  assert.deepEqual([...new Set(covered.map(q => q.topic))].sort(), built.topics);
+  assert.ok(covered.length < built.questions.length, 'every question is a pattern — the set adds nothing');
   for (const q of built.questions) {
     assert.ok(q.title, `${q.id} has no title`);
     assert.ok(q.code.includes('\n'), `${q.id} has a one-line snippet`);

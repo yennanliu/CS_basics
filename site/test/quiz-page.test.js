@@ -138,7 +138,8 @@ for (const lang of ['en', 'zh']) {
 
 // ── Question sets ────────────────────────────────────────────────────────
 
-const inPack = (pack) => BUILT.questions.filter((q) => pack === 'all' || q.pack === pack);
+const inPack = (pack) => BUILT.questions.filter((q) =>
+  pack === 'all' || (pack === 'patterns' ? Boolean(q.pattern) : q.pack === pack));
 const change = (dom, sel, value) => {
   $(dom, sel).value = value;
   $(dom, sel).dispatchEvent(new dom.window.Event('change', { bubbles: true }));
@@ -154,10 +155,10 @@ test('the bank carries both sets, and the essentials never repeat a classic prob
 });
 
 for (const lang of ['en', 'zh']) {
-  test(`${lang}: the Question set dropdown offers each set and both, with counts`, async () => {
+  test(`${lang}: the Question set dropdown offers each set, pattern coverage and everything, with counts`, async () => {
     const dom = await boot(lang);
     const options = $$(dom, '#packSelect option');
-    assert.deepEqual(options.map((o) => o.value), ['classic', 'essentials', 'all']);
+    assert.deepEqual(options.map((o) => o.value), ['classic', 'essentials', 'patterns', 'all']);
     options.forEach((o) => assert.ok(text(o).includes(String(inPack(o.value).length)), text(o)));
     assert.ok(!$(dom, '#packRow').hidden);
   });
@@ -200,6 +201,89 @@ test('the chosen set is remembered, and ?set= overrides it without saving', asyn
 
   dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=nonsense');
   assert.equal($(dom, '#packSelect').value, 'classic', 'an unknown ?set= is ignored');
+});
+
+// ── Pattern coverage ─────────────────────────────────────────────────────
+
+test('pattern coverage draws one question per pattern, from both packs', async () => {
+  const covered = inPack('patterns');
+  assert.equal(new Set(covered.map((q) => q.pattern)).size, covered.length, 'no pattern is asked twice');
+  assert.ok(covered.some((q) => q.pack === 'essentials') && covered.some((q) => q.pack === 'classic'),
+    'the set cuts across both packs');
+
+  const dom = await boot('en', null, 'https://example.test/lc-complexity-quiz.html?set=patterns');
+  assert.equal($(dom, '#packSelect').value, 'patterns');
+  assert.ok(text($(dom, '#poolText')).startsWith(covered.length + ' questions'));
+  assert.equal($$(dom, '#topicSelect option').length, BUILT.topics.length + 1, 'every topic has a pattern');
+
+  change(dom, '#topicSelect', 'Heap');
+  const heap = covered.filter((q) => q.topic === 'Heap');
+  assert.ok(text($(dom, '#poolText')).startsWith(heap.length + ' questions'));
+  click(dom, '[data-count="all"]');
+  click(dom, '#startBtn');
+  assert.equal(text($(dom, '#qCounter')), '1 / ' + heap.length);
+});
+
+for (const lang of ['en', 'zh']) {
+  test(`${lang}: the pattern is named only after the answer is checked`, async () => {
+    const dom = await boot(lang, 'kmp-strstr');
+    click(dom, '#startBtn');
+    const bank = BANKS[lang === 'zh' ? './data/complexity-quiz.zh.json' : './data/complexity-quiz.json'];
+    const name = bank.questions.find((q) => q.id === 'kmp-strstr').pattern;
+    assert.equal(name, lang === 'zh' ? 'KMP 前綴函數' : 'KMP prefix function');
+    assert.ok(!$(dom, '#quiz').textContent.includes(name), 'not shown while answering');
+    answer(dom, 'O(n * m)', 'O(m)');
+    assert.ok(text($(dom, '.pattern-tag')).endsWith(name), text($(dom, '.pattern-tag')));
+    click(dom, '#nextBtn');
+    assert.ok(text($(dom, '#missedList')).includes(name), 'the missed list names the pattern');
+  });
+}
+
+// ── Export ───────────────────────────────────────────────────────────────
+
+test('the report downloads what was answered, as JSON and as CSV', async () => {
+  const dom = await boot('en', 'two-sum-hash', 'https://example.test/lc-complexity-quiz.html?set=patterns');
+  // jsdom has no object URLs and does not navigate; record what would be saved.
+  const downloads = [];
+  dom.window.URL.createObjectURL = (blob) => { downloads.push({ blob }); return 'blob:test'; };
+  dom.window.URL.revokeObjectURL = () => {};
+  dom.window.HTMLAnchorElement.prototype.click = function () { downloads[downloads.length - 1].name = this.download; };
+
+  click(dom, '#startBtn');
+  answer(dom, 'O(n^2)', 'O(n)');
+  click(dom, '#nextBtn');
+
+  // Round-tripped: the object comes from the page's realm, and deepEqual is strict about prototypes.
+  const payload = JSON.parse(JSON.stringify(dom.window.CSQuiz.exportPayload()));
+  assert.equal(payload.set, 'patterns');
+  assert.deepEqual(payload.score, { marks: 1, total: 2, percent: 50, fullyRight: 0, time: 0, space: 1 });
+  assert.equal(payload.results.length, 1);
+  const r = payload.results[0];
+  assert.deepEqual(
+    { id: r.id, lc: r.lc, yourTime: r.yourTime, time: r.time, timeCorrect: r.timeCorrect, pattern: r.pattern },
+    { id: 'two-sum-hash', lc: 1, yourTime: 'O(n^2)', time: 'O(n)', timeCorrect: false, pattern: 'Hash map complement lookup' });
+
+  click(dom, '#exportJsonBtn');
+  click(dom, '#exportCsvBtn');
+  assert.equal(downloads.length, 2);
+  assert.match(downloads[0].name, /^complexity-quiz-\d{4}-\d{2}-\d{2}-\d{6}-patterns\.json$/);
+  assert.match(downloads[1].name, /\.csv$/);
+  const json = JSON.parse(await downloads[0].blob.text());
+  assert.equal(json.results[0].id, 'two-sum-hash');
+  // The BOM is what makes Excel read the file as UTF-8. Blob.text() decodes
+  // and drops it, so it is checked on the raw bytes.
+  const bytes = new Uint8Array(await downloads[1].blob.arrayBuffer());
+  assert.deepEqual([...bytes.slice(0, 3)], [0xef, 0xbb, 0xbf]);
+  const csv = await downloads[1].blob.text();
+  const [header, row] = csv.trim().split('\r\n');
+  assert.equal(header, 'n,id,lc,title,difficulty,topic,pattern,yourTime,yourSpace,time,space,timeCorrect,spaceCorrect');
+  assert.equal(row, '1,two-sum-hash,1,Two Sum,Easy,Arrays & Hashing,Hash map complement lookup,O(n^2),O(n),O(n),O(n),false,true');
+});
+
+test('a CSV field with a comma, a quote or a newline is quoted', async () => {
+  const dom = await boot('en');
+  const csv = dom.window.CSQuiz.toCsv({ results: [{ n: 1, title: 'Pow(x, n)', yourTime: 'say "n"', yourSpace: 'a\nb' }] });
+  assert.equal(csv.split('\r\n')[1], '1,,,"Pow(x, n)",,,,"say ""n""","a\nb",,,,');
 });
 
 test('a Focus the linked set lacks is not erased from what is saved', async () => {

@@ -195,6 +195,15 @@ function buildZh(built, overlay) {
     if (!topics[topic]) throw new Error(`complexity_quiz.zh.json has no name for the topic "${topic}"`);
   }
 
+  const patternNames = (overlay && overlay.patterns) || {};
+  const englishPatterns = new Set(built.questions.map(q => q.pattern).filter(Boolean));
+  for (const name of englishPatterns) {
+    if (!patternNames[name]) throw new Error(`complexity_quiz.zh.json has no name for the pattern "${name}"`);
+  }
+  for (const name of Object.keys(patternNames)) {
+    if (!englishPatterns.has(name)) throw new Error(`complexity_quiz.zh.json names a pattern "${name}" the bank does not have`);
+  }
+
   const questions = built.questions.map(q => {
     const where = `complexity_quiz.zh.json "${q.id}"`;
     const zh = entries[q.id];
@@ -216,6 +225,7 @@ function buildZh(built, overlay) {
     }
     return Object.assign({}, q, {
       title: zh.title || q.title,
+      pattern: q.pattern ? patternNames[q.pattern] : '',
       vars: zh.vars,
       note: zh.note || '',
       why: zh.why || '',
@@ -228,6 +238,43 @@ function buildZh(built, overlay) {
   });
 
   return { topics: built.topics, packs: built.packs, topicLabels: topics, questions: questions };
+}
+
+/**
+ * Reads the bank's `patterns` block — { topic: { pattern name: question id } }
+ * — into a Map from question id to pattern name, or throws on the first thing
+ * that would make the Pattern coverage set lie about what it covers: an id the
+ * bank does not have, an id filed under a topic it is not in, a question named
+ * for two patterns, or a topic with questions and no patterns at all.
+ */
+function resolvePatterns(patterns, questions) {
+  // A bank with no block has no Pattern coverage set (the unit tests' small
+  // banks); site/test/quiz-page.test.js pins that the real bank carries one.
+  if (patterns === undefined) return new Map();
+  if (!patterns || typeof patterns !== 'object') throw new Error('data/complexity_quiz.json has a patterns block that is not an object');
+  const byId = new Map(questions.map(q => [q.id, q]));
+  const byQuestion = new Map();
+  const names = new Set();
+  for (const [topic, entries] of Object.entries(patterns)) {
+    for (const [name, id] of Object.entries(entries || {})) {
+      const where = `pattern "${name}" (${topic})`;
+      const question = byId.get(id);
+      if (!question) throw new Error(`${where} points at "${id}", which is not in the bank`);
+      if (question.topic !== topic) {
+        throw new Error(`${where} points at "${id}", whose topic is "${question.topic}"`);
+      }
+      if (byQuestion.has(id)) throw new Error(`${where} reuses "${id}", already "${byQuestion.get(id)}"`);
+      if (names.has(name)) throw new Error(`${where} is named twice`);
+      byQuestion.set(id, name);
+      names.add(name);
+    }
+  }
+  for (const topic of new Set(questions.map(q => q.topic))) {
+    if (!Object.keys((patterns[topic]) || {}).length) {
+      throw new Error(`topic "${topic}" has questions but no patterns`);
+    }
+  }
+  return byQuestion;
 }
 
 /** Resolves the whole bank, rejecting duplicate ids. */
@@ -245,6 +292,11 @@ function buildQuiz(bank, readme) {
     seen.add(question.id);
     return resolveQuestion(question, readme);
   });
+
+  // The pattern a question represents, or '' — the page's Pattern coverage set
+  // is every question with one, so it cuts across the classic / essentials packs.
+  const patternOf = resolvePatterns(bank.patterns, resolved);
+  for (const q of resolved) q.pattern = patternOf.get(q.id) || '';
 
   const topics = [...new Set(resolved.map(q => q.topic))].sort();
   // Only the packs that actually have questions, in PACKS order — the page
@@ -278,7 +330,7 @@ function main() {
     .map(([topic, n]) => `${topic} ${n}`).join(', ');
   console.log(`    ${summary}`);
   const byPack = built.packs.map(p => `${p} ${built.questions.filter(q => q.pack === p).length}`).join(', ');
-  console.log(`    packs: ${byPack}`);
+  console.log(`    packs: ${byPack}, pattern coverage ${built.questions.filter(q => q.pattern).length}`);
 }
 
 if (require.main === module) {
@@ -290,4 +342,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { PACKS, answerStrings, resolveQuestion, buildQuiz, buildZh };
+module.exports = { PACKS, answerStrings, resolveQuestion, resolvePatterns, buildQuiz, buildZh };

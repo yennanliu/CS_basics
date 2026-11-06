@@ -39,7 +39,7 @@
   <div class="loading" id="loading"></div>
 
   <!-- ── Setup ──────────────────────────────────────────────────────────── -->
-  <div id="setup" hidden>
+  <div id="setup" class="setup-grid" hidden>
     <div class="rules">
       <p>
         答案自由輸入 —— <code>O(n log n)</code>、<code>nlogn</code>、<code>N·logN</code>
@@ -55,6 +55,12 @@
         把<b>題組</b>切換到<b>面試必備</b>，就是另一組常考、而且上界容易估錯的題目 ——
         攤銷的堆疊與滑動視窗、與輸出量有關的回溯、對答案範圍而不是對 n 取的 log。
         也可以用 <code>?set=essentials</code> 直接連過來。
+      </p>
+      <p>
+        <b>題型全覆蓋</b>從兩個題組中為每個主題的每個題型各取一題 —— 堆積的每種題型、
+        滑動視窗的每種形狀、DP 的每個家族 —— 完整做完一輪，就不會有沒估過價的題型。
+        題型名稱會在你按下檢查後顯示。可以用 <code>?set=patterns</code> 直接連過來。
+        做完後可以把結果下載成 JSON 或 CSV，下次拿來比較。
       </p>
     </div>
 
@@ -92,34 +98,40 @@
         <span class="badge" id="qTopic"></span>
       </div>
 
-      <pre class="code" id="qCode"></pre>
-      <div class="legend" id="legend" hidden><span class="t"><i></i>決定時間</span><span class="s"><i></i>決定空間</span></div>
-      <p class="hint" id="qVars"></p>
-      <p class="hint" id="qNote"></p>
-
-      <div class="answers">
-        <div>
-          <label class="label" for="timeInput">時間複雜度</label>
-          <input type="text" id="timeInput" placeholder="O(…)" autocomplete="off"
-                 autocorrect="off" autocapitalize="off" spellcheck="false">
-          <div class="input-msg" id="timeMsg" role="status"></div>
+      <div class="q-body">
+        <div class="q-code-col">
+          <pre class="code" id="qCode"></pre>
+          <div class="legend" id="legend" hidden><span class="t"><i></i>決定時間</span><span class="s"><i></i>決定空間</span></div>
+          <p class="hint" id="qVars"></p>
+          <p class="hint" id="qNote"></p>
         </div>
-        <div>
-          <label class="label" for="spaceInput">空間複雜度</label>
-          <input type="text" id="spaceInput" placeholder="O(…)" autocomplete="off"
-                 autocorrect="off" autocapitalize="off" spellcheck="false">
-          <div class="input-msg" id="spaceMsg" role="status"></div>
+
+        <div class="q-answer-col">
+          <div class="answers">
+            <div>
+              <label class="label" for="timeInput">時間複雜度</label>
+              <input type="text" id="timeInput" placeholder="O(…)" autocomplete="off"
+                     autocorrect="off" autocapitalize="off" spellcheck="false">
+              <div class="input-msg" id="timeMsg" role="status"></div>
+            </div>
+            <div>
+              <label class="label" for="spaceInput">空間複雜度</label>
+              <input type="text" id="spaceInput" placeholder="O(…)" autocomplete="off"
+                     autocorrect="off" autocapitalize="off" spellcheck="false">
+              <div class="input-msg" id="spaceMsg" role="status"></div>
+            </div>
+          </div>
+
+          <div class="verdict" id="verdict" hidden></div>
+
+          <div class="actions">
+            <button class="btn" id="checkBtn">檢查</button>
+            <button class="btn" id="nextBtn" hidden>下一題 →</button>
+            <span class="spacer"></span>
+            <span class="keyhint">按 <kbd>enter</kbd> 檢查，再按一次繼續</span>
+            <button class="btn btn-quiet" id="quitBtn">結束測驗</button>
+          </div>
         </div>
-      </div>
-
-      <div class="verdict" id="verdict" hidden></div>
-
-      <div class="actions">
-        <button class="btn" id="checkBtn">檢查</button>
-        <button class="btn" id="nextBtn" hidden>下一題 →</button>
-        <span class="spacer"></span>
-        <span class="keyhint">按 <kbd>enter</kbd> 檢查，再按一次繼續</span>
-        <button class="btn btn-quiet" id="quitBtn">結束測驗</button>
       </div>
     </div>
   </div>
@@ -132,8 +144,17 @@
         <div class="sub" id="scoreSub"></div>
         <div class="verdict-word" id="scoreWord"></div>
       </div>
+      <div class="export">
+        <span class="label">保存紀錄</span>
+        <p class="hint">每一題你的答案、正確答案與分數——下次可以拿來比較。</p>
+        <div class="export-btns">
+          <button class="btn btn-quiet" id="exportJsonBtn">下載 JSON</button>
+          <button class="btn btn-quiet" id="exportCsvBtn">下載 CSV</button>
+        </div>
+      </div>
     </div>
 
+    <div class="report-grid">
     <div class="panel">
       <span class="label">各主題得分</span>
       <table class="breakdown"><thead>
@@ -144,6 +165,7 @@
     <div class="panel" id="missedPanel">
       <span class="label">值得再看一次</span>
       <div id="missedList"></div>
+    </div>
     </div>
 
     <div class="actions">
