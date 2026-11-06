@@ -1077,11 +1077,19 @@ FAQs are not gated; `check faq` runs by hand.
 ## Behavioral interview guides
 
 `doc/behavioral/` holds the non-coding round: `googleyness.md` (Google's Googleyness &
-Leadership round) and `amazon_leadership_principles.md` (the sixteen LPs). Each follows one
+Leadership round), `amazon_leadership_principles.md` (the sixteen LPs) and
+`mock_question_bank.md` (25 classic questions with sample answers, for mock practice). Each follows one
 shape — the round at a glance → what the interviewer scores → the answer pattern (STAR, plus
 clarify → options → decide → follow through for hypotheticals) → the interviewer's
 perspective → classic questions grouped by trait or principle, each with *what they want to
 know* → a worked example → a story bank → a checklist. Keep a new guide in that shape.
+
+`mock_question_bank.md` is the drill set the two guides point at, and has a shape of its own:
+how to run a mock → a question index (each question's Google trait and Amazon principle) →
+25 classic questions by theme, each with **Probes**, a full STAR **Sample answer** at the L3 /
+new-grad level (clarify → options → decide → follow through for the hypotheticals), the
+**Follow-ups to rehearse** and **Why it scores** → a self-review list. A new question goes in
+under its theme, gets an index row, and keeps the four labelled parts.
 
 `build-site.js` builds them to `behavioral/<slug>.html` with a `behavioral.html` index;
 `BEHAVIORAL_META` there sets each guide's category and the reading order, and a new file gets

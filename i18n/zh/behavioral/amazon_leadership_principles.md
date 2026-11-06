@@ -1,8 +1,8 @@
-<!-- 9deb2888edcb -->
+<!-- 59bb46f3b27f -->
 # Amazon Leadership Principles 面試
 
 > **範圍** — Amazon 如何在面試流程中使用十六條 Leadership Principles：每條原則考的是什麼、對應的經典題目、面試官受訓時預期聽到的 STAR 回答，以及 Bar Raiser 和討論會（debrief）如何解讀你的故事。
-> **另見**：[googleyness.md](./googleyness.md) — Google 的行為面試，用另一套評分標準檢視許多相同的故事。
+> **另見**：[googleyness.md](./googleyness.md) — Google 的行為面試，用另一套評分標準檢視許多相同的故事；[mock_question_bank.md](./mock_question_bank.md) — 二十五道附範例回答的經典題目，供模擬練習使用。
 
 <!-- 2f8cc51bc1e0 -->
 ## 1. 面試流程如何使用這些原則

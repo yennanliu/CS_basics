@@ -1,7 +1,7 @@
 # Amazon Leadership Principles Interview
 
 > **Scope** — How Amazon uses its sixteen Leadership Principles in an interview loop: what each principle probes, the classic questions for it, the STAR answer the interviewer is trained to expect, and how the Bar Raiser and the debrief read your stories.
-> **See also**: [googleyness.md](./googleyness.md) — the Google behavioral round, which scores many of the same stories against a different rubric.
+> **See also**: [googleyness.md](./googleyness.md) — the Google behavioral round, which scores many of the same stories against a different rubric; [mock_question_bank.md](./mock_question_bank.md) — twenty-five classic questions with sample answers, for mock practice.
 
 ## 1. How the Loop Uses the Principles
 
