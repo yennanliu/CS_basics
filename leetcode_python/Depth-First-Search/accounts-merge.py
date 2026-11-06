@@ -36,9 +36,163 @@ accounts[i][j] (for j > 0) is a valid email.
 
 """
 
-
 # V0
-# IDEA : DFS ON THE EMAIL GRAPH (connected components)
+class Solution(object):
+    def accountsMerge(self, accounts):
+        """
+        :type accounts: List[List[str]]
+        :rtype: List[List[str]]
+        """
+        pass
+
+
+
+# V0-1
+# IDEA: UNION FIND (gpt)
+from collections import defaultdict
+
+class UF:
+    def __init__(self, n):
+        self.parents = list(range(n))
+        self.rank = [1] * n
+
+    def get_parent(self, x):
+        # Path compression
+        if self.parents[x] != x:
+            self.parents[x] = self.get_parent(self.parents[x])
+
+        return self.parents[x]
+
+    def union(self, x, y):
+        root_x = self.get_parent(x)
+        root_y = self.get_parent(y)
+
+        if root_x == root_y:
+            return
+
+        # Union by rank
+        if self.rank[root_x] < self.rank[root_y]:
+            root_x, root_y = root_y, root_x
+
+        self.parents[root_y] = root_x
+
+        if self.rank[root_x] == self.rank[root_y]:
+            self.rank[root_x] += 1
+
+    def is_same_parent(self, x, y):
+        return self.get_parent(x) == self.get_parent(y)
+
+
+class Solution(object):
+    def accountsMerge(self, accounts):
+        """
+        :type accounts: List[List[str]]
+        :rtype: List[List[str]]
+        """
+        if not accounts:
+            return []
+
+        n = len(accounts)
+        uf = UF(n)
+
+        # email -> account index
+        email_to_id = {}
+
+        # Step 1: Union accounts sharing the same email
+        for i, account in enumerate(accounts):
+            for email in account[1:]:
+                if email in email_to_id:
+                    uf.union(i, email_to_id[email])
+                else:
+                    email_to_id[email] = i
+
+        # Step 2: Group emails by Union-Find root
+        groups = defaultdict(set)
+
+        for email, account_id in email_to_id.items():
+            root = uf.get_parent(account_id)
+            groups[root].add(email)
+
+        # Step 3: Build the final result
+        res = []
+
+        for root, emails in groups.items():
+            name = accounts[root][0]
+            res.append([name] + sorted(emails))
+
+        return res
+
+
+# V0-2
+# IDEA: UNION FIND (gemini)
+from collections import defaultdict
+
+class UF(object):
+    def __init__(self, n):
+        # 初始化每個節點的父節點為自己
+        self.parent = list(range(n))
+
+    def find(self, i):
+        # 尋找根節點，並伴隨路徑壓縮 (Path Compression)
+        if self.parent[i] == i:
+            return i
+        self.parent[i] = self.find(self.parent[i])
+        return self.parent[i]
+
+    def union(self, i, j):
+        # 合併兩個節點所在的集合
+        root_i = self.find(i)
+        root_j = self.find(j)
+        if root_i != root_j:
+            self.parent[root_i] = root_j
+
+
+class Solution(object):
+    def accountsMerge(self, accounts):
+        """
+        :type accounts: List[List[str]]
+        :rtype: List[List[str]]
+        """
+        if not accounts or len(accounts) == 0:
+            return []
+
+        n = len(accounts)
+        uf = UF(n)
+        
+        # 記錄 {email: 首次出現的帳戶 index}
+        email_to_account_idx = {}
+        # 記錄 {email: 名字}，方便最後組裝結果
+        email_to_name = {}
+
+        for i, acc in enumerate(accounts):
+            name = acc[0]
+            for email in acc[1:]:
+                email_to_name[email] = name
+                if email in email_to_account_idx:
+                    # 如果這個 email 之前已經在其他帳戶出現過，將兩個帳戶索引進行聯集
+                    uf.union(i, email_to_account_idx[email])
+                else:
+                    email_to_account_idx[email] = i
+
+        # 將同一群組（相同的 root）的 email 收集起來
+        # 格式：{root_index: [email1, email2, ...]}
+        root_to_emails = defaultdict(list)
+        for email, account_idx in email_to_account_idx.items():
+            root_idx = uf.find(account_idx)
+            root_to_emails[root_idx].append(email)
+
+        # 組裝最後的輸出結果
+        res = []
+        for root_idx, emails in root_to_emails.items():
+            name = email_to_name[emails[0]]
+            # 題目要求 email 必須排序
+            res.append([name] + sorted(emails))
+
+        return res
+
+
+# V0-5
+# IDEA : DFS ON THE EMAIL GRAPH (connected components) (CLAUDE)
 #
 #   Each email is a node. Inside one account, link its first email to every
 #   other email (a star is enough to connect them). Two accounts sharing an
@@ -102,7 +256,7 @@ class Solution(object):
 
 
 # V1
-# IDEA : UNION FIND (DSU) OVER ACCOUNT INDICES
+# IDEA : UNION FIND (DSU) OVER ACCOUNT INDICES (CLAUDE)
 #
 #   Each account starts as its own group. Walk every email: the first account
 #   to show it owns it; any later account showing the same email is unioned
