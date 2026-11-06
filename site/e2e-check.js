@@ -49,6 +49,8 @@ const rel = p => path.relative(SITE, p);
 console.log('\n== required artefacts ==');
 const REQUIRED = [
   'index.html', 'problems.html', 'resources.html', 'cheatsheets.html', 'faqs.html',
+  'behavioral.html', 'behavioral.zh.html', 'behavioral/googleyness.html', 'behavioral/googleyness.zh.html',
+  'behavioral/amazon_leadership_principles.html', 'behavioral/amazon_leadership_principles.zh.html',
   'patterns.html', 'search.html', 'lc-roadmap.html', 'agent-skills.html', 'skills.html', 'lc-python.html',
   'lc-java.html', 'lc-cheatsheet.html', 'lc-log.html', 'lc-again.html',
   'lc-zh-translate.html', 'lc-algo-demo.html', 'lc-site-data.html', 'lc-faq-add.html',
@@ -210,7 +212,7 @@ console.log('\n== responsive containment ==');
 // Only the markdown-generated pages: the hand-written tools lay out their own
 // tables inside their own scroll containers (.all-table-wrap and friends), which
 // this cannot see and should not second-guess.
-const GENERATED = /^(index|patterns|resources|(faqs|cheatsheets)(\.zh)?)\.html$|^(cheatsheets|faqs)\//;
+const GENERATED = /^(index|patterns|resources|(faqs|cheatsheets|behavioral)(\.zh)?)\.html$|^(cheatsheets|faqs|behavioral)\//;
 const unwrappedTables = [];
 for (const p of pages.filter(p => GENERATED.test(rel(p)))) {
   const html = stripScripts(sources.get(p));

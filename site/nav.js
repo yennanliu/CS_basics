@@ -71,6 +71,7 @@
     { id: 'problems',           label: 'problems',   href: 'problems.html' },
     { id: 'patterns',           label: 'patterns',   href: 'patterns.html' },
     { id: 'cards',              label: 'cards',      href: 'derivation-cards.html' },
+    { id: 'behavioral',         label: 'behavioral', href: 'behavioral.html' },
     { id: 'lc-similar',         label: 'similar',    href: 'lc-similar.html' },
     { id: 'faqs',               label: 'faqs',       href: 'faqs.html' },
     { id: 'lc-random-picker',   label: 'random',     href: 'lc-random-picker.html' },

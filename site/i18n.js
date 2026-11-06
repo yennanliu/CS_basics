@@ -290,6 +290,15 @@ const CORPORA = [
     tracker: 'doc/faq-zh-progress.md',
     label: 'FAQ',
   },
+  {
+    name: 'behavioral',
+    enDir: 'doc/behavioral',
+    storeDir: 'i18n/zh/behavioral',
+    nested: false,
+    skip: new Set(['README']),
+    tracker: 'doc/behavioral-zh-progress.md',
+    label: 'Behavioral',
+  },
 ];
 
 /** One tree's entry by name, or undefined for a name no tree uses. */
