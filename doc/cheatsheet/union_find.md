@@ -368,7 +368,7 @@ class UnionFind:
 - Already connected nodes
 - Invalid indices
 
-### 0-4) The Five Union-Find Patterns ⭐⭐⭐⭐
+### 0-4) The Six Union-Find Patterns ⭐⭐⭐⭐
 
 Every problem below is the same template with a different answer to *"what is a node, and when
 do two of them merge?"* That question is the whole difficulty; the DSU itself never changes.
@@ -380,6 +380,7 @@ do two of them merge?"* That question is the whole difficulty; the DSU itself ne
 | 3 | **Redundant edge** | a vertex | as above, but *return* the first edge whose union fails | [1) LC 684](./union_find_examples.md#1-redundant-connection--lc-684), [2) LC 685](./union_find_examples.md#2-redundant-connection-ii--lc-685--dsu-on-a-directed-graph-) |
 | 4 | **2D grid connectivity** | a cell, flattened to `row * cols + col` | with the right/down neighbour, so each pair is considered once | [9) LC 200](./union_find_examples.md#9-number-of-islands--lc-200--grid--1d-via-row--cols--col), [10) LC 130](./union_find_examples.md#10-surrounded-regions--lc-130--a-virtual-border-node) |
 | 5 | **Weighted union-find** | a variable | carrying a *ratio* to the parent, multiplied through on path compression | [12) LC 399](./union_find_examples.md#12-evaluate-division--lc-399--weighted-union-find-with-ratios-) |
+| 6 | **Merge by a shared attribute** | a record id — or the attribute itself | when a record shows an attribute an earlier record already owns (`first_owner` map) | [Template 6: LC 721](#template-6-merge-by-a-shared-attribute--lc-721-), [15) LC 721](./union_find_examples.md#15-accounts-merge--lc-721--union-find-over-emails) |
 
 Two structural variants change *when* you run the algorithm rather than what it merges:
 
@@ -387,6 +388,184 @@ Two structural variants change *when* you run the algorithm rather than what it 
   endpoints you care about connect. [13) LC 1631](./union_find_examples.md#13-path-with-minimum-effort--lc-1631--sorted-edge-kruskal-style).
 - **Offline reverse** — union-find cannot *split*, so when the problem removes things, replay
   it backwards and add them instead. [14) LC 803](./union_find_examples.md#14-bricks-falling-when-hit--lc-803--offline-reverse-union-find-).
+
+### Template 6: Merge by a Shared Attribute — LC 721 ⭐⭐⭐⭐
+
+**Recognise** — "two X belong together if they **share** some Y" (an email, a row or column, a
+prime factor, a synonym), and the relation is **transitive**: A shares with B, B with C, so A
+and C are one group even though they share nothing. No edge list is given — the edges are
+implied by equal values. n ≤ 10³–10⁵ records, each with a handful of attributes → anything
+pairwise (O(n²) record comparisons) is the trap; O(total attributes) is expected.
+
+**Key point** — never compare records with each other. Walk the attributes once and keep a
+`first_owner[attribute] = record id` map: the first record to show an attribute owns it, and
+every later record showing it is unioned with that owner. A shared attribute is therefore one
+`union`, and transitivity comes free from the DSU.
+
+**What a node is — the one decision.** The DSU can hold either kind of thing, and both are
+correct; they differ in what you have to carry to the end:
+
+| Node is | Union | The map you need | The answer's label comes from | Use when |
+|---|---|---|---|---|
+| the **record id** (account index) | the current record with `first_owner[attr]` | `attr → first owner id` | the root's own record (`accounts[root][0]`) | records are indexed; an array DSU, no string keys |
+| the **attribute** (the email itself) | every attribute of a record with that record's first attribute (a star) | `attr → label`, plus a dict DSU keyed by attribute | any attribute in the group (`email_to_name[root]`) | there is no index — the attribute *is* the identity (LC 737 words, LC 1061 letters) |
+| **both**, in one DSU | a record id with each of its attributes, attributes offset into their own id range | none beyond the offset | — | the attribute values have a small known range (LC 947: column `c` becomes node `c + 10001`) |
+
+Below is the record-id form; the attribute-as-node form of the same problem is worked in
+[union_find_examples.md § 15) LC 721](./union_find_examples.md#15-accounts-merge--lc-721--union-find-over-emails).
+
+```python
+# python
+# LC 721 - Accounts Merge
+# IDEA: a node is an ACCOUNT index; email -> first account that showed it; a repeat email
+#       unions the current account with that owner. Group emails by the owner's root.
+# time = O(E log E), space = O(E)   E = total emails; the per-group sort dominates
+from collections import defaultdict
+
+
+class Solution(object):
+    def accountsMerge(self, accounts):
+        parent = list(range(len(accounts)))
+        size = [1] * len(accounts)
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]    # path halving
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            root_a, root_b = find(a), find(b)
+            if root_a == root_b:
+                return
+            if size[root_a] < size[root_b]:      # hang the smaller tree under the larger
+                root_a, root_b = root_b, root_a
+            parent[root_b] = root_a
+            size[root_a] += size[root_b]
+
+        # the bridge between the two kinds of thing: attribute -> first owner id
+        email_owner = {}
+        for i, account in enumerate(accounts):
+            for email in account[1:]:
+                if email in email_owner:
+                    union(i, email_owner[email])   # shared attribute => same person
+                else:
+                    email_owner[email] = i
+
+        # every email is filed once, under the root of the account that first showed it
+        groups = defaultdict(list)
+        for email, owner in email_owner.items():
+            groups[find(owner)].append(email)
+
+        merged = []
+        for root, emails in groups.items():
+            merged.append([accounts[root][0]] + sorted(emails))
+        return merged
+```
+
+```java
+// java
+// LC 721 - Accounts Merge
+// IDEA: node = account index; email -> first owner; a repeat email unions the two accounts
+// time = O(E log E), space = O(E)   E = total emails
+public List<List<String>> accountsMerge(List<List<String>> accounts) {
+    int n = accounts.size();
+    int[] parent = new int[n];
+    for (int i = 0; i < n; i++) {
+        parent[i] = i;
+    }
+    Map<String, Integer> emailOwner = new HashMap<>();
+    for (int i = 0; i < n; i++) {
+        List<String> account = accounts.get(i);
+        for (int j = 1; j < account.size(); j++) {
+            String email = account.get(j);
+            Integer owner = emailOwner.get(email);
+            if (owner == null) {
+                emailOwner.put(email, i);
+            } else {
+                parent[find(parent, i)] = find(parent, owner);   // shared email => same person
+            }
+        }
+    }
+    Map<Integer, List<String>> groups = new HashMap<>();
+    for (Map.Entry<String, Integer> entry : emailOwner.entrySet()) {
+        int root = find(parent, entry.getValue());
+        groups.computeIfAbsent(root, k -> new ArrayList<>()).add(entry.getKey());
+    }
+    List<List<String>> merged = new ArrayList<>();
+    for (Map.Entry<Integer, List<String>> entry : groups.entrySet()) {
+        List<String> emails = entry.getValue();
+        Collections.sort(emails);
+        List<String> row = new ArrayList<>();
+        row.add(accounts.get(entry.getKey()).get(0));
+        row.addAll(emails);
+        merged.add(row);
+    }
+    return merged;
+}
+
+private int find(int[] parent, int x) {
+    while (parent[x] != x) {
+        parent[x] = parent[parent[x]];   // path halving
+        x = parent[x];
+    }
+    return x;
+}
+```
+
+**Complexity**
+- **Time O(E log E)**, E = total emails: the attribute loop does one dict lookup and at most one
+  `union` per email, O(E · α(n)) in all; `sorted(emails)` over the groups, which partition the
+  E distinct emails, is the O(E log E) that dominates.
+- **Space O(E)**: `email_owner` holds every distinct email once; `parent` / `size` are O(n) ≤ O(E).
+
+**Dry run**
+
+```text
+accounts = [John a x] [John y z] [John x y] [Mary m]      ids 0 1 2 3
+
+i=0  a -> owner 0        x -> owner 0
+i=1  y -> owner 1        z -> owner 1
+i=2  x seen (owner 0) -> union(2, 0)    y seen (owner 1) -> union(2, 1)   => {0,1,2}
+i=3  m -> owner 3
+
+groups by find(owner):  root{0,1,2}: a x y z      root 3: m
+-> [John a x y z] [Mary m]        accounts 0 and 1 share nothing, yet merge through 2
+```
+
+**Traps**
+- **Grouping by the account instead of by `email_owner`.** Iterating `accounts` and appending
+  each email under `find(i)` files a shared email twice (`[John a x x y y z]`); file each email
+  once, from the owner map, or collect into a set.
+- **Merging by name.** Two Johns with no common email are two people — LC 721 example 1 keeps
+  `johnnybravo` apart. The name is a label to print, never a key to union on.
+- **Comparing accounts pairwise** for a common email: O(n² · k), and it still needs a DSU or a
+  BFS for the transitive step. The owner map makes every shared email one O(1) union.
+- **Recursive `find` or DFS on a long chain.** 1000 accounts each sharing one email with the
+  next make a 1000-deep path; Python's default recursion limit is 1000. The loop above, or an
+  explicit stack in a DFS, does not care.
+- **Attribute-as-node with overlapping id ranges** (LC 947): row `5` and column `5` are
+  different things. Offset one range (`col + 10001`) or key the dict by `('r', 5)` / `('c', 5)`.
+
+**Not this if** — the "shared attribute" is a *similarity* that must be tested, not an equal
+value you can hash (LC 839: two strings are linked if they differ in exactly two places). There
+is no owner map to build; it is the pairwise O(n² · L) check, then a plain component count.
+And when the attribute has a direction or an order (`a` must come before `b`), it is
+[topological sort](./topology_sorting.md), not union-find.
+
+**Drill** — the same move, with a different attribute:
+
+| LC | The shared attribute | Node choice |
+|---|---|---|
+| 721 Accounts Merge | an email | account id (or the email) |
+| 990 Satisfiability of Equality Equations | a variable name | the variable — 26 letters, an array |
+| 1061 Lexicographically Smallest Equivalent String | a letter | the letter, root = smallest in the group |
+| 737 Sentence Similarity II | a word in a similar-pair | the word, a dict DSU |
+| 947 Most Stones Removed with Same Row or Column | a row or a column value | the row and the column, offset apart |
+| 952 Largest Component Size by Common Factor | a prime factor | the number's index, `first_owner[factor]` |
+| 2709 Greatest Common Divisor Traversal | a prime factor | index, as in 952; answer = one component |
+
+LC 721 · LC 990 · LC 1061 · LC 737 · LC 947 · LC 952 · LC 2709, easy → hard.
 
 
 ## 1) Example Problems with Code References
@@ -417,7 +596,7 @@ Two structural variants change *when* you run the algorithm rather than what it 
 ### Advanced Applications
 - **LC 130** – Surrounded Regions: Use dummy node for boundary connected regions
 - **LC 547** – Friend Circles: Find groups in friendship matrix
-- **LC 721** – Accounts Merge: Group accounts by shared emails
+- **LC 721** – Accounts Merge: Group accounts by shared emails — the anchor of [Template 6](#template-6-merge-by-a-shared-attribute--lc-721-)
 - **LC 886** – Possible Bipartition: Detect bipartite graph conflicts
 - **LC 1135** – Connecting Cities: MST with Kruskal's algorithm
 - **LC 1319** – Network Connections: Minimum operations to connect all nodes

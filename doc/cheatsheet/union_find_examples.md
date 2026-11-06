@@ -1,7 +1,7 @@
 # Union Find — Worked Examples
 
 > **Scope** — The worked-solution archive behind [union_find.md](./union_find.md): seventeen problems grouped by what a node represents — a vertex, a grid cell, or a variable carrying a ratio — since that is the only thing that changes between them.
-> **See also**: [union_find.md](./union_find.md) — the parent sheet: the DSU template, the five patterns, the optimisations and the traps; [graph.md](./graph.md) — graph representation in general; [topology_sorting.md](./topology_sorting.md) — the directed counterpart; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — which of the two a problem wants.
+> **See also**: [union_find.md](./union_find.md) — the parent sheet: the DSU template, the six patterns, the optimisations and the traps; [graph.md](./graph.md) — graph representation in general; [topology_sorting.md](./topology_sorting.md) — the directed counterpart; [diff_toposort_quickunion.md](./diff_toposort_quickunion.md) — which of the two a problem wants.
 
 ## LeetCode Problem Lists
 
@@ -11,12 +11,12 @@
 ## Overview
 
 This is the long tail of [union_find.md](./union_find.md). The parent keeps the template, the
-five patterns and the traps; this file keeps the problems that *apply* them.
+six patterns and the traps; this file keeps the problems that *apply* them.
 
 ### Key Properties
 - **Complexity**: every solution below is near-O(α(n)) per operation with path compression and union by rank — effectively O(1); where a solution is dominated by something else (a sort, a BFS) its own comment says so
 - **Core Idea**: the DSU never changes. What changes is what a node *is*, and when two of them merge — which is why these are grouped by that rather than by difficulty
-- **When to Use**: after the parent's pattern table has told you which of the five shapes the problem is
+- **When to Use**: after the parent's pattern table has told you which of the six shapes the problem is
 
 
 ## Cycle Detection & Redundancy
@@ -1261,11 +1261,62 @@ class Solution(object):
 
 ### 15) Accounts Merge — LC 721 — union-find over emails
 
-> Union emails belonging to the same person; group by root; sort and format.
+> **Key point** — a shared email is one `union`, and the DSU supplies the transitivity. What you
+> union is a choice: the **account id** (via an `email → first owner` map) or the **email itself**
+> (each account a star around its first email). Both are correct; this section is the email form.
+
+**Reduces to**: [union_find.md § Template 6: Merge by a Shared Attribute](./union_find.md#template-6-merge-by-a-shared-attribute--lc-721-),
+which works the account-id form and compares the two node choices. The email form is the second
+solution worth knowing because it needs no index at all — the attribute *is* the node — which is
+what LC 737 (words) and LC 1061 (letters) leave you with.
+
+```python
+# python
+# LC 721 - Accounts Merge (the node is the EMAIL itself)
+# IDEA: union every email of an account with that account's first email; a shared email
+#       then joins two accounts' stars into one component. Group emails by root.
+# time = O(E log E), space = O(E)   E = total emails; the per-group sort dominates
+from collections import defaultdict
+
+
+class Solution(object):
+    def accountsMerge(self, accounts):
+        parent = {}            # email -> parent email; keys are created on first sight
+        email_to_name = {}
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            parent[find(a)] = find(b)
+
+        for account in accounts:
+            name = account[0]
+            first_email = account[1]
+            for email in account[1:]:
+                if email not in parent:
+                    parent[email] = email
+                email_to_name[email] = name
+                union(first_email, email)      # star: one union per email links the account
+
+        groups = defaultdict(list)
+        for email in parent:
+            groups[find(email)].append(email)
+
+        merged = []
+        for root, emails in groups.items():
+            # no account index survives, so the name is read off any email in the group
+            merged.append([email_to_name[root]] + sorted(emails))
+        return merged
+```
 
 ```java
-// LC 721 - Accounts Merge
-// IDEA: Union-Find — union all emails in same account; group by root
+// java
+// LC 721 - Accounts Merge (the node is the EMAIL itself)
+// IDEA: Union-Find over emails — union every email of an account with its first; group by root
 // time = O(N * M * α(N*M)), space = O(N*M)
 public List<List<String>> accountsMerge(List<List<String>> accounts) {
     Map<String, String> parent = new HashMap<>();
@@ -1301,42 +1352,12 @@ private void union(Map<String, String> parent, String x, String y) {
     parent.put(find(parent, x), find(parent, y));
 }
 ```
-```python
-# python
-# LC 721 - Accounts Merge
-# IDEA: union every email in an account to the account's FIRST email, then group by root.
-#       The name is looked up from any email in the group.
-# time = O(N*M*alpha + N*M log(N*M)) for the sort, space = O(N*M)
-class Solution(object):
-    def accountsMerge(self, accounts):
-        parent = {}
-        email_to_name = {}
 
-        def find(x):
-            parent.setdefault(x, x)
-            while parent[x] != x:
-                parent[x] = parent[parent[x]]
-                x = parent[x]
-            return x
-
-        def union(a, b):
-            parent[find(a)] = find(b)
-
-        for acc in accounts:
-            name, emails = acc[0], acc[1:]
-            for e in emails:
-                parent.setdefault(e, e)
-                email_to_name[e] = name
-                ### union to the FIRST email, which links the whole account in one pass
-                union(emails[0], e)
-
-        groups = {}
-        for e in parent:
-            groups.setdefault(find(e), []).append(e)
-
-        return [[email_to_name[root]] + sorted(mails)
-                for root, mails in groups.items()]
-```
+**Traps**
+- **Union each email with one anchor, not every pair.** A star around the first email is
+  `len(account) - 1` unions; all pairs is O(k²) per account for the same component.
+- **The name lives on the email, not the root's account.** With no index left, `email_to_name`
+  is the only way back to a label; it is safe because every account of one person has one name.
 
 > **Variation — LC 839 Similar String Groups**: same "union then group by root" shape, but the edges are *not given*. All strings are anagrams, so run the O(N² · L) pairwise check — `union(i, j)` iff `s[i] == s[j]` or they differ at **exactly 2** positions — then the answer is the component count.
 

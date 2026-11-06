@@ -1,8 +1,8 @@
-<!-- 4054c8f77618 -->
+<!-- 1c1ca4b11633 -->
 # 併查集（Union Find） — 實戰題解
 
 > **範圍** — [union_find.md](./union_find.md) 背後的解題檔案庫：十七道題，依「一個節點代表什麼」分組——頂點、格子，或帶比值的變數——因為題目之間變的就只有這件事。
-> **另見** — [union_find.md](./union_find.md)：母文件，收錄 DSU 模板、五大模式、最佳化與陷阱；[graph.md](./graph.md)：圖的表示法通論；[topology_sorting.md](./topology_sorting.md)：有向圖的對應做法；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md)：判斷題目要的是兩者中的哪一個。
+> **另見** — [union_find.md](./union_find.md)：母文件，收錄 DSU 模板、六大模式、最佳化與陷阱；[graph.md](./graph.md)：圖的表示法通論；[topology_sorting.md](./topology_sorting.md)：有向圖的對應做法；[diff_toposort_quickunion.md](./diff_toposort_quickunion.md)：判斷題目要的是兩者中的哪一個。
 
 <!-- bb69b2231e40 -->
 ## LeetCode 題目清單
@@ -10,17 +10,17 @@
 - [Union Find](https://leetcode.com/problem-list/union-find/)
 - [Graph](https://leetcode.com/problem-list/graph/)
 
-<!-- 75bcd2f93afc -->
+<!-- bd45c1fb5574 -->
 ## 總覽
 
-這是 [union_find.md](./union_find.md) 的長尾。母文件收模板、五大模式與陷阱；
+這是 [union_find.md](./union_find.md) 的長尾。母文件收模板、六大模式與陷阱；
 本文件收*套用*它們的題目。
 
-<!-- 168c2e76d288 -->
+<!-- da1c77988340 -->
 ### 關鍵性質
 - **複雜度**：以下每個解法在路徑壓縮 + 按秩合併之下，每次操作都接近 O(α(n))——實務上就是 O(1)；若某個解法的複雜度是由別的東西主導（排序、BFS），它自己的註解會說明
 - **核心想法**：DSU 本身從來不變。變的是節點*是什麼*，以及兩個節點何時該合併——這也是這些題目依此分組、而非依難度分組的原因
-- **何時使用**：當母文件的模式表已經告訴你這題屬於五種形狀中的哪一種之後
+- **何時使用**：當母文件的模式表已經告訴你這題屬於六種形狀中的哪一種之後
 
 <!-- f46275d72ab8 -->
 ## 環偵測與冗餘邊
@@ -266,13 +266,26 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 <!-- bf2cf14ba80c -->
 ## 其他結構上的併查集
 
-<!-- 1c222d0958af -->
+<!-- b562571d2020 -->
 ### 15) Accounts Merge — LC 721 — 在 email 上做併查集
 
-> 把屬於同一個人的 email union 起來；依根分組；排序並整理輸出格式。
+> **Key point** — 一個共用的 email 就是一次 `union`，遞移性由 DSU 提供。要 union 什麼是一個選擇：
+> **帳號 id**（透過 `email → 第一個主人` 對照表），或 **email 本身**（每個帳號以它的第一個 email
+> 為中心連成星狀）。兩種都正確；這一節是 email 的寫法。
+
+**Reduces to**：[union_find.md § Template 6：依共用屬性合併](./union_find.md#template-6-merge-by-a-shared-attribute--lc-721-)，
+那裡做的是帳號 id 的寫法，並比較兩種節點選擇。email 寫法之所以是值得會的第二種解，是因為它完全
+不需要索引——屬性*就是*節點——而這正是 LC 737（單字）和 LC 1061（字母）留給你的處境。
 
 <!--CODE-->
+
 <!--CODE-->
+
+**Traps**
+- **每個 email 只跟一個錨點 union，不要兩兩都 union。** 以第一個 email 為中心的星狀是
+  `len(account) - 1` 次 union；兩兩相連則每個帳號要 O(k²)，得到的卻是同一個元件。
+- **名字掛在 email 上，而不是 root 所屬的帳號上。** 沒有索引可用時，`email_to_name` 是取回標籤的
+  唯一途徑；這樣做是安全的，因為同一個人的所有帳號名字都相同。
 
 > **變化題 — LC 839 Similar String Groups**：一樣是「先 union 再依根分組」的形狀，但邊*沒有直接給你*。所有字串互為 anagram，所以就跑 O(N² · L) 的兩兩檢查——`union(i, j)` 當且僅當 `s[i] == s[j]` 或它們**恰好**有 2 個位置不同——答案就是元件數。
 
