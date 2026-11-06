@@ -314,6 +314,56 @@ class Solution(object):
         return res
 
 
+# V0-3
+# IDEA: DFS (recursion) (gemini)
+from collections import defaultdict
+
+class Solution(object):
+    def accountsMerge(self, accounts):
+        """
+        :type accounts: List[List[str]]
+        :rtype: List[List[str]]
+        """
+        if not accounts:
+            return []
+
+        # 1. 建圖：graph[email] = [相鄰的 emails]
+        graph = defaultdict(list)
+        email_to_name = {}
+
+        for acc in accounts:
+            name = acc[0]
+            first_email = acc[1]
+            
+            for email in acc[1:]:
+                # 第一個 email 與當前 email 建立雙向邊
+                graph[first_email].append(email)
+                graph[email].append(first_email)
+                # 記錄 email 對應的名稱
+                email_to_name[email] = name
+
+        # 2. DFS 遍歷圖中所有的連通分量
+        visited = set()
+        res = []
+
+        def dfs(email, component):
+            visited.add(email)
+            component.append(email)
+            for neighbor in graph[email]:
+                if neighbor not in visited:
+                    dfs(neighbor, component)
+
+        # 3. 對每一個未存取過的 email 進行 DFS
+        for email in email_to_name:
+            if email not in visited:
+                component = []
+                dfs(email, component)
+                # 將收集到的連通分量排序，並加上姓名
+                res.append([email_to_name[email]] + sorted(component))
+
+        return res
+
+
 # V0-5
 # IDEA : DFS ON THE EMAIL GRAPH (connected components) (CLAUDE)
 #
