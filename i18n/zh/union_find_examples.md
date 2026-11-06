@@ -266,26 +266,15 @@ Python 參考：`leetcode_python/Depth-First-Search/count-unreachable-pairs-of-n
 <!-- bf2cf14ba80c -->
 ## 其他結構上的併查集
 
-<!-- b562571d2020 -->
+<!-- 5777d57ce3cf -->
 ### 15) Accounts Merge — LC 721 — 在 email 上做併查集
 
 > **Key point** — 一個共用的 email 就是一次 `union`，遞移性由 DSU 提供。要 union 什麼是一個選擇：
 > **帳號 id**（透過 `email → 第一個主人` 對照表），或 **email 本身**（每個帳號以它的第一個 email
-> 為中心連成星狀）。兩種都正確；這一節是 email 的寫法。
+> 為中心連成星狀）。兩種都正確。
 
 **Reduces to**：[union_find.md § Template 6：依共用屬性合併](./union_find.md#template-6-merge-by-a-shared-attribute--lc-721-)，
-那裡做的是帳號 id 的寫法，並比較兩種節點選擇。email 寫法之所以是值得會的第二種解，是因為它完全
-不需要索引——屬性*就是*節點——而這正是 LC 737（單字）和 LC 1061（字母）留給你的處境。
-
-<!--CODE-->
-
-<!--CODE-->
-
-**Traps**
-- **每個 email 只跟一個錨點 union，不要兩兩都 union。** 以第一個 email 為中心的星狀是
-  `len(account) - 1` 次 union；兩兩相連則每個帳號要 O(k²)，得到的卻是同一個元件。
-- **名字掛在 email 上，而不是 root 所屬的帳號上。** 沒有索引可用時，`email_to_name` 是取回標籤的
-  唯一途徑；這樣做是安全的，因為同一個人的所有帳號名字都相同。
+LC 721 唯一的題解所在——兩種節點選擇都在那裡用 Python 與 Java 解完，附 dry run 與陷阱。
 
 > **變化題 — LC 839 Similar String Groups**：一樣是「先 union 再依根分組」的形狀，但邊*沒有直接給你*。所有字串互為 anagram，所以就跑 O(N² · L) 的兩兩檢查——`union(i, j)` 當且僅當 `s[i] == s[j]` 或它們**恰好**有 2 個位置不同——答案就是元件數。
 

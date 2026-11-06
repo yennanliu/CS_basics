@@ -408,11 +408,11 @@ correct; they differ in what you have to carry to the end:
 | Node is | Union | The map you need | The answer's label comes from | Use when |
 |---|---|---|---|---|
 | the **record id** (account index) | the current record with `first_owner[attr]` | `attr → first owner id` | the root's own record (`accounts[root][0]`) | records are indexed; an array DSU, no string keys |
-| the **attribute** (the email itself) | every attribute of a record with that record's first attribute (a star) | `attr → label`, plus a dict DSU keyed by attribute | any attribute in the group (`email_to_name[root]`) | there is no index — the attribute *is* the identity (LC 737 words, LC 1061 letters) |
+| the **attribute** (the email itself) | every attribute of a record with that record's first attribute (a star) | `attr → label`, plus a dict DSU keyed by attribute | any attribute in the group (`email_to_name[root]`) | there is no index — the attribute *is* the identity; also the only choice when the input hands you explicit pairs of values (LC 737 words, LC 1061 letters) |
 | **both**, in one DSU | a record id with each of its attributes, attributes offset into their own id range | none beyond the offset | — | the attribute values have a small known range (LC 947: column `c` becomes node `c + 10001`) |
 
-Below is the record-id form; the attribute-as-node form of the same problem is worked in
-[union_find_examples.md § 15) LC 721](./union_find_examples.md#15-accounts-merge--lc-721--union-find-over-emails).
+Below is the record-id form, in Python and Java, then the attribute-as-node form of the same
+problem. This card is LC 721's only worked home; the examples sheet points here.
 
 ```python
 # python
@@ -471,8 +471,10 @@ class Solution(object):
 public List<List<String>> accountsMerge(List<List<String>> accounts) {
     int n = accounts.size();
     int[] parent = new int[n];
+    int[] size = new int[n];
     for (int i = 0; i < n; i++) {
         parent[i] = i;
+        size[i] = 1;
     }
     Map<String, Integer> emailOwner = new HashMap<>();
     for (int i = 0; i < n; i++) {
@@ -483,7 +485,7 @@ public List<List<String>> accountsMerge(List<List<String>> accounts) {
             if (owner == null) {
                 emailOwner.put(email, i);
             } else {
-                parent[find(parent, i)] = find(parent, owner);   // shared email => same person
+                union(parent, size, i, owner);   // shared email => same person
             }
         }
     }
@@ -511,6 +513,76 @@ private int find(int[] parent, int x) {
     }
     return x;
 }
+
+private void union(int[] parent, int[] size, int a, int b) {
+    int rootA = find(parent, a);
+    int rootB = find(parent, b);
+    if (rootA == rootB) {
+        return;
+    }
+    if (size[rootA] < size[rootB]) {     // hang the smaller tree under the larger
+        int tmp = rootA;
+        rootA = rootB;
+        rootB = tmp;
+    }
+    parent[rootB] = rootA;
+    size[rootA] += size[rootB];
+}
+```
+
+**The email as the node.** The same problem with no account index in the DSU: every email of an
+account is unioned with that account's first email (a star of `len(account) - 1` unions, not
+all pairs), and the name is read back off the email, since no index survives to the end.
+
+```python
+# python
+# LC 721 - Accounts Merge (the node is the EMAIL itself)
+# IDEA: union every email of an account with that account's first email; a shared email
+#       then joins two accounts' stars into one component. Group emails by root.
+# time = O(E log E), space = O(E)   E = total emails; the per-group sort dominates
+from collections import defaultdict
+
+
+class Solution(object):
+    def accountsMerge(self, accounts):
+        parent = {}            # email -> parent email; keys are created on first sight
+        size = {}
+        email_to_name = {}
+
+        def find(x):
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a, b):
+            root_a, root_b = find(a), find(b)
+            if root_a == root_b:
+                return
+            if size[root_a] < size[root_b]:
+                root_a, root_b = root_b, root_a
+            parent[root_b] = root_a
+            size[root_a] += size[root_b]
+
+        for account in accounts:
+            name = account[0]
+            first_email = account[1]
+            for email in account[1:]:
+                if email not in parent:
+                    parent[email] = email
+                    size[email] = 1
+                email_to_name[email] = name
+                union(first_email, email)      # star: one union per email links the account
+
+        groups = defaultdict(list)
+        for email in parent:
+            groups[find(email)].append(email)
+
+        merged = []
+        for root, emails in groups.items():
+            # no account index survives, so the name is read off any email in the group
+            merged.append([email_to_name[root]] + sorted(emails))
+        return merged
 ```
 
 **Complexity**
@@ -518,6 +590,7 @@ private int find(int[] parent, int x) {
   `union` per email, O(E · α(n)) in all; `sorted(emails)` over the groups, which partition the
   E distinct emails, is the O(E log E) that dominates.
 - **Space O(E)**: `email_owner` holds every distinct email once; `parent` / `size` are O(n) ≤ O(E).
+  The email-as-node form has the same bounds, with `parent` keyed by the E emails instead.
 
 **Dry run**
 
@@ -548,22 +621,26 @@ groups by find(owner):  root{0,1,2}: a x y z      root 3: m
   different things. Offset one range (`col + 10001`) or key the dict by `('r', 5)` / `('c', 5)`.
 
 **Not this if** — the "shared attribute" is a *similarity* that must be tested, not an equal
-value you can hash (LC 839: two strings are linked if they differ in exactly two places). There
+value you can hash (LC 839: two strings are linked if they are equal or differ in exactly two
+places). There
 is no owner map to build; it is the pairwise O(n² · L) check, then a plain component count.
 And when the attribute has a direction or an order (`a` must come before `b`), it is
 [topological sort](./topology_sorting.md), not union-find.
 
-**Drill** — the same move, with a different attribute:
+**Drill** — the same move with a different attribute, then the near neighbours where the links
+are handed to you. Only the first group needs `first_owner`: there the link is *discovered* from
+an equal value. In the second, the input already names the pairs, so you union them directly and
+the card's lesson is only the node choice (the values themselves are the nodes):
 
-| LC | The shared attribute | Node choice |
+| LC | How two things get linked | Node choice |
 |---|---|---|
-| 721 Accounts Merge | an email | account id (or the email) |
-| 990 Satisfiability of Equality Equations | a variable name | the variable — 26 letters, an array |
-| 1061 Lexicographically Smallest Equivalent String | a letter | the letter, root = smallest in the group |
-| 737 Sentence Similarity II | a word in a similar-pair | the word, a dict DSU |
-| 947 Most Stones Removed with Same Row or Column | a row or a column value | the row and the column, offset apart |
-| 952 Largest Component Size by Common Factor | a prime factor | the number's index, `first_owner[factor]` |
-| 2709 Greatest Common Divisor Traversal | a prime factor | index, as in 952; answer = one component |
+| 721 Accounts Merge | **shared value**: an email | account id (or the email) |
+| 947 Most Stones Removed with Same Row or Column | **shared value**: a row or a column | the row and the column, offset apart |
+| 952 Largest Component Size by Common Factor | **shared value**: a prime factor, via `first_owner[factor]` | the number's index |
+| 2709 Greatest Common Divisor Traversal | **shared value**: a prime factor, as in 952 | index; answer = one component |
+| 990 Satisfiability of Equality Equations | **explicit pair**: union every `a==b` first, then check every `a!=b` against the finished DSU | the variable — 26 letters, an array |
+| 1061 Lexicographically Smallest Equivalent String | **explicit pair**: `s1[i]` ~ `s2[i]` | the letter, root = smallest in the group |
+| 737 Sentence Similarity II | **explicit pair**: each similar-word pair | the word, a dict DSU |
 
 LC 721 · LC 990 · LC 1061 · LC 737 · LC 947 · LC 952 · LC 2709, easy → hard.
 
