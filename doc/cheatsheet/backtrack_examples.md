@@ -255,18 +255,19 @@ def numSquarefulPerms(nums):
 
 > **Key point** — the same "choose where to cut" loop as LC 131, with a different gate: a piece
 > is 1–3 digits, at most 255, and has no leading zero. Two things end a branch: four pieces that
-> consumed the **whole** string (record it), or four pieces with digits left over (drop it).
+> consumed the **whole** string (record it), or four pieces with digits left over (drop it). The
+> prune that makes it fast: with `k` pieces still to place, the digits left must number between
+> `k` and `3k`, so a branch that cannot finish is cut before it recurses.
 
 **Reduces to**: [backtrack.md § Template 8](./backtrack.md#template-8-palindrome-partitioning--lc-131-) — the gate is "valid octet", and the depth is capped at 4.
 
 ```python
 # python
 # LC 93 - Restore IP Addresses
-# IDEA: cut s into 4 pieces; each piece is 1-3 digits, <= 255, no leading zero
+# IDEA: cut s into 4 pieces; each piece is 1-3 digits, <= 255, no leading zero;
+#       prune when the digits left cannot fill the pieces left (need k..3k digits for k pieces)
 # time = O(3^4 * n), space = O(n)   at most 3 choices per piece, 4 pieces, O(n) to join
 def restoreIpAddresses(s):
-    if len(s) > 12:                      # 4 pieces of at most 3 digits
-        return []
     res = []
     path = []
 
@@ -275,6 +276,10 @@ def restoreIpAddresses(s):
             if start == len(s):          # every digit used
                 res.append(".".join(path))
             return
+        pieces_left = 4 - len(path)
+        digits_left = len(s) - start
+        if digits_left < pieces_left or digits_left > 3 * pieces_left:
+            return                       # cannot finish: too few, or too many, digits left
         for end in range(start + 1, min(start + 3, len(s)) + 1):
             piece = s[start:end]
             if len(piece) > 1 and piece[0] == "0":
@@ -289,10 +294,24 @@ def restoreIpAddresses(s):
     return res
 ```
 
+**Dry run** — `s = "0000"`:
+
+```text
+path              start  pieces_left  digits_left  action
+[]                0      4            4            try "0" (len 1); "00" breaks on the leading zero
+["0"]             1      3            3            try "0"
+["0","0"]         2      2            2            try "0"
+["0","0","0"]     3      1            1            try "0"
+["0","0","0","0"] 4      -            -            4 pieces and start == len(s) -> record "0.0.0.0"
+```
+
 **Traps**
 - `"0000"` → `["0.0.0.0"]`: a single `0` is a valid piece; only a **longer** piece may not start
   with `0`.
 - Recording at four pieces without checking `start == len(s)` returns addresses that drop digits.
+- Checking only `len(s) > 12` up front prunes nothing below the root: on `"1111111111"` (10
+  digits) the cut `["1"]` leaves 9 digits for 3 pieces, which is already a dead branch. The
+  per-call `k..3k` bound drops it immediately.
 
 ### Word Break II — LC 140
 
