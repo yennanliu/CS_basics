@@ -62,6 +62,7 @@ class Solution(object):
 
         return self.res
 
+    # dfs + backtrack
     def helper(self, s, idx, path):
         """
         s: 原始字串
@@ -69,6 +70,12 @@ class Solution(object):
         path: 目前已經選取的 IP segments
         """
 
+        # NOTE !!
+        # how we decide if `a valid ip address is found`
+        # ->
+        #   1. size = 4
+        #   2. idx = len(s) (use all of the s)
+        #
         # Base Case 1:
         # 已經選滿 4 個 segments
         if len(path) == 4:
@@ -100,6 +107,10 @@ class Solution(object):
         if remaining_chars > remaining_segments * 3:
             return
 
+        # NOTE !!!
+        # range(1, 4)
+        # so can loop from 1 to 3
+        #
         # 嘗試取出 1、2、3 位數字
         for length in range(1, 4):
 
@@ -107,10 +118,13 @@ class Solution(object):
             if idx + length > len(s):
                 break
 
+            # NOTE !!! below
             segment = s[idx:idx + length]
 
             # Leading zero 不合法，例如 "01"、"00"
             # 但單獨的 "0" 是合法的
+            # 
+            # e.g. -> "0" 開頭且len > 1 is invalid
             if len(segment) > 1 and segment[0] == "0":
                 break
 
@@ -131,6 +145,7 @@ class Solution(object):
             # -------------------------
             # Undo (Backtracking)
             # -------------------------
+            # NOTE !!! BACKTRACK (within for loop)
             path.pop()
 
 
@@ -159,6 +174,7 @@ class Solution(object):
             # 剪枝：如果剩餘的字元太多或太少，無法組成剩下的區段，直接返回
             remaining_segments = 4 - len(path)
             remaining_chars = len(s) - start_idx
+            
             if remaining_chars < remaining_segments or remaining_chars > remaining_segments * 3:
                 return
 
