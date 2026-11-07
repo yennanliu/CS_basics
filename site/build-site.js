@@ -13,6 +13,7 @@ const {
   titleCaseFromFile, summariseDoc,
   isoDate,
   stampDrillVerdicts,
+  drillSummary,
 } = require('./build-lib');
 
 // The practice log's latest verdict per problem, for the Drill Path badges on the
@@ -403,6 +404,8 @@ if (cheatsheetFiles.length > 0) {
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
     htmlContent = stampDrillVerdicts(annotated, drillVerdicts);
+    // Read back for the index: how much of this sheet's drill is ok, and what is next.
+    const drill = drillSummary(htmlContent);
 
     // Preference order: explicit override → the file's own H1 → the filename.
     const title = sheetMeta.title || h1Title || titleCaseFromFile(baseName);
@@ -439,6 +442,7 @@ if (cheatsheetFiles.length > 0) {
       tier,
       kind,
       description,
+      drill,
       enHeadingIds,
       content: buildPageContent({
         title,
@@ -573,6 +577,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
       ...page,
       title,
       description,
+      ...(corpus === 'cheatsheet' ? { drill: drillSummary(htmlContent) } : {}),
       // Kept so the caller can write the search record without re-deriving it.
       headings: headings.slice(0, 40),
       content: buildPageContent({

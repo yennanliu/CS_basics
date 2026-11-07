@@ -773,6 +773,160 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   .filter-chip { font-size: 12px; }
 }
 
+/* ── Cheatsheet index: stat strip, view tabs, review path ─── */
+.cs-stats {
+  list-style: none; margin: 0 0 28px; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border: 1px solid var(--border);
+}
+.cs-stats li {
+  padding: 14px 16px; font-size: 14px; color: var(--text-muted);
+  border-right: 1px solid var(--border);
+}
+.cs-stats li:last-child { border-right: none; }
+.cs-stats strong { display: block; font-size: 26px; line-height: 1.15; color: var(--text); font-weight: 700; }
+
+.cs-tabs {
+  display: flex; gap: 0; margin: 0 0 24px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none;
+}
+.cs-tab {
+  flex: 0 0 auto; padding: 10px 18px; margin-bottom: -1px;
+  font-size: 15px; color: var(--text-muted); text-decoration: none;
+  border: 1px solid transparent; border-bottom: 2px solid transparent;
+}
+.cs-tab:hover { color: var(--text); opacity: 1; }
+.cs-tab.is-on { color: var(--text); font-weight: 600; border-bottom-color: var(--text); }
+.cs-tab:focus-visible { outline: 2px solid var(--text); outline-offset: -2px; }
+
+.cs-view { margin: 0 0 16px; }
+.cs-view[hidden], .index-filter[hidden], .cat-jump[hidden], .path-summary[hidden] { display: none; }
+.view-heading { margin-top: 0; }
+/* With tabs the tab already names the view; the heading stays for no-JS and screen readers. */
+.cs-tabs ~ .cs-view .view-heading {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Priority view */
+.tier-section .cat-heading { align-items: center; }
+.tier-section .cat-heading .prio { font-size: 15px; }
+.tier-key-label { font-weight: 700; color: var(--text); }
+.feature-grid { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); }
+.feature-grid .sheet-card { padding: 20px; border-left-width: 4px; }
+.feature-grid .card-title { font-size: 19px; }
+.sheet-card .card-cat {
+  margin: -2px 0 0; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim);
+}
+.tier-section-2 .sheet-card { padding: 12px 16px; }
+.tier-section-2 .sheet-card .card-desc { font-size: 14px; }
+/* The priority view is for scanning: three lines of Scope, the full line is one click away. */
+#by-priority .sheet-card .card-desc {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* Topic view: jump links */
+.cat-jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
+.cat-jump a {
+  font-size: 13px; padding: 3px 10px; color: var(--text-muted); text-decoration: none;
+  border: 1px solid var(--border);
+}
+.cat-jump a:hover { color: var(--text); border-color: var(--border-strong); opacity: 1; }
+
+/* Drill progress, on cards and path steps */
+.sheet-card .card-drill, .card-drill {
+  margin: auto 0 0; padding-top: 2px; display: flex; align-items: baseline; gap: 10px;
+  font-size: 13px; line-height: 1.5; color: var(--text-dim);
+}
+.path-step .card-drill { margin-top: 4px; }
+.drill-text { min-width: 0; }
+.card-drill a { color: var(--text-muted); }
+.drill-bar {
+  flex: 0 0 64px; height: 6px; align-self: center; display: flex; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border);
+}
+.sheet-card:hover .drill-bar { background: var(--bg); }
+.drill-ok { background: var(--text); }
+.drill-again {
+  background: repeating-linear-gradient(45deg, var(--border-strong) 0 2px, transparent 2px 4px);
+}
+.drill-again-n { color: var(--text-muted); }
+.drill-none { font-style: italic; }
+
+/* Review path */
+.path-summary {
+  display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 0;
+  margin: 18px 0 28px; border: 1px solid var(--border);
+}
+.path-next { padding: 18px 20px; border-right: 1px solid var(--border); background: var(--surface); }
+.path-next-label {
+  display: block; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim);
+}
+.path-next-title { display: inline-block; margin: 6px 0 4px; font-size: 22px; font-weight: 700; color: var(--text); text-decoration: none; }
+.path-next-title:hover { text-decoration: underline; opacity: 1; }
+.path-next-why { margin: 0 0 14px; font-size: 15px; color: var(--text-muted); max-width: 70ch; }
+.path-next-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.path-all-done { margin: 0; color: var(--text-muted); }
+.path-btn, .step-toggle, .path-reset {
+  font-family: inherit; font-size: 13px; cursor: pointer; text-decoration: none;
+  color: var(--text); background: var(--bg);
+  border: 1px solid var(--border-strong); border-radius: 0; padding: 6px 12px;
+}
+.path-btn:hover, .step-toggle:hover { border-color: var(--text); opacity: 1; }
+.path-btn-primary { color: var(--inverse-text); background: var(--inverse-bg); border-color: var(--inverse-bg); }
+.path-btn-primary:hover { color: var(--inverse-text); }
+.path-progress { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.path-meter { display: block; height: 10px; background: var(--surface); border: 1px solid var(--border); }
+.path-meter-fill { display: block; height: 100%; width: 0; background: var(--text); transition: width 0.3s; }
+.path-count { font-size: 15px; color: var(--text); }
+.path-reset { align-self: flex-start; padding: 0; border: none; background: none; color: var(--text-dim); text-decoration: underline; text-underline-offset: 3px; }
+.path-reset:hover { color: var(--text); }
+.path-note { grid-column: 1 / -1; margin: 0; padding: 8px 20px; font-size: 12px; color: var(--text-dim); border-top: 1px solid var(--border); }
+
+.path-stage { margin: 0 0 28px; }
+.stage-heading {
+  display: flex; align-items: baseline; gap: 12px;
+  margin: 0 0 2px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.stage-blurb { margin: 6px 0 8px; font-size: 14px; color: var(--text-dim); }
+.path-list { list-style: none; margin: 0; padding: 0; }
+.path-step {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; gap: 14px; align-items: start;
+  padding: 12px 12px 12px 8px; border-bottom: 1px solid var(--border); border-left: 3px solid transparent;
+  transition: background 0.15s;
+}
+.path-step:hover { background: var(--bg-alt); }
+.step-no {
+  width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--text-muted); border: 1px solid var(--border-strong); border-radius: 50%;
+}
+.step-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
+.step-title { font-weight: 600; color: var(--text); text-decoration: none; font-size: 16px; }
+.step-title:hover { text-decoration: underline; opacity: 1; }
+.step-extra { font-size: 13px; color: var(--text-dim); }
+.step-why { margin: 3px 0 0; font-size: 14px; color: var(--text-muted); }
+.step-mark { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; min-width: 130px; }
+.step-status { font-size: 12px; color: var(--text-dim); text-align: right; }
+.path-step.is-done .step-no { background: var(--inverse-bg); color: var(--inverse-text); border-color: var(--inverse-bg); }
+.path-step.is-done .step-title { color: var(--text-muted); }
+.path-step.is-due .step-no { border-style: dashed; border-color: var(--text); color: var(--text); }
+.path-step.is-due .step-status { color: var(--text); font-weight: 600; }
+.path-step.is-next { border-left-color: var(--text); background: var(--surface); }
+
+@media (max-width: 768px) {
+  .cs-stats { grid-template-columns: repeat(2, 1fr); }
+  .cs-stats li:nth-child(2n) { border-right: none; }
+  .cs-stats li:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+  .cs-stats strong { font-size: 22px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .path-summary { grid-template-columns: 1fr; }
+  .path-next { border-right: none; border-bottom: 1px solid var(--border); }
+  .path-step { grid-template-columns: 30px minmax(0, 1fr); gap: 10px; }
+  .step-mark { grid-column: 2; flex-direction: row; align-items: center; justify-content: space-between; min-width: 0; }
+  .step-status { text-align: left; }
+}
+
 /* ═══════════════════════════════════════════════════════
    LANDING PAGE
    index.html was README rendered straight through — 55 tables and 1,512
