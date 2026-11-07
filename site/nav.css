@@ -283,3 +283,8 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Release stamp ─── finalize-pages.js adds it to every page's footer from
+   data/release.json; nav.css is the one stylesheet all three page families load. */
+footer .site-version { font-size: 12px; opacity: 0.85; }
+footer .site-version a { margin: 0; }

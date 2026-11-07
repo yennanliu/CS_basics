@@ -113,6 +113,39 @@ for (const file of pages) {
 
 console.log(`✓ Head metadata: ${patched} page(s) filled in, ${pages.length - patched} already complete`);
 
+// ── Release stamp ────────────────────────────────────────────────────────────
+//
+// data/release.json is written by .github/workflows/release.yml when a release
+// is cut, so the footer of every page names the release the site was built from.
+// Stamped here rather than in each generator because the footer is written in
+// three places (htmlTemplate, the hand-written pages, the visualizers) and only
+// this pass sees all of them. No file — a fork, an old checkout — means no stamp.
+
+const RELEASE_FILE = path.join(__dirname, '..', 'data', 'release.json');
+const release = fs.existsSync(RELEASE_FILE) ? JSON.parse(fs.readFileSync(RELEASE_FILE, 'utf8')) : null;
+
+if (release && release.version) {
+  const tagUrl = `https://github.com/yennanliu/CS_basics/releases/tag/${encodeURIComponent(release.version)}`;
+  const stamp = `<p class="site-version">release <a href="${tagUrl}">${escAttr(release.version)}</a>` +
+    (release.date ? ` · ${escAttr(release.date)}` : '') + '</p>';
+  let stamped = 0;
+  for (const file of pages) {
+    const html = fs.readFileSync(file, 'utf8');
+    if (!html.includes('</footer>') || html.includes('class="site-version"')) continue;
+    // Inside the footer's .container when it has one, so it lines up with the rest.
+    const out = /<\/div>\s*<\/footer>/.test(html)
+      ? html.replace(/(\s*)<\/div>(\s*)<\/footer>/, `$1  ${stamp}$1</div>$2</footer>`)
+      : html.replace('</footer>', `${stamp}</footer>`);
+    fs.writeFileSync(file, out);
+    stamped++;
+  }
+  fs.mkdirSync(path.join(SITE, 'data'), { recursive: true });
+  fs.writeFileSync(path.join(SITE, 'data', 'release.json'), JSON.stringify(release, null, 2) + '\n');
+  console.log(`✓ Release stamp: ${release.version} on ${stamped} page footer(s)`);
+} else {
+  console.log('→ No data/release.json, footers left unstamped');
+}
+
 // ── Sitemap ──────────────────────────────────────────────────────────────────
 
 const indexable = pages

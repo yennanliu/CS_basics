@@ -716,6 +716,23 @@ than overwriting the first. The branch comes back with
 drops a keepsake, and `git for-each-ref refs/pruned/` lists them. Deleting a remote branch leaves local branches and worktrees alone. The Sep 2026 sweep and
 the decisions it left open are in [`branch-cleanup-2026-09.md`](./branch-cleanup-2026-09.md).
 
+## release_notes.py
+
+Picks the next release tag and writes the release post. `.github/workflows/release.yml`
+calls both; run it locally to preview what a release would say.
+
+```bash
+python3 script/release_notes.py version                 # V<YYYYMMDD>, or V<YYYYMMDD>.2 on a second release that day
+python3 script/release_notes.py notes V20261107         # the post, since the latest V<date> tag
+python3 script/release_notes.py notes V20261107 --since V20260902
+python3 script/test_release_notes.py                    # its tests
+```
+
+The post is computed from git, never typed: commits since the previous release, files
+changed and added per top-level tree, the new Python and Java solution files, and the days
+`data/progress.txt` gained. The workflow appends GitHub's merged-PR notes under it, because
+most of this repo lands as direct pushes and the PR list alone describes a fraction of a release.
+
 ## Other Scripts
 
 | Script | Purpose |

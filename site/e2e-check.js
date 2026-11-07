@@ -98,6 +98,22 @@ for (const [label, test] of REQUIRED_MARKUP) {
      bad.length ? `${bad.length} missing, e.g. ${bad.slice(0, 3).map(rel).join(', ')}` : '');
 }
 
+// data/release.json names the release the site was built from, and
+// finalize-pages.js stamps it into every footer. A page missing it is one that
+// finishing pass never reached, or a footer whose markup changed shape.
+const RELEASE_FILE = path.join(__dirname, '..', 'data', 'release.json');
+if (fs.existsSync(RELEASE_FILE)) {
+  const { version } = JSON.parse(fs.readFileSync(RELEASE_FILE, 'utf8'));
+  const want = `>${version}</a>`;
+  const unstamped = pages.filter(p => {
+    const h = sources.get(p);
+    const m = h.match(/<p class="site-version">[\s\S]*?<\/p>/);
+    return h.includes('<footer') && !(m && m[0].includes(want) && h.indexOf(m[0]) < h.indexOf('</footer>'));
+  });
+  ok(`every footer carries release ${version}`, unstamped.length === 0,
+     unstamped.length ? `${unstamped.length} missing, e.g. ${unstamped.slice(0, 3).map(rel).join(', ')}` : '');
+}
+
 // A page title of "undefined" or a bare " — CS_basics" means the title fell
 // through every fallback the builder has.
 const badTitles = pages.filter(p => /<title>\s*(undefined|—|-)?\s*(CS_basics)?\s*<\/title>/.test(sources.get(p)));

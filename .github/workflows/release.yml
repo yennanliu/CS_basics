@@ -1,0 +1,169 @@
+name: Release
+
+# Manually triggered release (Actions → Release → Run workflow).
+#
+#   1. builds the site and runs the same gates deploy-pages.yml does, on the tip
+#      of master — a release never points at a tree that would not deploy
+#   2. picks the tag: V<YYYYMMDD> (the scheme the earlier hand-made releases
+#      used; a second release that day becomes V<YYYYMMDD>.2), or `version`
+#   3. writes data/release.json and commits it to master, so the site's footers
+#      name the release (site/finalize-pages.js stamps every page from it)
+#   4. publishes the GitHub Release on that commit. The post is
+#      script/release_notes.py's summary (commits, what changed per tree, new
+#      solutions, practice days logged) with GitHub's merged-PR notes appended
+#   5. dispatches deploy-pages.yml, so the live site shows the new version
+#
+# Pushes made with GITHUB_TOKEN never trigger other workflows, so step 5 is an
+# explicit dispatch rather than relying on deploy-pages.yml's push trigger.
+# `dry_run` stops before anything is committed and prints the post it would publish.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Explicit tag (e.g. V20261107); empty = today's date"
+        required: false
+        default: ""
+      prerelease:
+        description: "Mark as a pre-release"
+        type: boolean
+        default: false
+      dry_run:
+        description: "Dry run: build, test and draft the post, but commit, tag and deploy nothing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # commit data/release.json, create the release + tag
+  actions: write    # dispatch deploy-pages.yml
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Require master
+        if: github.ref != 'refs/heads/master'
+        run: |
+          echo "::error::Releases are cut from master only (this run is on ${GITHUB_REF_NAME})."
+          exit 1
+
+      # Full history and tags: the post is a diff against the previous release.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --prefix site
+
+      - name: Pick the version
+        id: version
+        env:
+          REQUESTED: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [ -n "$REQUESTED" ]; then
+            if ! [[ "$REQUESTED" =~ ^V[0-9]{8}(\.[0-9]+)?$ ]]; then
+              echo "::error::'$REQUESTED' is not a V<YYYYMMDD>[.N] tag."
+              exit 1
+            fi
+            TAG="$REQUESTED"
+          else
+            TAG="$(python3 script/release_notes.py version)"
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null; then
+            echo "::error::${TAG} already exists. Pick a different version."
+            exit 1
+          fi
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          echo "Releasing ${TAG}"
+
+      - name: Write data/release.json
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          printf '{\n  "version": "%s",\n  "date": "%s"\n}\n' "$TAG" "$(date -u +%F)" > data/release.json
+          git diff -- data/release.json
+
+      # The same gates deploy-pages.yml runs, against the tree being released —
+      # including the stamp just written.
+      - name: Build and validate the site
+        env:
+          SKIP_FONTS: '1'
+        run: |
+          bash site/build.sh
+          node site/e2e-check.js _site
+          npm test --prefix site
+          python3 script/test_release_notes.py
+
+      - name: Draft the release post
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          python3 script/release_notes.py notes "$TAG" > "$RUNNER_TEMP/notes.md"
+          cat "$RUNNER_TEMP/notes.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Dry-run summary
+        if: inputs.dry_run
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: echo "### Dry run — nothing committed, \`${TAG}\` not created" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit data/release.json
+        if: ${{ !inputs.dry_run }}
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/release.json
+          git commit -m "chore(release): ${TAG}"
+          # master may have moved while the build ran; data/release.json is
+          # only ever written here, so a rebase cannot conflict on it.
+          for attempt in 1 2 3; do
+            git pull --rebase origin master && git push origin HEAD:master && exit 0
+            sleep $((attempt * 5))
+          done
+          echo "::error::Could not push the release commit."
+          exit 1
+
+      # --target pins the tag to the exact commit just pushed rather than
+      # whatever master is by the time the API call lands.
+      - name: Create GitHub Release
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          PRERELEASE: ${{ inputs.prerelease }}
+        run: |
+          set -euo pipefail
+          SHA="$(git rev-parse HEAD)"
+          FLAGS=()
+          if [ "$PRERELEASE" = "true" ]; then FLAGS+=(--prerelease); else FLAGS+=(--latest); fi
+          gh release create "$TAG" --target "$SHA" --title "CS_basics $TAG" \
+            --notes-file "$RUNNER_TEMP/notes.md" --generate-notes "${FLAGS[@]}"
+          {
+            echo "### Released [\`${TAG}\`](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/${TAG})"
+            echo "Commit: \`${SHA:0:7}\` · deploy-pages.yml dispatched"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Deploy the site
+        if: ${{ !inputs.dry_run }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-pages.yml --ref master
