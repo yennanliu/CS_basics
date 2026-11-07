@@ -1,8 +1,8 @@
-<!-- dcb02eb48dc1 -->
+<!-- 6e8fe00f5691 -->
 # Apache Spark — 資料工程面試深入解析
 
 > **範圍** — 資料工程面試會探的 Apache Spark 全部內容：執行模型、API 與最佳化器、shuffle、分區、join 與資料傾斜、快取與記憶體、PySpark 細節、寫入、Structured Streaming 入門、調校、除錯與常見故障 —— 以 Spark 3.5 為準，並標出 Spark 4.0 的差異。
-> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) — 橫跨所有 DE 主題的總覽與考前檢查清單；[`./stream_pipeline.md`](./stream_pipeline.md) — 串流的深入內容；[`./batch_pipeline.md`](./batch_pipeline.md) — Spark job 在管線中的位置；[`./hadoop.md`](./hadoop.md) — HDFS、YARN 與 MapReduce；[`../spark/faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md) — 較早的 Spark / Hadoop 筆記。
+> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) — 橫跨所有 DE 主題的總覽與考前檢查清單；[`./stream_pipeline.md`](./stream_pipeline.md) — 串流的深入內容；[`./batch_pipeline.md`](./batch_pipeline.md) — Spark job 在管線中的位置；[`./hadoop.md`](./hadoop.md) — HDFS、YARN 與 MapReduce；[`../spark/faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md) — 題庫：可以直接說出口的簡短答案、排錯演練、管線設計題與讀書計畫。
 
 每一題都先給你會說出口的那句話，再講機制，然後是面試官下一步會追問的取捨。
 除非該節另有說明，設定名稱與預設值都以 Spark 3.5 為準。
