@@ -1,7 +1,7 @@
 # Apache Spark — Data Engineering Interview Deep Dive
 
 > **Scope** — everything about Apache Spark a data engineering interview probes: the execution model, the APIs and the optimiser, shuffles, partitioning, joins and skew, caching and memory, PySpark specifics, writes, a first look at Structured Streaming, tuning, debugging and the common failures — answered for Spark 3.5, with Spark 4.0 differences called out.
-> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the high-level map and last-minute checklist across all DE topics; [`./stream_pipeline.md`](./stream_pipeline.md) — streaming in depth; [`./batch_pipeline.md`](./batch_pipeline.md) — where a Spark job sits in a pipeline; [`./hadoop.md`](./hadoop.md) — HDFS, YARN and MapReduce; [`../spark/faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md) — the older Spark / Hadoop notes.
+> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the high-level map and last-minute checklist across all DE topics; [`./stream_pipeline.md`](./stream_pipeline.md) — streaming in depth; [`./batch_pipeline.md`](./batch_pipeline.md) — where a Spark job sits in a pipeline; [`./hadoop.md`](./hadoop.md) — HDFS, YARN and MapReduce; [`../spark/faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md) — the question bank: short spoken answers, troubleshooting walk-throughs, pipeline-design prompts and a study plan.
 
 Every answer leads with the sentence you would say out loud, then the mechanism, then the
 trade-off the interviewer pushes on next. Configuration names and defaults are Spark 3.5's

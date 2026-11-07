@@ -1,5 +1,8 @@
-<!-- 5ad12d474298 -->
+<!-- 7ba96ff78303 -->
 # MapReduce FAQ
+
+> **範圍** — 如何把 SQL 查詢寫成 MapReduce job 的延伸閱讀清單。MapReduce 模型本身在別處回答。
+> **另見**：[`./faq_spark_hadoop.md`](./faq_spark_hadoop.md) — MapReduce 模型與 Spark vs MapReduce（§1）；[`../de/hadoop.md`](../de/hadoop.md) — MapReduce 從頭到尾。
 
 <!-- 4d12990ada6f -->
 ## SQL -> MapReduce

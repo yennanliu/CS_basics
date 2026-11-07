@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 1419 / 1419 sections (100%)
+## Status — 1495 / 1495 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -106,7 +106,7 @@ half-translated document renders with English gaps rather than failing.
 | [redis/redis_leaderboard](./faq/redis/redis_leaderboard.md) | 15 | [✅](../i18n/zh/faq/redis/redis_leaderboard.md) |
 | [spark/faq_hadoop](./faq/spark/faq_hadoop.md) | 2 | [✅](../i18n/zh/faq/spark/faq_hadoop.md) |
 | [spark/faq_mapreduce](./faq/spark/faq_mapreduce.md) | 2 | [✅](../i18n/zh/faq/spark/faq_mapreduce.md) |
-| [spark/faq_spark_hadoop](./faq/spark/faq_spark_hadoop.md) | 2 | [✅](../i18n/zh/faq/spark/faq_spark_hadoop.md) |
+| [spark/faq_spark_hadoop](./faq/spark/faq_spark_hadoop.md) | 78 | [✅](../i18n/zh/faq/spark/faq_spark_hadoop.md) |
 | [sql/faq_mysql](./faq/sql/faq_mysql.md) | 5 | [✅](../i18n/zh/faq/sql/faq_mysql.md) |
 | [sql/faq_sql](./faq/sql/faq_sql.md) | 37 | [✅](../i18n/zh/faq/sql/faq_sql.md) |
 | [stream/faq_stream](./faq/stream/faq_stream.md) | 3 | [✅](../i18n/zh/faq/stream/faq_stream.md) |
