@@ -31,7 +31,7 @@
 （Spark 以外的串流），以及 [`faq_hadoop.md`](./faq_hadoop.md) 與 [`faq_mapreduce.md`](./faq_mapreduce.md)
 延伸閱讀清單。
 
-<!-- ef72dfb73860 -->
+<!-- 20eb069b6e3f -->
 ### 0-2) 複習順序
 
 **照步驟依序進行。每一步先把「說出口」欄的章節大聲回答一遍，再讀「弄懂它」欄裡你講不清楚的部分，
@@ -43,7 +43,7 @@
 | 2 |  | Driver、executor、`spark-submit` | [2-1](#2-1-driver-executors-workers-and-the-cluster-manager), [2-2](#2-2-what-happens-after-spark-submit), [2-3](#2-3-the-spark-submit-command-and-adding-external-jars) | [2-1](../de/spark.md#2-1-driver-cluster-manager-executors), [2-2](../de/spark.md#2-2-deploy-modes-and-spark-submit) |
 | 3 |  | Job → stage → task、窄依賴 vs 寬依賴、partition | [3-1](#3-1-application-job-stage-and-task), [3-2](#3-2-how-does-spark-split-a-job-into-stages), [3-3](#3-3-narrow-vs-wide-dependencies), [3-4](#3-4-what-is-a-partition) | [2-3](../de/spark.md#2-3-job--stage--task-and-the-two-schedulers), [3-3](../de/spark.md#3-3-narrow-vs-wide-dependencies), [6-1](../de/spark.md#6-1-partitions-in-memory) |
 | 4 |  | RDD vs DataFrame、transformation vs action | [4-2](#4-2-rdd-vs-dataframe-vs-dataset), [4-3](#4-3-transformations-actions-and-lazy-evaluation), [4-5](#4-5-reducebykey-vs-groupbykey-vs-combinebykey) | [3-1](../de/spark.md#3-1-the-comparison), [3-2](../de/spark.md#3-2-transformations-vs-actions-and-lazy-evaluation), [3-4](../de/spark.md#3-4-rdd-era-questions-that-still-get-asked) |
-| 5 | 2 · 效能核心 | Shuffle | [5-1](#5-1-what-is-a-shuffle-and-what-triggers-one), [5-2](#5-2-why-is-a-shuffle-expensive-and-how-is-it-implemented), [5-3](#5-3-how-do-you-minimise-data-transfer-in-a-spark-job) | [5-1](../de/spark.md#5-1-what-a-shuffle-actually-does), [5-2](../de/spark.md#5-2-how-to-avoid-or-shrink-a-shuffle), [5-3](../de/spark.md#5-3-sparksqlshufflepartitions) |
+| 5 | 2 · 效能核心 | Shuffle | [5-1](#5-1-what-is-a-shuffle-and-what-triggers-one), [5-2](#5-2-why-is-a-shuffle-expensive-and-how-is-it-implemented), [5-3](#5-3-how-do-you-minimise-data-transfer-in-a-spark-job) | [5-1](../de/spark.md#5-1-what-a-shuffle-actually-does), [5-2](../de/spark.md#5-2-how-to-avoid-or-shrink-a-shuffle), [5-3](../de/spark.md#5-3-sparksqlshufflepartitions), [9-5](../de/spark.md#9-5-a-shuffle-byte-by-byte) |
 | 6 |  | `repartition`、`coalesce`、檔案配置、小檔案 | [3-5](#3-5-repartition-vs-coalesce), [12-3](#12-3-the-output-has-50000-tiny-files) | [6-2](../de/spark.md#6-2-repartition-vs-coalesce), [6-3](../de/spark.md#6-3-partitionby-on-write-and-the-small-files-problem), [6-4](../de/spark.md#6-4-bucketing) |
 | 7 |  | Join 策略與資料傾斜 | [5-5](#5-5-broadcast-join-vs-shuffle-joins), [6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it), [6-2](#6-2-how-do-you-fix-data-skew), [12-2](#12-2-one-task-takes-850-seconds-and-the-rest-take-ten) | [7-1](../de/spark.md#7-1-the-join-strategies), [7-2](../de/spark.md#7-2-join-types-and-their-traps), [7-3](../de/spark.md#7-3-data-skew-spotting-it-and-fixing-it) |
 | 8 |  | 快取與 checkpoint | [7-1](#7-1-cache-vs-persist), [7-2](#7-2-what-storage-levels-are-there), [7-3](#7-3-cache--persist-vs-checkpoint) | [8-1](../de/spark.md#8-1-when-to-cache), [8-2](../de/spark.md#8-2-storage-levels), [8-3](../de/spark.md#8-3-cache-vs-checkpoint-vs-writing-to-storage) |
@@ -617,7 +617,7 @@ Executors 分頁則顯示 task 執行時用到的 slot。**
 - 在實體計畫裡 shuffle 是 **`Exchange`** 節點；在 Spark UI 裡是 stage 的
   **Shuffle Write / Shuffle Read** 欄位。
 
-<!-- a6d43eabeb02 -->
+<!-- 03bbdd5f79e1 -->
 ### 5-2) 為什麼 shuffle 很貴？它是怎麼實作的？
 
 **每一列被 shuffle 的資料都要序列化、寫到本機磁碟、透過網路傳送、再讀回來 —— 而且 map 端要全部完成，
@@ -633,7 +633,8 @@ reduce 端才能開始。**
 - **External shuffle service** 在寫出 shuffle 檔案的 executor 消失後仍能提供這些檔案，
   這是在 YARN 上安全使用 dynamic allocation 的前提。
 
-深入解析：[`../de/spark.md` §5-1](../de/spark.md#5-1-what-a-shuffle-actually-does)。
+深入解析：[`../de/spark.md` §5-1](../de/spark.md#5-1-what-a-shuffle-actually-does)；一筆資料如何經過序列化、磁碟與網路，見
+[§9-5](../de/spark.md#9-5-a-shuffle-byte-by-byte)。
 
 <!-- 80df9a0d32fa -->
 ### 5-3) 如何把 Spark job 的資料傳輸降到最低？
