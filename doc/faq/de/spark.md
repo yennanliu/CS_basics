@@ -1,6 +1,6 @@
 # Apache Spark — Data Engineering Interview Deep Dive
 
-> **Scope** — everything about Apache Spark a data engineering interview probes: the execution model, the APIs and the optimiser, shuffles, partitioning, joins and skew, caching and memory, PySpark specifics, writes, a first look at Structured Streaming, tuning, debugging and the common failures — answered for Spark 3.5, with Spark 4.0 differences called out.
+> **Scope** — everything about Apache Spark a data engineering interview probes: the execution model, the APIs and the optimiser, shuffles, partitioning, joins and skew, caching, memory and serialisation, PySpark specifics, writes, a first look at Structured Streaming, tuning, debugging and the common failures — answered for Spark 3.5, with Spark 4.0 differences called out.
 > **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the high-level map and last-minute checklist across all DE topics; [`./stream_pipeline.md`](./stream_pipeline.md) — streaming in depth; [`./batch_pipeline.md`](./batch_pipeline.md) — where a Spark job sits in a pipeline; [`./hadoop.md`](./hadoop.md) — HDFS, YARN and MapReduce; [`../spark/faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md) — the question bank: short spoken answers, troubleshooting walk-throughs, pipeline-design prompts and a study plan.
 
 Every answer leads with the sentence you would say out loud, then the mechanism, then the
@@ -369,8 +369,9 @@ task 1: ...                               then aggregate / join the fetched rows
 ```
 
 - Spark uses the **sort-based shuffle**: one data file and one index file per map task.
-- Cost: disk write, serialisation, network transfer, disk read — usually the most expensive
-  part of a job, and where most spills and OOMs happen.
+- Cost: serialisation, disk write, network transfer, disk read, deserialisation — usually the
+  most expensive part of a job, and where most spills and OOMs happen. [§9-5](#9-5-a-shuffle-byte-by-byte) follows one row
+  through it.
 - **External shuffle service** keeps serving shuffle files after the executor that wrote
   them is gone (needed for dynamic allocation on YARN).
 
@@ -384,7 +385,7 @@ task 1: ...                               then aggregate / join the fetched rows
 - **Bucket** tables written repeatedly joined on the same key (section 6-4).
 - **Do not repartition "just in case"** — every `repartition` is a full shuffle.
 - Compress shuffle data (`spark.shuffle.compress`, on by default) and serialise with Kryo
-  for RDD workloads.
+  for RDD workloads. Kryo does not change a DataFrame shuffle ([§9-4](#9-4-the-serialisers-java-kryo-and-tungstens-binary-rows)).
 
 ### 5-3) `spark.sql.shuffle.partitions`
 
@@ -597,7 +598,7 @@ otherwise caching costs memory and buys nothing.**
 
 ---
 
-## 9) Memory Model and Resource Sizing ⭐⭐⭐⭐
+## 9) Memory, Serialisation and Resource Sizing ⭐⭐⭐⭐
 
 ### 9-1) Unified memory management
 
@@ -640,16 +641,171 @@ partition — rather than one huge executor per node or one core per executor.**
 - Driver memory matters only for what comes back to it: `collect`, `toPandas`, broadcasts,
   and very large plans / file listings.
 
-### 9-3) Serialisation
+### 9-3) Serialisation and deserialisation: what and where
 
-**Spark serialises data for shuffles, caching and sending closures; Kryo is faster and more
-compact than Java serialisation for RDDs, and DataFrames already use Tungsten's own encoders.**
+**Serialisation turns an in-memory object into bytes that can cross a process boundary or sit
+on disk; deserialisation rebuilds the object from those bytes. Spark does it every time data
+leaves an executor's heap — shipping tasks, shuffles, serialised caching, broadcasts, results
+and the Python boundary — so every one of those paths pays CPU for it.**
 
-- `spark.serializer=org.apache.spark.serializer.KryoSerializer` and register classes for the
-  best results (RDD / Scala workloads).
-- **Closures are serialised too**: a lambda that references a non-serialisable object (a DB
-  connection, a logger, the enclosing class) fails with `Task not serializable`. Create the
-  object inside `mapPartitions` / `foreachPartition` instead.
+An object on the JVM heap is a graph of headers and pointers into one process's memory. Another
+executor, another machine or a file cannot follow those pointers, so the data has to be
+flattened into a self-contained byte stream first.
+
+```text
+executor A heap               on the wire / on disk             executor B heap
+("U1", 100)   ── serialise ──▶  0a 02 55 31 64 …  ── deserialise ──▶  ("U1", 100)
+object graph: headers,          flat, self-contained,               a new object graph,
+pointers, boxed fields          compressible                        rebuilt field by field
+```
+
+| Where | Direction | What is serialised | With what |
+|---|---|---|---|
+| Task launch | driver → executor | the task: your function and everything it captures | always Java serialisation, whatever `spark.serializer` says |
+| Shuffle | map task → local disk → reduce task | every row that crosses the exchange | DataFrame: `UnsafeRowSerializer`; RDD: `spark.serializer` |
+| Serialised caching | heap ↔ storage memory / disk | the cached partitions | RDD `*_SER` levels: `spark.serializer`; `DataFrame.cache()`: compressed columnar batches built by Spark SQL |
+| Broadcast | driver → executors, in blocks | the broadcast value | `spark.serializer`, then compressed |
+| Results | executor → driver | `collect()` / `take()` output | `spark.serializer`, capped by `spark.driver.maxResultSize` |
+| Python boundary | JVM ↔ Python worker | rows into and out of Python UDFs and RDD functions | pickle (cloudpickle for functions), Arrow for pandas UDFs — §10 |
+
+**Closures are serialised too**, so a lambda that captures a non-serialisable object (a DB
+connection, a logger, the enclosing class) fails with `Task not serializable` before a single
+task runs. Create the object on the executor instead:
+
+```scala
+// scala — fails: `conn` is opened on the driver and captured by the closure
+val conn = DriverManager.getConnection(url)
+rdd.foreach(row => insert(conn, row))            // Task not serializable
+
+// works: the connection is opened on the executor, once per partition
+rdd.foreachPartition { rows =>
+  val conn = DriverManager.getConnection(url)
+  try rows.foreach(row => insert(conn, row)) finally conn.close()
+}
+```
+
+### 9-4) The serialisers: Java, Kryo and Tungsten's binary rows
+
+**`spark.serializer` chooses between Java serialisation (the default) and Kryo for RDD records,
+broadcasts and results. DataFrame rows go through neither: Tungsten keeps them as `UnsafeRow`
+bytes from the start, so a SQL shuffle has nothing to convert.**
+
+| | Java (`JavaSerializer`) | Kryo (`KryoSerializer`) | Tungsten (`UnsafeRow`) |
+|---|---|---|---|
+| Used for | the default for RDD data, broadcasts and results; always for closures | RDD data, broadcasts and results once `spark.serializer` names it | DataFrame and SQL rows in shuffles, sorts and aggregations |
+| Encoding | class metadata plus every field, through `java.io.Serializable` | compact fields; a registered class is written as a small integer id | a null bitmap and fixed-width value slots, variable-length data at the end — already bytes |
+| Speed and size | slowest and largest | Spark's tuning guide: "often as much as 10x" faster and more compact | no object conversion on the shuffle path |
+| Needs | the class implements `Serializable` | classes registered for the compact form; a buffer big enough for the largest object | a schema, which is why only DataFrames and Datasets get it |
+
+`spark.serializer` is a core setting: set it before the `SparkContext` starts (builder,
+`spark-submit --conf` or `spark-defaults.conf`). On Spark 3, `spark.conf.set("spark.serializer", …)`
+on a running session is rejected.
+
+```python
+# python
+spark = (SparkSession.builder
+    .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+    .config("spark.kryo.classesToRegister", "com.acme.Click,com.acme.Session")
+    .config("spark.kryo.registrationRequired", "true")  # fail fast on an unregistered class
+    .config("spark.kryoserializer.buffer.max", "256m")  # default 64m
+    .getOrCreate())
+```
+
+**Traps**
+
+- **Kryo does not speed up a DataFrame shuffle.** SQL exchanges use `UnsafeRowSerializer`
+  whatever `spark.serializer` says. Kryo pays off for RDD code and broadcasts of JVM objects.
+- **An unregistered class still works, slowly.** Unless `registrationRequired` is on, Kryo writes
+  the full class name with every object, which is the overhead you switched to Kryo to remove.
+- **`Buffer overflow. Available: 0, required: …`** means one object outgrew
+  `spark.kryoserializer.buffer.max`; raise it (it must stay under 2048m).
+- **Typed Dataset lambdas convert every row.** `ds.map(o => …)` deserialises each `UnsafeRow`
+  into a JVM object and serialises the result back — `DeserializeToObject` and
+  `SerializeFromObject` in the plan. Column expressions skip both.
+- **Spark already uses Kryo internally** to shuffle RDDs of primitive types, arrays of them and
+  strings (since Spark 2.0), so switching helps most with RDDs of your own classes.
+
+### 9-5) A shuffle, byte by byte
+
+**A row that crosses a shuffle is serialised on the map side, buffered, compressed and written
+to a local shuffle file, fetched over the network by the reduce task, then decompressed and
+deserialised — CPU twice, disk twice and the network once, for every row.**
+
+```python
+# python
+orders = spark.createDataFrame(
+    [("U1", 100), ("U2", 200), ("U1", 300), ("U3", 400), ("U2", 500), ("U1", 600)],
+    ["user_id", "amount"])
+orders.groupBy("user_id").sum("amount").show()   # U1 1000, U2 700, U3 400
+```
+
+```text
+map side: 3 tasks, partial sums first        reduce side: hash(user_id) mod 3
+task 0: (U1,100) (U2,200) → U1:100 U2:200    p0 ◀ U1:100 U1:300 U1:600 → U1 1000
+task 1: (U1,300) (U3,400) → U1:300 U3:400    p1 ◀ U2:200 U2:500        → U2  700
+task 2: (U2,500) (U1,600) → U2:500 U1:600    p2 ◀ U3:400               → U3  400
+
+map task                                     reduce task
+1. compute the row, pick its partition id    5. fetch its block from every map output:
+2. serialise it into an in-memory buffer        network, or a local read when co-located
+3. sort by partition id; spill sorted runs      (up to spark.reducer.maxSizeInFlight = 48m)
+   to disk when execution memory runs out    6. decompress and deserialise
+4. merge into one data file + one index      7. aggregate, join or sort
+   file, compressed with lz4, through a
+   32k spark.shuffle.file.buffer per stream
+```
+
+The partial aggregate (`HashAggregate` before the `Exchange`, [§4-4](#4-4-reading-a-physical-plan)) is what shrinks the
+shuffle. Here every map task holds distinct keys, so nothing combines; with millions of rows per
+key it sends one partial sum per key per task instead of every row.
+
+How the map side sorts depends on which writer Spark picks:
+
+| Writer | Chosen when | What it sorts |
+|---|---|---|
+| `BypassMergeSortShuffleWriter` | no map-side combine in the shuffle, and at most `spark.shuffle.sort.bypassMergeThreshold` (200) reduce partitions | nothing: one file per reduce partition, concatenated at the end |
+| `UnsafeShuffleWriter` (serialised shuffle) | no map-side combine, a serialiser that can relocate serialised records (Kryo, `UnsafeRowSerializer`; not Java), fewer than 16,777,216 partitions | 8-byte pointers ordered by partition id; records are never deserialised to be sorted |
+| `SortShuffleWriter` | anything else, e.g. `reduceByKey` with map-side combine | deserialised objects, by partition id and key |
+
+The serialised shuffle sorts by **partition id only**, not by key. Ordering by key, for a
+sort-merge join, is a separate `Sort` on the reduce side.
+
+| Cost | Where it is paid | Spark UI stage metric |
+|---|---|---|
+| CPU | serialise and compress (map), decompress and deserialise (reduce), sort | task time not explained by I/O, GC time |
+| Disk | shuffle write, spills, reading the files back | Shuffle Write Size, Spill (Memory / Disk) |
+| Network | remote block fetches | Shuffle Remote Reads, Shuffle Read Blocked Time |
+| Memory | sort buffers, in-flight fetches, aggregation hash maps | Spill first, then OOM |
+
+The shuffle files stay on the map executor's local disk. If that executor is removed, the
+external shuffle service or shuffle tracking ([§5-1](#5-1-what-a-shuffle-actually-does), [§2-5](#2-5-dynamic-allocation)) is what keeps the reduce side able to
+fetch them.
+
+### 9-6) Cutting serialisation cost
+
+**First move fewer bytes, then make each byte cheaper: shrink what reaches the exchange, keep
+rows in DataFrame operators so they stay `UnsafeRow`, and only then tune the serialiser and
+buffers.**
+
+| Lever | Why it helps | More |
+|---|---|---|
+| Filter and project before the exchange | fewer rows and columns to serialise, write and fetch | [§5-2](#5-2-how-to-avoid-or-shrink-a-shuffle) |
+| Broadcast the small side of a join | the big side never crosses a shuffle | [§7-1](#7-1-the-join-strategies) |
+| Built-in functions over UDFs and typed lambdas | no `UnsafeRow` ↔ object conversion, no pickling to Python | [§10-2](#10-2-udfs-vs-pandas-udfs-vs-built-ins) |
+| Kryo with registered classes | smaller, faster RDD records and broadcasts | [§9-4](#9-4-the-serialisers-java-kryo-and-tungstens-binary-rows) |
+| Serialised RDD caching (`MEMORY_ONLY_SER`) | far less heap and GC, for CPU on every read | [§8-2](#8-2-storage-levels) |
+| Small closures; broadcast large lookup tables | a 200 MB map captured by a closure ships with every task | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
+| `spark.shuffle.file.buffer` from 32k to 64k–1m | fewer, larger writes when shuffle write time dominates | below |
+
+- Catalyst already pushes a `filter` written after a `join` below it, so reordering the code
+  often changes nothing. Check `explain("formatted")` before claiming a win.
+- `spark.shuffle.file.buffer` is per output stream, not per executor, and the bypass writer
+  opens one stream per reduce partition. Many streams × a large buffer is real memory, so
+  raise it only when shuffle write time is the bottleneck, and watch GC.
+- A high **Task Deserialization Time**, or the driver warning *"Stage N contains a task of very
+  large size"*, means the closures are too big. Broadcast whatever they capture.
+- In an interview, name the bottleneck from the Spark UI — serialisation CPU, fetch wait, spill
+  or network — before naming a fix. Adding executors helps none of the four by itself.
 
 ---
 
@@ -970,6 +1126,12 @@ idempotent — re-running must replace, not add.**
   small side must fit in driver and executor memory.
 - **How does Spark recover a lost partition?** Recomputes it from lineage.
 - **Narrow vs wide?** Narrow: one parent partition per child partition. Wide: many, so a shuffle.
+- **Serialisation vs deserialisation?** Object → bytes to ship or store; bytes → object to
+  compute on. Spark does both on every shuffle, broadcast, serialised cache and task launch.
+- **Does Kryo speed up a DataFrame shuffle?** No. SQL exchanges serialise `UnsafeRow`s with their
+  own serialiser; Kryo helps RDD records and broadcasts.
+- **What causes `Task not serializable`?** A closure captured something that cannot be
+  serialised. Create it on the executor, inside `foreachPartition`.
 - **Why avoid Python UDFs?** Row-by-row serialisation to a Python process, and the optimiser
   cannot see inside them.
 - **`client` vs `cluster` deploy mode?** Where the driver runs: your machine vs inside the cluster.

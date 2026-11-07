@@ -1,7 +1,7 @@
-<!-- 6e8fe00f5691 -->
+<!-- 3b296f6fb7e5 -->
 # Apache Spark — 資料工程面試深入解析
 
-> **範圍** — 資料工程面試會探的 Apache Spark 全部內容：執行模型、API 與最佳化器、shuffle、分區、join 與資料傾斜、快取與記憶體、PySpark 細節、寫入、Structured Streaming 入門、調校、除錯與常見故障 —— 以 Spark 3.5 為準，並標出 Spark 4.0 的差異。
+> **範圍** — 資料工程面試會探的 Apache Spark 全部內容：執行模型、API 與最佳化器、shuffle、分區、join 與資料傾斜、快取、記憶體與序列化、PySpark 細節、寫入、Structured Streaming 入門、調校、除錯與常見故障 —— 以 Spark 3.5 為準，並標出 Spark 4.0 的差異。
 > **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) — 橫跨所有 DE 主題的總覽與考前檢查清單；[`./stream_pipeline.md`](./stream_pipeline.md) — 串流的深入內容；[`./batch_pipeline.md`](./batch_pipeline.md) — Spark job 在管線中的位置；[`./hadoop.md`](./hadoop.md) — HDFS、YARN 與 MapReduce；[`../spark/faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md) — 題庫：可以直接說出口的簡短答案、排錯演練、管線設計題與讀書計畫。
 
 每一題都先給你會說出口的那句話，再講機制，然後是面試官下一步會追問的取捨。
@@ -291,7 +291,7 @@ RDD 是一堆不透明的物件，經過 Spark 看不進去的函式處理。**
 <!-- 29c396ef806a -->
 ## 5) Shuffle ⭐⭐⭐⭐⭐
 
-<!-- cdbbdeebdfc3 -->
+<!-- 3037f1f30e42 -->
 ### 5-1) Shuffle 實際上做了什麼
 
 **Shuffle 重新分配資料列，讓相同 key 的列都落在同一個 partition：每個 map task 把輸出依
@@ -300,12 +300,12 @@ RDD 是一堆不透明的物件，經過 Spark 看不進去的函式處理。**
 <!--CODE-->
 
 - Spark 使用 **sort-based shuffle**：每個 map task 一個資料檔與一個索引檔。
-- 成本：寫磁碟、序列化、網路傳輸、讀磁碟 —— 通常是 job 中最昂貴的部分，也是大多數
-  spill 與 OOM 發生的地方。
+- 成本：序列化、寫磁碟、網路傳輸、讀磁碟、反序列化 —— 通常是 job 中最昂貴的部分，也是
+  大多數 spill 與 OOM 發生的地方。[§9-5](#9-5-a-shuffle-byte-by-byte) 會跟著一筆資料走完整個過程。
 - **外部 shuffle service** 在寫出 shuffle 檔的 executor 消失後，仍繼續提供這些檔案
   （在 YARN 上做 dynamic allocation 時需要）。
 
-<!-- b6b912dbff45 -->
+<!-- 121d1278d4c4 -->
 ### 5-2) 怎麼避免或縮小 shuffle
 
 - **儘早過濾與投影**，讓進到 exchange 的資料更少（Catalyst 會做很多，但中間擋了一個
@@ -315,6 +315,7 @@ RDD 是一堆不透明的物件，經過 Spark 看不進去的函式處理。**
 - 對經常以同一個 key join 的表做 **bucketing**（見 6-4 節）。
 - **不要「以防萬一」就 repartition** —— 每一次 `repartition` 都是完整的 shuffle。
 - 壓縮 shuffle 資料（`spark.shuffle.compress`，預設開啟），RDD 工作負載用 Kryo 序列化。
+  Kryo 不會改變 DataFrame 的 shuffle（[§9-4](#9-4-the-serialisers-java-kryo-and-tungstens-binary-rows)）。
 
 <!-- eb35365d8ab1 -->
 ### 5-3) `spark.sql.shuffle.partitions`
@@ -498,8 +499,8 @@ Salting 只適用於可以拆開再合併的彙總（sum、count、max）—— 
 
 ---
 
-<!-- de157d3a6d28 -->
-## 9) 記憶體模型與資源配置 ⭐⭐⭐⭐
+<!-- aa2b70fae32d -->
+## 9) 記憶體、序列化與資源配置 ⭐⭐⭐⭐
 
 <!-- fa85414c4f81 -->
 ### 9-1) 統一記憶體管理
@@ -533,16 +534,128 @@ Salting 只適用於可以拆開再合併的彙總（sum、count、max）—— 
 - Driver 記憶體只跟回到它身上的東西有關：`collect`、`toPandas`、broadcast，以及非常大的
   計畫 / 檔案清單。
 
-<!-- c57a96527068 -->
-### 9-3) 序列化
+<!-- 9291f728bb48 -->
+### 9-3) 序列化與反序列化：是什麼、發生在哪裡
 
-**Spark 在 shuffle、快取與傳送 closure 時都要序列化資料；對 RDD 來說，Kryo 比 Java 序列化
-更快更緊湊，而 DataFrame 已經使用 Tungsten 自己的 encoder。**
+**序列化把記憶體中的物件轉成可以跨越行程邊界、或存放在磁碟上的位元組；反序列化再從這些
+位元組把物件重建回來。只要資料離開 executor 的 heap —— 派送 task、shuffle、序列化快取、
+broadcast、回傳結果，以及 Python 邊界 —— Spark 就要做一次，所以每一條路徑都要付 CPU 成本。**
 
-- 設定 `spark.serializer=org.apache.spark.serializer.KryoSerializer` 並註冊類別，效果最好
-  （RDD / Scala 工作負載）。
-- **Closure 也會被序列化**：引用了不可序列化物件（DB 連線、logger、外層類別）的 lambda
-  會以 `Task not serializable` 失敗。改在 `mapPartitions` / `foreachPartition` 裡建立該物件。
+JVM heap 上的物件是一張由物件頭與指標組成的圖，指向的是單一行程自己的記憶體。另一個
+executor、另一台機器或一個檔案都無法跟著這些指標走，所以資料必須先攤平成一段自給自足的
+位元組流。
+
+<!--CODE-->
+
+| 發生在哪裡 | 方向 | 序列化的是什麼 | 用什麼序列化 |
+|---|---|---|---|
+| 派送 task | driver → executor | task 本身：你的函式，以及它捕獲的所有東西 | 一律用 Java 序列化，不管 `spark.serializer` 設成什麼 |
+| Shuffle | map task → 本機磁碟 → reduce task | 每一筆跨越 exchange 的資料列 | DataFrame：`UnsafeRowSerializer`；RDD：`spark.serializer` |
+| 序列化快取 | heap ↔ storage 記憶體 / 磁碟 | 被快取的 partition | RDD 的 `*_SER` 等級：`spark.serializer`；`DataFrame.cache()`：Spark SQL 建立的壓縮欄式批次 |
+| Broadcast | driver → executor，分塊傳送 | broadcast 的值 | `spark.serializer`，再壓縮 |
+| 回傳結果 | executor → driver | `collect()` / `take()` 的輸出 | `spark.serializer`，上限是 `spark.driver.maxResultSize` |
+| Python 邊界 | JVM ↔ Python worker | 進出 Python UDF 與 RDD 函式的資料列 | pickle（函式用 cloudpickle），pandas UDF 用 Arrow —— 見 §10 |
+
+**Closure 也會被序列化**，所以一個捕獲了不可序列化物件（DB 連線、logger、外層類別）的
+lambda，會在任何 task 開始跑之前就以 `Task not serializable` 失敗。改在 executor 上建立該物件：
+
+<!--CODE-->
+
+<!-- 19f06b2dcdc1 -->
+### 9-4) 序列化器：Java、Kryo 與 Tungsten 的二進位資料列
+
+**`spark.serializer` 決定 RDD 記錄、broadcast 與回傳結果用 Java 序列化（預設）還是 Kryo。
+DataFrame 的資料列兩者都不經過：Tungsten 從一開始就把它們存成 `UnsafeRow` 位元組，所以
+SQL 的 shuffle 沒有東西需要轉換。**
+
+| | Java（`JavaSerializer`） | Kryo（`KryoSerializer`） | Tungsten（`UnsafeRow`） |
+|---|---|---|---|
+| 用在 | RDD 資料、broadcast 與結果的預設；closure 一律用它 | `spark.serializer` 指定它之後的 RDD 資料、broadcast 與結果 | DataFrame 與 SQL 資料列的 shuffle、排序與彙總 |
+| 編碼方式 | 類別 metadata 加上每個欄位，經由 `java.io.Serializable` | 緊湊的欄位編碼；註冊過的類別只寫一個小整數 id | null bitmap 加上固定寬度的值欄位，變長資料放在最後 —— 本身就是位元組 |
+| 速度與大小 | 最慢、最大 | Spark 調校指南："often as much as 10x" 更快、更緊湊 | shuffle 路徑上沒有物件轉換 |
+| 需要 | 類別實作 `Serializable` | 註冊類別才拿得到緊湊格式；buffer 要放得下最大的物件 | 一個 schema，所以只有 DataFrame 與 Dataset 用得到 |
+
+`spark.serializer` 是 core 設定：要在 `SparkContext` 啟動之前設好（builder、
+`spark-submit --conf` 或 `spark-defaults.conf`）。在 Spark 3 上，對執行中的 session 呼叫
+`spark.conf.set("spark.serializer", …)` 會被拒絕。
+
+<!--CODE-->
+
+**陷阱**
+
+- **Kryo 不會加快 DataFrame 的 shuffle。** SQL 的 exchange 用 `UnsafeRowSerializer`，不管
+  `spark.serializer` 設成什麼。Kryo 的效益在 RDD 程式碼與 JVM 物件的 broadcast。
+- **沒註冊的類別照樣能用，只是慢。** 除非開了 `registrationRequired`，Kryo 會在每個物件旁寫上
+  完整類別名稱，而這正是你改用 Kryo 想省掉的開銷。
+- **`Buffer overflow. Available: 0, required: …`** 表示某個物件超過了
+  `spark.kryoserializer.buffer.max`；調高它（必須小於 2048m）。
+- **Typed Dataset 的 lambda 會轉換每一列。** `ds.map(o => …)` 會把每個 `UnsafeRow` 反序列化成
+  JVM 物件，再把結果序列化回去 —— 計畫裡的 `DeserializeToObject` 與 `SerializeFromObject`。
+  欄位運算式兩者都不需要。
+- **Spark 內部早就用 Kryo** 來 shuffle 由基本型別、基本型別陣列與字串組成的 RDD（Spark 2.0
+  起），所以改用 Kryo 對「自訂類別的 RDD」幫助最大。
+
+<!-- fa18fc6f5acc -->
+### 9-5) 一次 shuffle，逐位元組拆解
+
+**跨越 shuffle 的每一列，都會在 map 端被序列化、放進 buffer、壓縮後寫入本機 shuffle 檔，
+再由 reduce task 透過網路抓取，最後解壓縮並反序列化 —— 每一列都付兩次 CPU、兩次磁碟、
+一次網路。**
+
+<!--CODE-->
+
+<!--CODE-->
+
+部分彙總（`Exchange` 之前的 `HashAggregate`，[§4-4](#4-4-reading-a-physical-plan)）才是縮小 shuffle 的關鍵。
+這個例子裡每個 map task 的 key 都不重複，所以沒有東西可以合併；當每個 key 有數百萬列時，
+它對每個 task 的每個 key 只送出一筆部分總和，而不是每一列。
+
+Map 端怎麼排序，取決於 Spark 選了哪個 writer：
+
+| Writer | 何時被選上 | 排序的是什麼 |
+|---|---|---|
+| `BypassMergeSortShuffleWriter` | shuffle 本身沒有 map 端合併，且 reduce partition 不超過 `spark.shuffle.sort.bypassMergeThreshold`（200） | 不排序：每個 reduce partition 一個檔，最後串接起來 |
+| `UnsafeShuffleWriter`（serialised shuffle） | 沒有 map 端合併、序列化器能搬移已序列化的記錄（Kryo、`UnsafeRowSerializer`；Java 不行）、partition 少於 16,777,216 個 | 依 partition id 排序的 8 位元組指標；排序時記錄從不反序列化 |
+| `SortShuffleWriter` | 其他情況，例如有 map 端合併的 `reduceByKey` | 反序列化後的物件，依 partition id 與 key |
+
+Serialised shuffle **只依 partition id 排序**，不依 key。Sort-merge join 需要的依 key 排序，
+是 reduce 端另一個 `Sort`。
+
+| 成本 | 付在哪裡 | Spark UI 的 stage 指標 |
+|---|---|---|
+| CPU | 序列化與壓縮（map）、解壓縮與反序列化（reduce）、排序 | I/O 解釋不了的 task 時間、GC time |
+| 磁碟 | shuffle 寫出、spill、把檔案讀回來 | Shuffle Write Size、Spill (Memory / Disk) |
+| 網路 | 抓取遠端區塊 | Shuffle Remote Reads、Shuffle Read Blocked Time |
+| 記憶體 | 排序 buffer、傳輸中的抓取、彙總用的 hash map | 先是 Spill，然後 OOM |
+
+Shuffle 檔留在 map executor 的本機磁碟上。如果那個 executor 被移除，靠的是外部 shuffle
+service 或 shuffle tracking（[§5-1](#5-1-what-a-shuffle-actually-does)、[§2-5](#2-5-dynamic-allocation)），reduce 端才抓得到它們。
+
+<!-- 5c48be54dfae -->
+### 9-6) 降低序列化成本
+
+**先少搬一點位元組，再讓每個位元組便宜一點：縮小進到 exchange 的資料、讓資料列留在
+DataFrame 運算子裡以維持 `UnsafeRow`，最後才去調序列化器與 buffer。**
+
+| 手段 | 為什麼有用 | 參考 |
+|---|---|---|
+| 在 exchange 之前過濾與投影 | 要序列化、寫出與抓取的列和欄都變少 | [§5-2](#5-2-how-to-avoid-or-shrink-a-shuffle) |
+| Broadcast join 中小的那一邊 | 大的那一邊完全不跨 shuffle | [§7-1](#7-1-the-join-strategies) |
+| 用內建函式，不用 UDF 與 typed lambda | 沒有 `UnsafeRow` ↔ 物件轉換，也不用 pickle 到 Python | [§10-2](#10-2-udfs-vs-pandas-udfs-vs-built-ins) |
+| Kryo 加上註冊類別 | RDD 記錄與 broadcast 更小、更快 | [§9-4](#9-4-the-serialisers-java-kryo-and-tungstens-binary-rows) |
+| 序列化的 RDD 快取（`MEMORY_ONLY_SER`） | heap 與 GC 大幅減少，代價是每次讀取的 CPU | [§8-2](#8-2-storage-levels) |
+| 小 closure；大型查找表用 broadcast | closure 捕獲的 200 MB map 會跟著每個 task 一起送出 | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
+| `spark.shuffle.file.buffer` 從 32k 調到 64k–1m | shuffle 寫出時間是瓶頸時，寫入次數更少、每次更大 | 見下方 |
+
+- Catalyst 本來就會把寫在 `join` 之後的 `filter` 推到它下面，所以調換程式碼順序往往什麼都
+  沒變。宣稱有改善之前先看 `explain("formatted")`。
+- `spark.shuffle.file.buffer` 是每個輸出串流一份，不是每個 executor 一份，而 bypass writer
+  會為每個 reduce partition 開一個串流。串流數 × 大 buffer 是實打實的記憶體，所以只有在
+  shuffle 寫出時間是瓶頸時才調高，並且留意 GC。
+- **Task Deserialization Time** 偏高，或 driver 出現 *"Stage N contains a task of very large
+  size"* 警告，代表 closure 太大。把它捕獲的東西改用 broadcast。
+- 面試時，先從 Spark UI 指出瓶頸 —— 序列化 CPU、fetch 等待、spill 還是網路 —— 再提解法。
+  單純加 executor 對這四者都沒有幫助。
 
 ---
 
@@ -799,7 +912,7 @@ Spark History Server 為已結束的應用程式顯示同樣的 UI。
 <!-- 5836420b361f -->
 ## 16) 常見問題 ⭐⭐⭐⭐⭐
 
-<!-- f25f752d31de -->
+<!-- a0ee8b78543d -->
 ### 16-1) 快問快答
 
 - **什麼會造成 stage 邊界？** 寬依賴 —— 一次 shuffle。
@@ -816,6 +929,12 @@ Spark History Server 為已結束的應用程式顯示同樣的 UI。
   必須放得進 driver 與 executor 的記憶體。
 - **Spark 怎麼復原遺失的 partition？** 從 lineage 重新計算。
 - **窄 vs 寬？** 窄：每個子 partition 只有一個父 partition。寬：很多個，所以要 shuffle。
+- **序列化 vs 反序列化？** 物件 → 位元組，用來傳送或儲存；位元組 → 物件，用來運算。每次
+  shuffle、broadcast、序列化快取與派送 task，Spark 兩者都要做。
+- **Kryo 會加快 DataFrame 的 shuffle 嗎？** 不會。SQL 的 exchange 用自己的序列化器處理
+  `UnsafeRow`；Kryo 幫的是 RDD 記錄與 broadcast。
+- **`Task not serializable` 是怎麼來的？** Closure 捕獲了無法序列化的東西。改在 executor 上、
+  在 `foreachPartition` 裡建立它。
 - **為什麼避免 Python UDF？** 逐列序列化到 Python 行程，而且最佳化器看不進去。
 - **`client` vs `cluster` 部署模式？** Driver 跑在哪：你的機器 vs 叢集內。
 - **Spark 裡的 DAG 是什麼？** RDD / DataFrame 依賴關係的圖，由排程器切成 stage。
