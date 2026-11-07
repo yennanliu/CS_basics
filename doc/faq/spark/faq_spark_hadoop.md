@@ -4,8 +4,72 @@
 > **See also**: [`../de/spark.md`](../de/spark.md) — Spark internals in depth; [`../de/hadoop.md`](../de/hadoop.md) — HDFS, YARN and MapReduce in depth; [`../de/stream_pipeline.md`](../de/stream_pipeline.md) — streaming semantics and engines; [`./faq_hadoop.md`](./faq_hadoop.md) and [`./faq_mapreduce.md`](./faq_mapreduce.md) — reading lists.
 
 Every answer opens with a **bold sentence — the one to say first** — then the two or three facts
-an interviewer expects next. Configuration names and defaults are Spark 3.5's. Section 14 turns
-the whole file into a practice plan: start there if you have a week.
+an interviewer expects next. Configuration names and defaults are Spark 3.5's. Section 0 pairs
+this file with the deep dive and sets the review order; section 14 is the study plan and the
+mock question bank.
+
+---
+
+## 0) How to Use the Two Spark Docs
+
+### 0-1) Which doc does what
+
+**Two documents cover Spark here. This one, the question bank, says what to answer;
+[`de/spark.md`](../de/spark.md), the deep dive, explains why the answer is true. Use them as
+a pair rather than one after the other.**
+
+| | This file: the question bank | [`de/spark.md`](../de/spark.md): the deep dive |
+|---|---|---|
+| Each section gives | the few sentences you say out loud | the mechanism, and the trade-off the interviewer pushes on next |
+| Only here | troubleshooting walk-throughs (§12), design prompts (§13), study plan and mock bank (§14) | PySpark (§10), writes and table formats (§11), tuning checklist (§13), Spark UI symptoms (§14) |
+| Open it when | you are drilling, or it is the night before | an answer here does not survive "why?" |
+| Sections run | in the order interviews ask | in the order Spark is built |
+
+The two files number their sections in different orders, so neither works as a front-to-back
+read on its own. [0-2](#0-2-review-order) lines them up. For neighbouring topics, see
+[`de/hadoop.md`](../de/hadoop.md) for HDFS and YARN, [`de/stream_pipeline.md`](../de/stream_pipeline.md)
+for streaming beyond Spark, and the [`faq_hadoop.md`](./faq_hadoop.md) and
+[`faq_mapreduce.md`](./faq_mapreduce.md) reading lists.
+
+### 0-2) Review order
+
+**Take the steps in order. For each step, answer the "Say it" sections out loud, read the
+"Understand it" sections for whatever you could not explain, then answer again.**
+
+| Step | Phase | Topic | Say it — this file | Understand it — [`de/spark.md`](../de/spark.md) |
+|---|---|---|---|---|
+| 1 | 1 · Foundations | What Spark is, and Spark vs MapReduce | [1-1](#1-1-what-is-apache-spark), [1-2](#1-2-spark-vs-hadoop-mapreduce), [1-4](#1-4-why-is-spark-usually-faster-than-mapreduce) | [1-1](../de/spark.md#1-1-the-one-paragraph-answer), [1-2](../de/spark.md#1-2-spark-vs-mapreduce), [1-3](../de/spark.md#1-3-spark-vs-the-alternatives) |
+| 2 |  | Driver, executors, `spark-submit` | [2-1](#2-1-driver-executors-workers-and-the-cluster-manager), [2-2](#2-2-what-happens-after-spark-submit), [2-3](#2-3-the-spark-submit-command-and-adding-external-jars) | [2-1](../de/spark.md#2-1-driver-cluster-manager-executors), [2-2](../de/spark.md#2-2-deploy-modes-and-spark-submit) |
+| 3 |  | Job → stage → task, narrow vs wide, partitions | [3-1](#3-1-application-job-stage-and-task), [3-2](#3-2-how-does-spark-split-a-job-into-stages), [3-3](#3-3-narrow-vs-wide-dependencies), [3-4](#3-4-what-is-a-partition) | [2-3](../de/spark.md#2-3-job--stage--task-and-the-two-schedulers), [3-3](../de/spark.md#3-3-narrow-vs-wide-dependencies), [6-1](../de/spark.md#6-1-partitions-in-memory) |
+| 4 |  | RDD vs DataFrame, transformations vs actions | [4-2](#4-2-rdd-vs-dataframe-vs-dataset), [4-3](#4-3-transformations-actions-and-lazy-evaluation), [4-5](#4-5-reducebykey-vs-groupbykey-vs-combinebykey) | [3-1](../de/spark.md#3-1-the-comparison), [3-2](../de/spark.md#3-2-transformations-vs-actions-and-lazy-evaluation), [3-4](../de/spark.md#3-4-rdd-era-questions-that-still-get-asked) |
+| 5 | 2 · Performance core | Shuffles | [5-1](#5-1-what-is-a-shuffle-and-what-triggers-one), [5-2](#5-2-why-is-a-shuffle-expensive-and-how-is-it-implemented), [5-3](#5-3-how-do-you-minimise-data-transfer-in-a-spark-job) | [5-1](../de/spark.md#5-1-what-a-shuffle-actually-does), [5-2](../de/spark.md#5-2-how-to-avoid-or-shrink-a-shuffle), [5-3](../de/spark.md#5-3-sparksqlshufflepartitions) |
+| 6 |  | `repartition`, `coalesce`, file layout, small files | [3-5](#3-5-repartition-vs-coalesce), [12-3](#12-3-the-output-has-50000-tiny-files) | [6-2](../de/spark.md#6-2-repartition-vs-coalesce), [6-3](../de/spark.md#6-3-partitionby-on-write-and-the-small-files-problem), [6-4](../de/spark.md#6-4-bucketing) |
+| 7 |  | Join strategies and data skew | [5-5](#5-5-broadcast-join-vs-shuffle-joins), [6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it), [6-2](#6-2-how-do-you-fix-data-skew), [12-2](#12-2-one-task-takes-850-seconds-and-the-rest-take-ten) | [7-1](../de/spark.md#7-1-the-join-strategies), [7-2](../de/spark.md#7-2-join-types-and-their-traps), [7-3](../de/spark.md#7-3-data-skew-spotting-it-and-fixing-it) |
+| 8 |  | Caching and checkpointing | [7-1](#7-1-cache-vs-persist), [7-2](#7-2-what-storage-levels-are-there), [7-3](#7-3-cache--persist-vs-checkpoint) | [8-1](../de/spark.md#8-1-when-to-cache), [8-2](../de/spark.md#8-2-storage-levels), [8-3](../de/spark.md#8-3-cache-vs-checkpoint-vs-writing-to-storage) |
+| 9 |  | Memory, sizing and OOM | [8-1](#8-1-how-is-executor-memory-laid-out), [8-2](#8-2-how-do-you-prevent-and-fix-out-of-memory-errors), [8-3](#8-3-what-is-a-spill-and-is-it-a-problem) | [9-1](../de/spark.md#9-1-unified-memory-management), [9-2](../de/spark.md#9-2-sizing-executors), [15-1](../de/spark.md#15-1-out-of-memory) |
+| 10 | 3 · Engine and production | Fault tolerance | [9-1](#9-1-an-executor-or-node-fails--what-happens), [9-2](#9-2-what-if-the-driver-fails) | [2-4](../de/spark.md#2-4-fault-tolerance-lineage-retries-and-speculation) |
+| 11 |  | Catalyst, AQE, reading a plan | [10-1](#10-1-how-does-the-catalyst-optimiser-work), [10-2](#10-2-how-do-you-read-a-physical-plan), [10-3](#10-3-what-is-aqe-and-how-is-it-different-from-catalyst), [10-4](#10-4-predicate-pushdown-and-column-pruning) | [4-1](../de/spark.md#4-1-catalyst-how-a-query-becomes-a-plan), [4-2](../de/spark.md#4-2-tungsten-the-execution-engine), [4-3](../de/spark.md#4-3-adaptive-query-execution-aqe), [4-4](../de/spark.md#4-4-reading-a-physical-plan) |
+| 12 |  | PySpark: workers, UDFs, Arrow | — | [10-1](../de/spark.md#10-1-how-pyspark-runs), [10-2](../de/spark.md#10-2-udfs-vs-pandas-udfs-vs-built-ins), [10-3](../de/spark.md#10-3-arrow-topandas-and-collect) |
+| 13 |  | Writes, save modes, table formats | — | [11-1](../de/spark.md#11-1-spark-sql-and-the-catalog), [11-2](../de/spark.md#11-2-save-modes-and-dynamic-partition-overwrite), [11-3](../de/spark.md#11-3-delta-lake--iceberg--hudi-with-spark), [11-4](../de/spark.md#11-4-reading-data-well) |
+| 14 |  | Structured Streaming | [11-1](#11-1-spark-streaming-dstreams-vs-structured-streaming), [11-2](#11-2-event-time-watermarks-and-output-modes), [11-3](#11-3-checkpoints-and-exactly-once) | [12-1](../de/spark.md#12-1-the-model) |
+| 15 |  | Tuning and the Spark UI | [12-1](#12-1-a-job-got-slow--where-do-you-start), [12-4](#12-4-which-configurations-are-worth-knowing-by-name) | [13-1](../de/spark.md#13-1-in-the-order-you-would-check), [13-2](../de/spark.md#13-2-the-configs-worth-knowing-by-name), [14-1](../de/spark.md#14-1-where-to-look), [14-2](../de/spark.md#14-2-reading-the-symptoms), [15-2](../de/spark.md#15-2-other-errors-worth-recognising) |
+| 16 | 4 · Rehearse | Pipeline design | [13-1](#13-1-design-a-kafka--spark--lakehouse--warehouse-pipeline), [13-2](#13-2-design-an-idempotent-re-runnable-daily-batch) | [15-3](../de/spark.md#15-3-exactly-once-is-your-job-in-batch-too), [16-2](../de/spark.md#16-2-design-question-process-10-tb-of-daily-clickstream) |
+| 17 |  | Mock round: answer out loud, then self-check | [14-2](#14-2-the-question-bank-by-difficulty), [14-3](#14-3-self-check-before-the-interview) | [16-1](../de/spark.md#16-1-quick-fire-answers) |
+
+- Steps 1–9 are the P0 and P1 core from [14-1](#14-1-what-to-learn-first). Most interviews
+  never get past them.
+- Steps 12 and 13 exist only in the deep dive. PySpark and table-format questions come up in
+  data-engineering loops far more than in general SWE ones.
+
+### 0-3) How much time do you have?
+
+**Spend the time on the steps, not on the files front to back.**
+
+| Time | Plan |
+|---|---|
+| One evening | Steps 1–9, "Say it" column only, then the mock bank [14-2](#14-2-the-question-bank-by-difficulty) |
+| A week | Day 1: phase 1. Days 2–3: phase 2. Days 4–5: phase 3. Day 6: phase 4. Day 7: redo every step you stumbled on |
+| The night before | [14-2](#14-2-the-question-bank-by-difficulty) out loud and the [14-3](#14-3-self-check-before-the-interview) checklist; nothing new |
 
 ---
 
