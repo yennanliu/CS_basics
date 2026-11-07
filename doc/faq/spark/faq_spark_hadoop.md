@@ -268,6 +268,13 @@ Reference: [Spark Standalone — High Availability](https://spark.apache.org/doc
 **An application is one `SparkSession`; every action starts a job; the job is cut into stages
 at each shuffle; each stage runs one task per partition.**
 
+From largest to smallest:
+
+```text
+Application  →  Job  →  Stage  →  Task
+   1 : many      1 : many  1 : many  1 task : 1 partition
+```
+
 | Level | Created by | Count |
 |---|---|---|
 | **Application** | one `SparkSession` / `SparkContext` | one per `spark-submit` |
@@ -305,6 +312,111 @@ are the ground truth.
 <p align="center"><img src="../../pic/spark_stage_task.png" width="500" height="300"></p>
 
 <p align="center"><img src="../../pic/spark_stage_task2.png" width="500" height="300"></p>
+
+#### Is a task a process?
+
+**No. The executor is the process (one JVM per executor); a task is a unit of work that runs
+on one of the executor's threads.**
+
+| | Executor | Task |
+|---|---|---|
+| What it is | a JVM process on a worker node | the stage's pipeline applied to one partition |
+| Lives for | the whole application, unless dynamic allocation releases it | until its partition is done: milliseconds to minutes |
+| Memory | its own heap, `spark.executor.memory` | shares that heap with every other task running in the executor |
+| How many | `spark.executor.instances`, or whatever dynamic allocation picks | one per partition of the stage |
+
+- The driver serialises each task (the closure plus the partition it should read) and sends
+  it to an executor, which runs it on a thread from its task pool. No process or JVM starts
+  per task, and when a task finishes the executor takes the next one.
+- Tasks in one executor share its heap, its cached blocks and its broadcast variables. That
+  is why one oversized task can run the whole executor out of memory and fail the tasks next
+  to it.
+- In OS terms: the application is the program, the executor is a process, and a task is a
+  job handed to one of that process's worker threads.
+- PySpark adds Python worker processes that the executor starts and reuses
+  (`spark.python.worker.reuse`, on by default), but the task is still scheduled, retried and
+  counted on the JVM side.
+
+#### How many tasks run at once?
+
+**Each executor runs `spark.executor.cores / spark.task.cpus` tasks at a time. Across the
+cluster, concurrent tasks ≈ executors × cores per executor, because `spark.task.cpus`
+defaults to 1.**
+
+Two executors with two cores each give four slots, so a stage of eight tasks runs in about
+two waves:
+
+```text
+Stage 0: 8 tasks, 4 slots (2 executors x 2 cores)
+
+             slot 1     slot 2
+Executor 1   T0 -> T4   T1 -> T5
+Executor 2   T2 -> T6   T3 -> T7
+
+wave 1: T0-T3   wave 2: T4-T7      8 tasks / 4 slots = 2 waves
+```
+
+- "Waves" is an approximation. A slot takes the next pending task as soon as it is free,
+  without waiting for the others, and the scheduler prefers the executor that already holds
+  the data (`spark.locality.wait`), so the real assignment is not strict round-robin.
+- The partitions set the task count ([3-4](#3-4-what-is-a-partition)); the cluster sets the
+  slot count. Aim for at least two to three tasks per core
+  ([12-4](#12-4-which-configurations-are-worth-knowing-by-name)), so that no slot sits idle
+  and the last wave is not a single straggler.
+
+#### If you add executors, do you get more tasks?
+
+**Usually not. The number of tasks comes from the number of partitions; more executors only
+add slots, so the same tasks finish in fewer waves.**
+
+| | Before | After |
+|---|---|---|
+| Executors | 2 | 10 |
+| Cores per executor | 2 | 2 |
+| Partitions in the stage | 100 | 100 |
+| Tasks in the stage | 100 | 100 |
+| Concurrent slots | 4 | 20 |
+| Waves (tasks / slots) | 25 | 5 |
+
+- More executors help only while there are more tasks than slots. A stage with 8 partitions
+  keeps 8 of the 20 slots busy and leaves 12 idle. To use them, raise the partition count:
+  `repartition`, `spark.sql.shuffle.partitions`, or a smaller
+  `spark.sql.files.maxPartitionBytes` for the scan.
+- That is why the answer is "usually" and not "never": when `spark.default.parallelism` is
+  unset, it defaults to the total cores registered on a cluster. So `parallelize` and RDD
+  shuffles do get more partitions, and more tasks, on a bigger cluster.
+
+#### Where each level shows up in the Spark UI
+
+**The UI follows the same hierarchy. The Jobs tab has one row per job, a job's page lists
+its stages, a stage's page has one row per task, and the Executors tab shows the slots the
+tasks ran in.**
+
+Screenshots are from the Apache Spark docs, [Web UI](https://spark.apache.org/docs/latest/web-ui.html)
+(Apache License 2.0). The demo runs in local mode, so its only executor is the `driver`.
+
+1. **Jobs tab: one row per action.** Job 0 is `count at web-ui-docs-demo.py:25`. A Stages
+   cell like `1/1 (1 skipped)` means the job reused shuffle output an earlier job had already
+   written, so that stage did not run again ([3-2](#3-2-how-does-spark-split-a-job-into-stages)).
+
+<p align="center"><img src="../../pic/spark_webui_AllJobsPage.png" width="700"></p>
+
+2. **Job page: the job's stages.** Job 0 has no shuffle, so it has one stage. That stage's
+   `5/5` tasks are its five partitions.
+
+<p align="center"><img src="../../pic/spark_webui_JobPage.png" width="700"></p>
+
+3. **Stage page: one row per task.** `Index` is the partition the task processed, and
+   `Executor ID` is the executor that ran it. The Summary Metrics row is where skew shows
+   up: a `Max` duration far above the `Median` ([6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it)).
+
+<p align="center"><img src="../../pic/spark_webui_StagePage.png" width="700"></p>
+
+4. **Executors tab: the slots.** `Cores` is how many tasks an executor can run at once, and
+   `Active Tasks` is how many it is running now. Here 37 tasks went through one executor with
+   4 cores, which shows that a task is a unit of work, not a process.
+
+<p align="center"><img src="../../pic/spark_webui_webui-exe-tab.png" width="700"></p>
 
 ### 3-2) How does Spark split a job into stages?
 
@@ -1311,25 +1423,26 @@ Spark interview; master those before tuning knobs or table formats.**
 | 5 | `cache` vs `persist`; which storage levels exist? | basic | [7-1](#7-1-cache-vs-persist), [7-2](#7-2-what-storage-levels-are-there) |
 | 6 | Job, stage, task — how are stages split? | intermediate | [3-1](#3-1-application-job-stage-and-task), [3-2](#3-2-how-does-spark-split-a-job-into-stages) |
 | 7 | Narrow vs wide dependencies? | intermediate | [3-3](#3-3-narrow-vs-wide-dependencies) |
-| 8 | What triggers a shuffle, and why is it expensive? | intermediate | [5-1](#5-1-what-is-a-shuffle-and-what-triggers-one), [5-2](#5-2-why-is-a-shuffle-expensive-and-how-is-it-implemented) |
-| 9 | `repartition` vs `coalesce`? | intermediate | [3-5](#3-5-repartition-vs-coalesce) |
-| 10 | `reduceByKey` vs `groupByKey`? | intermediate | [4-5](#4-5-reducebykey-vs-groupbykey-vs-combinebykey) |
-| 11 | Broadcast variables and accumulators — any caveat? | intermediate | [5-4](#5-4-broadcast-variables-and-accumulators) |
-| 12 | Cache vs checkpoint? | intermediate | [7-3](#7-3-cache--persist-vs-checkpoint) |
-| 13 | What happens when an executor dies? | intermediate | [9-1](#9-1-an-executor-or-node-fails--what-happens) |
-| 14 | Event time vs processing time; what is a watermark? | intermediate | [11-2](#11-2-event-time-watermarks-and-output-modes) |
-| 15 | How do you detect and fix data skew? | advanced | [6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it), [6-2](#6-2-how-do-you-fix-data-skew) |
-| 16 | Broadcast join vs sort-merge join — how would you optimise a 10 TB join? | advanced | [5-5](#5-5-broadcast-join-vs-shuffle-joins), [6-2](#6-2-how-do-you-fix-data-skew) |
-| 17 | How does Catalyst work? What does AQE add? | advanced | [10-1](#10-1-how-does-the-catalyst-optimiser-work), [10-3](#10-3-what-is-aqe-and-how-is-it-different-from-catalyst) |
-| 18 | Read this physical plan — where are the shuffles? | advanced | [10-2](#10-2-how-do-you-read-a-physical-plan) |
-| 19 | Driver OOM vs executor OOM vs container killed? | advanced | [8-2](#8-2-how-do-you-prevent-and-fix-out-of-memory-errors) |
-| 20 | A job is slow — walk me through debugging it. | advanced | [12-1](#12-1-a-job-got-slow--where-do-you-start), [12-2](#12-2-one-task-takes-850-seconds-and-the-rest-take-ten) |
-| 21 | How do you get exactly-once output from Structured Streaming? | advanced | [11-3](#11-3-checkpoints-and-exactly-once) |
-| 22 | A streaming job's lag keeps growing — what do you check? | advanced | [11-4](#11-4-what-errors-happen-in-spark-streaming-and-how-do-you-fix-them) |
-| 23 | How do you deal with small files? | advanced | [12-3](#12-3-the-output-has-50000-tiny-files) |
-| 24 | Design a TB-scale pipeline from Kafka to the warehouse. | design | [13-1](#13-1-design-a-kafka--spark--lakehouse--warehouse-pipeline) |
-| 25 | Design an idempotent daily batch job with backfills. | design | [13-2](#13-2-design-an-idempotent-re-runnable-daily-batch) |
-| 26 | Spark or Flink for this use case? | design | [1-7](#1-7-when-would-you-not-use-spark) |
+| 8 | Is a task a process? Do more executors mean more tasks? | intermediate | [3-1](#3-1-application-job-stage-and-task) |
+| 9 | What triggers a shuffle, and why is it expensive? | intermediate | [5-1](#5-1-what-is-a-shuffle-and-what-triggers-one), [5-2](#5-2-why-is-a-shuffle-expensive-and-how-is-it-implemented) |
+| 10 | `repartition` vs `coalesce`? | intermediate | [3-5](#3-5-repartition-vs-coalesce) |
+| 11 | `reduceByKey` vs `groupByKey`? | intermediate | [4-5](#4-5-reducebykey-vs-groupbykey-vs-combinebykey) |
+| 12 | Broadcast variables and accumulators — any caveat? | intermediate | [5-4](#5-4-broadcast-variables-and-accumulators) |
+| 13 | Cache vs checkpoint? | intermediate | [7-3](#7-3-cache--persist-vs-checkpoint) |
+| 14 | What happens when an executor dies? | intermediate | [9-1](#9-1-an-executor-or-node-fails--what-happens) |
+| 15 | Event time vs processing time; what is a watermark? | intermediate | [11-2](#11-2-event-time-watermarks-and-output-modes) |
+| 16 | How do you detect and fix data skew? | advanced | [6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it), [6-2](#6-2-how-do-you-fix-data-skew) |
+| 17 | Broadcast join vs sort-merge join — how would you optimise a 10 TB join? | advanced | [5-5](#5-5-broadcast-join-vs-shuffle-joins), [6-2](#6-2-how-do-you-fix-data-skew) |
+| 18 | How does Catalyst work? What does AQE add? | advanced | [10-1](#10-1-how-does-the-catalyst-optimiser-work), [10-3](#10-3-what-is-aqe-and-how-is-it-different-from-catalyst) |
+| 19 | Read this physical plan — where are the shuffles? | advanced | [10-2](#10-2-how-do-you-read-a-physical-plan) |
+| 20 | Driver OOM vs executor OOM vs container killed? | advanced | [8-2](#8-2-how-do-you-prevent-and-fix-out-of-memory-errors) |
+| 21 | A job is slow — walk me through debugging it. | advanced | [12-1](#12-1-a-job-got-slow--where-do-you-start), [12-2](#12-2-one-task-takes-850-seconds-and-the-rest-take-ten) |
+| 22 | How do you get exactly-once output from Structured Streaming? | advanced | [11-3](#11-3-checkpoints-and-exactly-once) |
+| 23 | A streaming job's lag keeps growing — what do you check? | advanced | [11-4](#11-4-what-errors-happen-in-spark-streaming-and-how-do-you-fix-them) |
+| 24 | How do you deal with small files? | advanced | [12-3](#12-3-the-output-has-50000-tiny-files) |
+| 25 | Design a TB-scale pipeline from Kafka to the warehouse. | design | [13-1](#13-1-design-a-kafka--spark--lakehouse--warehouse-pipeline) |
+| 26 | Design an idempotent daily batch job with backfills. | design | [13-2](#13-2-design-an-idempotent-re-runnable-daily-batch) |
+| 27 | Spark or Flink for this use case? | design | [1-7](#1-7-when-would-you-not-use-spark) |
 
 ### 14-3) Self-check before the interview
 
@@ -1337,6 +1450,7 @@ Spark interview; master those before tuning knobs or table formats.**
 
 - [ ] Draw the driver, cluster manager and executors, and narrate `spark-submit` end to end.
 - [ ] Given a short DataFrame program, say how many jobs and stages it runs, and where the shuffles are.
+- [ ] Say why a task is not a process, and how many tasks a given cluster runs at once.
 - [ ] Explain why `reduceByKey` beats `groupByKey`, and why DataFrames make the question moot.
 - [ ] Name every join strategy and when Spark picks each.
 - [ ] Diagnose skew from a Spark UI task table, and write a salted aggregation from memory.
