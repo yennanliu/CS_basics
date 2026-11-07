@@ -74,12 +74,15 @@ jobs:
           REQUESTED: ${{ inputs.version }}
         run: |
           set -euo pipefail
+          # Trim whitespace and accept v/V or no prefix: `v20261107`, ` 20261107`
+          # and `V20261107` all release as V20261107, the tags' own spelling.
+          REQUESTED="$(echo "$REQUESTED" | tr -d '[:space:]')"
           if [ -n "$REQUESTED" ]; then
-            if ! [[ "$REQUESTED" =~ ^V[0-9]{8}(\.[0-9]+)?$ ]]; then
-              echo "::error::'$REQUESTED' is not a V<YYYYMMDD>[.N] tag."
+            if ! [[ "$REQUESTED" =~ ^[vV]?([0-9]{8}(\.[0-9]+)?)$ ]]; then
+              echo "::error::'$REQUESTED' is not a V<YYYYMMDD>[.N] tag (e.g. V20261107)."
               exit 1
             fi
-            TAG="$REQUESTED"
+            TAG="V${BASH_REMATCH[1]}"
           else
             TAG="$(python3 script/release_notes.py version)"
           fi
