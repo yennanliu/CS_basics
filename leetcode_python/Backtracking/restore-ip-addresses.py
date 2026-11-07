@@ -31,7 +31,161 @@ s consists of digits only.
 
 """
 
-# V0 
+
+# V0
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        pass
+
+
+# V0-1
+# IDEA: DFS + backtrack (gpt)
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+
+        if not s:
+            return []
+
+        # IP address 必須由 4 個 segments 組成，
+        # 每個 segment 長度介於 1 到 3。
+        # 因此總長度必須介於 4 到 12。
+        if len(s) < 4 or len(s) > 12:
+            return []
+
+        self.res = []
+
+        self.helper(s, 0, [])
+
+        return self.res
+
+    def helper(self, s, idx, path):
+        """
+        s: 原始字串
+        idx: 目前處理到 s 的哪個 index
+        path: 目前已經選取的 IP segments
+        """
+
+        # Base Case 1:
+        # 已經選滿 4 個 segments
+        if len(path) == 4:
+
+            # 只有剛好使用完整個字串才是有效答案
+            if idx == len(s):
+                self.res.append(".".join(path))
+
+            return
+
+        # Base Case 2:
+        # 字串已經用完，但還沒選滿 4 個 segments
+        if idx >= len(s):
+            return
+
+        # 還需要選幾個 segments？
+        remaining_segments = 4 - len(path)
+
+        # 還剩多少個字元？
+        remaining_chars = len(s) - idx
+
+        # Pruning 1:
+        # 剩餘字元太少，無法組成剩餘 segments
+        if remaining_chars < remaining_segments:
+            return
+
+        # Pruning 2:
+        # 剩餘字元太多，每個 segment 最多 3 位數
+        if remaining_chars > remaining_segments * 3:
+            return
+
+        # 嘗試取出 1、2、3 位數字
+        for length in range(1, 4):
+
+            # 避免超出字串範圍
+            if idx + length > len(s):
+                break
+
+            segment = s[idx:idx + length]
+
+            # Leading zero 不合法，例如 "01"、"00"
+            # 但單獨的 "0" 是合法的
+            if len(segment) > 1 and segment[0] == "0":
+                break
+
+            # Segment 必須介於 0 到 255
+            if int(segment) > 255:
+                continue
+
+            # -------------------------
+            # Choose
+            # -------------------------
+            path.append(segment)
+
+            # -------------------------
+            # Explore
+            # -------------------------
+            self.helper(s, idx + length, path)
+
+            # -------------------------
+            # Undo (Backtracking)
+            # -------------------------
+            path.pop()
+
+
+# V0-2
+# IDEA: DFS + backtrack (gemini)
+class Solution(object):
+    def restoreIpAddresses(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        res = []
+        
+        # 剪枝：IPv4 的長度不可能小於 4 也不可能大於 12
+        if not s or len(s) < 4 or len(s) > 12:
+            return res
+
+        def backtrack(start_idx, path):
+            # 終止條件：如果已經切出 4 個區段
+            if len(path) == 4:
+                # 且字串剛好被完全用完
+                if start_idx == len(s):
+                    res.append(".".join(path))
+                return
+
+            # 剪枝：如果剩餘的字元太多或太少，無法組成剩下的區段，直接返回
+            remaining_segments = 4 - len(path)
+            remaining_chars = len(s) - start_idx
+            if remaining_chars < remaining_segments or remaining_chars > remaining_segments * 3:
+                return
+
+            # 每個區段長度可以是 1, 2, 3
+            for length in range(1, 4):
+                if start_idx + length > len(s):
+                    break
+                
+                segment = s[start_idx : start_idx + length]
+                
+                # 檢查區段是否合法：
+                # 1. 不能有前導零（例如 "03" 不合法，但單獨的 "0" 合法）
+                # 2. 數值必須在 0 到 255 之間
+                if (segment.startswith('0') and len(segment) > 1) or int(segment) > 255:
+                    continue
+                
+                # 做選擇：加入路徑，並往後遞迴
+                path.append(segment)
+                backtrack(start_idx + length, path)
+                # 撤銷選擇（回溯）
+                path.pop()
+
+        backtrack(0, [])
+        return res
+
+
+# V0-3
 # IDEA : DFS
 # time = O(1)  # bounded: at most 3^4 splits
 # space = O(1)
