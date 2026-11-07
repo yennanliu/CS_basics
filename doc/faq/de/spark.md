@@ -670,7 +670,8 @@ pointers, boxed fields          compressible                        rebuilt fiel
 
 **Closures are serialised too**, so a lambda that captures a non-serialisable object (a DB
 connection, a logger, the enclosing class) fails with `Task not serializable` before a single
-task runs. Create the object on the executor instead:
+task runs. Create the object on the executor instead, and make the write idempotent: a retried
+or speculative task runs `insert` again ([§15-3](#15-3-exactly-once-is-your-job-in-batch-too)).
 
 ```scala
 // scala — fails: `conn` is opened on the driver and captured by the closure
@@ -747,17 +748,21 @@ task 2: (U2,500) (U1,600) → U2:500 U1:600    p2 ◀ U3:400               → U
 
 map task                                     reduce task
 1. compute the row, pick its partition id    5. fetch its block from every map output:
-2. serialise it into an in-memory buffer        network, or a local read when co-located
-3. sort by partition id; spill sorted runs      (up to spark.reducer.maxSizeInFlight = 48m)
-   to disk when execution memory runs out    6. decompress and deserialise
-4. merge into one data file + one index      7. aggregate, join or sort
-   file, compressed with lz4, through a
-   32k spark.shuffle.file.buffer per stream
+2. serialise it into the writer's buffers      network, or a local read when co-located
+3. group the bytes by partition id: here,       (up to spark.reducer.maxSizeInFlight = 48m)
+   with 3 (≤ 200) partitions, the bypass     6. decompress and deserialise
+   writer streams each to its own file, no   7. aggregate, join or sort
+   sort; the sort writers sort and spill
+   sorted runs when memory runs out
+4. end with one data file + one index file,
+   compressed with lz4, through a 32k
+   spark.shuffle.file.buffer per stream
 ```
 
 The partial aggregate (`HashAggregate` before the `Exchange`, [§4-4](#4-4-reading-a-physical-plan)) is what shrinks the
-shuffle. Here every map task holds distinct keys, so nothing combines; with millions of rows per
-key it sends one partial sum per key per task instead of every row.
+shuffle. It is an operator of its own, so the shuffle under it has no map-side combine. Here
+every map task holds distinct keys, so nothing combines; with millions of rows per key it
+sends one partial sum per key per task instead of every row.
 
 How the map side sorts depends on which writer Spark picks:
 
@@ -765,7 +770,7 @@ How the map side sorts depends on which writer Spark picks:
 |---|---|---|
 | `BypassMergeSortShuffleWriter` | no map-side combine in the shuffle, and at most `spark.shuffle.sort.bypassMergeThreshold` (200) reduce partitions | nothing: one file per reduce partition, concatenated at the end |
 | `UnsafeShuffleWriter` (serialised shuffle) | no map-side combine, a serialiser that can relocate serialised records (Kryo, `UnsafeRowSerializer`; not Java), fewer than 16,777,216 partitions | 8-byte pointers ordered by partition id; records are never deserialised to be sorted |
-| `SortShuffleWriter` | anything else, e.g. `reduceByKey` with map-side combine | deserialised objects, by partition id and key |
+| `SortShuffleWriter` | anything else, e.g. `reduceByKey` with map-side combine | deserialised objects, by partition id; when combining, also by key hash so equal keys merge — not a key order |
 
 The serialised shuffle sorts by **partition id only**, not by key. Ordering by key, for a
 sort-merge join, is a separate `Sort` on the reduce side.
@@ -777,9 +782,10 @@ sort-merge join, is a separate `Sort` on the reduce side.
 | Network | remote block fetches | Shuffle Remote Reads, Shuffle Read Blocked Time |
 | Memory | sort buffers, in-flight fetches, aggregation hash maps | Spill first, then OOM |
 
-The shuffle files stay on the map executor's local disk. If that executor is removed, the
-external shuffle service or shuffle tracking ([§5-1](#5-1-what-a-shuffle-actually-does), [§2-5](#2-5-dynamic-allocation)) is what keeps the reduce side able to
-fetch them.
+The shuffle files stay on the map executor's local disk. The external shuffle service keeps
+serving them after that executor is removed ([§5-1](#5-1-what-a-shuffle-actually-does)); shuffle tracking instead keeps the
+executor alive while its output is still needed ([§2-5](#2-5-dynamic-allocation)). Without either, a lost output
+is recomputed by rerunning its map tasks.
 
 ### 9-6) Cutting serialisation cost
 
@@ -794,7 +800,7 @@ buffers.**
 | Built-in functions over UDFs and typed lambdas | no `UnsafeRow` ↔ object conversion, no pickling to Python | [§10-2](#10-2-udfs-vs-pandas-udfs-vs-built-ins) |
 | Kryo with registered classes | smaller, faster RDD records and broadcasts | [§9-4](#9-4-the-serialisers-java-kryo-and-tungstens-binary-rows) |
 | Serialised RDD caching (`MEMORY_ONLY_SER`) | far less heap and GC, for CPU on every read | [§8-2](#8-2-storage-levels) |
-| Small closures; broadcast large lookup tables | a 200 MB map captured by a closure ships with every task | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
+| Small closures; broadcast large lookup tables | a 200 MB map captured by a closure is part of the stage's task binary, which every task deserialises | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
 | `spark.shuffle.file.buffer` from 32k to 64k–1m | fewer, larger writes when shuffle write time dominates | below |
 
 - Catalyst already pushes a `filter` written after a `join` below it, so reordering the code
@@ -802,8 +808,10 @@ buffers.**
 - `spark.shuffle.file.buffer` is per output stream, not per executor, and the bypass writer
   opens one stream per reduce partition. Many streams × a large buffer is real memory, so
   raise it only when shuffle write time is the bottleneck, and watch GC.
-- A high **Task Deserialization Time**, or the driver warning *"Stage N contains a task of very
-  large size"*, means the closures are too big. Broadcast whatever they capture.
+- A high **Task Deserialization Time**, or the driver warning *"Broadcasting large task binary"*,
+  means the closures are too big: broadcast whatever they capture. A different warning,
+  *"Stage N contains a task of very large size"*, is about a single serialised task, usually
+  one carrying local data from `parallelize`.
 - In an interview, name the bottleneck from the Spark UI — serialisation CPU, fetch wait, spill
   or network — before naming a fix. Adding executors helps none of the four by itself.
 

@@ -534,7 +534,7 @@ Salting 只適用於可以拆開再合併的彙總（sum、count、max）—— 
 - Driver 記憶體只跟回到它身上的東西有關：`collect`、`toPandas`、broadcast，以及非常大的
   計畫 / 檔案清單。
 
-<!-- 9291f728bb48 -->
+<!-- f47fe5e34ec3 -->
 ### 9-3) 序列化與反序列化：是什麼、發生在哪裡
 
 **序列化把記憶體中的物件轉成可以跨越行程邊界、或存放在磁碟上的位元組；反序列化再從這些
@@ -557,7 +557,8 @@ executor、另一台機器或一個檔案都無法跟著這些指標走，所以
 | Python 邊界 | JVM ↔ Python worker | 進出 Python UDF 與 RDD 函式的資料列 | pickle（函式用 cloudpickle），pandas UDF 用 Arrow —— 見 §10 |
 
 **Closure 也會被序列化**，所以一個捕獲了不可序列化物件（DB 連線、logger、外層類別）的
-lambda，會在任何 task 開始跑之前就以 `Task not serializable` 失敗。改在 executor 上建立該物件：
+lambda，會在任何 task 開始跑之前就以 `Task not serializable` 失敗。改在 executor 上建立該物件，並讓寫入具冪等性：重試或 speculative 的 task 會再執行一次 `insert`
+（[§15-3](#15-3-exactly-once-is-your-job-in-batch-too)）。
 
 <!--CODE-->
 
@@ -595,43 +596,7 @@ SQL 的 shuffle 沒有東西需要轉換。**
 - **Spark 內部早就用 Kryo** 來 shuffle 由基本型別、基本型別陣列與字串組成的 RDD（Spark 2.0
   起），所以改用 Kryo 對「自訂類別的 RDD」幫助最大。
 
-<!-- fa18fc6f5acc -->
-### 9-5) 一次 shuffle，逐位元組拆解
-
-**跨越 shuffle 的每一列，都會在 map 端被序列化、放進 buffer、壓縮後寫入本機 shuffle 檔，
-再由 reduce task 透過網路抓取，最後解壓縮並反序列化 —— 每一列都付兩次 CPU、兩次磁碟、
-一次網路。**
-
-<!--CODE-->
-
-<!--CODE-->
-
-部分彙總（`Exchange` 之前的 `HashAggregate`，[§4-4](#4-4-reading-a-physical-plan)）才是縮小 shuffle 的關鍵。
-這個例子裡每個 map task 的 key 都不重複，所以沒有東西可以合併；當每個 key 有數百萬列時，
-它對每個 task 的每個 key 只送出一筆部分總和，而不是每一列。
-
-Map 端怎麼排序，取決於 Spark 選了哪個 writer：
-
-| Writer | 何時被選上 | 排序的是什麼 |
-|---|---|---|
-| `BypassMergeSortShuffleWriter` | shuffle 本身沒有 map 端合併，且 reduce partition 不超過 `spark.shuffle.sort.bypassMergeThreshold`（200） | 不排序：每個 reduce partition 一個檔，最後串接起來 |
-| `UnsafeShuffleWriter`（serialised shuffle） | 沒有 map 端合併、序列化器能搬移已序列化的記錄（Kryo、`UnsafeRowSerializer`；Java 不行）、partition 少於 16,777,216 個 | 依 partition id 排序的 8 位元組指標；排序時記錄從不反序列化 |
-| `SortShuffleWriter` | 其他情況，例如有 map 端合併的 `reduceByKey` | 反序列化後的物件，依 partition id 與 key |
-
-Serialised shuffle **只依 partition id 排序**，不依 key。Sort-merge join 需要的依 key 排序，
-是 reduce 端另一個 `Sort`。
-
-| 成本 | 付在哪裡 | Spark UI 的 stage 指標 |
-|---|---|---|
-| CPU | 序列化與壓縮（map）、解壓縮與反序列化（reduce）、排序 | I/O 解釋不了的 task 時間、GC time |
-| 磁碟 | shuffle 寫出、spill、把檔案讀回來 | Shuffle Write Size、Spill (Memory / Disk) |
-| 網路 | 抓取遠端區塊 | Shuffle Remote Reads、Shuffle Read Blocked Time |
-| 記憶體 | 排序 buffer、傳輸中的抓取、彙總用的 hash map | 先是 Spill，然後 OOM |
-
-Shuffle 檔留在 map executor 的本機磁碟上。如果那個 executor 被移除，靠的是外部 shuffle
-service 或 shuffle tracking（[§5-1](#5-1-what-a-shuffle-actually-does)、[§2-5](#2-5-dynamic-allocation)），reduce 端才抓得到它們。
-
-<!-- 5c48be54dfae -->
+<!-- 9de7a82a9587 -->
 ### 9-6) 降低序列化成本
 
 **先少搬一點位元組，再讓每個位元組便宜一點：縮小進到 exchange 的資料、讓資料列留在
@@ -644,7 +609,7 @@ DataFrame 運算子裡以維持 `UnsafeRow`，最後才去調序列化器與 buf
 | 用內建函式，不用 UDF 與 typed lambda | 沒有 `UnsafeRow` ↔ 物件轉換，也不用 pickle 到 Python | [§10-2](#10-2-udfs-vs-pandas-udfs-vs-built-ins) |
 | Kryo 加上註冊類別 | RDD 記錄與 broadcast 更小、更快 | [§9-4](#9-4-the-serialisers-java-kryo-and-tungstens-binary-rows) |
 | 序列化的 RDD 快取（`MEMORY_ONLY_SER`） | heap 與 GC 大幅減少，代價是每次讀取的 CPU | [§8-2](#8-2-storage-levels) |
-| 小 closure；大型查找表用 broadcast | closure 捕獲的 200 MB map 會跟著每個 task 一起送出 | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
+| 小 closure；大型查找表用 broadcast | closure 捕獲的 200 MB map 會成為 stage task binary 的一部分，每個 task 都要反序列化它 | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
 | `spark.shuffle.file.buffer` 從 32k 調到 64k–1m | shuffle 寫出時間是瓶頸時，寫入次數更少、每次更大 | 見下方 |
 
 - Catalyst 本來就會把寫在 `join` 之後的 `filter` 推到它下面，所以調換程式碼順序往往什麼都
@@ -652,8 +617,9 @@ DataFrame 運算子裡以維持 `UnsafeRow`，最後才去調序列化器與 buf
 - `spark.shuffle.file.buffer` 是每個輸出串流一份，不是每個 executor 一份，而 bypass writer
   會為每個 reduce partition 開一個串流。串流數 × 大 buffer 是實打實的記憶體，所以只有在
   shuffle 寫出時間是瓶頸時才調高，並且留意 GC。
-- **Task Deserialization Time** 偏高，或 driver 出現 *"Stage N contains a task of very large
-  size"* 警告，代表 closure 太大。把它捕獲的東西改用 broadcast。
+- **Task Deserialization Time** 偏高，或 driver 出現 *"Broadcasting large task binary"* 警告，
+  代表 closure 太大：把它捕獲的東西改用 broadcast。另一個警告 *"Stage N contains a task of very
+  large size"* 說的是單一序列化後的 task，通常是帶著 `parallelize` 本地資料的 task。
 - 面試時，先從 Spark UI 指出瓶頸 —— 序列化 CPU、fetch 等待、spill 還是網路 —— 再提解法。
   單純加 executor 對這四者都沒有幫助。
 
@@ -964,3 +930,41 @@ Spark History Server 為已結束的應用程式顯示同樣的 UI。
    依 `dt`（加上一個 clustering key）`repartition` 來控制檔案大小。
 7. **維運** —— 開 AQE、依 ~10 TB 設定 shuffle partition 數（約數千個）、發佈前做資料品質
    檢查、以邏輯日期編排以便回補。
+
+<!-- stale: 1b43eb3cf2d6 -->
+### 9-5) 一次 shuffle，逐位元組拆解
+
+**跨越 shuffle 的每一列，都會在 map 端被序列化、放進 buffer、壓縮後寫入本機 shuffle 檔，
+再由 reduce task 透過網路抓取，最後解壓縮並反序列化 —— 每一列都付兩次 CPU、兩次磁碟、
+一次網路。**
+
+<!--CODE-->
+
+<!--CODE-->
+
+部分彙總（`Exchange` 之前的 `HashAggregate`，[§4-4](#4-4-reading-a-physical-plan)）才是縮小 shuffle 的關鍵。
+它是獨立的運算子，所以它下面的 shuffle 本身沒有 map 端合併。
+這個例子裡每個 map task 的 key 都不重複，所以沒有東西可以合併；當每個 key 有數百萬列時，
+它對每個 task 的每個 key 只送出一筆部分總和，而不是每一列。
+
+Map 端怎麼排序，取決於 Spark 選了哪個 writer：
+
+| Writer | 何時被選上 | 排序的是什麼 |
+|---|---|---|
+| `BypassMergeSortShuffleWriter` | shuffle 本身沒有 map 端合併，且 reduce partition 不超過 `spark.shuffle.sort.bypassMergeThreshold`（200） | 不排序：每個 reduce partition 一個檔，最後串接起來 |
+| `UnsafeShuffleWriter`（serialised shuffle） | 沒有 map 端合併、序列化器能搬移已序列化的記錄（Kryo、`UnsafeRowSerializer`；Java 不行）、partition 少於 16,777,216 個 | 依 partition id 排序的 8 位元組指標；排序時記錄從不反序列化 |
+| `SortShuffleWriter` | 其他情況，例如有 map 端合併的 `reduceByKey` | 反序列化後的物件，依 partition id；合併時另依 key 的 hash 排，讓相同 key 合併 —— 不是 key 的順序 |
+
+Serialised shuffle **只依 partition id 排序**，不依 key。Sort-merge join 需要的依 key 排序，
+是 reduce 端另一個 `Sort`。
+
+| 成本 | 付在哪裡 | Spark UI 的 stage 指標 |
+|---|---|---|
+| CPU | 序列化與壓縮（map）、解壓縮與反序列化（reduce）、排序 | I/O 解釋不了的 task 時間、GC time |
+| 磁碟 | shuffle 寫出、spill、把檔案讀回來 | Shuffle Write Size、Spill (Memory / Disk) |
+| 網路 | 抓取遠端區塊 | Shuffle Remote Reads、Shuffle Read Blocked Time |
+| 記憶體 | 排序 buffer、傳輸中的抓取、彙總用的 hash map | 先是 Spill，然後 OOM |
+
+Shuffle 檔留在 map executor 的本機磁碟上。外部 shuffle service 在該 executor 被移除後仍繼續
+提供這些檔案（[§5-1](#5-1-what-a-shuffle-actually-does)）；shuffle tracking 則是在輸出還被需要時讓 executor 保持存活
+（[§2-5](#2-5-dynamic-allocation)）。兩者都沒有的話，遺失的輸出要重跑 map task 重新計算。
