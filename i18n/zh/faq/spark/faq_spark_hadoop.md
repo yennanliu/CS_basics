@@ -267,7 +267,7 @@ Catalyst、AQE 與資料來源都可能改變實際數量 —— `explain()` 與
 
 <p align="center"><img src="../../pic/spark_stage_task2.png" width="500" height="300"></p>
 
-<!-- 319df1dcb0b6 -->
+<!-- c7f8ec10b07c -->
 #### Task 是一個行程（process）嗎？
 
 **不是。Executor 才是行程（每個 executor 一個 JVM）；task 是在 executor 某條執行緒上跑的一個工作單元。**
@@ -280,19 +280,21 @@ Catalyst、AQE 與資料來源都可能改變實際數量 —— `explain()` 與
 | 有幾個 | `spark.executor.instances`，或 dynamic allocation 決定的數量 | stage 的每個 partition 一個 |
 
 - Driver 把每個 task（closure 加上它要讀的 partition）序列化後送到 executor，executor 用自己
-  task 執行緒池裡的一條執行緒來跑。每個 task 都不會啟動新的行程或 JVM；一個 task 跑完，executor
+  task 執行緒池裡的一條執行緒來跑。task 從來不需要新的 executor JVM；一個 task 跑完，executor
   就接下一個。
 - 同一個 executor 裡的 task 共用它的 heap、快取區塊與 broadcast 變數。所以一個過大的 task
   可能讓整個 executor 記憶體不足，連帶讓旁邊的 task 一起失敗。
 - 用作業系統的說法：application 是程式，executor 是行程，task 是交給這個行程某條工作執行緒的一件工作。
-- PySpark 會多出由 executor 啟動並重複使用的 Python worker 行程（`spark.python.worker.reuse`，
-  預設開啟），但 task 的排程、重試與計數仍然在 JVM 那一側。
+- PySpark 是例外，但更印證了這條規則。Python 程式碼跑在 executor 於 JVM 旁啟動的 Python
+  worker 行程裡，預設會重複使用（`spark.python.worker.reuse=true`）。若設成 `false`，task 確實會
+  啟動自己的 Python worker，但 task 的排程、重試與計數仍由 executor JVM 負責。
 
-<!-- 9ddcd5190332 -->
+<!-- 6399faedee56 -->
 #### 同一時間會跑幾個 task？
 
-**每個 executor 同時跑 `spark.executor.cores / spark.task.cpus` 個 task。整個 cluster 的同時 task
-數 ≈ executor 數 × 每個 executor 的核心數，因為 `spark.task.cpus` 預設是 1。**
+**每個 executor 同時跑 ⌊`spark.executor.cores` ÷ `spark.task.cpus`⌋ 個 task。除法無條件捨去：
+5 個核心、`spark.task.cpus=2` 是 2 個 slot，不是 2.5。因為 `spark.task.cpus` 預設是 1，整個
+cluster 的同時 task 數 ≈ executor 數 × 每個 executor 的核心數。**
 
 兩個 executor、各兩個核心，共四個 slot，所以一個有八個 task 的 stage 大約分兩波跑完：
 
@@ -304,7 +306,7 @@ Catalyst、AQE 與資料來源都可能改變實際數量 —— `explain()` 與
   兩到三個 task（[12-4](#12-4-which-configurations-are-worth-knowing-by-name)），這樣 slot 不會閒置，
   最後一波也不會只剩一個拖慢全局的 task。
 
-<!-- bada8ded4678 -->
+<!-- a5797eeb8eab -->
 #### 增加 executor，task 會變多嗎？
 
 **通常不會。Task 數量來自 partition 數量；增加 executor 只是增加 slot，讓同樣的 task 用更少的波次跑完。**
@@ -321,11 +323,12 @@ Catalyst、AQE 與資料來源都可能改變實際數量 —— `explain()` 與
 - 只有在 task 比 slot 多的時候，多加 executor 才有幫助。只有 8 個 partition 的 stage 只會用到
   20 個 slot 中的 8 個，其餘 12 個閒置。要用上它們，就要提高 partition 數：`repartition`、
   `spark.sql.shuffle.partitions`，或在掃描時調小 `spark.sql.files.maxPartitionBytes`。
-- 這就是答案是「通常」而不是「永遠」的原因：`spark.default.parallelism` 沒設定時，在 cluster 上
-  預設是已註冊的總核心數。所以在更大的 cluster 上，`parallelize` 與 RDD shuffle 確實會得到更多
-  partition，也就更多 task。
+- 這就是答案是「通常」而不是「永遠」的原因。`spark.default.parallelism` 沒設定時，預設是
+  cluster 上已註冊的總核心數，所以沒指定切片數的 `sc.parallelize` 在更大的 cluster 上確實會得到
+  更多 partition，也就更多 task。Shuffle 大多不受影響：沒設定時，RDD 的 `reduceByKey` 沿用上游
+  最大的 partition 數，DataFrame 的 shuffle 則用 `spark.sql.shuffle.partitions`。
 
-<!-- 677b6f1cac69 -->
+<!-- 4beac005c4d9 -->
 #### 在 Spark UI 裡看到每一層
 
 **UI 也是同樣的層級。Jobs 分頁每個 job 一列，job 頁面列出它的 stage，stage 頁面每個 task 一列，
@@ -338,23 +341,23 @@ Executors 分頁則顯示 task 執行時用到的 slot。**
    `1/1 (1 skipped)` 表示這個 job 重用了先前 job 已寫好的 shuffle 輸出，那個 stage 就不再重跑
    （[3-2](#3-2-how-does-spark-split-a-job-into-stages)）。
 
-<p align="center"><img src="../../pic/spark_webui_AllJobsPage.png" width="700"></p>
+<p align="center"><img src="../../pic/spark_webui_AllJobsPage.png" alt="Spark UI 的 Jobs 分頁：每個已完成的 job 一列，附 stage 與 task 數" width="700"></p>
 
 2. **Job 頁面：這個 job 的 stage。** Job 0 沒有 shuffle，所以只有一個 stage；它的 `5/5` 個
    task 就是它的五個 partition。
 
-<p align="center"><img src="../../pic/spark_webui_JobPage.png" width="700"></p>
+<p align="center"><img src="../../pic/spark_webui_JobPage.png" alt="Spark UI 的 job 詳細頁：job 0 只有一個 stage，5 個 task 全部成功" width="700"></p>
 
 3. **Stage 頁面：每個 task 一列。** `Index` 是這個 task 處理的 partition，`Executor ID` 是執行它的
    executor。Summary Metrics 是看出傾斜的地方：`Max` 執行時間遠高於 `Median`
    （[6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it)）。
 
-<p align="center"><img src="../../pic/spark_webui_StagePage.png" width="700"></p>
+<p align="center"><img src="../../pic/spark_webui_StagePage.png" alt="Spark UI 的 stage 詳細頁：task 摘要指標，以及每個 task 一列，含 partition 索引與 executor" width="700"></p>
 
-4. **Executors 分頁：slot。** `Cores` 是一個 executor 同時能跑幾個 task，`Active Tasks` 是它現在
-   正在跑幾個。這裡 37 個 task 全都經過同一個有 4 個核心的 executor，可見 task 是工作單元，不是行程。
+4. **Executors 分頁：slot。** `Cores` 是 executor 的核心數，在預設 `spark.task.cpus=1` 下也就是它
+   同時能跑幾個 task；`Active Tasks` 是它現在正在跑幾個。這裡 37 個 task 全都經過同一個有 4 個核心的 executor，可見 task 是工作單元，不是行程。
 
-<p align="center"><img src="../../pic/spark_webui_webui-exe-tab.png" width="700"></p>
+<p align="center"><img src="../../pic/spark_webui_webui-exe-tab.png" alt="Spark UI 的 Executors 分頁：driver executor 有 4 個核心、完成 37 個 task" width="700"></p>
 
 <!-- d8f9d924b45e -->
 ### 3-2) Spark 怎麼把 job 切成 stage？

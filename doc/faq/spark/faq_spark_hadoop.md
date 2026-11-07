@@ -326,22 +326,24 @@ on one of the executor's threads.**
 | How many | `spark.executor.instances`, or whatever dynamic allocation picks | one per partition of the stage |
 
 - The driver serialises each task (the closure plus the partition it should read) and sends
-  it to an executor, which runs it on a thread from its task pool. No process or JVM starts
-  per task, and when a task finishes the executor takes the next one.
+  it to an executor, which runs it on a thread from its task pool. A task never needs a new executor
+  JVM, and when a task finishes the executor takes the next one.
 - Tasks in one executor share its heap, its cached blocks and its broadcast variables. That
   is why one oversized task can run the whole executor out of memory and fail the tasks next
   to it.
 - In OS terms: the application is the program, the executor is a process, and a task is a
   job handed to one of that process's worker threads.
-- PySpark adds Python worker processes that the executor starts and reuses
-  (`spark.python.worker.reuse`, on by default), but the task is still scheduled, retried and
-  counted on the JVM side.
+- PySpark is the exception that proves the rule. Python code runs in Python worker
+  processes the executor starts beside its JVM. By default they are reused
+  (`spark.python.worker.reuse=true`). Set it to `false` and a task does start a Python worker
+  of its own, but the task is still scheduled, retried and counted by the executor JVM.
 
 #### How many tasks run at once?
 
-**Each executor runs `spark.executor.cores / spark.task.cpus` tasks at a time. Across the
-cluster, concurrent tasks ≈ executors × cores per executor, because `spark.task.cpus`
-defaults to 1.**
+**Each executor runs ⌊`spark.executor.cores` ÷ `spark.task.cpus`⌋ tasks at a time. The
+division rounds down: 5 cores with `spark.task.cpus=2` give 2 slots, not 2.5. Because
+`spark.task.cpus` defaults to 1, concurrent tasks across the cluster ≈ executors × cores
+per executor.**
 
 Two executors with two cores each give four slots, so a stage of eight tasks runs in about
 two waves:
@@ -382,9 +384,11 @@ add slots, so the same tasks finish in fewer waves.**
   keeps 8 of the 20 slots busy and leaves 12 idle. To use them, raise the partition count:
   `repartition`, `spark.sql.shuffle.partitions`, or a smaller
   `spark.sql.files.maxPartitionBytes` for the scan.
-- That is why the answer is "usually" and not "never": when `spark.default.parallelism` is
-  unset, it defaults to the total cores registered on a cluster. So `parallelize` and RDD
-  shuffles do get more partitions, and more tasks, on a bigger cluster.
+- That is why the answer is "usually" and not "never". When `spark.default.parallelism` is
+  unset, it defaults to the total cores registered on the cluster, so `sc.parallelize` with
+  no slice count gets more partitions, and more tasks, on a bigger cluster. Shuffles mostly do
+  not change: with that setting unset, an RDD `reduceByKey` keeps the largest upstream
+  partition count, and DataFrame shuffles use `spark.sql.shuffle.partitions`.
 
 #### Where each level shows up in the Spark UI
 
@@ -399,24 +403,25 @@ Screenshots are from the Apache Spark docs, [Web UI](https://spark.apache.org/do
    cell like `1/1 (1 skipped)` means the job reused shuffle output an earlier job had already
    written, so that stage did not run again ([3-2](#3-2-how-does-spark-split-a-job-into-stages)).
 
-<p align="center"><img src="../../pic/spark_webui_AllJobsPage.png" width="700"></p>
+<p align="center"><img src="../../pic/spark_webui_AllJobsPage.png" alt="Spark UI Jobs tab: one row per completed job, with its stage and task counts" width="700"></p>
 
 2. **Job page: the job's stages.** Job 0 has no shuffle, so it has one stage. That stage's
    `5/5` tasks are its five partitions.
 
-<p align="center"><img src="../../pic/spark_webui_JobPage.png" width="700"></p>
+<p align="center"><img src="../../pic/spark_webui_JobPage.png" alt="Spark UI job detail page: job 0 has one stage with 5 of 5 tasks succeeded" width="700"></p>
 
 3. **Stage page: one row per task.** `Index` is the partition the task processed, and
    `Executor ID` is the executor that ran it. The Summary Metrics row is where skew shows
    up: a `Max` duration far above the `Median` ([6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it)).
 
-<p align="center"><img src="../../pic/spark_webui_StagePage.png" width="700"></p>
+<p align="center"><img src="../../pic/spark_webui_StagePage.png" alt="Spark UI stage detail page: task summary metrics and one row per task with its partition index and executor" width="700"></p>
 
-4. **Executors tab: the slots.** `Cores` is how many tasks an executor can run at once, and
-   `Active Tasks` is how many it is running now. Here 37 tasks went through one executor with
+4. **Executors tab: the slots.** `Cores` is the executor's core count. With the default
+   `spark.task.cpus=1`, that is also how many tasks it can run at once. `Active Tasks` is how
+   many it is running now. Here 37 tasks went through one executor with
    4 cores, which shows that a task is a unit of work, not a process.
 
-<p align="center"><img src="../../pic/spark_webui_webui-exe-tab.png" width="700"></p>
+<p align="center"><img src="../../pic/spark_webui_webui-exe-tab.png" alt="Spark UI Executors tab: the driver executor with 4 cores and 37 completed tasks" width="700"></p>
 
 ### 3-2) How does Spark split a job into stages?
 
