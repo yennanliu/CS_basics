@@ -333,17 +333,19 @@ on one of the executor's threads.**
   to it.
 - In OS terms: the application is the program, the executor is a process, and a task is a
   job handed to one of that process's worker threads.
-- PySpark is the exception that proves the rule. Python code runs in Python worker
-  processes the executor starts beside its JVM. By default they are reused
-  (`spark.python.worker.reuse=true`). Set it to `false` and a task does start a Python worker
-  of its own, but the task is still scheduled, retried and counted by the executor JVM.
+- PySpark adds one wrinkle. A task that runs Python code (a Python UDF, or an RDD lambda)
+  hands it to a Python worker process the executor starts beside its JVM. A DataFrame task
+  that uses only built-in expressions never needs one. Workers are reused by default
+  (`spark.python.worker.reuse=true`). With `false`, each such task starts its own worker.
+  Either way the driver still schedules and retries the task, and the executor JVM runs it
+  and reports its status.
 
 #### How many tasks run at once?
 
-**Each executor runs ⌊`spark.executor.cores` ÷ `spark.task.cpus`⌋ tasks at a time. The
-division rounds down: 5 cores with `spark.task.cpus=2` give 2 slots, not 2.5. Because
-`spark.task.cpus` defaults to 1, concurrent tasks across the cluster ≈ executors × cores
-per executor.**
+**Each executor can run at most ⌊`spark.executor.cores` ÷ `spark.task.cpus`⌋ tasks at a
+time. The division rounds down: 5 cores with `spark.task.cpus=2` give 2 slots, not 2.5.
+Because `spark.task.cpus` defaults to 1, the cluster's ceiling on concurrent tasks is about
+executors × cores per executor. A stage with fewer tasks than slots leaves the rest idle.**
 
 Two executors with two cores each give four slots, so a stage of eight tasks runs in about
 two waves:

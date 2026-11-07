@@ -267,7 +267,7 @@ Catalyst、AQE 與資料來源都可能改變實際數量 —— `explain()` 與
 
 <p align="center"><img src="../../pic/spark_stage_task2.png" width="500" height="300"></p>
 
-<!-- c7f8ec10b07c -->
+<!-- f63e6ec0d059 -->
 #### Task 是一個行程（process）嗎？
 
 **不是。Executor 才是行程（每個 executor 一個 JVM）；task 是在 executor 某條執行緒上跑的一個工作單元。**
@@ -285,16 +285,18 @@ Catalyst、AQE 與資料來源都可能改變實際數量 —— `explain()` 與
 - 同一個 executor 裡的 task 共用它的 heap、快取區塊與 broadcast 變數。所以一個過大的 task
   可能讓整個 executor 記憶體不足，連帶讓旁邊的 task 一起失敗。
 - 用作業系統的說法：application 是程式，executor 是行程，task 是交給這個行程某條工作執行緒的一件工作。
-- PySpark 是例外，但更印證了這條規則。Python 程式碼跑在 executor 於 JVM 旁啟動的 Python
-  worker 行程裡，預設會重複使用（`spark.python.worker.reuse=true`）。若設成 `false`，task 確實會
-  啟動自己的 Python worker，但 task 的排程、重試與計數仍由 executor JVM 負責。
+- PySpark 多了一個細節。會執行 Python 程式碼的 task（Python UDF 或 RDD lambda）會把程式碼交給
+  executor 在 JVM 旁啟動的 Python worker 行程；只用內建表達式的 DataFrame task 完全不需要。
+  Worker 預設會重複使用（`spark.python.worker.reuse=true`）；設成 `false` 時，每個這類 task 會
+  啟動自己的 worker。無論哪種，排程與重試仍由 driver 負責，executor JVM 則執行 task 並回報狀態。
 
-<!-- 6399faedee56 -->
+<!-- a38f0df0c547 -->
 #### 同一時間會跑幾個 task？
 
-**每個 executor 同時跑 ⌊`spark.executor.cores` ÷ `spark.task.cpus`⌋ 個 task。除法無條件捨去：
-5 個核心、`spark.task.cpus=2` 是 2 個 slot，不是 2.5。因為 `spark.task.cpus` 預設是 1，整個
-cluster 的同時 task 數 ≈ executor 數 × 每個 executor 的核心數。**
+**每個 executor 同時最多能跑 ⌊`spark.executor.cores` ÷ `spark.task.cpus`⌋ 個 task。除法無條件
+捨去：5 個核心、`spark.task.cpus=2` 是 2 個 slot，不是 2.5。因為 `spark.task.cpus` 預設是 1，
+整個 cluster 同時 task 數的上限約為 executor 數 × 每個 executor 的核心數；task 比 slot 少的
+stage，其餘 slot 就閒置。**
 
 兩個 executor、各兩個核心，共四個 slot，所以一個有八個 task 的 stage 大約分兩波跑完：
 
