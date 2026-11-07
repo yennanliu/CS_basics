@@ -371,7 +371,7 @@ const SHEETS = [
 
 test('buildCheatsheetIndex gives every card a description and a tier badge', () => {
   const d = parse(lib.buildCheatsheetIndex(SHEETS, META));
-  const cards = d.querySelectorAll('.sheet-card');
+  const cards = d.querySelectorAll('#by-topic .sheet-card');
   assert.equal(cards.length, 4);
   for (const card of cards) {
     assert.ok(card.querySelector('.card-desc'), 'card without a description');
@@ -382,7 +382,7 @@ test('buildCheatsheetIndex gives every card a description and a tier badge', () 
 test('buildCheatsheetIndex renders categories in the configured order and skips empty ones', () => {
   const d = parse(lib.buildCheatsheetIndex(SHEETS, META));
   assert.deepEqual(
-    [...d.querySelectorAll('.cat-heading')].map(el => el.firstChild.textContent.trim()),
+    [...d.querySelectorAll('#by-topic .cat-heading')].map(el => el.firstChild.textContent.trim()),
     ['Arrays & Strings', 'Graphs']
   );
 });
@@ -390,7 +390,7 @@ test('buildCheatsheetIndex renders categories in the configured order and skips 
 test('buildCheatsheetIndex counts the sheets in each category', () => {
   const d = parse(lib.buildCheatsheetIndex(SHEETS, META));
   assert.deepEqual(
-    [...d.querySelectorAll('.cat-count')].map(el => el.textContent),
+    [...d.querySelectorAll('#by-topic .cat-count')].map(el => el.textContent),
     ['2 sheets', '2 sheets']
   );
 });
@@ -408,12 +408,12 @@ test('buildCheatsheetIndex flags a redirect stub so it is not mistaken for a rea
   assert.match(stub.closest('.sheet-card').querySelector('.card-title').textContent, /Priority Queue/);
 });
 
-test('buildCheatsheetIndex builds the start-here ladder from the metadata, with reasons', () => {
+test('buildCheatsheetIndex opens the review path with the start-here ladder, with reasons', () => {
   const d = parse(lib.buildCheatsheetIndex(SHEETS, META));
-  const items = d.querySelectorAll('.start-item');
+  const items = d.querySelectorAll('[data-stage="start"] .path-step');
   assert.equal(items.length, 1);
-  assert.equal(items[0].querySelector('.start-title').getAttribute('href'), 'cheatsheets/array.html');
-  assert.equal(items[0].querySelector('.start-why').textContent, 'Start with the operations.');
+  assert.equal(items[0].querySelector('.step-title').getAttribute('href'), 'cheatsheets/array.html');
+  assert.equal(items[0].querySelector('.step-why').textContent, 'Start with the operations.');
 });
 
 test('buildCheatsheetIndex drops a start-here entry whose sheet no longer exists', () => {
@@ -421,20 +421,91 @@ test('buildCheatsheetIndex drops a start-here entry whose sheet no longer exists
     startHere: [{ file: 'array', why: 'Real.' }, { file: 'deleted_sheet', why: 'Gone.' }]
   });
   const d = parse(lib.buildCheatsheetIndex(SHEETS, meta));
-  assert.equal(d.querySelectorAll('.start-item').length, 1);
+  assert.equal(d.querySelectorAll('[data-stage="start"] .path-step').length, 1);
 });
 
-test('buildCheatsheetIndex explains every tier in its key', () => {
+test('buildCheatsheetIndex groups the priority view by tier, most important first, with each tier explained', () => {
   const d = parse(lib.buildCheatsheetIndex(SHEETS, META));
+  // No tier-4 sheet in the fixture, so no empty tier-4 section.
   assert.deepEqual(
-    [...d.querySelectorAll('.tier-key-label')].map(el => el.textContent),
-    ['Must know', 'High value', 'Worth knowing', 'Niche']
+    [...d.querySelectorAll('#by-priority .tier-key-label')].map(el => el.textContent),
+    ['Must know', 'Worth knowing', 'Niche']
   );
+  assert.equal(d.querySelector('#tier-5 + .tier-key-note').textContent, 'Every loop.');
+  // Every card in the priority view names its category, since the grouping no longer does.
+  for (const c of d.querySelectorAll('#by-priority .sheet-card')) assert.ok(c.querySelector('.card-cat'));
+  // Must-know sheets are feature cards.
+  assert.ok(d.querySelector('[data-tier-section="5"] .feature-grid'));
 });
 
 test('buildCheatsheetIndex states the sheet total in its intro', () => {
   const d = parse(lib.buildCheatsheetIndex(SHEETS, META));
   assert.match(d.querySelector('.intro').textContent, /^4 sheets, /);
+});
+
+// ── drillSummary / reviewPath / the review-path markup ────────────────────
+
+const badge = (lc, v) => `<span class="lc-verdict" data-lc="${lc}" data-verdict="${v}" title="x">${v}</span>`;
+
+test('drillSummary reads the Drill Path badges back once each, with next = again before unseen', () => {
+  const html = '<h2 id="intro">Intro</h2><p>x</p><h2 id="drill-path">Drill Path</h2>' +
+    `<p>LC 1 ${badge(1, 'ok')} LC 2 ${badge(2, 'none')} LC 3 ${badge(3, 'again')} LC 1 ${badge(1, 'ok')} LC 4 ${badge(4, 'none')}</p>`;
+  assert.deepEqual(lib.drillSummary(html),
+    { total: 4, ok: 1, again: 1, next: ['3', '2', '4'], anchor: 'drill-path' });
+});
+
+test('drillSummary is null for a sheet with no Drill Path', () => {
+  assert.equal(lib.drillSummary('<h2 id="a">A</h2><p>no badges</p>'), null);
+});
+
+test('reviewPath walks the ladder, then the other must-knows, then high value — core sheets only', () => {
+  const sheets = [
+    { file: 'array', title: 'Array', category: 'Arrays & Strings', tier: 5, kind: 'sheet' },
+    { file: 'array_examples', title: 'Array Examples', category: 'Arrays & Strings', tier: 5, kind: 'sheet' },
+    { file: 'graph', title: 'Graph', category: 'Graphs', tier: 5, kind: 'sheet' },
+    { file: 'bfs', title: 'BFS', category: 'Graphs', tier: 4, kind: 'sheet' },
+    { file: 'pq', title: 'PQ', category: 'Graphs', tier: 4, kind: 'stub' },
+    { file: 'diff', title: 'Diff', category: 'Arrays & Strings', tier: 3, kind: 'sheet' }
+  ];
+  const stages = lib.reviewPath(sheets, META);
+  assert.deepEqual(stages.map(st => [st.key, st.steps.map(s => s.file)]),
+    [['start', ['array']], ['must', ['graph']], ['high', ['bfs']]]);
+});
+
+test('buildCheatsheetIndex numbers the review path continuously across stages and links an examples sheet', () => {
+  const sheets = SHEETS.concat([{ file: 'array_examples', title: 'Array Examples', category: 'Arrays & Strings',
+    tier: 4, kind: 'sheet', description: 'Problems.' }]);
+  const d = parse(lib.buildCheatsheetIndex(sheets, META));
+  const steps = [...d.querySelectorAll('.path-step')];
+  assert.deepEqual(steps.map(s => s.getAttribute('data-file')), ['array', 'graph']);
+  assert.deepEqual(steps.map(s => s.querySelector('.step-no').textContent), ['1', '2']);
+  assert.equal(steps[0].querySelector('.step-extra').getAttribute('href'), 'cheatsheets/array_examples.html');
+});
+
+test('buildCheatsheetIndex shows drill progress on important cards and totals it in the stat strip', () => {
+  const sheets = SHEETS.map(s => s.file === 'array'
+    ? Object.assign({}, s, { drill: { total: 4, ok: 1, again: 1, next: ['3'], anchor: 'drill-path' } })
+    : s);
+  const d = parse(lib.buildCheatsheetIndex(sheets, META));
+  const drill = d.querySelector('#by-topic .sheet-card .card-drill');
+  assert.match(drill.textContent, /drill 1\/4 ok · 1 again · next: LC 3/);
+  assert.equal(drill.querySelector('a').getAttribute('href'), 'cheatsheets/array.html#drill-path');
+  assert.match(d.querySelector('.cs-stats').textContent, /1\/4 drill problems ok/);
+  // A sheet with no Drill Path says so on the path rather than showing an empty bar.
+  assert.ok(d.querySelector('.path-step[data-file="graph"] .drill-none'));
+});
+
+test('buildCheatsheetIndex renders three views, each reachable from a tab', () => {
+  const d = parse(lib.buildCheatsheetIndex(SHEETS, META));
+  const tabs = [...d.querySelectorAll('[data-cs-tabs] [data-view]')];
+  assert.deepEqual(tabs.map(a => a.getAttribute('href')), ['#review-path', '#by-priority', '#by-topic']);
+  for (const a of tabs) {
+    const panel = d.getElementById(a.getAttribute('href').slice(1));
+    assert.equal(panel.getAttribute('data-view-panel'), a.getAttribute('data-view'));
+  }
+  // Every sheet is in both catalogue views, tagged so the filter can count it once.
+  assert.equal(d.querySelectorAll('#by-priority .sheet-card[data-file]').length, SHEETS.length);
+  assert.equal(d.querySelectorAll('#by-topic .sheet-card[data-file]').length, SHEETS.length);
 });
 
 // ── buildIndexGrid (the plain grid the FAQ index shares) ──────────────────
@@ -708,22 +779,22 @@ const ZH_SHEETS = SHEETS.map(s => ({ ...s, title: s.title + '（中文）' }));
 
 test('buildCheatsheetIndex in zh points every card at the translated page', () => {
   const d = parse(lib.buildCheatsheetIndex(ZH_SHEETS, ZH_META, 'zh'));
-  const hrefs = [...d.querySelectorAll('.card-title a')].map(a => a.getAttribute('href'));
+  const hrefs = [...d.querySelectorAll('#by-topic .card-title a')].map(a => a.getAttribute('href'));
   assert.deepEqual(hrefs, [
     'cheatsheets/array.zh.html',
     'cheatsheets/difference_array.zh.html',
     'cheatsheets/graph.zh.html',
     'cheatsheets/priority_queue.zh.html'
   ]);
-  assert.equal(d.querySelector('.start-title').getAttribute('href'), 'cheatsheets/array.zh.html');
+  assert.equal(d.querySelector('.step-title').getAttribute('href'), 'cheatsheets/array.zh.html');
 });
 
 test('buildCheatsheetIndex in zh translates the category names and the ladder reasons', () => {
   const d = parse(lib.buildCheatsheetIndex(ZH_SHEETS, ZH_META, 'zh'));
-  assert.equal(d.querySelector('.cat-heading').firstChild.textContent.trim(), '陣列與字串');
-  // Scoped to the section — the start-here ladder reuses .cat-blurb for its own intro.
-  assert.equal(d.querySelector('.cat-section .cat-blurb').textContent, '出現頻率最高的一塊。');
-  assert.equal(d.querySelector('.start-why').textContent, '先從基本操作開始。');
+  assert.equal(d.querySelector('#by-topic .cat-heading').firstChild.textContent.trim(), '陣列與字串');
+  // Scoped to the topic view — the review path and tiers reuse .cat-blurb for their own intros.
+  assert.equal(d.querySelector('#by-topic .cat-section .cat-blurb').textContent, '出現頻率最高的一塊。');
+  assert.equal(d.querySelector('.step-why').textContent, '先從基本操作開始。');
   assert.equal(d.querySelector('.tier-key-label').textContent, '必備');
 });
 
@@ -731,10 +802,10 @@ test('buildCheatsheetIndex in zh translates the category names and the ladder re
 // so a newly added category is readable the moment it exists.
 test('buildCheatsheetIndex in zh falls back to English for anything not yet translated', () => {
   const d = parse(lib.buildCheatsheetIndex(ZH_SHEETS, ZH_META, 'zh'));
-  const headings = [...d.querySelectorAll('.cat-heading')].map(el => el.firstChild.textContent.trim());
+  const headings = [...d.querySelectorAll('#by-topic .cat-heading')].map(el => el.firstChild.textContent.trim());
   assert.deepEqual(headings, ['陣列與字串', 'Graphs']);
   const tierLabels = [...d.querySelectorAll('.tier-key-label')].map(el => el.textContent);
-  assert.deepEqual(tierLabels, ['必備', 'High value', 'Worth knowing', 'Niche']);
+  assert.deepEqual(tierLabels, ['必備', 'Worth knowing', 'Niche']);
 });
 
 test('buildCheatsheetIndex keeps categories keyed in English so both indexes line up', () => {

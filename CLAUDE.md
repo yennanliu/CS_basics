@@ -796,6 +796,16 @@ A new `doc/cheatsheet/*.md` must also get an entry in [`data/cheatsheet_meta.jso
 - `kind` — `"stub"` for a redirect file, `"reference"` for an imported index. Omit for a normal sheet.
 - Add it to `startHere` only if it belongs in the beginner reading ladder.
 
+`cheatsheets.html` (and `.zh.html`) is three views over the same sheets, picked by tabs
+(`buildCheatsheetIndex` in `site/build-lib.js`, wired by `site.js`): **Review path** —
+`startHere` in order, then every other tier-5 core sheet, then tier 4 (`reviewPath`;
+`_examples` / `_advanced` sheets ride on their core sheet's step) — **By priority** (one
+section per tier, must-know as feature cards) and **By topic** (the category catalogue). Each
+important card shows its Drill Path progress, read back from the verdict badges the sheet
+already carries (`drillSummary`), so the counts are the practice log's. The path's "reviewed"
+marks are per-browser `localStorage` (`cs-review-path`) and come due again after
+`REVIEW_INTERVAL_DAYS` (7 for tier 5, 14 for tier 4); they are a reading checklist, not a record.
+
 ### Adding a topic to the Study Roadmap
 
 The roadmap page (`lc-roadmap.html`) is driven entirely by [`data/roadmap.json`](data/roadmap.json) — one entry per topic:

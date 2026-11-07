@@ -367,17 +367,51 @@
   const INDEX_TEXT = {
     en: {
       h1: 'Algorithm &amp; Data Structure Cheat Sheets',
-      intro: n => `${n} sheets, grouped by topic and ranked by how often the pattern actually shows up in a ` +
-        'FAANG software-engineering loop. Read the <a href="#start-here">Start here</a> ladder first; ' +
-        'the catalogue below is for lookup.',
-      starsHeading: 'What the stars mean',
-      starsAria: 'What the star ratings mean',
-      starsFoot: 'The same stars appear on individual sections inside each sheet, so you can skim a ' +
-        '4,000-line doc and still see which templates are the ones to memorise.',
-      startHere: 'Start here',
-      startBlurb: n => `${n} sheets in reading order. Together they cover the large majority of what a ` +
-        'coding round will actually ask.',
-      catalogue: 'Full catalogue',
+      intro: n => `${n} sheets, ranked by how often the pattern actually shows up in a FAANG ` +
+        'software-engineering loop. Follow the <a href="#review-path">review path</a> to work through ' +
+        'the ones that matter in order, or browse by priority or topic.',
+      stats: {
+        sheets: 'sheets',
+        must: 'must know',
+        high: 'high value',
+        drill: 'drill problems ok'
+      },
+      views: { path: 'Review path', priority: 'By priority', topic: 'By topic' },
+      viewsAria: 'Choose how to browse the cheat sheets',
+      tierCount: n => `${n} sheet${n === 1 ? '' : 's'}`,
+      jumpTo: 'Jump to',
+      // Review path
+      pathHeading: 'Review path',
+      pathBlurb: (n, total) => `${n} core sheets in study order — the ${total} foundations first, then every ` +
+        'other must-know sheet, then the high-value ones. Mark a sheet reviewed when you have re-read its ' +
+        'starred templates; it comes due again a week later (two for high value).',
+      stages: {
+        start: ['Foundations', 'The reading ladder: each one unlocks the next.'],
+        must: ['Must know', 'The rest of what shows up in almost every loop.'],
+        high: ['High value', 'Common enough that a gap here costs a round.']
+      },
+      nextUp: 'Next up',
+      open: 'Open sheet',
+      mark: 'Mark reviewed',
+      unmark: 'Undo',
+      reset: 'Reset progress',
+      drill: (ok, total) => `drill ${ok}/${total} ok`,
+      drillNext: 'next',
+      drillLink: 'drill path',
+      noDrill: 'no drill path yet',
+      examples: 'examples',
+      // relative-time words the page script uses; kept here so one table holds the chrome
+      rel: {
+        never: 'not reviewed',
+        today: 'reviewed today',
+        daysAgo: 'reviewed {n}d ago',
+        due: 'due again',
+        dueIn: 'next in {n}d',
+        allDone: 'Everything on the path is reviewed and nothing is due. Pick any sheet to go deeper.',
+        progress: '{n} of {total} reviewed',
+        storage: 'Progress is kept in this browser only.'
+      },
+      // Catalogue
       filterLabel: 'Filter',
       filterPlaceholder: 'Title, topic or description — e.g. window, dijkstra, knapsack',
       filterAria: 'Filter by interview priority',
@@ -390,22 +424,53 @@
       empty: 'No sheet matches that filter. ',
       emptyReset: 'Clear it',
       howTo: '<strong>How to use this:</strong> pick the sheet, read its Scope line to confirm it owns your ' +
-        'problem, then jump straight to the starred sections. Every sheet links to its neighbours rather ' +
-        'than repeating them.',
+        'problem, then jump straight to the starred sections — the same stars mark the sections inside ' +
+        'each sheet that are worth memorising. The drill counts come from the practice log.',
       source: 'Source: <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">doc/cheatsheet on GitHub</a> — ' +
         'ratings and grouping live in <a href="https://github.com/yennanliu/CS_basics/blob/master/data/cheatsheet_meta.json">data/cheatsheet_meta.json</a>.'
     },
     zh: {
       h1: '演算法與資料結構速查表',
-      intro: n => `共 ${n} 份速查表，依主題分組，並以「在 FAANG 軟體工程面試中實際出現的頻率」排序。` +
-        '建議先讀 <a href="#start-here">從這裡開始</a> 的閱讀順序，下方的完整目錄則供查閱用。',
-      starsHeading: '星等代表什麼',
-      starsAria: '星等評分說明',
-      starsFoot: '每份速查表內部的章節也標了同一套星等，所以即使面對四千行的文件，' +
-        '也能一眼看出哪些模板是非背不可的。',
-      startHere: '從這裡開始',
-      startBlurb: n => `${n} 份速查表，依閱讀順序排列。讀完這一串，就涵蓋了程式面試絕大多數會問到的內容。`,
-      catalogue: '完整目錄',
+      intro: n => `共 ${n} 份速查表，依「在 FAANG 軟體工程面試中實際出現的頻率」排序。` +
+        '照著 <a href="#review-path">複習路徑</a> 依序讀完最重要的那些，或依優先度、主題瀏覽。',
+      stats: {
+        sheets: '份速查表',
+        must: '份必備',
+        high: '份高價值',
+        drill: '練習題已 ok'
+      },
+      views: { path: '複習路徑', priority: '依優先度', topic: '依主題' },
+      viewsAria: '選擇瀏覽速查表的方式',
+      tierCount: n => `${n} 份`,
+      jumpTo: '跳到',
+      pathHeading: '複習路徑',
+      pathBlurb: (n, total) => `${n} 份核心速查表，依學習順序排列 —— 先是 ${total} 份基礎，接著是其餘必備，` +
+        '再來是高價值。重讀完一份的標星模板後就標記為已複習；一週後（高價值為兩週）會再次到期。',
+      stages: {
+        start: ['基礎', '閱讀階梯：每一份都是下一份的前提。'],
+        must: ['必備', '幾乎每一輪面試都會出現的其餘內容。'],
+        high: ['高價值', '常見到這裡有缺口就會掉關。']
+      },
+      nextUp: '下一份',
+      open: '開啟',
+      mark: '標記已複習',
+      unmark: '復原',
+      reset: '重設進度',
+      drill: (ok, total) => `練習 ${ok}/${total} ok`,
+      drillNext: '下一題',
+      drillLink: '練習路徑',
+      noDrill: '尚無練習路徑',
+      examples: '例題',
+      rel: {
+        never: '尚未複習',
+        today: '今天已複習',
+        daysAgo: '{n} 天前複習',
+        due: '該複習了',
+        dueIn: '{n} 天後到期',
+        allDone: '路徑上的速查表都已複習，目前沒有到期的。挑任何一份深入讀吧。',
+        progress: '已複習 {n} / {total}',
+        storage: '進度只存在這個瀏覽器裡。'
+      },
       filterLabel: '篩選',
       filterPlaceholder: '標題、主題或描述 — 例如 window、dijkstra、knapsack',
       filterAria: '依面試重要度篩選',
@@ -418,57 +483,231 @@
       empty: '沒有符合該條件的速查表。',
       emptyReset: '清除篩選',
       howTo: '<strong>使用方式：</strong>先挑主題，讀它的「範圍」那行確認這份文件確實涵蓋你的問題，' +
-        '再直接跳到標星的章節。每份速查表只連向相鄰主題，不重複它們的內容。',
+        '再直接跳到標星的章節 —— 每份速查表內部值得背的章節也標了同一套星等。練習數字來自練習紀錄。',
       source: '原始檔：<a href="https://github.com/yennanliu/CS_basics/tree/master/i18n/zh">GitHub 上的 i18n/zh</a> — ' +
         '星等與分組定義在 <a href="https://github.com/yennanliu/CS_basics/blob/master/data/cheatsheet_meta.json">data/cheatsheet_meta.json</a>。'
     }
   };
 
-  // The cheatsheet index: a curated "start here" ladder, then every sheet grouped
-  // by category and ordered by interview weight, each carrying its Scope line as a
-  // description so the reader can tell 74 cards apart.
+  // ── Drill summary ───────────────────────────────────────────────────────────
+  // A rendered sheet already carries one stampDrillVerdicts badge per LC number
+  // in its Drill Path. Read them back — in order, once each — so the index can
+  // say how much of a sheet's drill is solid and which problem is next, without
+  // a second parse of the markdown or the log. `anchor` is the id of the heading
+  // the first badge sits under, which is the Drill Path heading in either
+  // language (the 中文 page's ids come from its translated text).
+  function drillSummary(html) {
+    const re = /data-lc="(\d+)" data-verdict="(\w+)"/g;
+    const seen = new Map();
+    let first = -1;
+    let m;
+    while ((m = re.exec(html || ''))) {
+      if (first < 0) first = m.index;
+      if (!seen.has(m[1])) seen.set(m[1], m[2]);
+    }
+    if (!seen.size) return null;
+    const ids = [...seen.keys()];
+    const count = v => ids.filter(id => seen.get(id) === v).length;
+    let anchor = null;
+    const heads = /<h[2-4]\b[^>]*\bid="([^"]*)"/g;
+    while ((m = heads.exec(html)) && m.index < first) anchor = m[1];
+    return {
+      total: ids.length,
+      ok: count('ok'),
+      again: count('again'),
+      // The Drill Path runs Core → Practice → Stretch, easy → hard, so the first
+      // problems not yet ok are the ones to do next — `again` ones before unseen.
+      next: ids.filter(id => seen.get(id) === 'again')
+        .concat(ids.filter(id => seen.get(id) === 'none'))
+        .slice(0, 3),
+      anchor
+    };
+  }
+
+  // The review path: the curated ladder from meta.startHere, then every other
+  // tier-5 sheet, then every tier-4 one, in category order. Companion sheets
+  // (`_examples`, `_advanced`), stubs and imported references are not steps —
+  // an examples sheet rides along on its core sheet's step instead.
+  const REVIEW_INTERVAL_DAYS = { 5: 7, 4: 14 };
+
+  function reviewPath(sheets, meta) {
+    const byFile = new Map(sheets.map(s => [s.file, s]));
+    const isCore = s => s && (!s.kind || s.kind === 'sheet') && !/_(examples|advanced)$/.test(s.file);
+    const taken = new Set();
+    const stage = (key, list) => {
+      const steps = list.filter(s => isCore(s) && !taken.has(s.file));
+      steps.forEach(s => taken.add(s.file));
+      return { key, steps };
+    };
+    const ordered = tier => meta.categoryOrder.flatMap(cat =>
+      sheets.filter(s => s.category === cat && s.tier === tier)
+        .sort((a, b) => a.title.localeCompare(b.title)));
+    return [
+      stage('start', (meta.startHere || []).map(s => byFile.get(s.file)).filter(Boolean)),
+      stage('must', ordered(5)),
+      stage('high', ordered(4))
+    ].filter(st => st.steps.length);
+  }
+
+  // Sheets in a group, most important first, then alphabetical — the order every
+  // list on the index uses, so a sheet never moves between views for no reason.
+  const byWeight = (a, b) => (b.tier - a.tier) || a.title.localeCompare(b.title);
+
+  // The priority view's order inside one tier: the start-here ladder first (it is
+  // already in teaching order), then by category in categoryOrder, then title —
+  // so "Must know" opens with Array and Hash Map, not whatever sorts first.
+  function byImportance(meta) {
+    const ladder = new Map((meta.startHere || []).map((s, i) => [s.file, i]));
+    const cat = new Map((meta.categoryOrder || []).map((c, i) => [c, i]));
+    const rank = (m, k) => (m.has(k) ? m.get(k) : Infinity);
+    return (a, b) => (b.tier - a.tier) ||
+      (rank(ladder, a.file) - rank(ladder, b.file) || 0) ||
+      (rank(cat, a.category) - rank(cat, b.category) || 0) ||
+      a.title.localeCompare(b.title);
+  }
+
+  const escapeAttr = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+
+  // The cheatsheet index. Three views over the same sheets, chosen by a tab bar:
   //
-  // `lang` picks both the chrome above and the `zh` overrides in meta, and decides
-  // whether a card points at `<slug>.html` or `<slug>.zh.html`. Categories stay
-  // keyed by their English name everywhere — grouping, anchors, data-category — so
-  // the two indexes stay row-for-row comparable and a deep link works in either.
+  //   Review path — the core sheets in study order, each with its drill progress
+  //                 and a per-browser "reviewed" mark that comes due again;
+  //   By priority — one section per tier, must-know first, shown as feature cards;
+  //   By topic    — the category catalogue, each category ordered by tier.
+  //
+  // Everything is rendered server-side and ships visible, so with JS off the page
+  // is the three views stacked; site.js turns them into tabs and wires the filter
+  // and the review marks. `lang` picks both the chrome above and the `zh`
+  // overrides in meta, and decides whether a card points at `<slug>.html` or
+  // `<slug>.zh.html`. Categories stay keyed by their English name everywhere —
+  // grouping, anchors, data-category — so the two indexes stay row-for-row
+  // comparable and a deep link works in either.
   function buildCheatsheetIndex(sheets, meta, lang = 'en') {
     const t = INDEX_TEXT[lang] || INDEX_TEXT.en;
     const zh = lang === 'zh' ? (meta.zh || {}) : {};
     const pick = (map, key, fallback) => (map && map[key] != null ? map[key] : fallback);
 
-    const byFile = new Map(sheets.map(s => [s.file, s]));
+    const fileSet = new Set(sheets.map(s => s.file));
     const tierLabel = n => pick(zh.tierLabels, String(n), meta.tierLabels[String(n)]).label;
     const tierNote = n => pick(zh.tierLabels, String(n), meta.tierLabels[String(n)]).note;
     const catName = c => pick(zh.categories, c, c);
     const catBlurb = c => pick(zh.categoryBlurbs, c, meta.categoryBlurbs[c]);
     const href = file => `cheatsheets/${file}${lang === 'zh' ? '.zh' : ''}.html`;
+    const startWhy = new Map((meta.startHere || [])
+      .map(s => [s.file, pick(zh.startHere, s.file, s.why)]));
 
-    const startHere = meta.startHere
-      .map(s => ({ ...byFile.get(s.file), why: pick(zh.startHere, s.file, s.why) }))
-      .filter(s => s.file);
+    const drillBar = d => {
+      if (!d) return '';
+      const pct = n => (100 * n / d.total).toFixed(1);
+      return `<span class="drill-bar" aria-hidden="true">` +
+        `<span class="drill-ok" style="width:${pct(d.ok)}%"></span>` +
+        `<span class="drill-again" style="width:${pct(d.again)}%"></span></span>`;
+    };
+    const drillLine = (d, file) => {
+      if (!d) return '';
+      const link = d.anchor ? `${href(file)}#${d.anchor}` : href(file);
+      return `<p class="card-drill">${drillBar(d)}` +
+        `<span class="drill-text">${t.drill(d.ok, d.total)}` +
+        (d.again ? ` · <span class="drill-again-n">${d.again} again</span>` : '') +
+        (d.next.length ? ` · ${t.drillNext}: <a href="${link}">${d.next.map(n => 'LC ' + n).join(', ')}</a>` : '') +
+        '</span></p>';
+    };
+    const kindChip = item => item.kind === 'stub'
+      ? `<span class="kind-chip kind-stub">${t.stub}</span>`
+      : item.kind === 'reference'
+        ? `<span class="kind-chip kind-reference">${t.reference}</span>`
+        : '';
+
+    // One card, used by both catalogue views. data-search is what the filter
+    // matches on: title, category and the Scope line, so "window" finds Sliding
+    // Window and "dag" finds toposort. The English category and slug ride along
+    // in both languages, so a reader who only knows the English term can still
+    // find the 中文 card. data-file lets the filter count a sheet once although it
+    // appears in two views.
+    const card = (item, { showCategory }) => {
+      const haystack = [item.title, item.category, catName(item.category), item.description || '',
+        item.file.replace(/_/g, ' ')].join(' ').toLowerCase().replace(/"/g, '');
+      const chip = kindChip(item);
+      return `\n        <article class="cheatsheet-card sheet-card tier-${item.tier}"` +
+        ` data-tier="${item.tier}" data-file="${item.file}" data-search="${haystack}">` +
+        '<div class="card-top">' +
+        `<h4 class="card-title"><a href="${href(item.file)}">${item.title}</a></h4>` +
+        `${prioBadge(item.tier, 'prio-compact', lang)}</div>` +
+        (showCategory ? `<p class="card-cat">${catName(item.category)}</p>` : '') +
+        (item.description ? `<p class="card-desc">${item.description}</p>` : '') +
+        (item.tier >= 4 ? drillLine(item.drill, item.file) : '') +
+        (chip ? `<p class="card-tags">${chip}</p>` : '') +
+        '</article>';
+    };
+
+    // ── Header: title, intro, stat strip ──
+    const count = tier => sheets.filter(s => s.tier === tier).length;
+    const drills = sheets.map(s => s.drill).filter(Boolean);
+    const drillOk = drills.reduce((n, d) => n + d.ok, 0);
+    const drillTotal = drills.reduce((n, d) => n + d.total, 0);
     let html = `<h1>${t.h1}</h1><p class="intro">${t.intro(sheets.length)}</p>`;
+    html += '<ul class="cs-stats">' +
+      `<li><strong>${sheets.length}</strong> ${t.stats.sheets}</li>` +
+      `<li><strong>${count(5)}</strong> ${t.stats.must}</li>` +
+      `<li><strong>${count(4)}</strong> ${t.stats.high}</li>` +
+      (drillTotal ? `<li><strong>${drillOk}/${drillTotal}</strong> ${t.stats.drill}</li>` : '') +
+      '</ul>';
 
-    html += `<section class="tier-key" aria-label="${t.starsAria}">` +
-      `<h2 class="key-heading">${t.starsHeading}</h2><ul class="tier-key-list">` +
-      [5, 4, 3, 2].map(n =>
-        `<li class="tier-key-item">${prioBadge(n, '', lang)}<span class="tier-key-label">${tierLabel(n)}</span>` +
-        `<span class="tier-key-note">${tierNote(n)}</span></li>`
-      ).join('') +
-      `</ul><p class="tier-key-foot">${t.starsFoot}</p></section>`;
+    // ── View tabs ──
+    const VIEWS = [['path', 'review-path'], ['priority', 'by-priority'], ['topic', 'by-topic']];
+    html += `<div class="cs-tabs" role="tablist" aria-label="${t.viewsAria}" data-cs-tabs>` +
+      VIEWS.map(([key, id], i) =>
+        `<a class="cs-tab${i === 1 ? ' is-on' : ''}" role="tab" href="#${id}" data-view="${key}">${t.views[key]}</a>`
+      ).join('') + '</div>';
 
-    html += `<section class="start-here" id="start-here"><h2>${t.startHere}</h2>` +
-      `<p class="cat-blurb">${t.startBlurb(startHere.length)}</p><ol class="start-list">`;
-    for (const s of startHere) {
-      html += `<li class="start-item"><a class="start-title" href="${href(s.file)}">${s.title}</a>` +
-        `${prioBadge(s.tier, 'prio-compact', lang)}<span class="start-why">${s.why}</span></li>`;
+    // ── View 1: review path ──
+    const stages = reviewPath(sheets, meta);
+    const stepTotal = stages.reduce((n, st) => n + st.steps.length, 0);
+    const startCount = (stages.find(st => st.key === 'start') || { steps: [] }).steps.length;
+    const strings = JSON.stringify(Object.assign({}, t.rel, {
+      mark: t.mark, unmark: t.unmark, nextUp: t.nextUp, open: t.open
+    }));
+    html += `<section class="cs-view review-path" id="review-path" data-view-panel="path" data-review-path ` +
+      `data-strings="${escapeAttr(strings)}" data-intervals="${escapeAttr(JSON.stringify(REVIEW_INTERVAL_DAYS))}">` +
+      `<h2 class="view-heading">${t.pathHeading}</h2>` +
+      `<p class="cat-blurb">${t.pathBlurb(stepTotal, startCount)}</p>` +
+      // Filled by site.js; without JS the path is simply an ordered reading list.
+      '<div class="path-summary" hidden>' +
+      '<div class="path-next"></div>' +
+      `<div class="path-progress"><span class="path-meter"><span class="path-meter-fill"></span></span>` +
+      `<span class="path-count"></span>` +
+      `<button type="button" class="path-reset">${t.reset}</button></div>` +
+      `<p class="path-note">${t.rel.storage}</p>` +
+      '</div>';
+    let stepNo = 0;
+    for (const st of stages) {
+      const [name, blurb] = t.stages[st.key];
+      html += `<div class="path-stage" data-stage="${st.key}">` +
+        `<h3 class="stage-heading" id="path-${st.key}">${name}` +
+        `<span class="cat-count">${t.tierCount(st.steps.length)}</span></h3>` +
+        `<p class="stage-blurb">${blurb}</p><ol class="path-list" start="${stepNo + 1}">`;
+      for (const s of st.steps) {
+        stepNo++;
+        const why = startWhy.get(s.file) || s.description || '';
+        const ex = `${s.file}_examples`;
+        html += `<li class="path-step tier-${s.tier}" data-file="${s.file}" data-tier="${s.tier}">` +
+          `<span class="step-no" aria-hidden="true">${stepNo}</span>` +
+          '<div class="step-body"><div class="step-top">' +
+          `<a class="step-title" href="${href(s.file)}">${s.title}</a>` +
+          `${prioBadge(s.tier, 'prio-compact', lang)}` +
+          (fileSet.has(ex) ? `<a class="step-extra" href="${href(ex)}">+ ${t.examples}</a>` : '') +
+          '</div>' +
+          (why ? `<p class="step-why">${why}</p>` : '') +
+          (s.drill ? drillLine(s.drill, s.file) : `<p class="card-drill drill-none">${t.noDrill}</p>`) +
+          '</div>' +
+          '<div class="step-mark"><span class="step-status"></span></div>' +
+          '</li>';
+      }
+      html += '</ol></div>';
     }
-    html += '</ol></section>';
+    html += '</section>';
 
-    html += `<h2 class="catalogue-heading" id="catalogue">${t.catalogue}</h2>`;
-
-    // Filter bar. It ships with everything visible and is wired up by site.js, so
-    // the catalogue still works with JS off.
+    // ── Filter (applies to both catalogue views) ──
     html += '<div class="index-filter" data-sheet-filter>' +
       `<label class="filter-label" for="sheet-filter">${t.filterLabel}</label>` +
       '<input type="search" id="sheet-filter" class="filter-input" autocomplete="off" ' +
@@ -481,41 +720,42 @@
       `<p class="filter-status" role="status" aria-live="polite" data-total="${sheets.length}"></p>` +
       '</div>';
 
-    const grouped = groupByCategory(sheets);
-    for (const category of meta.categoryOrder) {
-      const items = grouped[category];
-      if (!items || !items.length) continue;
-      const anchor = slugify(category);
-      html += `<section class="cat-section" data-category="${category}">`;
-      html += `<h3 class="cat-heading" id="${anchor}">${catName(category)}` +
-        `<span class="cat-count">${t.sheetCount(items.length)}</span></h3>`;
-      if (catBlurb(category)) {
-        html += `<p class="cat-blurb">${catBlurb(category)}</p>`;
-      }
-      html += '<div class="cheatsheet-grid sheet-grid">';
-      for (const item of items) {
-        const kindChip = item.kind === 'stub'
-          ? `<span class="kind-chip kind-stub">${t.stub}</span>`
-          : item.kind === 'reference'
-            ? `<span class="kind-chip kind-reference">${t.reference}</span>`
-            : '';
-        // data-search is what the filter matches on: title, category and the Scope
-        // line, so "window" finds Sliding Window and "dag" finds toposort. The
-        // English category and slug ride along in both languages, so a reader who
-        // only knows the English term can still find the 中文 card.
-        const haystack = [item.title, category, catName(category), item.description || '',
-          item.file.replace(/_/g, ' ')].join(' ').toLowerCase().replace(/"/g, '');
-        html += `\n        <article class="cheatsheet-card sheet-card tier-${item.tier}"` +
-          ` data-tier="${item.tier}" data-search="${haystack}">` +
-          '<div class="card-top">' +
-          `<h4 class="card-title"><a href="${href(item.file)}">${item.title}</a></h4>` +
-          `${prioBadge(item.tier, 'prio-compact', lang)}</div>` +
-          (item.description ? `<p class="card-desc">${item.description}</p>` : '') +
-          (kindChip ? `<p class="card-tags">${kindChip}</p>` : '') +
-          '</article>';
-      }
-      html += '</div></section>';
+    // ── View 2: by priority ──
+    html += `<section class="cs-view" id="by-priority" data-view-panel="priority">` +
+      `<h2 class="view-heading">${t.views.priority}</h2>`;
+    for (const tier of [5, 4, 3, 2]) {
+      const items = sheets.filter(s => s.tier === tier).sort(byImportance(meta));
+      if (!items.length) continue;
+      html += `<section class="cat-section tier-section tier-section-${tier}" data-tier-section="${tier}">` +
+        `<h3 class="cat-heading" id="tier-${tier}">${prioBadge(tier, '', lang)}` +
+        `<span class="tier-key-label">${tierLabel(tier)}</span>` +
+        `<span class="cat-count">${t.sheetCount(items.length)}</span></h3>` +
+        `<p class="cat-blurb tier-key-note">${tierNote(tier)}</p>` +
+        `<div class="cheatsheet-grid sheet-grid${tier === 5 ? ' feature-grid' : ''}">` +
+        items.map(item => card(item, { showCategory: true })).join('') +
+        '</div></section>';
     }
+    html += '</section>';
+
+    // ── View 3: by topic ──
+    const grouped = groupByCategory(sheets);
+    const cats = meta.categoryOrder.filter(c => grouped[c] && grouped[c].length);
+    html += `<section class="cs-view" id="by-topic" data-view-panel="topic">` +
+      `<h2 class="view-heading">${t.views.topic}</h2>` +
+      `<nav class="cat-jump" aria-label="${t.jumpTo}">` +
+      cats.map(c => `<a href="#${slugify(c)}">${catName(c)}</a>`).join('') + '</nav>';
+    for (const category of cats) {
+      const items = grouped[category].slice().sort(byWeight);
+      html += `<section class="cat-section" data-category="${category}">`;
+      html += `<h3 class="cat-heading" id="${slugify(category)}">${catName(category)}` +
+        `<span class="cat-count">${t.sheetCount(items.length)}</span></h3>`;
+      if (catBlurb(category)) html += `<p class="cat-blurb">${catBlurb(category)}</p>`;
+      html += '<div class="cheatsheet-grid sheet-grid">' +
+        items.map(item => card(item, { showCategory: false })).join('') +
+        '</div></section>';
+    }
+    html += '</section>';
+
     html += `<p class="filter-empty" hidden>${t.empty}` +
       `<button type="button" class="filter-reset">${t.emptyReset}</button></p>`;
 
@@ -695,6 +935,9 @@
     buildPrevNext,
     buildIndexGrid,
     buildCheatsheetIndex,
+    drillSummary,
+    reviewPath,
+    REVIEW_INTERVAL_DAYS,
     splitLeadingH1,
     buildPageContent,
     extractScope,

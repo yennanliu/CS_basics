@@ -401,3 +401,119 @@ test('initSheetFilter rewrites a category count to match what is on screen', () 
   input.dispatchEvent(new window.Event('input'));
   assert.equal(count.textContent, '3 sheets', 'clearing the filter restores the full count');
 });
+
+
+// ── Cheatsheet index views and review path ────────────────────────────────
+
+function memStore(init) {
+  var data = Object.assign({}, init || {});
+  return {
+    getItem: function (k) { return k in data ? data[k] : null; },
+    setItem: function (k, v) { data[k] = String(v); },
+    data: data
+  };
+}
+
+function viewsPage() {
+  return '<div data-cs-tabs>' +
+    '<a href="#review-path" data-view="path">Path</a>' +
+    '<a href="#by-priority" data-view="priority">Priority</a>' +
+    '<a href="#by-topic" data-view="topic">Topic</a></div>' +
+    '<section id="review-path" data-view-panel="path">path</section>' +
+    '<div data-sheet-filter><input class="filter-input"><p class="filter-status" data-total="1"></p></div>' +
+    '<section id="by-priority" data-view-panel="priority">' +
+    '<article class="sheet-card" data-tier="5" data-file="a" data-search="a"><h4 class="card-title">A</h4></article></section>' +
+    '<section id="by-topic" data-view-panel="topic"><h3 id="graphs">Graphs</h3>' +
+    '<article class="sheet-card" data-tier="5" data-file="a" data-search="a"><h4 class="card-title">A</h4></article></section>';
+}
+const visibleViews = () => [...document.querySelectorAll('[data-view-panel]:not([hidden])')]
+  .map(p => p.getAttribute('data-view-panel'));
+
+test('initIndexViews opens on the priority view by default and shows only one view', () => {
+  setupDOM(viewsPage());
+  CSSite.initSheetFilter(document);
+  CSSite.initIndexViews(document, { storage: memStore(), hash: '', noHashListener: true });
+  assert.deepEqual(visibleViews(), ['priority']);
+  // A sheet in two views is still one sheet.
+  assert.equal(document.querySelector('.filter-status').textContent, '1 sheets');
+});
+
+test('initIndexViews follows a hash into the view that holds it, and hides the filter on the path', () => {
+  setupDOM(viewsPage());
+  CSSite.initIndexViews(document, { storage: memStore(), hash: '#graphs', noHashListener: true });
+  assert.deepEqual(visibleViews(), ['topic']);
+
+  click(document.querySelector('[data-view="path"]'));
+  assert.deepEqual(visibleViews(), ['path']);
+  assert.equal(document.querySelector('[data-sheet-filter]').hidden, true);
+});
+
+test('initIndexViews remembers the last view chosen', () => {
+  setupDOM(viewsPage());
+  const store = memStore();
+  CSSite.initIndexViews(document, { storage: store, hash: '', noHashListener: true });
+  click(document.querySelector('[data-view="topic"]'));
+
+  setupDOM(viewsPage());
+  CSSite.initIndexViews(document, { storage: store, hash: '', noHashListener: true });
+  assert.deepEqual(visibleViews(), ['topic']);
+});
+
+function pathPage() {
+  const strings = JSON.stringify({ never: 'not reviewed', today: 'reviewed today', daysAgo: 'reviewed {n}d ago',
+    due: 'due again', dueIn: 'next in {n}d', allDone: 'all done', progress: '{n} of {total} reviewed',
+    mark: 'Mark reviewed', unmark: 'Undo', nextUp: 'Next up', open: 'Open' }).replace(/"/g, '&quot;');
+  const step = (n, file, tier) => `<li class="path-step" data-file="${file}" data-tier="${tier}">` +
+    `<span class="step-no">${n}</span><div class="step-body"><a class="step-title" href="${file}.html">${file}</a>` +
+    `<p class="step-why">why ${file}</p></div><div class="step-mark"><span class="step-status"></span></div></li>`;
+  return `<section data-review-path data-strings="${strings}" data-intervals="{&quot;5&quot;:7,&quot;4&quot;:14}">` +
+    '<div class="path-summary" hidden><div class="path-next"></div><span class="path-meter-fill"></span>' +
+    '<span class="path-count"></span><button class="path-reset">Reset</button></div>' +
+    `<ol>${step(1, 'array', 5)}${step(2, 'heap', 5)}${step(3, 'bfs', 4)}</ol></section>`;
+}
+const NOV_10 = () => new Date(2026, 10, 10);
+
+test('initReviewPath starts at the first step and counts nothing reviewed', () => {
+  setupDOM(pathPage());
+  const r = CSSite.initReviewPath(document, { storage: memStore(), now: NOV_10 });
+  assert.equal(r.state.next, 'array');
+  assert.equal(document.querySelector('.path-count').textContent, '0 of 3 reviewed');
+  assert.equal(document.querySelector('.path-summary').hidden, false);
+  assert.equal(document.querySelector('.path-next-title').textContent, 'array');
+});
+
+test('initReviewPath marks a step reviewed today, moves next up along, and undoes', () => {
+  setupDOM(pathPage());
+  const store = memStore();
+  CSSite.initReviewPath(document, { storage: store, now: NOV_10 });
+  const array = document.querySelector('[data-file="array"]');
+  click(array.querySelector('.step-toggle'));
+
+  assert.ok(array.classList.contains('is-done'));
+  assert.equal(array.querySelector('.step-status').textContent, 'reviewed today · next in 7d');
+  assert.ok(document.querySelector('[data-file="heap"]').classList.contains('is-next'));
+  assert.equal(JSON.parse(store.data['cs-review-path']).array, '2026-11-10');
+
+  click(array.querySelector('.step-toggle'));
+  assert.equal(array.classList.contains('is-done'), false);
+});
+
+test('initReviewPath brings a sheet back once its tier interval has passed, overdue first', () => {
+  setupDOM(pathPage());
+  const store = memStore({ 'cs-review-path': JSON.stringify({ array: '2026-11-01', bfs: '2026-11-05' }) });
+  const r = CSSite.initReviewPath(document, { storage: store, now: NOV_10 });
+  const array = document.querySelector('[data-file="array"]');
+  assert.ok(array.classList.contains('is-due'), 'tier 5 is due after 7 days');
+  assert.equal(array.querySelector('.step-status').textContent, 'due again');
+  assert.equal(document.querySelector('[data-file="bfs"]').classList.contains('is-due'), false, 'tier 4 waits 14');
+  assert.equal(r.state.next, 'array');
+  assert.equal(document.querySelector('.path-count').textContent, '1 of 3 reviewed');
+});
+
+test('initReviewPath works with storage that throws', () => {
+  setupDOM(pathPage());
+  const broken = { getItem() { throw new Error('denied'); }, setItem() { throw new Error('denied'); } };
+  CSSite.initReviewPath(document, { storage: broken, now: NOV_10 });
+  click(document.querySelector('[data-file="array"] .step-toggle'));
+  assert.ok(document.querySelector('[data-file="array"]').classList.contains('is-done'));
+});
