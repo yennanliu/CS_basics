@@ -1,14 +1,14 @@
-<!-- c61183b817cc -->
+<!-- ca8aa68f6f0e -->
 # 資料工程面試 FAQ
 
-> **範圍** — 資料工程師面試的高層次地圖與考前檢查清單：九個主題各列出你必須能說出口的幾個重點，並連到 `de/` 底下的深入解析，那裡才有機制、程式碼與追問題。
-> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md) 與 [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) —— 每個主題一份深入解析。
+> **範圍** — 資料工程師面試的高層次地圖與考前檢查清單：每個主題各列出你必須能說出口的幾個重點，並連到 `de/` 底下的深入解析，那裡才有機制、程式碼與追問題。
+> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md) 與 [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) —— 每個主題一份深入解析。
 
 面試前一晚讀這份。底下任何一行如果你沒辦法在兩分鐘內講清楚，就打開那個主題的深入解析。
 
 ---
 
-<!-- da64917dbcf6 -->
+<!-- e784f9b5bd75 -->
 ## 1) 主題地圖 ⭐⭐⭐⭐⭐
 
 | 主題 | 權重 | 面試官真正在探的 | 深入解析 |
@@ -21,6 +21,7 @@
 | 批次管線 | ⭐⭐⭐⭐ | 冪等性、回補、資料品質 | [`de/batch_pipeline.md`](./de/batch_pipeline.md) |
 | Schema 設計 | ⭐⭐⭐⭐ | 從存取模式設計資料表，並安全地演進 | [`de/schema_design.md`](./de/schema_design.md) |
 | 串流管線 | ⭐⭐⭐⭐ | 事件時間、watermark、狀態與 exactly-once | [`de/stream_pipeline.md`](./de/stream_pipeline.md) |
+| Apache Flink | ⭐⭐⭐⭐ | 大多數串流答案底下的那個引擎 —— state backend、checkpoint、搭配 Kafka 的 exactly-once | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | 選一個儲存並為取捨辯護 | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
 
 ---
@@ -127,7 +128,7 @@
 
 ---
 
-<!-- f2fd92e1cacd -->
+<!-- d767c5e5eaaa -->
 ## 9) 串流資料管線 ⭐⭐⭐⭐
 
 - **何時用串流** —— 只有在延遲值得一個永遠在線、有狀態的系統時；否則用批次。
@@ -138,7 +139,7 @@
 - **引擎** —— 低延遲與大狀態選 Flink，已經在用 Spark 的團隊選 Spark Structured Streaming，服務內嵌選 Kafka Streams。
 - **維運** —— backpressure、dead-letter queue、consumer lag、checkpoint 健康度。
 
-深入解析：[`de/stream_pipeline.md`](./de/stream_pipeline.md)。
+深入解析：[`de/stream_pipeline.md`](./de/stream_pipeline.md)；Flink 引擎本身 —— runtime、state backend、checkpoint 設定、Kafka sink —— 在 [`de/flink.md`](./de/flink.md)。
 
 ---
 

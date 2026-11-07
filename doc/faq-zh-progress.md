@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 1504 / 1504 sections (100%)
+## Status — 1558 / 1558 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -67,6 +67,7 @@ half-translated document renders with English gaps rather than failing.
 | [db/postgre](./faq/db/postgre.md) | 15 | [✅](../i18n/zh/faq/db/postgre.md) |
 | [de/batch_pipeline](./faq/de/batch_pipeline.md) | 50 | [✅](../i18n/zh/faq/de/batch_pipeline.md) |
 | [de/data_modeling](./faq/de/data_modeling.md) | 49 | [✅](../i18n/zh/faq/de/data_modeling.md) |
+| [de/flink](./faq/de/flink.md) | 54 | [✅](../i18n/zh/faq/de/flink.md) |
 | [de/hadoop](./faq/de/hadoop.md) | 45 | [✅](../i18n/zh/faq/de/hadoop.md) |
 | [de/kafka](./faq/de/kafka.md) | 58 | [✅](../i18n/zh/faq/de/kafka.md) |
 | [de/schema_design](./faq/de/schema_design.md) | 42 | [✅](../i18n/zh/faq/de/schema_design.md) |

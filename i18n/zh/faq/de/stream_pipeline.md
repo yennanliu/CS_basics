@@ -1,8 +1,8 @@
-<!-- fc96c6a58d3f -->
+<!-- 7cae1d80c413 -->
 # 串流資料管線 — 面試深入解析
 
 > **範圍** — 資料工程師面試會問到的串流處理全貌：何時該用串流、參考架構、時間語意與 watermark、視窗與遲到資料、狀態與 checkpoint、端到端 exactly-once、串流 join、背壓與擴展、各引擎（Flink、Spark Structured Streaming、Kafka Streams、Beam）、即時服務與維運。Kafka broker 內部機制不在這裡 —— 它們屬於 `kafka.md`。
-> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單；[`./kafka.md`](./kafka.md) —— 大多數串流底下的那份 log；[`./batch_pipeline.md`](./batch_pipeline.md) —— 同一條管線的批次那一側；[`./spark.md`](./spark.md) —— Spark 內部機制；[`../flink/faq_flink.md`](../flink/faq_flink.md) 與 [`../stream/faq_stream.md`](../stream/faq_stream.md) —— 較早的筆記。
+> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單；[`./kafka.md`](./kafka.md) —— 大多數串流底下的那份 log；[`./batch_pipeline.md`](./batch_pipeline.md) —— 同一條管線的批次那一側；[`./spark.md`](./spark.md) —— Spark 內部機制；[`./flink.md`](./flink.md) —— Flink 的 runtime、API 與設定的深入內容；[`../flink/faq_flink.md`](../flink/faq_flink.md) 與 [`../stream/faq_stream.md`](../stream/faq_stream.md) —— 較早的筆記。
 
 每一節都先給你會說出口的那句話，再講機制，然後是面試官下一步會追問的取捨。
 程式碼以 **Flink 1.19+ / 2.x**、**Spark 3.5+** 與 **Kafka Streams 3.x** 為準；版本有差的地方會特別註明。
