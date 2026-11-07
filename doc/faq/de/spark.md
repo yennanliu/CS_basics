@@ -9,6 +9,24 @@ unless a section says otherwise.
 
 ---
 
+## 0) How to Use This Doc with the Question Bank
+
+**This is the deep dive: the mechanism behind each answer. The question bank,
+[`faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md), holds the short spoken answers, the
+drills and the study plan, and its [review order](../spark/faq_spark_hadoop.md#0-2-review-order)
+lines the two files up step by step.**
+
+- Follow that review order, not §1 → §16. This file's sections follow how Spark is built,
+  which is not the order an interview probes it.
+- Come here when a question-bank answer does not survive "why?". Each of its sections links to
+  the matching section here.
+- §10 (PySpark) and §11 (writes and table formats) have no counterpart in the question bank.
+  Read them for a data-engineering loop.
+- §16-1's quick-fire answers are a recap. The full mock bank, with difficulty levels, is the
+  question bank's [§14-2](../spark/faq_spark_hadoop.md#14-2-the-question-bank-by-difficulty).
+
+---
+
 ## 1) What Spark Is, and Where It Fits ⭐⭐⭐⭐
 
 ### 1-1) The one-paragraph answer

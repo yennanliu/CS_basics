@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 1549 / 1549 sections (100%)
+## Status — 1558 / 1558 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -71,7 +71,7 @@ half-translated document renders with English gaps rather than failing.
 | [de/hadoop](./faq/de/hadoop.md) | 45 | [✅](../i18n/zh/faq/de/hadoop.md) |
 | [de/kafka](./faq/de/kafka.md) | 58 | [✅](../i18n/zh/faq/de/kafka.md) |
 | [de/schema_design](./faq/de/schema_design.md) | 42 | [✅](../i18n/zh/faq/de/schema_design.md) |
-| [de/spark](./faq/de/spark.md) | 66 | [✅](../i18n/zh/faq/de/spark.md) |
+| [de/spark](./faq/de/spark.md) | 67 | [✅](../i18n/zh/faq/de/spark.md) |
 | [de/sql_for_data](./faq/de/sql_for_data.md) | 59 | [✅](../i18n/zh/faq/de/sql_for_data.md) |
 | [de/sql_vs_nosql](./faq/de/sql_vs_nosql.md) | 52 | [✅](../i18n/zh/faq/de/sql_vs_nosql.md) |
 | [de/stream_pipeline](./faq/de/stream_pipeline.md) | 54 | [✅](../i18n/zh/faq/de/stream_pipeline.md) |
@@ -107,7 +107,7 @@ half-translated document renders with English gaps rather than failing.
 | [redis/redis_leaderboard](./faq/redis/redis_leaderboard.md) | 15 | [✅](../i18n/zh/faq/redis/redis_leaderboard.md) |
 | [spark/faq_hadoop](./faq/spark/faq_hadoop.md) | 2 | [✅](../i18n/zh/faq/spark/faq_hadoop.md) |
 | [spark/faq_mapreduce](./faq/spark/faq_mapreduce.md) | 2 | [✅](../i18n/zh/faq/spark/faq_mapreduce.md) |
-| [spark/faq_spark_hadoop](./faq/spark/faq_spark_hadoop.md) | 78 | [✅](../i18n/zh/faq/spark/faq_spark_hadoop.md) |
+| [spark/faq_spark_hadoop](./faq/spark/faq_spark_hadoop.md) | 86 | [✅](../i18n/zh/faq/spark/faq_spark_hadoop.md) |
 | [sql/faq_mysql](./faq/sql/faq_mysql.md) | 5 | [✅](../i18n/zh/faq/sql/faq_mysql.md) |
 | [sql/faq_sql](./faq/sql/faq_sql.md) | 37 | [✅](../i18n/zh/faq/sql/faq_sql.md) |
 | [stream/faq_stream](./faq/stream/faq_stream.md) | 3 | [✅](../i18n/zh/faq/stream/faq_stream.md) |

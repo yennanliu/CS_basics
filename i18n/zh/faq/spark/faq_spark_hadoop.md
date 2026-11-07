@@ -1,13 +1,76 @@
-<!-- 31da3389a759 -->
+<!-- b419cb3e5657 -->
 # Spark & Hadoop 面試題庫
 
 > **範圍** — 經典的 Spark / Hadoop 面試題，每題都用你會說出口的幾句話回答；外加把這些題目變成練習的排錯演練、管線設計題與讀書計畫。每個答案背後的機制在深入解析 [`../de/spark.md`](../de/spark.md) 裡，這份文件只連過去，不重複。
 > **另見**：[`../de/spark.md`](../de/spark.md) — 深入的 Spark 內部機制；[`../de/hadoop.md`](../de/hadoop.md) — 深入的 HDFS、YARN 與 MapReduce；[`../de/stream_pipeline.md`](../de/stream_pipeline.md) — 串流語意與各引擎；[`./faq_hadoop.md`](./faq_hadoop.md) 與 [`./faq_mapreduce.md`](./faq_mapreduce.md) — 延伸閱讀清單。
 
 每個答案都以一句**粗體 —— 最先要說的那句話** 開頭，接著是面試官預期聽到的兩三個重點。
-設定名稱與預設值都以 Spark 3.5 為準。第 14 節把整份文件變成練習計畫：如果你只有一週，從那裡開始。
+設定名稱與預設值都以 Spark 3.5 為準。第 0 節把這份文件和深入解析配成一組，並定出複習順序；
+第 14 節是讀書計畫與模擬題庫。
 
 ---
+
+<!-- 19ab2ef349ae -->
+## 0) 兩份 Spark 文件怎麼搭配使用
+
+<!-- c874f01a76c0 -->
+### 0-1) 哪份文件負責什麼
+
+**這裡有兩份 Spark 文件。這份題庫告訴你要回答什麼；[`de/spark.md`](../de/spark.md) 這份深入解析
+說明答案為什麼成立。兩份要搭配著用，而不是讀完一份再讀另一份。**
+
+| | 本文件：題庫 | [`de/spark.md`](../de/spark.md)：深入解析 |
+|---|---|---|
+| 每一節給你 | 說出口的那幾句話 | 背後的機制，以及面試官接著會追問的取捨 |
+| 只有這裡有 | 排錯演練（§12）、設計題（§13）、讀書計畫與模擬題庫（§14） | PySpark（§10）、寫入與 table format（§11）、調校清單（§13）、Spark UI 症狀判讀（§14） |
+| 什麼時候打開 | 正在練習，或面試前一晚 | 這裡的答案經不起一句「為什麼？」 |
+| 章節順序 | 依面試提問的順序 | 依 Spark 的構造 |
+
+兩份文件的章節順序不同，所以單獨從頭讀到尾都不理想；[0-2](#0-2-review-order) 把它們對齊。相鄰主題
+請看 [`de/hadoop.md`](../de/hadoop.md)（HDFS 與 YARN）、[`de/stream_pipeline.md`](../de/stream_pipeline.md)
+（Spark 以外的串流），以及 [`faq_hadoop.md`](./faq_hadoop.md) 與 [`faq_mapreduce.md`](./faq_mapreduce.md)
+延伸閱讀清單。
+
+<!-- ef72dfb73860 -->
+### 0-2) 複習順序
+
+**照步驟依序進行。每一步先把「說出口」欄的章節大聲回答一遍，再讀「弄懂它」欄裡你講不清楚的部分，
+然後再回答一次。**
+
+| 步驟 | 階段 | 主題 | 說出口 —— 本文件 | 弄懂它 —— [`de/spark.md`](../de/spark.md) |
+|---|---|---|---|---|
+| 1 | 1 · 基礎 | Spark 是什麼，以及 Spark vs MapReduce | [1-1](#1-1-what-is-apache-spark), [1-2](#1-2-spark-vs-hadoop-mapreduce), [1-4](#1-4-why-is-spark-usually-faster-than-mapreduce) | [1-1](../de/spark.md#1-1-the-one-paragraph-answer), [1-2](../de/spark.md#1-2-spark-vs-mapreduce), [1-3](../de/spark.md#1-3-spark-vs-the-alternatives) |
+| 2 |  | Driver、executor、`spark-submit` | [2-1](#2-1-driver-executors-workers-and-the-cluster-manager), [2-2](#2-2-what-happens-after-spark-submit), [2-3](#2-3-the-spark-submit-command-and-adding-external-jars) | [2-1](../de/spark.md#2-1-driver-cluster-manager-executors), [2-2](../de/spark.md#2-2-deploy-modes-and-spark-submit) |
+| 3 |  | Job → stage → task、窄依賴 vs 寬依賴、partition | [3-1](#3-1-application-job-stage-and-task), [3-2](#3-2-how-does-spark-split-a-job-into-stages), [3-3](#3-3-narrow-vs-wide-dependencies), [3-4](#3-4-what-is-a-partition) | [2-3](../de/spark.md#2-3-job--stage--task-and-the-two-schedulers), [3-3](../de/spark.md#3-3-narrow-vs-wide-dependencies), [6-1](../de/spark.md#6-1-partitions-in-memory) |
+| 4 |  | RDD vs DataFrame、transformation vs action | [4-2](#4-2-rdd-vs-dataframe-vs-dataset), [4-3](#4-3-transformations-actions-and-lazy-evaluation), [4-5](#4-5-reducebykey-vs-groupbykey-vs-combinebykey) | [3-1](../de/spark.md#3-1-the-comparison), [3-2](../de/spark.md#3-2-transformations-vs-actions-and-lazy-evaluation), [3-4](../de/spark.md#3-4-rdd-era-questions-that-still-get-asked) |
+| 5 | 2 · 效能核心 | Shuffle | [5-1](#5-1-what-is-a-shuffle-and-what-triggers-one), [5-2](#5-2-why-is-a-shuffle-expensive-and-how-is-it-implemented), [5-3](#5-3-how-do-you-minimise-data-transfer-in-a-spark-job) | [5-1](../de/spark.md#5-1-what-a-shuffle-actually-does), [5-2](../de/spark.md#5-2-how-to-avoid-or-shrink-a-shuffle), [5-3](../de/spark.md#5-3-sparksqlshufflepartitions) |
+| 6 |  | `repartition`、`coalesce`、檔案配置、小檔案 | [3-5](#3-5-repartition-vs-coalesce), [12-3](#12-3-the-output-has-50000-tiny-files) | [6-2](../de/spark.md#6-2-repartition-vs-coalesce), [6-3](../de/spark.md#6-3-partitionby-on-write-and-the-small-files-problem), [6-4](../de/spark.md#6-4-bucketing) |
+| 7 |  | Join 策略與資料傾斜 | [5-5](#5-5-broadcast-join-vs-shuffle-joins), [6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it), [6-2](#6-2-how-do-you-fix-data-skew), [12-2](#12-2-one-task-takes-850-seconds-and-the-rest-take-ten) | [7-1](../de/spark.md#7-1-the-join-strategies), [7-2](../de/spark.md#7-2-join-types-and-their-traps), [7-3](../de/spark.md#7-3-data-skew-spotting-it-and-fixing-it) |
+| 8 |  | 快取與 checkpoint | [7-1](#7-1-cache-vs-persist), [7-2](#7-2-what-storage-levels-are-there), [7-3](#7-3-cache--persist-vs-checkpoint) | [8-1](../de/spark.md#8-1-when-to-cache), [8-2](../de/spark.md#8-2-storage-levels), [8-3](../de/spark.md#8-3-cache-vs-checkpoint-vs-writing-to-storage) |
+| 9 |  | 記憶體、資源配置與 OOM | [8-1](#8-1-how-is-executor-memory-laid-out), [8-2](#8-2-how-do-you-prevent-and-fix-out-of-memory-errors), [8-3](#8-3-what-is-a-spill-and-is-it-a-problem) | [9-1](../de/spark.md#9-1-unified-memory-management), [9-2](../de/spark.md#9-2-sizing-executors), [15-1](../de/spark.md#15-1-out-of-memory) |
+| 10 | 3 · 引擎與正式環境 | 容錯 | [9-1](#9-1-an-executor-or-node-fails--what-happens), [9-2](#9-2-what-if-the-driver-fails) | [2-4](../de/spark.md#2-4-fault-tolerance-lineage-retries-and-speculation) |
+| 11 |  | Catalyst、AQE、讀懂執行計畫 | [10-1](#10-1-how-does-the-catalyst-optimiser-work), [10-2](#10-2-how-do-you-read-a-physical-plan), [10-3](#10-3-what-is-aqe-and-how-is-it-different-from-catalyst), [10-4](#10-4-predicate-pushdown-and-column-pruning) | [4-1](../de/spark.md#4-1-catalyst-how-a-query-becomes-a-plan), [4-2](../de/spark.md#4-2-tungsten-the-execution-engine), [4-3](../de/spark.md#4-3-adaptive-query-execution-aqe), [4-4](../de/spark.md#4-4-reading-a-physical-plan) |
+| 12 |  | PySpark：worker、UDF、Arrow | — | [10-1](../de/spark.md#10-1-how-pyspark-runs), [10-2](../de/spark.md#10-2-udfs-vs-pandas-udfs-vs-built-ins), [10-3](../de/spark.md#10-3-arrow-topandas-and-collect) |
+| 13 |  | 寫入、save mode、table format | — | [11-1](../de/spark.md#11-1-spark-sql-and-the-catalog), [11-2](../de/spark.md#11-2-save-modes-and-dynamic-partition-overwrite), [11-3](../de/spark.md#11-3-delta-lake--iceberg--hudi-with-spark), [11-4](../de/spark.md#11-4-reading-data-well) |
+| 14 |  | Structured Streaming | [11-1](#11-1-spark-streaming-dstreams-vs-structured-streaming), [11-2](#11-2-event-time-watermarks-and-output-modes), [11-3](#11-3-checkpoints-and-exactly-once) | [12-1](../de/spark.md#12-1-the-model) |
+| 15 |  | 調校與 Spark UI | [12-1](#12-1-a-job-got-slow--where-do-you-start), [12-4](#12-4-which-configurations-are-worth-knowing-by-name) | [13-1](../de/spark.md#13-1-in-the-order-you-would-check), [13-2](../de/spark.md#13-2-the-configs-worth-knowing-by-name), [14-1](../de/spark.md#14-1-where-to-look), [14-2](../de/spark.md#14-2-reading-the-symptoms), [15-2](../de/spark.md#15-2-other-errors-worth-recognising) |
+| 16 | 4 · 演練 | 管線設計 | [13-1](#13-1-design-a-kafka--spark--lakehouse--warehouse-pipeline), [13-2](#13-2-design-an-idempotent-re-runnable-daily-batch) | [15-3](../de/spark.md#15-3-exactly-once-is-your-job-in-batch-too), [16-2](../de/spark.md#16-2-design-question-process-10-tb-of-daily-clickstream) |
+| 17 |  | 模擬面試：大聲回答，再自我檢查 | [14-2](#14-2-the-question-bank-by-difficulty), [14-3](#14-3-self-check-before-the-interview) | [16-1](../de/spark.md#16-1-quick-fire-answers) |
+
+- 步驟 1–9 就是 [14-1](#14-1-what-to-learn-first) 裡的 P0 與 P1 核心，多數面試根本不會超出這個範圍。
+- 步驟 12 與 13 只有深入解析才有。PySpark 與 table format 的題目在資料工程面試中遠比一般 SWE
+  面試常見。
+
+<!-- 400bcc044c79 -->
+### 0-3) 你有多少時間？
+
+**時間花在步驟上，而不是把文件從頭讀到尾。**
+
+| 時間 | 計畫 |
+|---|---|
+| 一個晚上 | 步驟 1–9，只看「說出口」欄，然後做模擬題庫 [14-2](#14-2-the-question-bank-by-difficulty) |
+| 一週 | 第 1 天：階段 1。第 2–3 天：階段 2。第 4–5 天：階段 3。第 6 天：階段 4。第 7 天：重做每個卡住的步驟 |
+| 面試前一晚 | 大聲回答 [14-2](#14-2-the-question-bank-by-difficulty)，跑一遍 [14-3](#14-3-self-check-before-the-interview) 清單；不學新東西 |
 
 <!-- f3df1f3e49aa -->
 ## 1) Spark、Hadoop 與 MapReduce ⭐⭐⭐⭐
@@ -233,11 +296,15 @@ executor 的大小，並用 `--jars` 或 `--packages` 帶上相依套件。**
 <!-- a9f02b5102c5 -->
 ## 3) Job、Stage、Task 與 Partition ⭐⭐⭐⭐⭐
 
-<!-- 1c6216a9d101 -->
+<!-- 6c513fc095cd -->
 ### 3-1) Application、job、stage 與 task
 
 **一個 application 就是一個 `SparkSession`；每個 action 啟動一個 job；job 在每個 shuffle 處被切成
 stage；每個 stage 對每個 partition 跑一個 task。**
+
+由大到小：
+
+<!--CODE-->
 
 | 層級 | 由什麼產生 | 數量 |
 |---|---|---|
@@ -262,6 +329,100 @@ Catalyst、AQE 與資料來源都可能改變實際數量 —— `explain()` 與
 <p align="center"><img src="../../pic/spark_stage_task.png" width="500" height="300"></p>
 
 <p align="center"><img src="../../pic/spark_stage_task2.png" width="500" height="300"></p>
+
+<!-- f63e6ec0d059 -->
+#### Task 是一個行程（process）嗎？
+
+**不是。Executor 才是行程（每個 executor 一個 JVM）；task 是在 executor 某條執行緒上跑的一個工作單元。**
+
+| | Executor | Task |
+|---|---|---|
+| 它是什麼 | worker 節點上的一個 JVM 行程 | 把 stage 的管線套用在一個 partition 上 |
+| 存活多久 | 整個 application，除非 dynamic allocation 把它釋放 | 直到它的 partition 處理完：幾毫秒到幾分鐘 |
+| 記憶體 | 自己的 heap，`spark.executor.memory` | 和同一個 executor 裡正在跑的其他 task 共用那個 heap |
+| 有幾個 | `spark.executor.instances`，或 dynamic allocation 決定的數量 | stage 的每個 partition 一個 |
+
+- Driver 把每個 task（closure 加上它要讀的 partition）序列化後送到 executor，executor 用自己
+  task 執行緒池裡的一條執行緒來跑。task 從來不需要新的 executor JVM；一個 task 跑完，executor
+  就接下一個。
+- 同一個 executor 裡的 task 共用它的 heap、快取區塊與 broadcast 變數。所以一個過大的 task
+  可能讓整個 executor 記憶體不足，連帶讓旁邊的 task 一起失敗。
+- 用作業系統的說法：application 是程式，executor 是行程，task 是交給這個行程某條工作執行緒的一件工作。
+- PySpark 多了一個細節。會執行 Python 程式碼的 task（Python UDF 或 RDD lambda）會把程式碼交給
+  executor 在 JVM 旁啟動的 Python worker 行程；只用內建表達式的 DataFrame task 完全不需要。
+  Worker 預設會重複使用（`spark.python.worker.reuse=true`）；設成 `false` 時，每個這類 task 會
+  啟動自己的 worker。無論哪種，排程與重試仍由 driver 負責，executor JVM 則執行 task 並回報狀態。
+
+<!-- a38f0df0c547 -->
+#### 同一時間會跑幾個 task？
+
+**每個 executor 同時最多能跑 ⌊`spark.executor.cores` ÷ `spark.task.cpus`⌋ 個 task。除法無條件
+捨去：5 個核心、`spark.task.cpus=2` 是 2 個 slot，不是 2.5。因為 `spark.task.cpus` 預設是 1，
+整個 cluster 同時 task 數的上限約為 executor 數 × 每個 executor 的核心數；task 比 slot 少的
+stage，其餘 slot 就閒置。**
+
+兩個 executor、各兩個核心，共四個 slot，所以一個有八個 task 的 stage 大約分兩波跑完：
+
+<!--CODE-->
+
+- 「波」只是近似說法。slot 一空出來就會領下一個待執行的 task，不會等其他 slot；排程器也偏好
+  已經持有該資料的 executor（`spark.locality.wait`），所以實際分配不是嚴格輪流。
+- Partition 決定 task 數（[3-4](#3-4-what-is-a-partition)），cluster 決定 slot 數。目標是每個核心至少
+  兩到三個 task（[12-4](#12-4-which-configurations-are-worth-knowing-by-name)），這樣 slot 不會閒置，
+  最後一波也不會只剩一個拖慢全局的 task。
+
+<!-- a5797eeb8eab -->
+#### 增加 executor，task 會變多嗎？
+
+**通常不會。Task 數量來自 partition 數量；增加 executor 只是增加 slot，讓同樣的 task 用更少的波次跑完。**
+
+| | 之前 | 之後 |
+|---|---|---|
+| Executor 數 | 2 | 10 |
+| 每個 executor 的核心數 | 2 | 2 |
+| Stage 的 partition 數 | 100 | 100 |
+| Stage 的 task 數 | 100 | 100 |
+| 同時可用的 slot | 4 | 20 |
+| 波次（task / slot） | 25 | 5 |
+
+- 只有在 task 比 slot 多的時候，多加 executor 才有幫助。只有 8 個 partition 的 stage 只會用到
+  20 個 slot 中的 8 個，其餘 12 個閒置。要用上它們，就要提高 partition 數：`repartition`、
+  `spark.sql.shuffle.partitions`，或在掃描時調小 `spark.sql.files.maxPartitionBytes`。
+- 這就是答案是「通常」而不是「永遠」的原因。`spark.default.parallelism` 沒設定時，預設是
+  cluster 上已註冊的總核心數，所以沒指定切片數的 `sc.parallelize` 在更大的 cluster 上確實會得到
+  更多 partition，也就更多 task。Shuffle 大多不受影響：沒設定時，RDD 的 `reduceByKey` 沿用上游
+  最大的 partition 數，DataFrame 的 shuffle 則用 `spark.sql.shuffle.partitions`。
+
+<!-- 4beac005c4d9 -->
+#### 在 Spark UI 裡看到每一層
+
+**UI 也是同樣的層級。Jobs 分頁每個 job 一列，job 頁面列出它的 stage，stage 頁面每個 task 一列，
+Executors 分頁則顯示 task 執行時用到的 slot。**
+
+截圖取自 Apache Spark 官方文件 [Web UI](https://spark.apache.org/docs/latest/web-ui.html)
+（Apache License 2.0）。這個範例跑在 local 模式，所以唯一的 executor 就是 `driver`。
+
+1. **Jobs 分頁：每個 action 一列。** Job 0 是 `count at web-ui-docs-demo.py:25`。Stages 欄出現
+   `1/1 (1 skipped)` 表示這個 job 重用了先前 job 已寫好的 shuffle 輸出，那個 stage 就不再重跑
+   （[3-2](#3-2-how-does-spark-split-a-job-into-stages)）。
+
+<p align="center"><img src="../../pic/spark_webui_AllJobsPage.png" alt="Spark UI 的 Jobs 分頁：每個已完成的 job 一列，附 stage 與 task 數" width="700"></p>
+
+2. **Job 頁面：這個 job 的 stage。** Job 0 沒有 shuffle，所以只有一個 stage；它的 `5/5` 個
+   task 就是它的五個 partition。
+
+<p align="center"><img src="../../pic/spark_webui_JobPage.png" alt="Spark UI 的 job 詳細頁：job 0 只有一個 stage，5 個 task 全部成功" width="700"></p>
+
+3. **Stage 頁面：每個 task 一列。** `Index` 是這個 task 處理的 partition，`Executor ID` 是執行它的
+   executor。Summary Metrics 是看出傾斜的地方：`Max` 執行時間遠高於 `Median`
+   （[6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it)）。
+
+<p align="center"><img src="../../pic/spark_webui_StagePage.png" alt="Spark UI 的 stage 詳細頁：task 摘要指標，以及每個 task 一列，含 partition 索引與 executor" width="700"></p>
+
+4. **Executors 分頁：slot。** `Cores` 是 executor 的核心數，在預設 `spark.task.cpus=1` 下也就是它
+   同時能跑幾個 task；`Active Tasks` 是它現在正在跑幾個。這裡 37 個 task 全都經過同一個有 4 個核心的 executor，可見 task 是工作單元，不是行程。
+
+<p align="center"><img src="../../pic/spark_webui_webui-exe-tab.png" alt="Spark UI 的 Executors 分頁：driver executor 有 4 個核心、完成 37 個 task" width="700"></p>
 
 <!-- d8f9d924b45e -->
 ### 3-2) Spark 怎麼把 job 切成 stage？
@@ -1057,7 +1218,7 @@ partition 大小合適，叢集才不會閒著等落後者。
 | P2 | Table format 與管線設計 | [13-1](#13-1-design-a-kafka--spark--lakehouse--warehouse-pipeline)、[13-2](#13-2-design-an-idempotent-re-runnable-daily-batch) |
 | P2 | 雲端上的託管 Spark | [13-4](#13-4-managed-spark-on-aws-and-gcp) |
 
-<!-- 2e2eb86229d8 -->
+<!-- db930bc80549 -->
 ### 14-2) 依難度排列的題庫
 
 **每題都大聲說出答案、控制在一分鐘內，再對照連結的章節檢查。**
@@ -1071,33 +1232,35 @@ partition 大小合適，叢集才不會閒著等落後者。
 | 5 | `cache` vs `persist`；有哪些儲存層級？ | 基礎 | [7-1](#7-1-cache-vs-persist)、[7-2](#7-2-what-storage-levels-are-there) |
 | 6 | Job、stage、task —— stage 怎麼切？ | 中級 | [3-1](#3-1-application-job-stage-and-task)、[3-2](#3-2-how-does-spark-split-a-job-into-stages) |
 | 7 | 窄依賴 vs 寬依賴？ | 中級 | [3-3](#3-3-narrow-vs-wide-dependencies) |
-| 8 | 什麼會觸發 shuffle？為什麼它很貴？ | 中級 | [5-1](#5-1-what-is-a-shuffle-and-what-triggers-one)、[5-2](#5-2-why-is-a-shuffle-expensive-and-how-is-it-implemented) |
-| 9 | `repartition` vs `coalesce`？ | 中級 | [3-5](#3-5-repartition-vs-coalesce) |
-| 10 | `reduceByKey` vs `groupByKey`？ | 中級 | [4-5](#4-5-reducebykey-vs-groupbykey-vs-combinebykey) |
-| 11 | Broadcast 變數與 accumulator —— 有什麼要注意的？ | 中級 | [5-4](#5-4-broadcast-variables-and-accumulators) |
-| 12 | Cache vs checkpoint？ | 中級 | [7-3](#7-3-cache--persist-vs-checkpoint) |
-| 13 | Executor 死掉時會發生什麼？ | 中級 | [9-1](#9-1-an-executor-or-node-fails--what-happens) |
-| 14 | 事件時間 vs 處理時間；什麼是 watermark？ | 中級 | [11-2](#11-2-event-time-watermarks-and-output-modes) |
-| 15 | 怎麼偵測與修正資料傾斜？ | 進階 | [6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it)、[6-2](#6-2-how-do-you-fix-data-skew) |
-| 16 | Broadcast join vs sort-merge join —— 10 TB 的 join 你會怎麼最佳化？ | 進階 | [5-5](#5-5-broadcast-join-vs-shuffle-joins)、[6-2](#6-2-how-do-you-fix-data-skew) |
-| 17 | Catalyst 怎麼運作？AQE 多做了什麼？ | 進階 | [10-1](#10-1-how-does-the-catalyst-optimiser-work)、[10-3](#10-3-what-is-aqe-and-how-is-it-different-from-catalyst) |
-| 18 | 讀這份實體計畫 —— shuffle 在哪裡？ | 進階 | [10-2](#10-2-how-do-you-read-a-physical-plan) |
-| 19 | Driver OOM vs executor OOM vs container 被砍？ | 進階 | [8-2](#8-2-how-do-you-prevent-and-fix-out-of-memory-errors) |
-| 20 | 一個 job 很慢 —— 帶我走一遍你怎麼除錯。 | 進階 | [12-1](#12-1-a-job-got-slow--where-do-you-start)、[12-2](#12-2-one-task-takes-850-seconds-and-the-rest-take-ten) |
-| 21 | Structured Streaming 怎麼做到 exactly-once 的輸出？ | 進階 | [11-3](#11-3-checkpoints-and-exactly-once) |
-| 22 | 串流 job 的延遲一直增加 —— 你會檢查什麼？ | 進階 | [11-4](#11-4-what-errors-happen-in-spark-streaming-and-how-do-you-fix-them) |
-| 23 | 你怎麼處理小檔案？ | 進階 | [12-3](#12-3-the-output-has-50000-tiny-files) |
-| 24 | 設計一條從 Kafka 到倉儲的 TB 級管線。 | 設計 | [13-1](#13-1-design-a-kafka--spark--lakehouse--warehouse-pipeline) |
-| 25 | 設計一個可回補的冪等每日批次 job。 | 設計 | [13-2](#13-2-design-an-idempotent-re-runnable-daily-batch) |
-| 26 | 這個場景用 Spark 還是 Flink？ | 設計 | [1-7](#1-7-when-would-you-not-use-spark) |
+| 8 | Task 是一個行程嗎？增加 executor 會讓 task 變多嗎？ | 中級 | [3-1](#3-1-application-job-stage-and-task) |
+| 9 | 什麼會觸發 shuffle？為什麼它很貴？ | 中級 | [5-1](#5-1-what-is-a-shuffle-and-what-triggers-one)、[5-2](#5-2-why-is-a-shuffle-expensive-and-how-is-it-implemented) |
+| 10 | `repartition` vs `coalesce`？ | 中級 | [3-5](#3-5-repartition-vs-coalesce) |
+| 11 | `reduceByKey` vs `groupByKey`？ | 中級 | [4-5](#4-5-reducebykey-vs-groupbykey-vs-combinebykey) |
+| 12 | Broadcast 變數與 accumulator —— 有什麼要注意的？ | 中級 | [5-4](#5-4-broadcast-variables-and-accumulators) |
+| 13 | Cache vs checkpoint？ | 中級 | [7-3](#7-3-cache--persist-vs-checkpoint) |
+| 14 | Executor 死掉時會發生什麼？ | 中級 | [9-1](#9-1-an-executor-or-node-fails--what-happens) |
+| 15 | 事件時間 vs 處理時間；什麼是 watermark？ | 中級 | [11-2](#11-2-event-time-watermarks-and-output-modes) |
+| 16 | 怎麼偵測與修正資料傾斜？ | 進階 | [6-1](#6-1-what-is-data-skew-and-how-do-you-spot-it)、[6-2](#6-2-how-do-you-fix-data-skew) |
+| 17 | Broadcast join vs sort-merge join —— 10 TB 的 join 你會怎麼最佳化？ | 進階 | [5-5](#5-5-broadcast-join-vs-shuffle-joins)、[6-2](#6-2-how-do-you-fix-data-skew) |
+| 18 | Catalyst 怎麼運作？AQE 多做了什麼？ | 進階 | [10-1](#10-1-how-does-the-catalyst-optimiser-work)、[10-3](#10-3-what-is-aqe-and-how-is-it-different-from-catalyst) |
+| 19 | 讀這份實體計畫 —— shuffle 在哪裡？ | 進階 | [10-2](#10-2-how-do-you-read-a-physical-plan) |
+| 20 | Driver OOM vs executor OOM vs container 被砍？ | 進階 | [8-2](#8-2-how-do-you-prevent-and-fix-out-of-memory-errors) |
+| 21 | 一個 job 很慢 —— 帶我走一遍你怎麼除錯。 | 進階 | [12-1](#12-1-a-job-got-slow--where-do-you-start)、[12-2](#12-2-one-task-takes-850-seconds-and-the-rest-take-ten) |
+| 22 | Structured Streaming 怎麼做到 exactly-once 的輸出？ | 進階 | [11-3](#11-3-checkpoints-and-exactly-once) |
+| 23 | 串流 job 的延遲一直增加 —— 你會檢查什麼？ | 進階 | [11-4](#11-4-what-errors-happen-in-spark-streaming-and-how-do-you-fix-them) |
+| 24 | 你怎麼處理小檔案？ | 進階 | [12-3](#12-3-the-output-has-50000-tiny-files) |
+| 25 | 設計一條從 Kafka 到倉儲的 TB 級管線。 | 設計 | [13-1](#13-1-design-a-kafka--spark--lakehouse--warehouse-pipeline) |
+| 26 | 設計一個可回補的冪等每日批次 job。 | 設計 | [13-2](#13-2-design-an-idempotent-re-runnable-daily-batch) |
+| 27 | 這個場景用 Spark 還是 Flink？ | 設計 | [1-7](#1-7-when-would-you-not-use-spark) |
 
-<!-- 921227bc11eb -->
+<!-- b5da5f50a5a8 -->
 ### 14-3) 面試前的自我檢查
 
 **能不看筆記做到以下每一項，就準備好了。**
 
 - [ ] 畫出 driver、cluster manager 與 executor，並從頭到尾講一遍 `spark-submit`。
 - [ ] 給一段簡短的 DataFrame 程式，說出它跑幾個 job、幾個 stage，以及 shuffle 在哪裡。
+- [ ] 說出為什麼 task 不是行程，以及一個給定的 cluster 同時能跑幾個 task。
 - [ ] 解釋為什麼 `reduceByKey` 勝過 `groupByKey`，以及為什麼 DataFrame 讓這個問題不再重要。
 - [ ] 說出每一種 join 策略，以及 Spark 何時選它。
 - [ ] 從 Spark UI 的 task 表診斷出傾斜，並憑記憶寫出加鹽聚合。
