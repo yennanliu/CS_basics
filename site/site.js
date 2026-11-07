@@ -248,6 +248,11 @@
   function writeStore(storage, key, value) {
     try { if (storage) storage.setItem(key, JSON.stringify(value)); } catch (e) { /* ignore */ }
   }
+  // A malformed hash (`#%E0%A4%A`) makes decodeURIComponent throw; that must not
+  // stop the rest of init, so fall back to the raw string.
+  function safeDecode(s) {
+    try { return decodeURIComponent(s); } catch (e) { return s; }
+  }
   function defaultStorage() {
     try { return typeof localStorage !== 'undefined' ? localStorage : null; } catch (e) { return null; }
   }
@@ -267,6 +272,16 @@
     var tabs = bar.querySelectorAll('[data-view]');
     var panels = scope.querySelectorAll('[data-view-panel]');
     var filter = scope.querySelector('[data-sheet-filter]');
+
+    // The server ships plain links (with JS off the views are simply stacked);
+    // the tab pattern's roles only make sense once the views really are tabs.
+    bar.setAttribute('role', 'tablist');
+    for (var r = 0; r < tabs.length; r++) {
+      var ref = (tabs[r].getAttribute('href') || '').replace(/^#/, '');
+      tabs[r].setAttribute('role', 'tab');
+      if (ref) tabs[r].setAttribute('aria-controls', ref);
+    }
+    for (var q = 0; q < panels.length; q++) panels[q].setAttribute('role', 'tabpanel');
 
     function panelFor(id) {
       if (!id) return null;
@@ -301,7 +316,7 @@
     var current = null;
     var hash = (opts.hash !== undefined ? opts.hash
       : (typeof location !== 'undefined' ? location.hash : '')).replace(/^#/, '');
-    var fromHash = panelFor(hash ? decodeURIComponent(hash) : '');
+    var fromHash = panelFor(hash ? safeDecode(hash) : '');
     var initial = (fromHash && fromHash.getAttribute('data-view-panel')) ||
       readStore(storage, VIEW_KEY, null) || 'priority';
     if (!show(initial, false)) show('priority', false);
@@ -321,10 +336,11 @@
 
     if (typeof window !== 'undefined' && window.addEventListener && !opts.noHashListener) {
       window.addEventListener('hashchange', function () {
-        var p = panelFor(decodeURIComponent(location.hash.replace(/^#/, '')));
+        var id = safeDecode(location.hash.replace(/^#/, ''));
+        var p = panelFor(id);
         if (p && p.hidden) {
           show(p.getAttribute('data-view-panel'), false);
-          var target = scope.getElementById(decodeURIComponent(location.hash.slice(1)));
+          var target = scope.getElementById(id);
           if (target && target.scrollIntoView) target.scrollIntoView();
         }
       });
@@ -372,7 +388,9 @@
     var fillBar = root.querySelector('.path-meter-fill');
     var countEl = root.querySelector('.path-count');
     var resetBtn = root.querySelector('.path-reset');
-    var marks = readStore(storage, REVIEW_KEY, {}) || {};
+    var marks = readStore(storage, REVIEW_KEY, {});
+    // Anything but a plain object (an array, a string, null) is not ours to edit.
+    if (!marks || typeof marks !== 'object' || Array.isArray(marks)) marks = {};
 
     function readJSONAttr(el, name, fallback) {
       try { return JSON.parse(el.getAttribute(name) || 'null') || fallback; } catch (e) { return fallback; }

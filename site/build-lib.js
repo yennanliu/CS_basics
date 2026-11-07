@@ -655,10 +655,12 @@
 
     // ── View tabs ──
     const VIEWS = [['path', 'review-path'], ['priority', 'by-priority'], ['topic', 'by-topic']];
-    html += `<div class="cs-tabs" role="tablist" aria-label="${t.viewsAria}" data-cs-tabs>` +
+    // Plain links here; site.js adds the tablist / tab / tabpanel roles once it
+    // has actually turned the stacked views into tabs.
+    html += `<nav class="cs-tabs" aria-label="${t.viewsAria}" data-cs-tabs>` +
       VIEWS.map(([key, id], i) =>
-        `<a class="cs-tab${i === 1 ? ' is-on' : ''}" role="tab" href="#${id}" data-view="${key}">${t.views[key]}</a>`
-      ).join('') + '</div>';
+        `<a class="cs-tab${i === 1 ? ' is-on' : ''}" href="#${id}" data-view="${key}">${t.views[key]}</a>`
+      ).join('') + '</nav>';
 
     // ── View 1: review path ──
     const stages = reviewPath(sheets, meta);

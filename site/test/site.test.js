@@ -517,3 +517,33 @@ test('initReviewPath works with storage that throws', () => {
   click(document.querySelector('[data-file="array"] .step-toggle'));
   assert.ok(document.querySelector('[data-file="array"]').classList.contains('is-done'));
 });
+
+test('initIndexViews survives a malformed hash and falls back to the default view', () => {
+  setupDOM(viewsPage());
+  CSSite.initIndexViews(document, { storage: memStore(), hash: '#%E0%A4%A', noHashListener: true });
+  assert.deepEqual(visibleViews(), ['priority']);
+});
+
+test('initIndexViews adds the tab roles only once it runs, each tab tied to its panel', () => {
+  setupDOM(viewsPage());
+  assert.equal(document.querySelector('[role="tab"]'), null, 'no tab roles before JS');
+  CSSite.initIndexViews(document, { storage: memStore(), hash: '', noHashListener: true });
+  assert.equal(document.querySelector('[data-cs-tabs]').getAttribute('role'), 'tablist');
+  for (const tab of document.querySelectorAll('[data-view]')) {
+    assert.equal(tab.getAttribute('role'), 'tab');
+    const panel = document.getElementById(tab.getAttribute('aria-controls'));
+    assert.equal(panel.getAttribute('role'), 'tabpanel');
+    assert.equal(tab.getAttribute('aria-selected'), panel.hidden ? 'false' : 'true');
+  }
+});
+
+test('initReviewPath ignores stored marks that are not a plain object', () => {
+  for (const bad of ['["array"]', '"array"', 'null', '42']) {
+    setupDOM(pathPage());
+    const store = memStore({ 'cs-review-path': bad });
+    const r = CSSite.initReviewPath(document, { storage: store, now: NOV_10 });
+    assert.equal(r.state.done, 0, bad);
+    click(document.querySelector('[data-file="array"] .step-toggle'));
+    assert.equal(JSON.parse(store.data['cs-review-path']).array, '2026-11-10', bad);
+  }
+});

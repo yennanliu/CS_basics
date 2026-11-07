@@ -805,7 +805,8 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 .view-heading { margin-top: 0; }
 /* With tabs the tab already names the view; the heading stays for no-JS and screen readers. */
 .cs-tabs ~ .cs-view .view-heading {
-  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
 
 /* Priority view */
