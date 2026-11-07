@@ -1,7 +1,7 @@
 # Stream Data Pipelines — Interview Deep-Dive
 
 > **Scope** — everything a data engineer interview asks about stream processing: when to stream, reference architectures, time semantics and watermarks, windows and late data, state and checkpoints, exactly-once end to end, stream joins, backpressure and scaling, the engines (Flink, Spark Structured Streaming, Kafka Streams, Beam), real-time serving and operations. Kafka broker internals are not here — they belong to `kafka.md`.
-> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./kafka.md`](./kafka.md) — the log underneath most streams; [`./batch_pipeline.md`](./batch_pipeline.md) — the batch side of the same pipeline; [`./spark.md`](./spark.md) — Spark internals; [`../flink/faq_flink.md`](../flink/faq_flink.md) and [`../stream/faq_stream.md`](../stream/faq_stream.md) — older notes.
+> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./kafka.md`](./kafka.md) — the log underneath most streams; [`./batch_pipeline.md`](./batch_pipeline.md) — the batch side of the same pipeline; [`./spark.md`](./spark.md) — Spark internals; [`./flink.md`](./flink.md) — Flink's runtime, APIs and configuration in depth; [`../flink/faq_flink.md`](../flink/faq_flink.md) and [`../stream/faq_stream.md`](../stream/faq_stream.md) — older notes.
 
 Each section leads with the sentence you would say out loud, then the mechanism, then the
 trade-off the interviewer pushes on next. Code targets **Flink 1.19+ / 2.x**, **Spark 3.5+**

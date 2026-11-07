@@ -1,5 +1,7 @@
 # FLINK FAQ
 
+Older notes, kept for their diagrams. For interview preparation start with the deep dive, [`../de/flink.md`](../de/flink.md).
+
 ### 1. What is Apache Flink?
 -  Flink is built around a distributed streaming data-flow engine written in Java and Scala. Flink runs every dataflow programm in a data-parallel and pipelined fashion.
 

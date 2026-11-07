@@ -1,7 +1,7 @@
 # Data Engineering Interview FAQ
 
-> **Scope** — the high-level map of a data engineer interview and the last-minute checklist: for each of the nine topics, the handful of points you must be able to say out loud, and a link to the deep dive under `de/` that holds the mechanism, the code and the follow-up questions.
-> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md) and [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) — one deep dive per topic.
+> **Scope** — the high-level map of a data engineer interview and the last-minute checklist: for each topic, the handful of points you must be able to say out loud, and a link to the deep dive under `de/` that holds the mechanism, the code and the follow-up questions.
+> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md) and [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) — one deep dive per topic.
 
 Read this file the night before. If any line below is something you cannot explain in two
 minutes, open that topic's deep dive.
@@ -20,6 +20,7 @@ minutes, open that topic's deep dive.
 | Batch pipelines | ⭐⭐⭐⭐ | idempotency, backfills, data quality | [`de/batch_pipeline.md`](./de/batch_pipeline.md) |
 | Schema design | ⭐⭐⭐⭐ | designing tables from access patterns, and evolving them safely | [`de/schema_design.md`](./de/schema_design.md) |
 | Stream pipelines | ⭐⭐⭐⭐ | event time, watermarks, state and exactly-once | [`de/stream_pipeline.md`](./de/stream_pipeline.md) |
+| Apache Flink | ⭐⭐⭐⭐ | the engine under most streaming answers — state backends, checkpoints, exactly-once with Kafka | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | choosing a store and defending the trade-off | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
 
 ---
@@ -129,7 +130,7 @@ Deep dive: [`de/schema_design.md`](./de/schema_design.md).
 - **Engines** — Flink for low latency and large state, Spark Structured Streaming for teams already on Spark, Kafka Streams inside a service.
 - **Operations** — backpressure, dead-letter queues, consumer lag, checkpoint health.
 
-Deep dive: [`de/stream_pipeline.md`](./de/stream_pipeline.md).
+Deep dive: [`de/stream_pipeline.md`](./de/stream_pipeline.md); the Flink engine itself — runtime, state backends, checkpoint settings, the Kafka sink — is [`de/flink.md`](./de/flink.md).
 
 ---
 
