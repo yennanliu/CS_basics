@@ -741,7 +741,9 @@ orders.groupBy("user_id").sum("amount").show()   # U1 1000, U2 700, U3 400
 ```
 
 ```text
-map side: 3 tasks, partial sums first        reduce side: hash(user_id) mod 3
+illustrative layout: 3 map tasks, 3 shuffle partitions
+
+map side: partial sums first                 reduce side: hash(user_id) mod 3
 task 0: (U1,100) (U2,200) → U1:100 U2:200    p0 ◀ U1:100 U1:300 U1:600 → U1 1000
 task 1: (U1,300) (U3,400) → U1:300 U3:400    p1 ◀ U2:200 U2:500        → U2  700
 task 2: (U2,500) (U1,600) → U2:500 U1:600    p2 ◀ U3:400               → U3  400
@@ -749,8 +751,8 @@ task 2: (U2,500) (U1,600) → U2:500 U1:600    p2 ◀ U3:400               → U
 map task                                     reduce task
 1. compute the row, pick its partition id    5. fetch its block from every map output:
 2. serialise it into the writer's buffers      network, or a local read when co-located
-3. group the bytes by partition id: here,       (up to spark.reducer.maxSizeInFlight = 48m)
-   with 3 (≤ 200) partitions, the bypass     6. decompress and deserialise
+3. group the bytes by partition id: with        (up to spark.reducer.maxSizeInFlight = 48m)
+   ≤ 200 partitions, as here, the bypass     6. decompress and deserialise
    writer streams each to its own file, no   7. aggregate, join or sort
    sort; the sort writers sort and spill
    sorted runs when memory runs out
@@ -758,6 +760,10 @@ map task                                     reduce task
    compressed with lz4, through a 32k
    spark.shuffle.file.buffer per stream
 ```
+
+The diagram's 3 × 3 layout is for illustration. A real run splits the list by the session's
+default parallelism, shuffles into `spark.sql.shuffle.partitions` (200) partitions, and AQE may
+coalesce those. Both 3 and 200 are within the bypass threshold, so the writer is the same.
 
 The partial aggregate (`HashAggregate` before the `Exchange`, [§4-4](#4-4-reading-a-physical-plan)) is what shrinks the
 shuffle. It is an operator of its own, so the shuffle under it has no map-side combine. Here
@@ -800,7 +806,7 @@ buffers.**
 | Built-in functions over UDFs and typed lambdas | no `UnsafeRow` ↔ object conversion, no pickling to Python | [§10-2](#10-2-udfs-vs-pandas-udfs-vs-built-ins) |
 | Kryo with registered classes | smaller, faster RDD records and broadcasts | [§9-4](#9-4-the-serialisers-java-kryo-and-tungstens-binary-rows) |
 | Serialised RDD caching (`MEMORY_ONLY_SER`) | far less heap and GC, for CPU on every read | [§8-2](#8-2-storage-levels) |
-| Small closures; broadcast large lookup tables | a 200 MB map captured by a closure is part of the stage's task binary, which every task deserialises | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
+| Small closures; broadcast large lookup tables | a 200 MB map captured by a JVM closure is part of the stage's task binary, which every task deserialises; a large PySpark command is broadcast separately, and the Python workers still unpickle it | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
 | `spark.shuffle.file.buffer` from 32k to 64k–1m | fewer, larger writes when shuffle write time dominates | below |
 
 - Catalyst already pushes a `filter` written after a `join` below it, so reordering the code
@@ -809,7 +815,9 @@ buffers.**
   opens one stream per reduce partition. Many streams × a large buffer is real memory, so
   raise it only when shuffle write time is the bottleneck, and watch GC.
 - A high **Task Deserialization Time**, or the driver warning *"Broadcasting large task binary"*,
-  means the closures are too big: broadcast whatever they capture. A different warning,
+  points at an oversized task: the warning measures the stage's serialised RDD and function, and
+  the metric also counts loading dependencies and a task's own partition data. Look for a large
+  captured value first, and broadcast it if that is the cause. A different warning,
   *"Stage N contains a task of very large size"*, is about a single serialised task, usually
   one carrying local data from `parallelize`.
 - In an interview, name the bottleneck from the Spark UI — serialisation CPU, fetch wait, spill

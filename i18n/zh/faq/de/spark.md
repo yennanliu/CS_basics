@@ -596,7 +596,7 @@ SQL 的 shuffle 沒有東西需要轉換。**
 - **Spark 內部早就用 Kryo** 來 shuffle 由基本型別、基本型別陣列與字串組成的 RDD（Spark 2.0
   起），所以改用 Kryo 對「自訂類別的 RDD」幫助最大。
 
-<!-- a6d933d674ee -->
+<!-- edac857c670c -->
 ### 9-5) 一次 shuffle，逐位元組拆解
 
 **跨越 shuffle 的每一列，都會在 map 端被序列化、放進 buffer、壓縮後寫入本機 shuffle 檔，
@@ -606,6 +606,10 @@ SQL 的 shuffle 沒有東西需要轉換。**
 <!--CODE-->
 
 <!--CODE-->
+
+圖中 3 × 3 的配置只是示意。實際執行時，清單會依 session 的預設平行度切分，shuffle 成
+`spark.sql.shuffle.partitions`（200）個 partition，AQE 還可能把它們合併。3 與 200 都在
+bypass 門檻內，所以 writer 是同一個。
 
 部分彙總（`Exchange` 之前的 `HashAggregate`，[§4-4](#4-4-reading-a-physical-plan)）才是縮小 shuffle 的關鍵。
 它是獨立的運算子，所以它下面的 shuffle 本身沒有 map 端合併。
@@ -634,7 +638,7 @@ Shuffle 檔留在 map executor 的本機磁碟上。外部 shuffle service 在�
 提供這些檔案（[§5-1](#5-1-what-a-shuffle-actually-does)）；shuffle tracking 則是在輸出還被需要時讓 executor 保持存活
 （[§2-5](#2-5-dynamic-allocation)）。兩者都沒有的話，遺失的輸出要重跑 map task 重新計算。
 
-<!-- 9de7a82a9587 -->
+<!-- cd346f4603dd -->
 ### 9-6) 降低序列化成本
 
 **先少搬一點位元組，再讓每個位元組便宜一點：縮小進到 exchange 的資料、讓資料列留在
@@ -647,7 +651,7 @@ DataFrame 運算子裡以維持 `UnsafeRow`，最後才去調序列化器與 buf
 | 用內建函式，不用 UDF 與 typed lambda | 沒有 `UnsafeRow` ↔ 物件轉換，也不用 pickle 到 Python | [§10-2](#10-2-udfs-vs-pandas-udfs-vs-built-ins) |
 | Kryo 加上註冊類別 | RDD 記錄與 broadcast 更小、更快 | [§9-4](#9-4-the-serialisers-java-kryo-and-tungstens-binary-rows) |
 | 序列化的 RDD 快取（`MEMORY_ONLY_SER`） | heap 與 GC 大幅減少，代價是每次讀取的 CPU | [§8-2](#8-2-storage-levels) |
-| 小 closure；大型查找表用 broadcast | closure 捕獲的 200 MB map 會成為 stage task binary 的一部分，每個 task 都要反序列化它 | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
+| 小 closure；大型查找表用 broadcast | JVM closure 捕獲的 200 MB map 會成為 stage task binary 的一部分，每個 task 都要反序列化它；大型的 PySpark command 會另外 broadcast，Python worker 仍要 unpickle 它 | [§9-3](#9-3-serialisation-and-deserialisation-what-and-where) |
 | `spark.shuffle.file.buffer` 從 32k 調到 64k–1m | shuffle 寫出時間是瓶頸時，寫入次數更少、每次更大 | 見下方 |
 
 - Catalyst 本來就會把寫在 `join` 之後的 `filter` 推到它下面，所以調換程式碼順序往往什麼都
@@ -656,7 +660,8 @@ DataFrame 運算子裡以維持 `UnsafeRow`，最後才去調序列化器與 buf
   會為每個 reduce partition 開一個串流。串流數 × 大 buffer 是實打實的記憶體，所以只有在
   shuffle 寫出時間是瓶頸時才調高，並且留意 GC。
 - **Task Deserialization Time** 偏高，或 driver 出現 *"Broadcasting large task binary"* 警告，
-  代表 closure 太大：把它捕獲的東西改用 broadcast。另一個警告 *"Stage N contains a task of very
+  指向過大的 task：這個警告量的是 stage 序列化後的 RDD 與函式，而這個指標還包含載入相依套件
+  與 task 自己的 partition 資料。先找出被捕獲的大型值，若確實是它，再改用 broadcast。另一個警告 *"Stage N contains a task of very
   large size"* 說的是單一序列化後的 task，通常是帶著 `parallelize` 本地資料的 task。
 - 面試時，先從 Spark UI 指出瓶頸 —— 序列化 CPU、fetch 等待、spill 還是網路 —— 再提解法。
   單純加 executor 對這四者都沒有幫助。
