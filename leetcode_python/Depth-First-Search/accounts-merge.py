@@ -192,7 +192,7 @@ class Solution(object):
 
                         -> Union Find 應該合併 `account index`，而不是合併 email。
                     """
-                    
+
                     """
                     NOTE !!!
 
@@ -254,6 +254,138 @@ class Solution(object):
 
             # emails 必須依照字母順序排序
             res.append([name] + sorted(emails))
+
+        return res
+
+
+# V0-0-1
+# IDEA: UNION FIND (GPT)
+class UF(object):
+
+    def __init__(self, n):
+        # 每個 account 一開始都是自己的 parent
+        # 例如 n = 4:
+        # parents = [0, 1, 2, 3]
+        self.parents = list(range(n))
+
+        # 用來控制 Union 時 Tree 的高度
+        self.rank = [1] * n
+
+    def get_parent(self, x):
+        # Path Compression:
+        # 將節點直接連到 root，讓之後查詢更快
+        if self.parents[x] != x:
+            self.parents[x] = self.get_parent(self.parents[x])
+
+        return self.parents[x]
+
+    def union(self, x, y):
+
+        root_x = self.get_parent(x)
+        root_y = self.get_parent(y)
+
+        # 已經屬於同一個集合，不需要合併
+        if root_x == root_y:
+            return
+
+        # Union by Rank:
+        # 將較矮的 Tree 接到較高的 Tree
+        if self.rank[root_x] < self.rank[root_y]:
+            root_x, root_y = root_y, root_x
+
+        self.parents[root_y] = root_x
+
+        # 如果兩棵 Tree 高度相同，合併後 rank + 1
+        if self.rank[root_x] == self.rank[root_y]:
+            self.rank[root_x] += 1
+
+    def is_same_parent(self, x, y):
+        return self.get_parent(x) == self.get_parent(y)
+
+
+class Solution(object):
+
+    def accountsMerge(self, accounts):
+        """
+        :type accounts: List[List[str]]
+        :rtype: List[List[str]]
+        """
+
+        if not accounts:
+            return []
+
+        n = len(accounts)
+
+        # 初始化 Union Find
+        # 每個 account 都是一個獨立的集合
+        uf = UF(n)
+
+        # HashMap:
+        # key   = email
+        # value = account index
+        #
+        # 記錄每個 email 第一次出現在哪個 account
+        email_to_id = {}
+
+        # ----------------------------------------
+        # Step 1: 建立 email 與 account 的關聯
+        # ----------------------------------------
+
+        for i, acc in enumerate(accounts):
+
+            # acc[0] 是 name
+            # acc[1:] 是 emails
+            emails = acc[1:]
+
+            for email in emails:
+
+                if email in email_to_id:
+
+                    # Email 已經出現過
+                    # 表示目前 account i 與之前的 account
+                    # email_to_id[email] 屬於同一個人
+                    uf.union(i, email_to_id[email])
+
+                else:
+
+                    # 第一次出現，記錄 account index
+                    email_to_id[email] = i
+
+        # ----------------------------------------
+        # Step 2: 根據 Union Find root 分組
+        # ----------------------------------------
+
+        # key   = root account index
+        # value = 該 group 所有不重複的 emails
+        groups = {}
+
+        for email, account_id in email_to_id.items():
+
+            # 找出這個 account 所屬的 root
+            root = uf.get_parent(account_id)
+
+            # 如果 root 還不存在，建立空的 set
+            if root not in groups:
+                groups[root] = set()
+
+            # 將 email 加入對應 group
+            groups[root].add(email)
+
+        # ----------------------------------------
+        # Step 3: 建立最後結果
+        # ----------------------------------------
+
+        res = []
+
+        for root, emails in groups.items():
+
+            # 使用 root account 的 name
+            name = accounts[root][0]
+
+            # Email 必須依字母順序排列
+            sorted_emails = sorted(emails)
+
+            res.append([name] + sorted_emails)
 
         return res
 
