@@ -51,7 +51,7 @@ for streaming beyond Spark, and the [`faq_hadoop.md`](./faq_hadoop.md) and
 | 11 |  | Catalyst, AQE, reading a plan | [10-1](#10-1-how-does-the-catalyst-optimiser-work), [10-2](#10-2-how-do-you-read-a-physical-plan), [10-3](#10-3-what-is-aqe-and-how-is-it-different-from-catalyst), [10-4](#10-4-predicate-pushdown-and-column-pruning) | [4-1](../de/spark.md#4-1-catalyst-how-a-query-becomes-a-plan), [4-2](../de/spark.md#4-2-tungsten-the-execution-engine), [4-3](../de/spark.md#4-3-adaptive-query-execution-aqe), [4-4](../de/spark.md#4-4-reading-a-physical-plan) |
 | 12 |  | PySpark: workers, UDFs, Arrow | — | [10-1](../de/spark.md#10-1-how-pyspark-runs), [10-2](../de/spark.md#10-2-udfs-vs-pandas-udfs-vs-built-ins), [10-3](../de/spark.md#10-3-arrow-topandas-and-collect) |
 | 13 |  | Writes, save modes, table formats | — | [11-1](../de/spark.md#11-1-spark-sql-and-the-catalog), [11-2](../de/spark.md#11-2-save-modes-and-dynamic-partition-overwrite), [11-3](../de/spark.md#11-3-delta-lake--iceberg--hudi-with-spark), [11-4](../de/spark.md#11-4-reading-data-well) |
-| 14 |  | Structured Streaming | [11-1](#11-1-spark-streaming-dstreams-vs-structured-streaming), [11-2](#11-2-event-time-watermarks-and-output-modes), [11-3](#11-3-checkpoints-and-exactly-once) | [12-1](../de/spark.md#12-1-the-model) |
+| 14 |  | Structured Streaming | [11-1](#11-1-spark-streaming-dstreams-vs-structured-streaming), [11-2](#11-2-event-time-watermarks-and-output-modes), [11-3](#11-3-checkpoints-and-exactly-once) | [12-1](../de/spark.md#12-1-the-model), [12-2](../de/spark.md#12-2-watermarks-what-one-is-and-how-spark-computes-it), [12-3](../de/spark.md#12-3-late-data-what-is-kept-what-is-dropped), [12-4](../de/spark.md#12-4-what-a-watermark-cleans-up-and-the-output-modes), [12-5](../de/spark.md#12-5-streamstream-joins-and-multiple-watermarks), [12-6](../de/spark.md#12-6-watermarks-in-production-choosing-the-delay-and-watching-it) |
 | 15 |  | Tuning and the Spark UI | [12-1](#12-1-a-job-got-slow--where-do-you-start), [12-4](#12-4-which-configurations-are-worth-knowing-by-name) | [13-1](../de/spark.md#13-1-in-the-order-you-would-check), [13-2](../de/spark.md#13-2-the-configs-worth-knowing-by-name), [14-1](../de/spark.md#14-1-where-to-look), [14-2](../de/spark.md#14-2-reading-the-symptoms), [15-2](../de/spark.md#15-2-other-errors-worth-recognising) |
 | 16 | 4 · Rehearse | Pipeline design | [13-1](#13-1-design-a-kafka--spark--lakehouse--warehouse-pipeline), [13-2](#13-2-design-an-idempotent-re-runnable-daily-batch) | [15-3](../de/spark.md#15-3-exactly-once-is-your-job-in-batch-too), [16-2](../de/spark.md#16-2-design-question-process-10-tb-of-daily-clickstream) |
 | 17 |  | Mock round: answer out loud, then self-check | [14-2](#14-2-the-question-bank-by-difficulty), [14-3](#14-3-self-check-before-the-interview) | [16-1](../de/spark.md#16-1-quick-fire-answers) |
@@ -1207,6 +1207,8 @@ counts = (events
   once the watermark passes its end. Data older than the watermark **may** be dropped — the
   guarantee is only that data within the threshold is never dropped.
 - Without a watermark, state for a windowed aggregation or a stream–stream join grows forever.
+- Deep dive — late rows, eviction per output mode, joins, multiple watermarks and the
+  production signals: [`spark.md` §12-2 to §12-6](../de/spark.md#12-2-watermarks-what-one-is-and-how-spark-computes-it).
 
 | Output mode | Emits | Works with |
 |---|---|---|

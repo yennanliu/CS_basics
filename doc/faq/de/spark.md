@@ -1,6 +1,6 @@
 # Apache Spark — Data Engineering Interview Deep Dive
 
-> **Scope** — everything about Apache Spark a data engineering interview probes: the execution model, the APIs and the optimiser, shuffles, partitioning, joins and skew, caching, memory and serialisation, PySpark specifics, writes, a first look at Structured Streaming, tuning, debugging and the common failures — answered for Spark 3.5, with Spark 4.0 differences called out.
+> **Scope** — everything about Apache Spark a data engineering interview probes: the execution model, the APIs and the optimiser, shuffles, partitioning, joins and skew, caching, memory and serialisation, PySpark specifics, writes, Structured Streaming and its watermarks, tuning, debugging and the common failures — answered for Spark 3.5, with Spark 4.0 differences called out.
 > **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the high-level map and last-minute checklist across all DE topics; [`./stream_pipeline.md`](./stream_pipeline.md) — streaming in depth; [`./batch_pipeline.md`](./batch_pipeline.md) — where a Spark job sits in a pipeline; [`./hadoop.md`](./hadoop.md) — HDFS, YARN and MapReduce; [`../spark/faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md) — the question bank: short spoken answers, troubleshooting walk-throughs, pipeline-design prompts and a study plan.
 
 Every answer leads with the sentence you would say out loud, then the mechanism, then the
@@ -971,7 +971,7 @@ See [`./batch_pipeline.md`](./batch_pipeline.md) for how they fit a pipeline and
 
 ---
 
-## 12) Structured Streaming in Brief ⭐⭐⭐
+## 12) Structured Streaming and Watermarks ⭐⭐⭐⭐
 
 ### 12-1) The model
 
@@ -1011,8 +1011,224 @@ counts = (events.withWatermark("event_time", "10 minutes")
   for update semantics use `foreachBatch` with a `MERGE`.
 - Changing a query's stateful logic can make an existing checkpoint unusable.
 
-Event time, watermarks, state and the engine comparison with Flink and Kafka Streams are in
+How Spark's watermark works is §12-2 to §12-6. The engine-neutral concepts (window types,
+late-data strategies, state backends) and the comparison with Flink and Kafka Streams are in
 [`./stream_pipeline.md`](./stream_pipeline.md).
+
+### 12-2) Watermarks: what one is and how Spark computes it
+
+**A watermark is Spark's running estimate of how far event time has progressed: the latest
+event time it has seen, minus the lateness you said you would tolerate. It decides two
+things — which late rows can still update a result, and which state is old enough to delete.**
+
+Every record carries two times. **Event time** is when the thing happened (a column in the
+record); **processing time** is when Spark read it. They drift apart whenever a Kafka consumer
+lags, a network retries, or a phone goes offline:
+
+| Order | Event time | Read by Spark at |
+|---|---|---|
+| A | 10:00 | 10:01 |
+| B | 10:02 | 10:03 |
+| C | 10:01 | 10:08 — arrives after B and D, happened before both |
+| D | 10:04 | 10:05 |
+
+Counting by processing time would put C in the wrong window. Counting by event time is right,
+but then Spark cannot know when a window is complete — C proves an old window can still change.
+`withWatermark` is the answer to "how long do we wait":
+
+```python
+# python — tolerate events up to 10 minutes behind the latest one seen
+counts = (orders.withWatermark("event_time", "10 minutes")
+                .groupBy(F.window("event_time", "10 minutes"))
+                .count())
+```
+
+The rule, in Spark 3.5's micro-batch engine:
+
+- **watermark = max(event time seen so far) − delay**, where the maximum is taken across
+  **every partition** of the input.
+- It is computed **at the end of a micro-batch and used by the next one**, so a batch is
+  always judged against the watermark the previous batches established.
+- It **only moves forward**. An old event never pulls it back.
+- It moves only when a batch sees a newer event time. If the whole stream goes quiet, the
+  watermark stops, and the last windows are not finalised until data arrives again.
+
+| Max event time seen | Delay | Watermark |
+|---|---|---|
+| 10:10 | 10 min | 10:00 |
+| 10:15 | 10 min | 10:05 |
+| 10:25 | 10 min | 10:15 |
+
+`withWatermark` has to name the event-time column the stateful operator uses (the column
+`window()` is built on, or a grouping / join / dedup column), and it must come before that
+operator. On a batch DataFrame it is a no-op.
+
+### 12-3) Late data: what is kept, what is dropped
+
+**Spark guarantees that a row no later than the delay — event time ≥ the max seen minus the
+delay — is never dropped because of the watermark. A row later than that may be dropped or may
+still be counted; the watermark is a threshold for state, not a strict cut-off for input.**
+
+Take 10-minute tumbling windows, a 10-minute delay and a watermark at 10:15, then three late
+rows arrive:
+
+| Row | Event time | Its window | Window end vs watermark (10:15) | What happens |
+|---|---|---|---|---|
+| A | 10:18 | 10:10–10:20 | 10:20, ahead | counted — the window is still open |
+| B | 10:12 | 10:10–10:20 | 10:20, ahead | counted, although 10:12 is behind the watermark: its window's state still exists |
+| C | 10:05 | 10:00–10:10 | 10:10, passed | dropped — the window was finalised and its state deleted |
+
+B is the row that catches people out. "Older than the watermark means dropped" is not what
+happens in a window aggregation: what decides it is whether the state the row would update is
+still there. Spark 3.5 filters a row at a stateful operator when that state is already behind
+the watermark (for a window, when the window's end is), and counts it in the progress metric
+`numRowsDroppedByWatermark`. The documented contract is only the guarantee above, so do not
+build on the exact edge.
+
+The dropped rows are not kept anywhere. If they matter, capture them yourself — compare
+`event_time` with the query's watermark in a separate branch or in `foreachBatch`, and
+write the late ones to a side table or dead-letter topic for a later batch correction.
+
+### 12-4) What a watermark cleans up, and the output modes
+
+**A stateful query keeps every open window, unmatched join row or seen dedup key in the state
+store. Without a watermark nothing ever becomes old enough to delete, so state grows for the
+life of the query. With one, Spark evicts state once the watermark passes it.**
+
+```text
+no watermark — every window ever opened stays in the state store
+  [10:00–10:10] [10:10–10:20] [10:20–10:30] [10:30–10:40] [10:40–10:50] …
+
+watermark at 10:15 — a window whose end is at or behind 10:15 is final; emit it, then evict it
+  [10:00–10:10]  →  emitted (append) and removed
+  [10:10–10:20] [10:20–10:30] [10:30–10:40] …  kept: a late row can still update them
+```
+
+Unbounded state shows up as a checkpoint that keeps growing, slower state reads and writes
+every batch, batch duration creeping up over days, and finally an executor OOM — the reason
+the RocksDB state store exists ([`faq_spark_hadoop.md` §11-4](../spark/faq_spark_hadoop.md#11-4-what-errors-happen-in-spark-streaming-and-how-do-you-fix-them)).
+A watermark bounds the state of one stateful operator; it does not cap executor memory, and it
+cannot help an operator that has no event-time column to judge by.
+
+The output mode decides when a window's row reaches the sink, and whether the watermark can
+delete anything:
+
+| Mode | Emits a window | State evicted by the watermark? | Use when |
+|---|---|---|---|
+| `append` | once, when the watermark passes its end — so results lag by the window plus the delay | yes | the sink cannot take updates: files, a Delta append, a daily report |
+| `update` | every batch in which its count changed, including a late row's correction | yes | a dashboard or an upsert sink (`foreachBatch` + `MERGE`) |
+| `complete` | every window, every batch | **no** — the whole result has to be kept | small result tables only; state grows without bound |
+
+An aggregation in `append` mode needs a watermark — Spark rejects the query without one,
+because it could never prove a window is final. In `update` mode a late row inside the delay
+changes `10:00–10:10 = 100` to `101` and the sink receives the new row; in `append` mode the
+sink would have received `101` once, but later.
+
+### 12-5) Stream–stream joins and multiple watermarks
+
+**A stream–stream join keeps both sides in state, waiting for a match. Spark can only delete a
+buffered row once it knows no future row on the other side can join it — which takes a
+watermark on each side and an event-time range in the join condition.**
+
+```python
+# python — a payment must arrive within an hour of its order
+orders   = orders_stream.withWatermark("order_time", "10 minutes")
+payments = payments_stream.withWatermark("payment_time", "10 minutes")
+
+paid = orders.join(
+    payments,
+    F.expr("""
+        order_id = payment_order_id
+        AND payment_time >= order_time
+        AND payment_time <= order_time + INTERVAL 1 HOUR
+    """),
+    "inner",
+)
+```
+
+- **Inner join** — the watermarks and the time range are optional, but without them an order
+  that never gets a payment stays in state forever.
+- **Outer join** — both are required. A left-outer row with no match is only emitted, with
+  `NULL`s, once the watermark proves no match can come, so it arrives late by the time range
+  plus the delay.
+- A watermark on each side with no time range in the condition does not bound the state: Spark
+  still cannot tell how long an order may wait for its payment.
+
+When a query reads more than one stream (a join or a `union`), each input has its own
+watermark, and the query uses one global watermark chosen by
+`spark.sql.streaming.multipleWatermarkPolicy`:
+
+| Input | Max event time | Delay | Its watermark |
+|---|---|---|---|
+| orders | 10:30 | 10 min | 10:20 |
+| payments | 10:20 | 10 min | 10:10 |
+| global, `min` (default) | | | **10:10** |
+| global, `max` | | | 10:20 |
+
+| Policy | Gains | Costs |
+|---|---|---|
+| `min` (default) | the slower stream's late rows are still kept | state lives longer, set by the slowest input |
+| `max` | state evicted sooner, smaller state store | rows from the slower stream can be dropped |
+
+Keep `min` unless losing the slow stream's late data is acceptable. The policy is recorded in
+the checkpoint, so a restarted query keeps the one it started with.
+
+### 12-6) Watermarks in production: choosing the delay and watching it
+
+**Choose the delay from the measured lateness distribution and what the business can lose,
+not from a round number; then watch the watermark and the state size every batch, because a
+stuck watermark and growing state are the same incident seen from two ends.**
+
+A design prompt, and the reasoning an interviewer wants: *success rate per payment method
+every 5 minutes; Kafka adds ~30 s; 99% of events arrive within 3 minutes; some mobile clients
+sync up to 15 minutes late; state must stay bounded.*
+
+```python
+# python
+success_rate = (payments.withWatermark("event_time", "15 minutes")
+                        .groupBy(F.window("event_time", "5 minutes"), "payment_method")
+                        .agg(F.count("*").alias("total"),
+                             F.sum(F.when(F.col("status") == "ok", 1).otherwise(0)).alias("ok")))
+```
+
+| Delay | Effect |
+|---|---|
+| too short (3 min) | the 1% of mobile events behind it are dropped, and the success rate is biased against mobile |
+| 15 min | keeps the known late tail; each window is final, in `append`, ~20 minutes after it opens |
+| too long (6 h) | results wait hours in `append`, and up to 6 h of windows stay in state |
+
+Then the questions that settle it: is 15 minutes an observed p99.9 or a guess? Do some devices
+sync hours later? Does the business accept an approximate number now and a corrected one later
+— `update` mode, or a batch job that recomputes yesterday from the lake? Where do rows behind
+the watermark go?
+
+**Watch it** — every `StreamingQueryProgress` carries the watermark and the state operators:
+
+```python
+# python
+p = query.lastProgress
+p["eventTime"]["watermark"]                    # e.g. "2026-11-08T10:15:00.000Z"
+p["stateOperators"][0]["numRowsTotal"]         # rows held in state
+p["stateOperators"][0]["numRowsRemoved"]       # evicted this batch
+p["stateOperators"][0]["numRowsDroppedByWatermark"]  # late input discarded
+p["stateOperators"][0]["memoryUsedBytes"]
+p["durationMs"]["triggerExecution"]            # batch duration
+```
+
+| Symptom | Likely cause | What to check |
+|---|---|---|
+| State rows and batch duration rise for days | no watermark, `complete` mode, or a join with no time range | the plan and the output mode |
+| Watermark stuck, nothing emitted in `append` | no new data at all, so no newer max event time | input rate per source; whether this is quiet hours |
+| Watermark leaps ahead, `numRowsDroppedByWatermark` spikes | a few rows with **future** timestamps (a bad device clock) set the max | the `eventTime.max` field; filter or clamp `event_time > current_timestamp()` before `withWatermark` |
+| Results missing late events | delay shorter than the real lateness | the event-time vs read-time gap distribution |
+
+**One Spark-specific trap.** Spark's watermark comes from the maximum across all partitions,
+so an idle Kafka partition does not hold it back. Flink takes the minimum across source
+instances, where an idle partition does freeze the watermark
+([`stream_pipeline.md` §3-3](./stream_pipeline.md#3-3-idle-sources-and-watermark-alignment)).
+The Spark failure runs the other way: one partition far ahead — a fast producer, a backfill,
+a skewed clock — advances the watermark for everyone, and the slower partitions' rows turn
+up late and get dropped.
 
 ---
 
@@ -1160,6 +1376,14 @@ idempotent — re-running must replace, not add.**
 - **Window function with no `partitionBy`?** All rows move to one partition — one task does everything.
 - **How do you pick the number of partitions?** Total data ÷ ~128 MB, at least 2–3× the cores,
   then let AQE coalesce.
+- **What is a watermark?** Max event time seen minus the allowed delay. Windows and join rows
+  behind it are final, and their state is deleted.
+- **Does a 10-minute watermark drop everything older than 10 minutes?** No. Data within the
+  delay is never dropped; data later than it *may* be — a row whose window is still open is
+  counted.
+- **Watermark in `complete` mode?** It cleans nothing: the whole result is kept.
+- **Two input streams, which watermark?** The minimum of the two by default
+  (`spark.sql.streaming.multipleWatermarkPolicy`).
 - **Spark on Kubernetes vs YARN?** Same engine; K8s runs each executor as a pod, has no
   external shuffle service by default, so dynamic allocation uses shuffle tracking.
 

@@ -1,7 +1,7 @@
-<!-- 3b296f6fb7e5 -->
+<!-- 709f7faf9575 -->
 # Apache Spark — 資料工程面試深入解析
 
-> **範圍** — 資料工程面試會探的 Apache Spark 全部內容：執行模型、API 與最佳化器、shuffle、分區、join 與資料傾斜、快取、記憶體與序列化、PySpark 細節、寫入、Structured Streaming 入門、調校、除錯與常見故障 —— 以 Spark 3.5 為準，並標出 Spark 4.0 的差異。
+> **範圍** — 資料工程面試會探的 Apache Spark 全部內容：執行模型、API 與最佳化器、shuffle、分區、join 與資料傾斜、快取、記憶體與序列化、PySpark 細節、寫入、Structured Streaming 與它的 watermark、調校、除錯與常見故障 —— 以 Spark 3.5 為準，並標出 Spark 4.0 的差異。
 > **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) — 橫跨所有 DE 主題的總覽與考前檢查清單；[`./stream_pipeline.md`](./stream_pipeline.md) — 串流的深入內容；[`./batch_pipeline.md`](./batch_pipeline.md) — Spark job 在管線中的位置；[`./hadoop.md`](./hadoop.md) — HDFS、YARN 與 MapReduce；[`../spark/faq_spark_hadoop.md`](../spark/faq_spark_hadoop.md) — 題庫：可以直接說出口的簡短答案、排錯演練、管線設計題與讀書計畫。
 
 每一題都先給你會說出口的那句話，再講機制，然後是面試官下一步會追問的取捨。
@@ -778,10 +778,10 @@ time travel 與 schema 演進。**
 
 ---
 
-<!-- 6f8c8d94d00e -->
-## 12) Structured Streaming 簡介 ⭐⭐⭐
+<!-- 2fa737a4efcf -->
+## 12) Structured Streaming 與 Watermark ⭐⭐⭐⭐
 
-<!-- 76796e10350a -->
+<!-- f4a9db8256ca -->
 ### 12-1) 模型
 
 **Structured Streaming 把串流當成一張無界的表，增量地在上面執行你的 DataFrame 查詢，預設是
@@ -799,8 +799,172 @@ time travel 與 schema 演進。**
   需要 update 語意時，用 `foreachBatch` 搭配 `MERGE`。
 - 修改查詢中有狀態的邏輯，可能讓既有的 checkpoint 無法再使用。
 
-事件時間、watermark、狀態，以及與 Flink、Kafka Streams 的引擎比較，見
+Spark 的 watermark 怎麼運作，見 §12-2 到 §12-6。與引擎無關的概念（window 類型、遲到資料策略、
+state backend），以及與 Flink、Kafka Streams 的比較，見
 [`./stream_pipeline.md`](./stream_pipeline.md)。
+
+<!-- 5cd8750f6aed -->
+### 12-2) Watermark：它是什麼，Spark 怎麼算
+
+**Watermark 是 Spark 對「事件時間已經推進到哪裡」的持續估計：目前看到的最新事件時間，減去
+你說可以容忍的遲到時間。它決定兩件事 —— 哪些遲到的資料列還能更新結果，以及哪些狀態已經舊到
+可以刪除。**
+
+每筆記錄都帶著兩個時間。**事件時間（event time）**是事情發生的時間（記錄裡的一個欄位）；
+**處理時間（processing time）**是 Spark 讀到它的時間。只要 Kafka consumer 落後、網路重試、
+或手機離線，兩者就會拉開：
+
+| 訂單 | 事件時間 | Spark 讀到的時間 |
+|---|---|---|
+| A | 10:00 | 10:01 |
+| B | 10:02 | 10:03 |
+| C | 10:01 | 10:08 —— 比 B、D 晚到，卻比兩者都早發生 |
+| D | 10:04 | 10:05 |
+
+依處理時間計數，C 會被算進錯的 window。依事件時間計數才對，但這樣 Spark 就無法知道一個 window
+何時算完整 —— C 正好證明舊的 window 還可能改變。`withWatermark` 就是「要等多久」的答案：
+
+<!--CODE-->
+
+Spark 3.5 micro-batch 引擎的規則：
+
+- **watermark = 目前看到的最大事件時間 − delay**，最大值取自輸入的**所有 partition**。
+- 它**在一個 micro-batch 結束時計算，由下一個 batch 使用**，所以每個 batch 都以前面 batch
+  建立的 watermark 來判斷。
+- 它**只會往前走**。舊的事件永遠不會把它往回拉。
+- 只有當某個 batch 看到更新的事件時間，它才會前進。整條串流都沒資料時，watermark 就停住，
+  最後幾個 window 要等到資料再來才會定案。
+
+| 看到的最大事件時間 | Delay | Watermark |
+|---|---|---|
+| 10:10 | 10 分鐘 | 10:00 |
+| 10:15 | 10 分鐘 | 10:05 |
+| 10:25 | 10 分鐘 | 10:15 |
+
+`withWatermark` 必須指定有狀態運算子所用的事件時間欄位（`window()` 所依據的欄位，或是
+grouping / join / 去重的欄位），而且必須放在該運算子之前。用在批次 DataFrame 上則不起作用。
+
+<!-- 9b40d31079dd -->
+### 12-3) 遲到資料：哪些保留，哪些丟掉
+
+**Spark 保證：不晚於 delay 的資料列 —— 事件時間 ≥ 目前最大值減去 delay —— 絕不會因為
+watermark 被丟掉。比這更晚的資料列可能被丟掉，也可能仍被計入；watermark 是狀態的門檻，
+不是輸入資料的嚴格截止時間。**
+
+以 10 分鐘的 tumbling window、10 分鐘 delay、watermark 在 10:15 為例，接著到了三筆遲到的資料列：
+
+| 資料列 | 事件時間 | 所屬 window | Window 結束 vs watermark（10:15） | 結果 |
+|---|---|---|---|---|
+| A | 10:18 | 10:10–10:20 | 10:20，尚未越過 | 計入 —— window 還開著 |
+| B | 10:12 | 10:10–10:20 | 10:20，尚未越過 | 計入，雖然 10:12 已落在 watermark 之後：它所屬 window 的狀態還在 |
+| C | 10:05 | 10:00–10:10 | 10:10，已越過 | 丟掉 —— 該 window 已定案，狀態已刪除 |
+
+B 是最容易誤解的那筆。「比 watermark 舊就丟掉」並不是 window 聚合裡實際發生的事：決定因素是
+這筆資料要更新的狀態還在不在。Spark 3.5 在有狀態運算子上，會過濾掉其狀態已落在 watermark 之後
+的資料列（對 window 而言，是 window 結束時間落在其後），並把它計入進度指標
+`numRowsDroppedByWatermark`。文件承諾的只有上面那個保證，所以不要依賴確切的邊界。
+
+被丟掉的資料列不會留在任何地方。如果它們重要，就自己接住 —— 在另一條分支或 `foreachBatch`
+裡把 `event_time` 與查詢的 watermark 比較，把遲到的寫到旁表或 dead-letter topic，之後再用批次修正。
+
+<!-- 375390671c16 -->
+### 12-4) Watermark 清掉什麼，以及輸出模式
+
+**有狀態的查詢會把每個開著的 window、尚未配對的 join 資料列、看過的去重 key 都留在 state store。
+沒有 watermark，就沒有任何東西會舊到可以刪除，狀態會在查詢的整個生命週期中成長。有了它，
+Spark 會在 watermark 越過某筆狀態後把它清掉。**
+
+<!--CODE-->
+
+狀態無上限成長的徵兆是：checkpoint 不斷變大、每個 batch 的狀態讀寫變慢、batch 執行時間在幾天內
+逐漸上升，最後 executor OOM —— 這正是 RocksDB state store 存在的原因
+（[`faq_spark_hadoop.md` §11-4](../spark/faq_spark_hadoop.md#11-4-what-errors-happen-in-spark-streaming-and-how-do-you-fix-them)）。
+Watermark 限制的是單一有狀態運算子的狀態；它不會限制 executor 記憶體，對沒有事件時間欄位可判斷的
+運算子也幫不上忙。
+
+輸出模式決定一個 window 的結果何時送到 sink，以及 watermark 能不能刪掉任何東西：
+
+| 模式 | 何時輸出一個 window | 狀態會被 watermark 清掉嗎？ | 適用時機 |
+|---|---|---|---|
+| `append` | 一次，在 watermark 越過其結束時間時 —— 所以結果會延遲 window 長度加上 delay | 會 | sink 不能接受更新：檔案、Delta append、每日報表 |
+| `update` | 每個計數有變的 batch 都輸出，包括遲到資料造成的修正 | 會 | dashboard 或支援 upsert 的 sink（`foreachBatch` + `MERGE`） |
+| `complete` | 每個 batch 輸出全部 window | **不會** —— 必須保留整個結果 | 只適合小的結果表；狀態會無限成長 |
+
+在 `append` 模式下做聚合必須有 watermark —— 沒有的話 Spark 會拒絕這個查詢，因為它永遠無法
+證明一個 window 已經定案。在 `update` 模式下，delay 內的一筆遲到資料會把 `10:00–10:10 = 100`
+改成 `101`，sink 會收到新的那列；在 `append` 模式下，sink 只會收到一次 `101`，只是比較晚。
+
+<!-- 5524036ecfc6 -->
+### 12-5) Stream–stream join 與多個 watermark
+
+**Stream–stream join 會把兩邊都留在狀態裡等待配對。只有當 Spark 確定另一邊未來不會再有資料列
+能與某筆緩衝資料 join，才能刪掉它 —— 這需要兩邊各有一個 watermark，加上 join 條件裡的
+事件時間範圍。**
+
+<!--CODE-->
+
+- **Inner join** —— watermark 與時間範圍都是可選的，但沒有它們，一筆永遠等不到付款的訂單會
+  永遠留在狀態裡。
+- **Outer join** —— 兩者都必須有。沒有配對的 left-outer 資料列，要等 watermark 證明不可能再有
+  配對時才會帶著 `NULL` 輸出，所以它會延遲「時間範圍加上 delay」那麼久。
+- 兩邊各有 watermark 但條件裡沒有時間範圍，並不能限制狀態：Spark 仍然無法判斷一筆訂單可能要
+  等它的付款多久。
+
+當一個查詢讀取不只一條串流（join 或 `union`），每個輸入有自己的 watermark，而查詢使用一個
+全域 watermark，由 `spark.sql.streaming.multipleWatermarkPolicy` 決定：
+
+| 輸入 | 最大事件時間 | Delay | 自己的 watermark |
+|---|---|---|---|
+| orders | 10:30 | 10 分鐘 | 10:20 |
+| payments | 10:20 | 10 分鐘 | 10:10 |
+| 全域，`min`（預設） | | | **10:10** |
+| 全域，`max` | | | 10:20 |
+
+| Policy | 好處 | 代價 |
+|---|---|---|
+| `min`（預設） | 較慢那條串流的遲到資料仍會保留 | 狀態保留較久，由最慢的輸入決定 |
+| `max` | 狀態更早被清掉，state store 較小 | 較慢那條串流的資料列可能被丟掉 |
+
+除非可以接受遺失慢速串流的遲到資料，否則維持 `min`。這個 policy 會記錄在 checkpoint 裡，所以
+重新啟動的查詢會沿用它最初的設定。
+
+<!-- 8a8c0e9aa00c -->
+### 12-6) 正式環境中的 watermark：選 delay 與監控
+
+**依照量測到的遲到分佈與業務能承受的損失來選 delay，而不是挑一個整數；然後每個 batch 都盯著
+watermark 與狀態大小，因為 watermark 卡住與狀態成長，是同一起事故從兩端看到的樣子。**
+
+一道設計題，以及面試官想聽到的推理：*每 5 分鐘計算各付款方式的成功率；Kafka 增加約 30 秒；
+99% 的事件在 3 分鐘內抵達；部分行動裝置最晚會晚 15 分鐘才同步；狀態必須有上限。*
+
+<!--CODE-->
+
+| Delay | 效果 |
+|---|---|
+| 太短（3 分鐘） | 落在它之後的那 1% 行動裝置事件會被丟掉，成功率會對行動裝置產生偏差 |
+| 15 分鐘 | 保留已知的遲到尾端；在 `append` 下，每個 window 在開啟後約 20 分鐘定案 |
+| 太長（6 小時） | `append` 的結果要等好幾個小時，而且最多 6 小時的 window 都留在狀態裡 |
+
+接著是決定答案的問題：15 分鐘是觀察到的 p99.9 還是猜的？有沒有裝置會晚好幾個小時才同步？
+業務能不能接受現在先給近似值、之後再修正 —— 用 `update` 模式，或用批次 job 從 lake 重算昨天？
+落在 watermark 之後的資料列要去哪？
+
+**監控它** —— 每個 `StreamingQueryProgress` 都帶有 watermark 與狀態運算子的資訊：
+
+<!--CODE-->
+
+| 徵兆 | 可能原因 | 要檢查什麼 |
+|---|---|---|
+| 狀態列數與 batch 執行時間連續幾天上升 | 沒有 watermark、`complete` 模式，或 join 沒有時間範圍 | 執行計畫與輸出模式 |
+| Watermark 卡住，`append` 什麼都沒輸出 | 完全沒有新資料，所以沒有更新的最大事件時間 | 每個來源的輸入速率；是不是離峰時段 |
+| Watermark 突然往前跳，`numRowsDroppedByWatermark` 暴增 | 少數帶有**未來**時間戳的資料列（裝置時鐘錯誤）設定了最大值 | `eventTime.max` 欄位；在 `withWatermark` 之前過濾或截斷 `event_time > current_timestamp()` |
+| 結果缺少遲到的事件 | delay 比實際的遲到時間短 | 事件時間與讀取時間差距的分佈 |
+
+**一個 Spark 特有的陷阱。** Spark 的 watermark 取自所有 partition 的最大值，所以閒置的 Kafka
+partition 不會拖住它。Flink 取的是各 source instance 的最小值，閒置 partition 才會凍結 watermark
+（[`stream_pipeline.md` §3-3](./stream_pipeline.md#3-3-idle-sources-and-watermark-alignment)）。
+Spark 的失敗方向正好相反：某個 partition 跑得遠遠超前 —— 快的 producer、回補、偏斜的時鐘 ——
+會替所有人推進 watermark，較慢 partition 的資料列就變成遲到而被丟掉。
 
 ---
 
@@ -921,7 +1085,7 @@ Spark History Server 為已結束的應用程式顯示同樣的 UI。
 <!-- 5836420b361f -->
 ## 16) 常見問題 ⭐⭐⭐⭐⭐
 
-<!-- a0ee8b78543d -->
+<!-- 222c987d7d7e -->
 ### 16-1) 快問快答
 
 - **什麼會造成 stage 邊界？** 寬依賴 —— 一次 shuffle。
@@ -953,6 +1117,13 @@ Spark History Server 為已結束的應用程式顯示同樣的 UI。
 - **什麼是 shuffle spill？** Execution 記憶體滿了，運算子把排序好的片段寫到本機磁碟，之後再合併。
 - **Window function 沒有 `partitionBy`？** 所有資料列都搬到一個 partition —— 一個 task 做全部的事。
 - **Partition 數怎麼選？** 總資料量 ÷ ~128 MB，至少是 core 數的 2–3 倍，然後讓 AQE 合併。
+- **什麼是 watermark？** 目前看到的最大事件時間減去允許的 delay。落在它之後的 window 與 join
+  資料列都已定案，狀態會被刪除。
+- **設了 10 分鐘的 watermark，就會丟掉所有超過 10 分鐘的資料嗎？** 不會。delay 內的資料一定不會被丟；
+  比它更晚的*可能*被丟 —— 所屬 window 還開著的資料列仍會計入。
+- **`complete` 模式下的 watermark？** 什麼都不清：整個結果都要保留。
+- **兩條輸入串流，用哪個 watermark？** 預設取兩者的最小值
+  （`spark.sql.streaming.multipleWatermarkPolicy`）。
 - **Spark on Kubernetes vs YARN？** 同一個引擎；K8s 把每個 executor 跑成一個 pod，預設沒有
   外部 shuffle service，所以 dynamic allocation 用 shuffle tracking。
 
