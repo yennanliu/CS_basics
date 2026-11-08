@@ -803,7 +803,7 @@ Spark 的 watermark 怎麼運作，見 §12-2 到 §12-6。與引擎無關的概
 state backend），以及與 Flink、Kafka Streams 的比較，見
 [`./stream_pipeline.md`](./stream_pipeline.md)。
 
-<!-- 5cd8750f6aed -->
+<!-- 545ea49c8c3a -->
 ### 12-2) Watermark：它是什麼，Spark 怎麼算
 
 **Watermark 是 Spark 對「事件時間已經推進到哪裡」的持續估計：目前看到的最新事件時間，減去
@@ -829,8 +829,9 @@ state backend），以及與 Flink、Kafka Streams 的比較，見
 Spark 3.5 micro-batch 引擎的規則：
 
 - **watermark = 目前看到的最大事件時間 − delay**，最大值取自輸入的**所有 partition**。
-- 它**在一個 micro-batch 結束時計算，由下一個 batch 使用**，所以每個 batch 都以前面 batch
-  建立的 watermark 來判斷。
+- 它**在一個 micro-batch 結束時計算，由下一個 batch 使用**。從 Spark 3.4 起，有狀態運算子在每個
+  batch 持有兩個值：用**上一個** batch 的 watermark 過濾遲到的輸入，用**這一個** batch 的 watermark
+  清除狀態。所以在 watermark 剛往前推進的那個 batch，新值會判為遲到的資料列仍會被放進來。
 - 它**只會往前走**。舊的事件永遠不會把它往回拉。
 - 只有當某個 batch 看到更新的事件時間，它才會前進。整條串流都沒資料時，watermark 就停住，
   最後幾個 window 要等到資料再來才會定案。
@@ -844,14 +845,16 @@ Spark 3.5 micro-batch 引擎的規則：
 `withWatermark` 必須指定有狀態運算子所用的事件時間欄位（`window()` 所依據的欄位，或是
 grouping / join / 去重的欄位），而且必須放在該運算子之前。用在批次 DataFrame 上則不起作用。
 
-<!-- 9b40d31079dd -->
+<!-- d573e132c0fa -->
 ### 12-3) 遲到資料：哪些保留，哪些丟掉
 
-**Spark 保證：不晚於 delay 的資料列 —— 事件時間 ≥ 目前最大值減去 delay —— 絕不會因為
-watermark 被丟掉。比這更晚的資料列可能被丟掉，也可能仍被計入；watermark 是狀態的門檻，
+**Spark 保證：遲到程度小於 delay 的資料列 —— 事件時間 > 目前最大值減去 delay —— 絕不會因為
+watermark 被丟掉。剛好等於或超過這個程度的資料列可能被丟掉，也可能仍被計入；watermark 是狀態的門檻，
 不是輸入資料的嚴格截止時間。**
 
-以 10 分鐘的 tumbling window、10 分鐘 delay、watermark 在 10:15 為例，接著到了三筆遲到的資料列：
+以 `append` 或 `update` 模式下 10 分鐘的 tumbling window 為例（`complete` 模式什麼都不清，所以也什麼都
+不丟），delay 10 分鐘，watermark 從上一個 batch 起就停在 10:15，所以遲到過濾與狀態清除都用 10:15。
+接著到了三筆遲到的資料列：
 
 | 資料列 | 事件時間 | 所屬 window | Window 結束 vs watermark（10:15） | 結果 |
 |---|---|---|---|---|
@@ -862,12 +865,17 @@ watermark 被丟掉。比這更晚的資料列可能被丟掉，也可能仍被�
 B 是最容易誤解的那筆。「比 watermark 舊就丟掉」並不是 window 聚合裡實際發生的事：決定因素是
 這筆資料要更新的狀態還在不在。Spark 3.5 在有狀態運算子上，會過濾掉其狀態已落在 watermark 之後
 的資料列（對 window 而言，是 window 結束時間落在其後），並把它計入進度指標
-`numRowsDroppedByWatermark`。文件承諾的只有上面那個保證，所以不要依賴確切的邊界。
+`numRowsDroppedByWatermark`。C 要等過濾用的值追上後才會被丟掉：在 watermark 剛到 10:15 的那一個
+batch，過濾仍用上一個值，所以 C 會被放進來，並在該 batch 清除它的 window 時一起輸出。文件承諾的只有
+上面那個保證，所以不要依賴確切的邊界。
 
-被丟掉的資料列不會留在任何地方。如果它們重要，就自己接住 —— 在另一條分支或 `foreachBatch`
-裡把 `event_time` 與查詢的 watermark 比較，把遲到的寫到旁表或 dead-letter topic，之後再用批次修正。
+被丟掉的資料列不會留在任何地方，而聚合之後的 `foreachBatch` sink 只看得到聚合後的資料列，看不到
+運算子丟掉的那些。如果它們重要，就保留有狀態運算子之前的原始輸入 —— 讓串流也落地到一張原始資料表 ——
+之後再用批次 job 從它對帳各個 window。拿每筆資料列的 `event_time` 與 watermark 比較並不能替代：
+它會把 B 判為遲到。要在串流內分類資料列，就得重現運算子自己的規則，也就是拿 window 的結束時間
+與上一個 batch 的 watermark 比較。
 
-<!-- 375390671c16 -->
+<!-- 6960096f13a1 -->
 ### 12-4) Watermark 清掉什麼，以及輸出模式
 
 **有狀態的查詢會把每個開著的 window、尚未配對的 join 資料列、看過的去重 key 都留在 state store。
@@ -880,7 +888,9 @@ Spark 會在 watermark 越過某筆狀態後把它清掉。**
 逐漸上升，最後 executor OOM —— 這正是 RocksDB state store 存在的原因
 （[`faq_spark_hadoop.md` §11-4](../spark/faq_spark_hadoop.md#11-4-what-errors-happen-in-spark-streaming-and-how-do-you-fix-them)）。
 Watermark 限制的是單一有狀態運算子的狀態；它不會限制 executor 記憶體，對沒有事件時間欄位可判斷的
-運算子也幫不上忙。
+運算子也幫不上忙。`dropDuplicates` 是常見的例子：只有當事件時間欄位是 key 的一部分時，它的狀態才有
+上限，而這樣只能去掉帶著相同時間戳的重送資料。要只依 ID 去重又讓狀態有上限，用 Spark 3.5 的
+`dropDuplicatesWithinWatermark`。
 
 輸出模式決定一個 window 的結果何時送到 sink，以及 watermark 能不能刪掉任何東西：
 
@@ -894,7 +904,7 @@ Watermark 限制的是單一有狀態運算子的狀態；它不會限制 execut
 證明一個 window 已經定案。在 `update` 模式下，delay 內的一筆遲到資料會把 `10:00–10:10 = 100`
 改成 `101`，sink 會收到新的那列；在 `append` 模式下，sink 只會收到一次 `101`，只是比較晚。
 
-<!-- 5524036ecfc6 -->
+<!-- a339277820b0 -->
 ### 12-5) Stream–stream join 與多個 watermark
 
 **Stream–stream join 會把兩邊都留在狀態裡等待配對。只有當 Spark 確定另一邊未來不會再有資料列
@@ -905,7 +915,8 @@ Watermark 限制的是單一有狀態運算子的狀態；它不會限制 execut
 
 - **Inner join** —— watermark 與時間範圍都是可選的，但沒有它們，一筆永遠等不到付款的訂單會
   永遠留在狀態裡。
-- **Outer join** —— 兩者都必須有。沒有配對的 left-outer 資料列，要等 watermark 證明不可能再有
+- **Outer join** —— left outer join 需要**右邊**的 watermark 加上時間範圍（right outer join 則相反）；
+  左邊的 watermark 是可選的，只有要連左邊的狀態也清掉時才需要。沒有配對的左邊資料列，要等 watermark 證明不可能再有
   配對時才會帶著 `NULL` 輸出，所以它會延遲「時間範圍加上 delay」那麼久。
 - 兩邊各有 watermark 但條件裡沒有時間範圍，並不能限制狀態：Spark 仍然無法判斷一筆訂單可能要
   等它的付款多久。
@@ -928,7 +939,7 @@ Watermark 限制的是單一有狀態運算子的狀態；它不會限制 execut
 除非可以接受遺失慢速串流的遲到資料，否則維持 `min`。這個 policy 會記錄在 checkpoint 裡，所以
 重新啟動的查詢會沿用它最初的設定。
 
-<!-- 8a8c0e9aa00c -->
+<!-- b4d576dbf65a -->
 ### 12-6) 正式環境中的 watermark：選 delay 與監控
 
 **依照量測到的遲到分佈與業務能承受的損失來選 delay，而不是挑一個整數；然後每個 batch 都盯著
@@ -941,7 +952,7 @@ watermark 與狀態大小，因為 watermark 卡住與狀態成長，是同一�
 
 | Delay | 效果 |
 |---|---|
-| 太短（3 分鐘） | 落在它之後的那 1% 行動裝置事件會被丟掉，成功率會對行動裝置產生偏差 |
+| 太短（3 分鐘） | 遲到超過 3 分鐘的那約 1% 事件 —— 其中很多來自晚同步的行動裝置 —— 有被丟掉的風險（所屬 window 還開著的資料列仍會計入），成功率會對行動裝置產生偏差 |
 | 15 分鐘 | 保留已知的遲到尾端；在 `append` 下，每個 window 在開啟後約 20 分鐘定案 |
 | 太長（6 小時） | `append` 的結果要等好幾個小時，而且最多 6 小時的 window 都留在狀態裡 |
 
@@ -957,7 +968,7 @@ watermark 與狀態大小，因為 watermark 卡住與狀態成長，是同一�
 |---|---|---|
 | 狀態列數與 batch 執行時間連續幾天上升 | 沒有 watermark、`complete` 模式，或 join 沒有時間範圍 | 執行計畫與輸出模式 |
 | Watermark 卡住，`append` 什麼都沒輸出 | 完全沒有新資料，所以沒有更新的最大事件時間 | 每個來源的輸入速率；是不是離峰時段 |
-| Watermark 突然往前跳，`numRowsDroppedByWatermark` 暴增 | 少數帶有**未來**時間戳的資料列（裝置時鐘錯誤）設定了最大值 | `eventTime.max` 欄位；在 `withWatermark` 之前過濾或截斷 `event_time > current_timestamp()` |
+| Watermark 突然往前跳，`numRowsDroppedByWatermark` 暴增 | 少數帶有**未來**時間戳的資料列（裝置時鐘錯誤）設定了最大值 | `eventTime.max` 欄位；在 `withWatermark` 之前過濾或截斷 `event_time > current_timestamp()`。這能擋住下一次跳動，卻無法撤銷這一次 —— 往前跳的 watermark 已寫進 checkpoint —— 所以要用新的 checkpoint（或重播來源）恢復，並對帳這段期間寫出的結果 |
 | 結果缺少遲到的事件 | delay 比實際的遲到時間短 | 事件時間與讀取時間差距的分佈 |
 
 **一個 Spark 特有的陷阱。** Spark 的 watermark 取自所有 partition 的最大值，所以閒置的 Kafka
