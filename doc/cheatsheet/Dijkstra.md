@@ -17,7 +17,7 @@
 - **Space Complexity**: O(V) for distance array and visited set
 - **Core Idea**: Greedily select the unvisited node with minimum distance
 - **When to Use**: Single-source shortest path with non-negative weights
-- **Limitation**: `Cannot` handle `negative` edge weights, `maximise` a sum of gains (a longest path), or a path that may visit each cell only once — see [When Dijkstra does not apply](#when-dijkstra-does-not-apply-)
+- **Limitation**: `Cannot` handle `negative` edge weights, `maximise` a sum of gains (a longest path), or a path where the cells already used decide where it can go next (LC 1219) — see [When Dijkstra does not apply](#when-dijkstra-does-not-apply-)
 
 ### Core Characteristics
 - **Greedy Algorithm**: Always selects the minimum distance node
@@ -645,12 +645,13 @@ state looks like — which is the thing that decides the implementation:
 ```text
 Dijkstra Algorithm Selection Flowchart:
 
-1. Is it a shortest path problem — MINIMISE a cost that never
-   improves as the path grows?
-   ├── NO → Consider other algorithms (DFS, BFS, DP); "maximise the
-   │        gold / sum along a path" is backtracking (LC 1219), not
-   │        Dijkstra — see "When Dijkstra does not apply"
-   └── YES → Continue to 2
+1. What does the path's value do as the path grows?
+   ├── MINIMISE a cost that can only grow   → Continue to 2
+   ├── MAXIMISE a value that can only shrink (a probability ≤ 1,
+   │   the smallest cell so far) → max-heap Dijkstra (LC 1514, 1102)
+   └── MAXIMISE a value that keeps growing (a sum of gold / score)
+       → not Dijkstra: backtracking (LC 1219), or DP on a DAG —
+         see "When Dijkstra does not apply"
 
 2. Are all edge weights non-negative?
    ├── NO → Use Bellman-Ford or SPFA
@@ -698,9 +699,11 @@ Everything Dijkstra does rests on one claim: **the first time a node is popped, 
 final.** That claim needs two things to be true, and every limitation below is one of them
 failing:
 
-1. **Extending a path can never make it better.** Adding an edge only raises a cost you are
-   minimising (or only lowers a value you are maximising). Then nothing popped later can beat
-   what was popped first.
+1. **Extending a path can never make it better, and never reverses two arrivals.** Adding an
+   edge only raises a cost you are minimising (or only lowers a value you are maximising),
+   and the same edge applied to two arrivals at a node keeps the better one better. `+ w`
+   with `w ≥ 0`, `× p` with `p ≤ 1`, `max` and `min` all do. Then nothing popped later can
+   beat what was popped first.
 2. **The node alone says where you are.** If what you may do next depends on *how* you
    arrived (cells already used, stops left, keys held), then `dist[node]` throws away paths
    that are still needed.
@@ -708,10 +711,12 @@ failing:
 | Situation | Which condition fails | Why the first pop is not final | Use instead | LC |
 |---|---|---|---|---|
 | **Maximise** a sum of non-negative gains along a path (gold, score, length) | 1 | every extra cell makes the path better, so the best path is found *last*, not first — this is the longest-path problem, NP-hard on a general graph | backtracking (small input), or DP in topological order when the graph is a DAG | 1219 |
-| Each cell may be visited **at most once**, and that shapes what comes next | 2 | the true state is `(cell, set of cells used)`; `best[cell]` keeps one path per cell and blocks the others | backtracking; a `(node, bitmask)` state when the graph has ≤ ~20 nodes | 1219, 847 |
+| Each cell may be visited **at most once**, and the cells used decide which paths are still open | 2 | the true state is `(cell, set of cells used)`; `best[cell]` keeps one path per cell and blocks the others | backtracking | 1219 |
+| The answer depends on **which nodes have been seen** (visit every node; revisits allowed) | 2 | the same node with a different seen-set is a different state | BFS / Dijkstra on `(node, bitmask)` when there are ≤ ~20 nodes | 847 |
 | A **negative** edge weight | 1 | a later negative edge can undercut a node that was already finalised | [Bellman-Ford](./Bellman-Ford.md) / SPFA | 787 |
-| A **hop / stop / budget** limit | 2 | the same node with fewer stops left is a different state | [Template 2](#template-2-dijkstra-with-constraints-2d-state-variant-) on `(node, stops)`, or Bellman-Ford for K rounds | 787, 1928 |
-| The **second / k-th** shortest, not the shortest | — | the first pop gives only the shortest | let each node be popped up to k times | 2045 |
+| A **stop** limit (at most K intermediate stops) | 2 | the same node with fewer stops left is a different state | [Template 2](#template-2-dijkstra-with-constraints-2d-state-variant-) on `(node, stops)`, or Bellman-Ford for **K + 1** rounds — K stops is K + 1 edges | 787 |
+| A **time** budget on a cost you minimise | 2 | a cheaper arrival may have used too much time to finish | Dijkstra on `(node, elapsed time)`, or DP indexed by time | 1928 |
+| The **second / k-th** shortest, not the shortest | — | the first pop gives only the shortest | let each node be popped up to k times, counting only **distinct** arrival times (two equal shortest routes are not a second minimum) | 2045 |
 | All edges cost the same, or only 0 / 1 | — (works, but overkill) | the heap buys nothing a queue does not | BFS / 0-1 BFS (above) | 2290 |
 | Every **pair** of nodes | — (works, V times) | | [Floyd-Warshall](./Floyd-Warshall.md) on a small graph | 1334 |
 
@@ -742,27 +747,28 @@ which holds the solution; the mark-lifetime trace is under
 [backtrack.md § Template 9](./backtrack.md#template-9-grid--word-search--lc-79-).
 
 **Dry run** — "Dijkstra for max" (a max-heap on gold so far, each cell finalised on its first
-pop, every cell tried as the start) against backtracking:
+pop, every cell tried as the start) against backtracking. The greedy tops out at 7 under
+**every** tie-breaking order (all 720 were tried), so the failure is not a tie artefact:
 
 ```text
-grid = 1 1 1        cells: (0,0) (0,1) (0,2)
+grid = 1 2 1        cells: (0,0) (0,1) (0,2)
        1 2 1               (1,0) (1,1) (1,2)
 
-start (1,0), max-heap + best[cell]:
-  pop (1,0) gold 1   push (0,0)=2, (1,1)=3
-  pop (1,1) gold 3   <- the 2 is the bigger neighbour, so it wins the heap;
-                        (1,1) is now FINAL with the path (1,0)->(1,1)
-  pop (0,1) gold 4, (0,0) gold 5, (0,2) gold 5, (1,2) gold 6
-  best from this start: 6; every other start also tops out at 6
+start (0,0), max-heap + best[cell]:
+  pop (0,0) gold 1   push (0,1)=3, (1,0)=2
+  pop (0,1) gold 3   <- 3 beats 2 outright; (0,1) is now FINAL
+                        with the path (0,0)->(0,1)
+  pop (1,1) gold 5, (1,0) gold 6, (1,2) gold 6, (0,2) gold 7
+  best from this start: 7
 
-backtracking            -> 7   (1,0) -> (0,0) -> (0,1) -> (0,2) -> (1,2) -> (1,1)
-                               reaches (1,1) LAST, through a longer path that
-                               best[(1,1)] had already ruled out
+backtracking            -> 8   (0,0) -> (1,0) -> (1,1) -> (0,1) -> (0,2) -> (1,2)
+                               reaches (0,1) FOURTH, through a longer path that
+                               best[(0,1)] had already ruled out
 ```
 
 **Traps**
 - **A max-heap with `best[cell]`** passes both of the problem's own examples (24 and 28) and
-  fails on the 2×3 grid above: correct on the samples is not evidence the greedy holds.
+  fails on the 2×3 grid above, whatever the tie order: correct on the samples is not evidence the greedy holds.
 - **Complexity is `O(k · 3^k)` for `k` gold cells**, not polynomial: after the first step each
   cell has at most 3 unvisited neighbours. It is the constraint (`k ≤ 25`) that makes it pass,
   so say so in the interview.
