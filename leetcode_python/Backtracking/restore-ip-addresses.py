@@ -121,9 +121,72 @@ class Solution(object):
             # NOTE !!! below
             segment = s[idx:idx + length]
 
-            # Leading zero 不合法，例如 "01"、"00"
-            # 但單獨的 "0" 是合法的
-            # 
+            """
+            NOTE !!!
+
+
+            1. 
+            
+            `if len(segment) > 1 and segment[0] == "0"`
+
+                -> we ONLY `break`, NOT `return`
+
+
+            -> because a single 0 could still be a valid case.
+
+            -> e.g.
+
+                - "0" : valid
+
+                - "01": NOT valid
+
+                - "011": NOT valid 
+
+                ....
+
+
+            -> e.g.
+                # Leading zero 不合法，例如 "01"、"00"
+                # 但單獨的 "0" 是合法的
+
+
+            2. return vs break：核心差異:
+
+
+            - return: 
+
+                結束目前整個 DFS function call
+                當前 state 已經不可能找到任何有效答案。
+
+            - break:
+
+                只結束目前的 for loop
+                目前的選擇和後續更大的選擇都不合法，
+                但其他已經探索過的分支不受影響。
+
+            ->
+
+             ONLY when it's NOT possible to find the valid
+             ip combination (further), then we do `return`
+
+
+             -> e.g.
+
+
+                ```
+                    # Pruning 1:
+                    # 剩餘字元太少，無法組成剩餘 segments
+                    if remaining_chars < remaining_segments:
+                        return
+
+                    # Pruning 2:
+                    # 剩餘字元太多，每個 segment 最多 3 位數
+                    if remaining_chars > remaining_segments * 3:
+                        return
+            ```
+
+            """
+
             # e.g. -> "0" 開頭且len > 1 is invalid
             if len(segment) > 1 and segment[0] == "0":
                 break
