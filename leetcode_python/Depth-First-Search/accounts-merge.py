@@ -49,6 +49,11 @@ class Solution(object):
 
 # V0-1
 # IDEA: UNION FIND (gpt)
+"""
+NOTE !!!
+
+    -> Union Find 應該合併 `account index`，而不是合併 email。
+"""
 from collections import defaultdict
 
 
@@ -181,6 +186,13 @@ class Solution(object):
 
                 if email in email_to_id:
 
+
+                    """
+                    NOTE !!!
+
+                        -> Union Find 應該合併 `account index`，而不是合併 email。
+                    """
+                    
                     """
                     NOTE !!!
 
