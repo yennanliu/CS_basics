@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 1561 / 1561 sections (100%)
+## Status — 1566 / 1566 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -71,7 +71,7 @@ half-translated document renders with English gaps rather than failing.
 | [de/hadoop](./faq/de/hadoop.md) | 45 | [✅](../i18n/zh/faq/de/hadoop.md) |
 | [de/kafka](./faq/de/kafka.md) | 58 | [✅](../i18n/zh/faq/de/kafka.md) |
 | [de/schema_design](./faq/de/schema_design.md) | 42 | [✅](../i18n/zh/faq/de/schema_design.md) |
-| [de/spark](./faq/de/spark.md) | 70 | [✅](../i18n/zh/faq/de/spark.md) |
+| [de/spark](./faq/de/spark.md) | 75 | [✅](../i18n/zh/faq/de/spark.md) |
 | [de/sql_for_data](./faq/de/sql_for_data.md) | 59 | [✅](../i18n/zh/faq/de/sql_for_data.md) |
 | [de/sql_vs_nosql](./faq/de/sql_vs_nosql.md) | 52 | [✅](../i18n/zh/faq/de/sql_vs_nosql.md) |
 | [de/stream_pipeline](./faq/de/stream_pipeline.md) | 54 | [✅](../i18n/zh/faq/de/stream_pipeline.md) |
