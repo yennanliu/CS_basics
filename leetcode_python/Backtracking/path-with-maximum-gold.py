@@ -49,6 +49,34 @@ There are at most 25 cells containing gold.
 """
 
 
+"""
+NOTE !!!!
+
+
+    -> LC 1219 Path with Maximum Gold 不適合使用 Dijkstra。
+       這題應該使用 DFS + Backtracking（回溯）。
+
+
+    -> Reason 1:
+
+        題目要求找出一條路徑，讓沿途收集的 Gold 總和最大，
+        而且每個格子最多只能走一次。這不是一般 Dijkstra 的最短路徑問題，
+        也不能用 cost_matrix 記錄「到某格的最佳成本」來剪枝，
+        因為是否走過某格會影響後續可以走的路徑。
+
+
+    -> Reason 2:
+
+        為什麼不能用 Dijkstra？ 
+        Dijkstra 是用來尋找「起點到終點的`最短或最小`成本路徑」，
+        且通常節點或邊權重固定、可以重複造訪。
+        而 LC 1219 要求的是在一張網格中尋找「
+        不重複造訪節點（Simple Path）且總和最大」的路徑。
+        這在圖論中屬於 NP-hard 的最長路徑問題變體，
+        必須透過回溯法（Backtracking / DFS）來窮舉所有可能的簡單路徑。
+
+"""
+
 # V0
 # IDEA: DFS + BACKTRACK (gpt)
 # time = O(4^(m*n)), m = rows, n = cols
@@ -415,8 +443,3 @@ class Solution:
                     if max_gold == total_gold:
                         return total_gold
         return max_gold
-
-
-
-        
-
