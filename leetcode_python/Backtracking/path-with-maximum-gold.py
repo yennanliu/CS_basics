@@ -174,6 +174,109 @@ class Solution(object):
         grid[y][x] = cache
 
 
+# V0-0-1
+# IDEA: DFS + BACKTRACK (gemini)
+# time = O(4^(m*n)), m = rows, n = cols
+# space = O(m*n)
+class Solution(object):
+    def getMaximumGold(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return 0
+            
+        rows = len(grid)
+        cols = len(grid[0])
+        self.max_gold = 0
+        
+        def dfs(r, c, current_gold):
+            # 更新全域最大黃金數
+            self.max_gold = max(self.max_gold, current_gold)
+            
+            # 暫存當前格子的黃金數，並將其標記為已造訪（設為 0）
+            temp = grid[r][c]
+            grid[r][c] = 0
+            
+            # 四個方向：上、下、左、右
+            directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+                # 如果新座標在邊界內，且該格有黃金（> 0）
+                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] > 0:
+                    dfs(nr, nc, current_gold + grid[nr][nc])
+                    
+            # 回溯（Backtrack）：離開當前節點時，恢復該格子的原值，供其他路徑使用
+            grid[r][c] = temp
+
+        # 從每一個大於 0 的格子出發進行 DFS 探索
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] > 0:
+                    dfs(r, c, grid[r][c])
+                    
+        return self.max_gold
+
+
+# V0-0-2
+# IDEA: DFS + BACKTRACK (GPT)
+# time = O(4^(m*n)), m = rows, n = cols
+# space = O(m*n)
+class Solution(object):
+    def getMaximumGold(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return 0
+
+        m = len(grid)
+        n = len(grid[0])
+
+        self.max_gold = 0
+
+        # Try every non-zero cell as the starting point
+        for y in range(m):
+            for x in range(n):
+                if grid[y][x] > 0:
+                    self.dfs(grid, x, y, 0)
+
+        return self.max_gold
+
+    def dfs(self, grid, x, y, current_gold):
+        m = len(grid)
+        n = len(grid[0])
+
+        # 1. Boundary check
+        if x < 0 or x >= n or y < 0 or y >= m:
+            return
+
+        # 2. Cannot visit empty cells or already visited cells
+        if grid[y][x] == 0:
+            return
+
+        # 3. Collect gold from current cell
+        gold = grid[y][x]
+        current_gold += gold
+
+        # 4. Update global maximum
+        self.max_gold = max(self.max_gold, current_gold)
+
+        # 5. Mark current cell as visited
+        grid[y][x] = 0
+
+        # 6. Explore four directions
+        self.dfs(grid, x + 1, y, current_gold)  # Right
+        self.dfs(grid, x - 1, y, current_gold)  # Left
+        self.dfs(grid, x, y + 1, current_gold)  # Down
+        self.dfs(grid, x, y - 1, current_gold)  # Up
+
+        # 7. Backtracking: restore original gold
+        grid[y][x] = gold
+
+
 # V0-1
 # IDEA: DFS + BACKTRACK (gemini)
 # time = O(4^(m*n)), m = rows, n = cols
