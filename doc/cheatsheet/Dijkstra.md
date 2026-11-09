@@ -647,8 +647,11 @@ Dijkstra Algorithm Selection Flowchart:
 
 1. What does the path's value do as the path grows?
    ├── MINIMISE a cost that can only grow   → Continue to 2
-   ├── MAXIMISE a value that can only shrink (a probability ≤ 1,
-   │   the smallest cell so far) → max-heap Dijkstra (LC 1514, 1102)
+   ├── MAXIMISE a value that can only shrink AND keeps two arrivals
+   │   in the same order (× p with 0 ≤ p ≤ 1, the smallest cell so far)
+   │   → max-heap Dijkstra (LC 1514, 1102); with a K-edge / stop limit,
+   │     key the state on (node, edges_used) as in step 5 — a likelier
+   │     arrival with no edges left must not block a viable one
    └── MAXIMISE a value that keeps growing (a sum of gold / score)
        → not Dijkstra: backtracking (LC 1219), or DP on a DAG —
          see "When Dijkstra does not apply"
@@ -702,7 +705,7 @@ failing:
 1. **Extending a path can never make it better, and never reverses two arrivals.** Adding an
    edge only raises a cost you are minimising (or only lowers a value you are maximising),
    and the same edge applied to two arrivals at a node keeps the better one better. `+ w`
-   with `w ≥ 0`, `× p` with `p ≤ 1`, `max` and `min` all do. Then nothing popped later can
+   with `w ≥ 0`, `× p` with `0 ≤ p ≤ 1`, `max` and `min` all do. Then nothing popped later can
    beat what was popped first.
 2. **The node alone says where you are.** If what you may do next depends on *how* you
    arrived (cells already used, stops left, keys held), then `dist[node]` throws away paths
@@ -716,12 +719,13 @@ failing:
 | A **negative** edge weight | 1 | a later negative edge can undercut a node that was already finalised | [Bellman-Ford](./Bellman-Ford.md) / SPFA | 787 |
 | A **stop** limit (at most K intermediate stops) | 2 | the same node with fewer stops left is a different state | [Template 2](#template-2-dijkstra-with-constraints-2d-state-variant-) on `(node, stops)`, or Bellman-Ford for **K + 1** rounds — K stops is K + 1 edges | 787 |
 | A **time** budget on a cost you minimise | 2 | a cheaper arrival may have used too much time to finish | Dijkstra on `(node, elapsed time)`, or DP indexed by time | 1928 |
-| The **second / k-th** shortest, not the shortest | — | the first pop gives only the shortest | let each node be popped up to k times, counting only **distinct** arrival times (two equal shortest routes are not a second minimum) | 2045 |
+| The **second / k-th** shortest, not the shortest | — | the first pop gives only the shortest | for LC 2045's "second **distinct** arrival time": let each node be popped up to k times, counting only distinct times (two equal shortest routes are not a second minimum). This counts **walks**, which may repeat nodes — it is not the k-th shortest **simple** path (Yen's algorithm) | 2045 |
 | All edges cost the same, or only 0 / 1 | — (works, but overkill) | the heap buys nothing a queue does not | BFS / 0-1 BFS (above) | 2290 |
 | Every **pair** of nodes | — (works, V times) | | [Floyd-Warshall](./Floyd-Warshall.md) on a small graph | 1334 |
 
 **"Maximise" is not the problem — the direction of change is.** Dijkstra handles a maximum
-whenever extending a path can only make it *worse*:
+whenever extending a path can only make it *worse* and keeps two arrivals in the same order
+(condition 1 above):
 
 | Problem | Value along a path | Extending the path | Dijkstra? |
 |---|---|---|---|
