@@ -3,7 +3,7 @@
 **Total Unique Problems: 389**
 
 Generated from: `data/progress.md`
-Date: 2026-11-02
+Date: 2026-11-09
 
 ---
 
@@ -14,7 +14,7 @@ Date: 2026-11-02
 - [Binary Search](#binary-search) (19 problems)
 - [Binary Search Tree](#binary-search-tree) (7 problems)
 - [Bit Manipulation](#bit-manipulation) (3 problems)
-- [Breadth-First-Search](#breadth-first-search) (26 problems)
+- [Breadth-First-Search](#breadth-first-search) (27 problems)
 - [Depth-First-Search](#depth-first-search) (27 problems)
 - [Design](#design) (8 problems)
 - [Dynamic Programming](#dynamic-programming) (42 problems)
@@ -25,7 +25,7 @@ Date: 2026-11-02
 - [Linked List](#linked-list) (8 problems)
 - [Math](#math) (18 problems)
 - [Queue](#queue) (3 problems)
-- [Recursion](#recursion) (15 problems)
+- [Recursion](#recursion) (14 problems)
 - [Set](#set) (2 problems)
 - [Sliding Window](#sliding-window) (1 problems)
 - [Sort](#sort) (6 problems)
@@ -84,11 +84,11 @@ Date: 2026-11-02
 
 ## Breadth-First-Search
 
-**Count: 26**
+**Count: 27**
 
-102, 126, 127, 130, 133, 207, 210, 261, 286, 310
-433, 444, 542, 742, 743, 752, 773, 787, 815, 886
-934, 1091, 1110, 1136, 1530, 2471
+102, 110, 126, 127, 130, 133, 207, 210, 261, 286
+310, 433, 444, 542, 742, 743, 752, 773, 787, 815
+886, 934, 1091, 1110, 1136, 1530, 2471
 
 ---
 
@@ -185,10 +185,10 @@ Date: 2026-11-02
 
 ## Recursion
 
-**Count: 15**
+**Count: 14**
 
-10, 95, 105, 108, 109, 110, 111, 114, 116, 117
-129, 298, 337, 437, 669
+10, 95, 105, 108, 109, 111, 114, 116, 117, 129
+298, 337, 437, 669
 
 ---
 
@@ -280,15 +280,15 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 | Array | 37 | 9.5% |
 | Tree | 29 | 7.5% |
 | Hash Table | 27 | 6.9% |
+| Breadth-First-Search | 27 | 6.9% |
 | Depth-First-Search | 27 | 6.9% |
-| Breadth-First-Search | 26 | 6.7% |
 | Stack | 24 | 6.2% |
 | Binary Search | 19 | 4.9% |
 | String | 18 | 4.6% |
 | Math | 18 | 4.6% |
 | Greedy | 17 | 4.4% |
-| Recursion | 15 | 3.9% |
 | Heap | 15 | 3.9% |
+| Recursion | 14 | 3.6% |
 | Two Pointers | 14 | 3.6% |
 | Backtracking | 9 | 2.3% |
 | Linked List | 8 | 2.1% |
