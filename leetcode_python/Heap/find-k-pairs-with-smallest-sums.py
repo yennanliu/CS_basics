@@ -36,6 +36,82 @@ k <= nums1.length * nums2.length
 
 
 # V0
+# IDEA: SMAPP PQ (gpt)
+"""
+STEPS:
+
+
+- step 1) loop over nums1 (i idx)
+    
+     add [nums1[i] + nums2[0],  i, 0] to PQ
+
+
+     NOTE !!!
+
+     we save [sum, i idx, j idx] to PQ
+
+
+- step 2)  pop element from PQ, add to res, and increase j idx
+
+    
+    ```
+        while heap and len(res) < k:
+            total, i, j = heapq.heappop(heap)
+
+            res.append([nums1[i], nums2[j]])
+
+            # 將同一列的下一個 pair 加入 heap
+            if j + 1 < len(nums2):
+                heapq.heappush(
+                    heap,
+                    (nums1[i] + nums2[j + 1], i, j + 1)
+                )
+    ```
+
+
+    -> NOTE !!!
+
+        - NO more `for loop`
+        - simply pop from PQ, add to res
+        - and insert `j += 1` to PQ
+
+"""
+import heapq
+
+
+class Solution(object):
+    def kSmallestPairs(self, nums1, nums2, k):
+        if not nums1 or not nums2 or k <= 0:
+            return []
+
+        heap = []
+
+        # 初始化：每一列先放入第一個 pair
+        for i in range(min(k, len(nums1))):
+            heapq.heappush(
+                heap,
+                (nums1[i] + nums2[0], i, 0)
+            )
+
+        res = []
+
+        while heap and len(res) < k:
+            total, i, j = heapq.heappop(heap)
+
+            res.append([nums1[i], nums2[j]])
+
+            # 將同一列的下一個 pair 加入 heap
+            if j + 1 < len(nums2):
+                heapq.heappush(
+                    heap,
+                    (nums1[i] + nums2[j + 1], i, j + 1)
+                )
+
+        return res
+
+
+
+# V0
 # IDEA: HEAP (gpt) 
 import heapq
 
