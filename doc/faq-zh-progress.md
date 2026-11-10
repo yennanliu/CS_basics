@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 1675 / 1675 sections (100%)
+## Status — 1744 / 1744 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -65,9 +65,11 @@ half-translated document renders with English gaps rather than failing.
 | [db/faq_DB_DW](./faq/db/faq_DB_DW.md) | 19 | [✅](../i18n/zh/faq/db/faq_DB_DW.md) |
 | [db/faq_redshift](./faq/db/faq_redshift.md) | 1 | [✅](../i18n/zh/faq/db/faq_redshift.md) |
 | [db/postgre](./faq/db/postgre.md) | 15 | [✅](../i18n/zh/faq/db/postgre.md) |
+| [de/analytics](./faq/de/analytics.md) | 28 | [✅](../i18n/zh/faq/de/analytics.md) |
 | [de/aws_data](./faq/de/aws_data.md) | 61 | [✅](../i18n/zh/faq/de/aws_data.md) |
 | [de/batch_pipeline](./faq/de/batch_pipeline.md) | 50 | [✅](../i18n/zh/faq/de/batch_pipeline.md) |
 | [de/data_modeling](./faq/de/data_modeling.md) | 49 | [✅](../i18n/zh/faq/de/data_modeling.md) |
+| [de/data_performance](./faq/de/data_performance.md) | 41 | [✅](../i18n/zh/faq/de/data_performance.md) |
 | [de/flink](./faq/de/flink.md) | 54 | [✅](../i18n/zh/faq/de/flink.md) |
 | [de/hadoop](./faq/de/hadoop.md) | 45 | [✅](../i18n/zh/faq/de/hadoop.md) |
 | [de/kafka](./faq/de/kafka.md) | 58 | [✅](../i18n/zh/faq/de/kafka.md) |
