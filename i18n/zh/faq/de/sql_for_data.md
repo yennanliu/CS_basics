@@ -541,7 +541,7 @@ Snowflake、BigQuery、Spark 與 DuckDB 也有 `PIVOT` / `UNPIVOT` 運算子，�
 
 單次掃描的 `HAVING` 寫法只讀一次表，而且能自然延伸到「做了 X、Y、Z 但沒做 W」。
 
-<!-- 8b07c37dca95 -->
+<!-- 4c23b86286c8 -->
 ### 7-14) 從變更日誌重建有效區間 ⭐⭐⭐⭐
 
 **把每個 key 的變更依生效時間排序，讓 `LEAD` 把下一個版本的開始交給每個版本當作結束 ——
@@ -561,6 +561,10 @@ Tokyo 變更發生在 2 月 1 日，卻在 3 月 5 日才抵達 pipeline，比 K
 - 任何 SCD2 表上都應該回傳零列的兩個檢查：
 
 <!--CODE-->
+
+重疊檢查拿每個版本，和排在它前面的版本中最晚的結束時間比較。這能抓到 `valid_from`
+**相同**的兩個版本 —— 用 `a.valid_from < b.valid_from` 的 self-join 會漏掉它們 ——
+而且只需排序一次，不必兩兩 join。
 
 重建一個 key 的整段歷史，是處理晚到資料最簡單又正確的答案；只對收到晚到變更的 key
 重建，則是最佳化。維度表如何用 `MERGE` 載入，是 [data_modeling.md](./data_modeling.md) 的主題。
@@ -606,7 +610,7 @@ Tokyo 變更發生在 2 月 1 日，卻在 3 月 5 日才抵達 pipeline，比 K
 <!-- b98650aca258 -->
 ## 8) 寫入資料：MERGE 與 upsert ⭐⭐⭐⭐
 
-<!-- 6dd1184a14ae -->
+<!-- b9308b8113e2 -->
 ### 8-1) `MERGE`
 
 **`MERGE` 在一個原子陳述式裡把來源套用到目標：更新有配對的列、插入沒配對的、
@@ -619,9 +623,11 @@ Tokyo 變更發生在 2 月 1 日，卻在 3 月 5 日才抵達 pipeline，比 K
 - `AND … IS DISTINCT FROM …` 條件會略過沒有實際變化的更新，省下寫入，也讓
   `updated_at` 保有意義。
 - 當來源是冪等的，`MERGE` 就是冪等的：用同樣的來源重跑不會改變任何東西。
-- **別讓舊的變更覆蓋新的變更。** 如果變更可能亂序抵達，或重跑時重播了較舊的批次，就用版本
-  來保護更新：`WHEN MATCHED AND s.updated_at > t.updated_at THEN UPDATE …`（或用來源序號，
-  比時間戳更安全）。
+- **別讓舊的變更覆蓋新的變更。** 如果變更可能亂序抵達，或重跑時重播了較舊的批次，就把版本當成
+  更新條件：`WHEN MATCHED AND s.updated_at > t.updated_at THEN UPDATE SET country = s.country,
+  updated_at = s.updated_at`（來源序號比時間戳更安全）。它**取代** `IS DISTINCT FROM` 條件，
+  而不是和它疊加。帶著相同國家的較新事件，仍然必須把 `updated_at` 往前推；否則目標在時間 10
+  是 `A` 時，時間 12 的 `A` 會被略過，之後重播的時間 11 的 `B` 就會通過保護條件、把它覆蓋掉。
 
 <!-- 441f00cf05d4 -->
 ### 8-2) Upsert 與分區覆寫

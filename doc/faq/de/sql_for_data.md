@@ -1006,14 +1006,18 @@ user_id  country  valid_from  valid_to    is_current
 -- PostgreSQL: more than one current version per key
 SELECT user_id FROM dim_user_history WHERE is_current GROUP BY user_id HAVING COUNT(*) > 1;
 
--- overlapping versions of the same key
-SELECT a.user_id, a.valid_from, b.valid_from
-FROM   dim_user_history a
-JOIN   dim_user_history b
-  ON   a.user_id = b.user_id
- AND   a.valid_from < b.valid_from          -- each pair once
- AND   b.valid_from < a.valid_to;           -- b starts before a ends
+-- overlapping versions of the same key: a version that starts before an earlier one ends
+SELECT user_id, valid_from, valid_to, prev_max_to
+FROM  (SELECT *,
+              MAX(valid_to) OVER (PARTITION BY user_id ORDER BY valid_from, valid_to
+                                  ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING) AS prev_max_to
+       FROM   dim_user_history) t
+WHERE  valid_from < prev_max_to;
 ```
+
+The overlap check compares each version with the latest end among the versions sorted before
+it. That catches two versions with the **same** `valid_from`, which a self-join on
+`a.valid_from < b.valid_from` skips, and it is one sort rather than a pairwise join.
 
 Rebuilding a key's whole history is the simplest correct answer to late data; doing it only
 for the keys that received a late change is the optimisation. How the dimension is loaded
@@ -1148,9 +1152,13 @@ WHEN NOT MATCHED THEN
   `updated_at` meaningful.
 - `MERGE` is idempotent when the source is: rerunning it with the same source changes nothing.
 - **Do not let an old change overwrite a newer one.** If changes can arrive out of order, or a
-  rerun replays an older batch, guard the update with the version:
-  `WHEN MATCHED AND s.updated_at > t.updated_at THEN UPDATE …` (or a source sequence number,
-  which is safer than a timestamp).
+  rerun replays an older batch, make the version the update condition:
+  `WHEN MATCHED AND s.updated_at > t.updated_at THEN UPDATE SET country = s.country,
+  updated_at = s.updated_at` (a source sequence number is safer than a timestamp). This
+  **replaces** the `IS DISTINCT FROM` filter rather than being added to it. A newer event that
+  carries the same country must still move `updated_at` forward. Otherwise, with the target at
+  `A` from time 10, an `A` at time 12 is skipped, and a replayed `B` from time 11 then passes
+  the guard and overwrites it.
 
 ### 8-2) Upsert and partition overwrite
 
