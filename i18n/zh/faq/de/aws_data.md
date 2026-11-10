@@ -1,12 +1,13 @@
-<!-- a56a24bb52fd -->
-# AWS 資料服務：Glue、EMR、Iceberg、Athena 與 RDS
+<!-- fea729d77c44 -->
+# AWS 資料服務：Glue、EMR、Iceberg、Athena、RDS、Lambda 與 SQS
 
-> **範圍** —— 資料工程面試所考的 AWS 資料技術棧：S3、Glue Data Catalog、Glue ETL、EMR、Athena 與 RDS 如何拼在一起、如何在各種運算服務之間做選擇、Glue job 與 bookmark、EMR 叢集組成與 EMR Serverless、在 S3 上搭配 Glue catalog 使用 Apache Iceberg、Athena 的計費模型、分區與 Iceberg DML、如何把資料從 RDS 取出（JDBC、snapshot export、DMS CDC、zero-ETL）、安全性，以及一題從 RDS 到 lakehouse 的完整設計題。Iceberg、Delta 與 Hudi 的引擎中立比較歸 [batch_pipeline.md](./batch_pipeline.md)；Spark 內部機制與調校歸 [spark.md](./spark.md)；Redshift 另有較舊的筆記。
+> **範圍** —— 資料工程面試所考的 AWS 資料技術棧：S3、Glue Data Catalog、Glue ETL、EMR、Athena 與 RDS 如何拼在一起、如何在各種運算服務之間做選擇、Glue job 與 bookmark、EMR 叢集組成與 EMR Serverless、在 S3 上搭配 Glue catalog 使用 Apache Iceberg、Athena 的計費模型、分區與 Iceberg DML、如何把資料從 RDS 取出（JDBC、snapshot export、DMS CDC、zero-ETL）、用 S3、SQS 與 Lambda 做事件驅動的資料攝取（Lambda vs Spark、timeout、visibility timeout、重複訊息與冪等性、DLQ、消費者 concurrency）、S3 分區與檔案大小、AWS CDK、管線監控與成本、安全性，以及一題從 RDS 到 lakehouse 的完整設計題。Iceberg、Delta 與 Hudi 的引擎中立比較歸 [batch_pipeline.md](./batch_pipeline.md)；Spark 內部機制與調校歸 [spark.md](./spark.md)；Redshift 另有較舊的筆記。
 > **另見**：[`./batch_pipeline.md`](./batch_pipeline.md) —— lake vs warehouse vs lakehouse、表格格式、冪等性與回補；[`./spark.md`](./spark.md) —— Glue 與 EMR 底下的引擎；[`./kafka.md`](./kafka.md) —— 用 Debezium 與 Kafka Connect 做 CDC；[`../db/faq_redshift.md`](../db/faq_redshift.md) —— Redshift 筆記；[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單。
 
 大多數 AWS 資料平台都是同樣五塊：**S3 裡的檔案**、**說明哪些檔案構成一張表的 catalog**
 （Glue Data Catalog）、**讓這些檔案具備交易性的表格格式**（Iceberg）、**讀寫它們的引擎**
-（Glue、EMR、Athena），以及**資料來源的營運資料庫**（RDS / Aurora）。面試很少要你背誦某個服務；
+（Glue、EMR、Athena），以及**資料來源的營運資料庫**（RDS / Aurora）。圍繞著它們的是事件驅動的黏合層 —— **S3 事件、SQS
+與 Lambda** —— 以及部署並監看這一切的程式碼（**CDK、CloudWatch**）。面試很少要你背誦某個服務；
 它要你挑一個，並為取捨辯護。
 
 ---
@@ -27,7 +28,7 @@ Redshift）。中小型的 serverless Spark job 用 Glue 做轉換；需要掌�
 <!-- d5bfd2d918ae -->
 ## 1) AWS 資料服務地圖 ⭐⭐⭐⭐⭐
 
-<!-- 8b0ec178c456 -->
+<!-- 8a76a6f838cf -->
 ### 1-1) 每個服務負責什麼
 
 **每個服務負責一層；讓它們能共用表格的是 Glue Data Catalog。**
@@ -44,8 +45,12 @@ Redshift）。中小型的 serverless Spark job 用 Glue 做轉換；需要掌�
 | 遷移 / CDC | **AWS DMS** | 從 RDS 做全量載入 + change data capture，寫到 S3、Kinesis 或 MSK |
 | 治理 | **Lake Formation** | 對 catalog 表格做表、欄、列與儲存格層級的權限控管 |
 | 資料倉儲 | **Redshift** | MPP 欄式資料倉儲，適合繁重且重複的 BI 工作負載 |
+| 訊息佇列 | **Amazon SQS** | 把生產者與消費者解耦的託管佇列；至少一次交付 |
+| 事件運算 | **AWS Lambda** | 短時間、事件驅動的函式 —— 驗證、路由、觸發 —— 每次最多 15 分鐘 |
+| 基礎設施即程式碼 | **AWS CDK** | 用 TypeScript / Python 合成 CloudFormation |
+| 可觀測性 | **Amazon CloudWatch** | 上面所有服務的指標、日誌與告警 |
 
-<!-- 80af20a30939 -->
+<!-- 41cc7ff59f33 -->
 ### 1-2) 選擇運算服務 ⭐⭐⭐⭐⭐
 
 **問三個問題：是 SQL 還是程式碼、是臨時查詢還是排程作業、需要多少掌控權（以及資料有多大）？**
@@ -60,7 +65,9 @@ Redshift）。中小型的 serverless Spark job 用 Glue 做轉換；需要掌�
 | 最適場景 | 中小型的排程 ETL、crawler、catalog 作業 | 大型、長時間或高度調校的 job；非 Spark 應用；搭配 Spot 在大規模下最便宜 | 負載起伏大、不想維運叢集的 Spark 批次 | 臨時探索、輕量轉換（CTAS） | 儀表板與重複的大型 join |
 
 面試官喜歡的答案：**「探索用 Athena，管線用 Glue 或 EMR Serverless，只有需要掌控權或 Spot
-省下的成本時才用 EMR on EC2，只有當 BI 工作負載重到、重複到值得養一座資料倉儲時才用 Redshift。」**
+省下的成本時才用 EMR on EC2，只有當 BI 工作負載重到、重複到值得養一座資料倉儲時才用 Redshift。」** Lambda 不在這張表裡，
+因為它不是跑轉換的地方：它對事件做出反應，並啟動真正做事的 job
+（[§7-1](#7-1-why-lambda-and-spark-not-one-of-them-)）。
 
 ---
 
@@ -496,8 +503,342 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 
 ---
 
-<!-- a2668b72b23b -->
-## 7) 安全性與治理 ⭐⭐⭐⭐
+<!-- 6424a4d4d56f -->
+## 7) 事件驅動的資料攝取：S3、SQS 與 Lambda ⭐⭐⭐⭐⭐
+
+**AWS 上處理日誌與檔案攝取的常見形狀：物件落地到 S3，每個物件產生一個事件送進 SQS，由 Lambda
+消費者驗證後把重度工作交給 Spark，結果再寫回 S3。面試官會追問邊界：為什麼這樣切分、Lambda
+做不到什麼，以及當訊息重複抵達、永遠失敗，或一次湧入一萬則時會發生什麼事。**
+
+<!--CODE-->
+
+<!-- 770330293372 -->
+### 7-1) 為什麼是 Lambda *加上* Spark，而不是二選一 ⭐⭐⭐⭐⭐
+
+**「它們不是替代品；它們解決的是不同形狀的工作。Lambda 跑短時間、事件驅動的任務 —— 驗證訊息、
+讀取 metadata、路由、啟動下一個階段。Spark 跑大型分散式工作 —— 在許多 executor 之間解析、join、
+shuffle 與彙總 1 TB 的資料。讓任何一方做另一方的工作，不是浪費就是做不到。」**
+
+| 工作負載 | 適合 | 原因 |
+|---|---|---|
+| 對單一物件落地做出反應；檢查它的 metadata 與 schema | **Lambda** | 只在事件抵達時執行；隨佇列擴展；沒有閒置資源要付費 |
+| 路由、補充或拒絕一筆小紀錄 | **Lambda** | 幾秒鐘的工作，不需要啟動叢集 |
+| 解析與轉換 1 TB 的日誌 | **Spark** | partition 分散到各個 executor；沒有 15 分鐘的上限 |
+| 對一整天的資料做 join、`groupBy`、window function | **Spark** | 需要 shuffle —— 在機器之間搬移資料 —— 而 Lambda 沒有這個概念 |
+| 每日彙總與報表資料表 | **Spark**（若只是單純 SQL，可用 Athena CTAS） | 對整個 partition 掃描一次 |
+
+- **全部用 Spark**：每個小事件都要一個叢集（或一次 Serverless application 的啟動），增加延遲與
+  閒置成本；而為每日尖峰配置的常駐叢集，大部分時間是空的。
+- **全部用 Lambda**：15 分鐘上限、10 GB 記憶體上限，加上無狀態、彼此不共享的 invocation，
+  讓分散式 join 或彙總變得不可能 —— 除非你手工重做一個更差的 Spark。
+
+**資深加分點：** 這個切分同時也是*故障邊界*。一則壞訊息只會讓一次 Lambda invocation 失敗並進入
+DLQ；它不會讓一個兩小時的 Spark job 失敗。
+
+<!-- faff1578de32 -->
+### 7-2) Lambda vs 長時間執行的運算 ⭐⭐⭐⭐
+
+**從執行時間、資源、計費模型與維運四個面向比較 —— 然後依工作負載各自配對，而不是為了
+「serverless」本身而偏好它。**
+
+| | AWS Lambda | 長時間執行的運算（ECS / Fargate、EC2、EMR） |
+|---|---|---|
+| 執行時間 | 每次 invocation 最多 **15 分鐘** | 數小時或數天 |
+| 資源 | 128 MB – 10,240 MB 記憶體；CPU 隨記憶體成比例增加（最多 6 vCPU）；`/tmp` 最多 10 GB | 任意 instance 大小；本機磁碟；多個節點 |
+| 擴展 | 依事件自動擴展，直到 concurrency 上限 | auto scaling group、叢集擴展 —— 較慢，但由你掌控 |
+| 狀態 | invocation 之間沒有狀態 | 記憶體內狀態、快取、shuffle |
+| 計費模型 | 依請求數 + 執行的 GB-秒；閒置時為零 | 執行期間依 instance-秒計費，不論忙或閒 |
+| 持續高負載下的成本 | 可能高於一台充分利用的 instance | 保持忙碌時每單位工作更便宜；還可以加上 Spot |
+| 維運 | 不用管伺服器、修補或容量規劃 | AMI 或映像檔、擴展策略、叢集生命週期 |
+| 冷啟動 | 有 —— 數毫秒到數秒 | 暖機後就沒有 |
+
+| 選項 | 適用於 |
+|---|---|
+| **Lambda** | 短時間、突發、事件驅動的工作 |
+| **ECS / Fargate** | 執行超過 15 分鐘或需要維持連線的容器，且不想管叢集 |
+| **EMR（EC2 或 Serverless）/ Glue** | 分散式 Spark —— 見 [§1-2](#1-2-choosing-the-compute-) 與 [§3-4](#3-4-glue-or-emr-) |
+| **AWS Batch** | 大量彼此獨立、容器大小的 job |
+
+**資深加分點：** Lambda 擴展得快不代表一定是好事。一次湧入一萬則訊息，可能意味著一千個同時執行的
+invocation 一起打資料庫、API 或 Spark job 提交端 —— 見 [§7-7](#7-7-controlling-consumer-concurrency-)。
+
+<!-- fafadb22f308 -->
+### 7-3) Lambda 的 timeout 與記憶體限制 ⭐⭐⭐⭐
+
+**「我讓工作去配合限制，而不是一直調高限制直到它不再失敗：讓每次 invocation 保持小、用串流而不是
+整個載入，任何大的或長的工作都交給 Spark。」**
+
+**Timeout（最多 900 秒）：**
+
+- **依時間決定 batch 大小。** Event source mapping 的 batch size 與 batching window 決定一次
+  invocation 拿到多少；把它們調到一個 batch 在一兩分鐘內完成，遠低於 timeout。
+- **把工作拆成階段。** Lambda 驗證並記錄這個 batch，然後啟動 Spark job 就返回；它從不等待 1 TB
+  被處理完。需要等待的多步驟流程屬於 **Step Functions** 或排程器，而不是一個在迴圈裡輪詢的 Lambda。
+- **知道 timeout 對訊息造成什麼。** 逾時的 invocation 就是失敗：該 batch 會重新變成可見，並計入
+  `maxReceiveCount`，所以一個每次都逾時的 job 最後會進到 DLQ。
+
+**記憶體（128 MB – 10,240 MB）：**
+
+- **記憶體買到的是 CPU。** Lambda 依記憶體成比例分配 CPU —— 1,769 MB 等於一個完整的 vCPU ——
+  所以調高記憶體常常讓 CPU 密集的函式更快，*而且*每次執行更便宜。要量測而不是猜：該比較的數字是
+  每次 invocation 的成本，或每處理 1 GB 的成本。
+- **用串流，不要整個載入。** 用 streaming body 逐行讀取 S3 物件，而不是把 2 GB 的檔案 `read()`
+  進記憶體。
+- **`/tmp` 可設定到最多 10 GB** 作為溢寫空間，但需要它的函式，通常代表這份工作該交給 Spark。
+- **在 invocation 之間重用 client** —— 在 handler 外面建立 `boto3` client 與連線，這樣暖機的
+  執行環境不必重建它們。
+
+**觀察：** CloudWatch 中的 `Duration`（對照 timeout）、`Errors`、`Throttles` 與
+`ConcurrentExecutions`，以及每次 invocation `REPORT` 日誌行中的 *Max Memory Used*（或 Lambda
+Insights）。一個 duration 隨資料量成長而逐漸逼近 timeout 的函式，是在告訴你它已經長大到不適合 Lambda 了。
+
+<!-- 9a0d2dd43a79 -->
+### 7-4) 用 Lambda 消費 SQS ⭐⭐⭐⭐⭐
+
+**SQS 把生產者與處理端解耦。Lambda 的 event source mapping 替你輪詢佇列、以一個 batch 呼叫函式，
+成功後刪除該 batch。四個設定決定它能不能正常運作：訊息形狀、visibility timeout、batch，以及
+部分 batch 失敗回報。**
+
+**1. 訊息形狀 —— 傳指標，不傳資料本身。** 一則訊息上限是 1 MiB，所以它攜帶的是 S3 位置與工作的
+識別資訊，而不是日誌內容：
+
+<!--CODE-->
+
+S3 event notification 有自己的形狀（一個 `Records` 陣列，含 `bucket`、`key`、`versionId` 與
+`sequencer`）；不論哪一種，消費者都從 S3 讀取物件。
+
+**2. Visibility timeout。** 被接收的訊息只是對其他消費者隱藏，並沒有被刪除。函式成功時，mapping
+會刪除它；失敗時，它會在 visibility timeout 結束後重新出現並被重試。把它設為**至少是函式 timeout
+的六倍**（AWS 的建議），這樣一個慢的或被節流的 batch，不會在第一次嘗試還在執行時就重新出現、
+被執行兩次。
+
+**3. Batch size 與 window。** 一次 invocation 可以拿多則訊息：
+
+| 設定 | 效果 | 取捨 |
+|---|---|---|
+| `BatchSize` | standard queue 最多 10,000（FIFO 為 10） | batch 越大 → invocation 越少，但失敗時要重做的越多，每次執行也越久 |
+| `MaximumBatchingWindowInSeconds` | 最多等待 N 秒（上限 300）來湊滿一個 batch | 以延遲換取更少、更滿的 invocation |
+| invocation payload | 每次 invocation 6 MB | 不論 `BatchSize` 設多大，都會限制 batch |
+
+**4. 部分 batch 失敗。** 沒有它時，一則壞訊息會讓整個 batch 失敗並全部重試 —— 連已成功的訊息也
+重跑一次。開啟 `ReportBatchItemFailures` 後，函式只回傳失敗訊息的 id：
+
+<!--CODE-->
+
+**觀察：** `ApproximateNumberOfMessagesVisible`（積壓量）、`ApproximateAgeOfOldestMessage`
+（消費者落後多少 —— 該設告警的就是它）、`NumberOfMessagesReceived` vs
+`NumberOfMessagesDeleted`，以及函式的 `Errors` 與 `Duration`。age 持續增加，代表消費者或它下游的
+某個東西跟不上了。
+
+<!-- 12c9cbf6886c -->
+### 7-5) 重複訊息與冪等性 ⭐⭐⭐⭐⭐
+
+**「Standard queue 是至少一次交付，S3 event notification 也可能重複，所以我假設每則訊息都可能抵達
+兩次。交付不是 exactly-once；我讓*處理*具備冪等性 —— 執行兩次與執行一次的結果相同。」**
+
+重複來自佇列本身、用完的 visibility timeout、被重試的 batch、重試發送的生產者，以及 DLQ 重播。
+用三層來處理：
+
+**1. 穩定的業務鍵。** 用生產者的 `event_id`（S3 事件則是 bucket + key + `versionId` /
+`sequencer`）去重 —— **不是** SQS 的 `messageId`，因為生產者每重送一次同樣的事件，它都會是新的。
+
+**2. 用條件寫入的認領帳本。** 「先檢查、再處理」有競態：兩個消費者可能都看到「尚未完成」。
+DynamoDB 的條件寫入只讓其中一個認領到該事件，而租約（lease）讓重試能接手一個在執行中途死掉的消費者：
+
+<!--CODE-->
+
+（Powertools for AWS Lambda 的 `idempotency` 工具就是這個模式。）
+
+**3. 冪等的寫入端。** 帳本能減少重複，但無法消除重複，因為工作可能已經成功，而行程在寫入
+`COMPLETED` 之前就死了。所以輸出必須能安全地寫兩次：
+
+| 寫入端 | 冪等寫入 |
+|---|---|
+| S3 檔案 | 每個 batch 一個確定性路徑（`.../date=2026-11-10/batch_id=b-001/`），整批覆寫 —— 而且讀取端絕不能看到寫一半的結果 |
+| Iceberg / Delta 表格 | 依業務鍵 `MERGE`，或在一次 commit 中替換該 batch 的 partition（[§4-2](#4-2-the-metadata-tree-and-the-commit-)） |
+| 資料庫 | 依唯一鍵 upsert |
+
+**FIFO queue 本身不是解法。** 它在 **5 分鐘**的窗口內依 `MessageDeduplicationId` 去重，並在同一個
+`MessageGroupId` 內保持順序，代價是較低的吞吐量。一小時後從 DLQ 重播的訊息早已在窗口之外 ——
+業務層級的冪等性仍然需要。
+
+**資深加分點：** 把*交付*和*效果*分開來看。佇列決定訊息抵達幾次；管線確保不論它抵達幾次，產出的
+資料都一樣。
+
+<!-- bfcd3a32f14d -->
+### 7-6) Dead-letter queue 與重播 ⭐⭐⭐⭐
+
+**DLQ 把一直失敗的訊息移出主佇列，讓一則 poison message 不會永遠消耗重試次數與處理容量。
+它隔離失敗，但不修好失敗 —— 告警、分類與重播是另一半。**
+
+<!--CODE-->
+
+- 主佇列上的 **Redrive policy**：DLQ 的 ARN 與 `maxReceiveCount`。AWS 建議 Lambda 消費者設
+  **至少 5**，因為被節流或逾時的 batch 也算一次接收 —— 設太低，健康的訊息會在流量尖峰時落進 DLQ。
+- **保留期限**：在 standard queue 中，訊息移到 DLQ 時保留的是*原本*的入佇列時間，所以 DLQ 的保留期限
+  要比來源**更長**（最多 14 天）—— 否則訊息在還沒有人看過之前就在 DLQ 裡過期了。
+- 對 DLQ 的 `ApproximateNumberOfMessagesVisible > 0` 設**告警**。沒人看的 DLQ，只是比較慢地把資料丟掉。
+- **依原因分類：**
+
+| 原因 | 處理 |
+|---|---|
+| 暫時性 —— 網路抖動、下游中斷、節流 | 依賴恢復健康後 redrive |
+| 格式錯誤的訊息、缺少欄位 | 修正生產者；記錄原因後 redrive 或捨棄 |
+| 缺少或延遲的資料 | 資料品質調查 |
+| 消費者的 bug | 修正、部署，再 redrive |
+
+- **重播**：SQS 的 DLQ redrive（`StartMessageMoveTask`，或主控台的 *Start DLQ redrive*）以受控的
+  速率把訊息搬回來源佇列。重播本質上就是重複 —— 這正是 [§7-5](#7-5-duplicate-messages-and-idempotency-)
+  要先做的原因。
+
+<!-- aaefd78e237a -->
+### 7-7) 控制消費者的 concurrency ⭐⭐⭐⭐
+
+**「我依下游最慢的那一環來決定 concurrency，而不是依 Lambda 能做到多少。如果 Spark 叢集每分鐘只能
+接受二十次 job 提交，五百個同時執行的消費者只是把佇列的問題丟給別人。」**
+
+不設上限的消費者會耗盡資料庫連線、觸發 API rate limit、提交過多 Spark job，並且快速燒錢。
+由佇列往外的控制手段：
+
+| 控制 | 限制的對象 | 說明 |
+|---|---|---|
+| SQS event source mapping 上的 **Maximum concurrency** | 由*這個佇列*驅動的 invocation | SQS 的正確旋鈕：mapping 在達到上限時停止輪詢，多出來的訊息就只是在佇列裡等待 |
+| 函式上的 **Reserved concurrency** | 這個函式來自任何來源的*所有* invocation | 同時保證函式在帳號內的容量；但若單獨搭配 SQS 使用，poller 仍會取訊息、invocation 被節流，而被節流的訊息會計入 `maxReceiveCount` —— 健康的訊息會漂進 DLQ |
+| **Batch size / window** | 每次 invocation 的訊息數 | concurrency × batch size 就是處理中的訊息數 —— 這裡是 50 × 10 = 500，實際吞吐量再由 duration 與到達速率決定 |
+| **下游** | 共用資源本身 | 連線用 RDS Proxy、job 提交佇列或 semaphore、每個 batch 或時間窗口一個 Spark job 而不是每則訊息一個、搭配 exponential backoff 與 jitter 的重試 |
+
+如果兩種上限都設，讓 mapping 的 maximum concurrency **低於**函式的 reserved concurrency，
+這樣守住防線的是 mapping，而不是節流。
+
+**觀察：** 函式的 `ConcurrentExecutions` 與 `Throttles`、佇列深度與最舊訊息的 age，以及下游自己的
+延遲與提交速率。佇列 age 上升而 concurrency 持平，代表上限正在發揮作用 —— 只有在下游還有餘裕時才調高它。
+
+<!-- 1fad0ec5f199 -->
+## 8) 在 S3 中組織資料 ⭐⭐⭐⭐
+
+<!-- ec901ecaf8c9 -->
+### 8-1) Hive 風格分區與 partition pruning ⭐⭐⭐⭐⭐
+
+**分區是為讀取端設計的：路徑中的 key 讓 Spark、Athena 與 Glue 跳過所有不符合篩選條件的物件。
+依將要執行的查詢、照它們篩選的順序來選 key。**
+
+<!--CODE-->
+
+<!--CODE-->
+
+- **日期優先**，因為幾乎每個日誌查詢都有時間範圍。單一的 `dt=yyyy-MM-dd` key 比
+  `year=/month=/day=` 好篩選（跨月的範圍只是一次比較，而不是三次）。
+- **只有在查詢會篩選它、且基數低時才加第二個 key** —— 只有數十個值的 `cluster_id` 可以；
+  `request_id` 或 `user_id` 絕對不行。
+- **小時**分區只在資料量大到一小時仍能產生大檔案、且查詢會以小時為單位時才用。
+- 用 **partition projection** 註冊分區，或使用 **Iceberg** —— 見
+  [§5-3](#5-3-partitions-repair-add-or-project-) 與
+  [§4-3](#4-3-hidden-partitioning-and-partition-evolution-)。
+
+**資深加分點：** S3 是物件儲存，不是 HDFS —— 一個 partition 只是一個 key prefix。Pruning 之所以有幫助，
+是因為*引擎*從不列出或開啟被跳過的物件。Prefix 對 S3 本身的意義只在請求速率（每個 prefix 每秒約
+3,500 次寫入與 5,500 次讀取），那是分散 key 的另一個理由。
+
+<!-- c8fc6042942e -->
+### 8-2) 基數、檔案大小與小檔案問題 ⭐⭐⭐⭐
+
+**每多一個分區 key，目錄數就成倍增加；太多的話，每個目錄只裝著幾個小檔案。小檔案在每次讀取時都有
+成本：同樣的位元組，要更多次 listing、更多 GET 請求、更多 Spark task，以及開更多 Parquet footer。**
+
+| 手段 | 做法 |
+|---|---|
+| 格式 | **Parquet**（或 ORC），以 Snappy 或 ZSTD 壓縮 —— 欄位裁剪、依 row-group 統計做 predicate pushdown、更小的掃描量 |
+| 目標檔案大小 | 每個檔案約 **128 MB – 1 GB** |
+| 分區 | 只用低基數的 key；檢查每個分區的檔案數與每個檔案的大小 |
+| 從 Spark 寫入 | 在 `partitionBy` 之前依分區欄位 `repartition`，讓每個 task 對每個分區只寫一個檔案，而不是每個分區*每個 task* 一個；用 `maxRecordsPerFile` 當上限 |
+| 已經是小檔案 | 排程的 compaction job —— 或 Iceberg 的 `rewrite_data_files`（[§4-5](#4-5-table-maintenance-)） |
+| 傾斜 | 一個巨大的分區（某個吵雜的叢集）加上許多小分區 → 對熱點 key 加鹽或拆分，並檢查分區大小的分布 |
+| 舊資料 | S3 Lifecycle：raw 在 30 天後轉到 Standard-IA，之後轉 Glacier 等級，並讓保留政策允許的資料過期 |
+
+<!--CODE-->
+
+搭配 `spark.sql.sources.partitionOverwriteMode=dynamic` 時，那個 `overwrite` 只替換 `logs` 中出現的
+分區，所以重跑某一天是冪等的，且不會動到其他天。在一般的 S3 表上，這個替換仍然不是原子的 ——
+讀取端可能看到重寫到一半的分區；Iceberg 讓它成為一次 commit。
+
+<!-- c32ee5c96929 -->
+## 9) 管線維運：CDK、監控與成本 ⭐⭐⭐⭐
+
+<!-- 27ab1948f393 -->
+### 9-1) 用 AWS CDK 做基礎設施即程式碼 ⭐⭐⭐⭐
+
+**「每個 bucket、queue、函式、role 與告警都是 repo 裡的 TypeScript，像程式碼一樣被 review，並透過
+同一條管線部署到每個環境。沒有任何東西是在主控台上點出來的，所以 dev、staging 與 prod 的差別只在我們
+選的參數。」**
+
+- **CDK** 會合成（synthesise）**CloudFormation**：`cdk synth` 產出 template，`cdk diff` 顯示一個變更
+  會對已部署的 stack 做什麼，`cdk deploy` 套用它。
+- **Construct** 是重用的單位 —— 一個 `QueueWithDlq` 或 `IngestPipeline` construct，把佇列、DLQ、
+  消費者、它的權限與告警包在一起，讓下一條管線不可能忘記 DLQ。
+- **環境**是 stack 參數 —— 名稱、concurrency 上限、告警門檻、資源大小 —— 而不是程式碼的複本。
+
+<!--CODE-->
+
+**部署流程：** pull request → 單元測試（`aws-cdk-lib/assertions` 可以斷言，例如每個佇列都有
+redrive policy）→ 把 `cdk synth` 與 `cdk diff` 貼在 review 上 → 部署到 staging → 驗證 → 部署到 prod。
+
+**資深加分點：**
+
+- **基礎設施部署可能摧毀資料。** 改變資源的 logical id 或某個只能替換的屬性，會讓 CloudFormation 建立
+  一個新的並刪除舊的 —— bucket 或資料表也跟著一起走。對有狀態的資源設 `RemovalPolicy.RETAIN`，並在核准前
+  讀 `cdk diff` 中的 `[-]` 與 *replace*。
+- **Rollback 還原的是 template，不是資料**，而一個卡在 `UPDATE_ROLLBACK_FAILED` 的 stack 本身就是一起事故。
+- 用 `grant*` 方法，**最小權限**幾乎不費力；**程式碼裡沒有秘密資訊** —— 用 Secrets Manager 或 SSM
+  Parameter Store；每個資源都打上**標籤**（`Tags.of(app).add(...)`），成本才能歸屬。
+
+<!-- 0c265b1dfa5a -->
+### 9-2) 監控管線健康度 ⭐⭐⭐⭐⭐
+
+**「AWS 指標全綠，不代表資料是對的。我會看基礎設施，但我對資料設告警：它有沒有準時到、完不完整、
+看起來對不對。」**
+
+| 層 | 觀察 | 它告訴你 |
+|---|---|---|
+| 攝取 | 每小時、每個來源落地的物件數與位元組 | 某個來源安靜了，或翻倍了 |
+| 佇列 | `ApproximateAgeOfOldestMessage`、可見訊息數、DLQ 深度 | 消費者在落後，或訊息在失敗 |
+| Lambda | `Errors`、`Throttles`、`Duration` 對照 timeout、`ConcurrentExecutions` | 消費者在失敗、被限流，或已經長大到不適合 Lambda |
+| Spark | job 時長、失敗的 stage 與 executor、shuffle read/write、spill、task 時間的傾斜 | job 在變慢，以及原因 |
+| 新鮮度 | 最新的完整分區、最後一次成功執行的時間 | 資料遲到了 |
+| 完整性 | 對照來源或昨天的列數、每個預期的來源都在 | 資料不完整 |
+| 品質 | 關鍵欄位的 null 比例、重複的 key、解析失敗率、schema 漂移 | 資料是錯的 |
+
+- **對 SLA 設告警，而不只是對錯誤。**「昨天的日誌在 08:00 前可查詢」才是契約。如果 job 在 08:45
+  完成而每個服務都健康，管線仍然辜負了它的使用者 —— 所以要在 08:00 的分區還不完整時告警，而不是在
+  job 出錯時才告警。
+- **端到端延遲**：在紀錄上蓋 `ingested_at` 與 `processed_at`，並追蹤兩者差距的 p95 / p99。
+- **更少、更好的告警。** 對 SLA 風險與 DLQ 發 page；其他的放到儀表板。一個沒人處理的告警，會訓練大家
+  忽略真正重要的那一個。
+- 用資料品質檢查（Glue Data Quality、Deequ、Great Expectations）**把關發布**，讓糟糕的一天被擋下來，
+  而不是發布出去之後再解釋。
+
+<!-- 217aefe8aae6 -->
+### 9-3) 盯緊成本 ⭐⭐⭐⭐
+
+**「在一天 1 TB 的規模下，帳單是設計的一部分。我替所有東西打標籤以便歸屬、追蹤每處理 1 GB 的成本，
+並且知道每一項優化動的是哪一行費用。」**
+
+| 服務 | 帳單的驅動因素 | 手段 |
+|---|---|---|
+| S3 | 儲存的 GB、請求數、傳輸量 | Parquet + 壓縮；更少、更大的檔案；用 Lifecycle 轉到 IA / Glacier；讓可以過期的資料過期 |
+| Lambda | 請求數 + GB-秒 | batching，減少 invocation；調整記憶體大小；arm64（Graviton） |
+| SQS | API 請求（每 64 KB 算一次） | 批次接收與刪除 —— event source mapping 會替你做 |
+| EMR / Glue 上的 Spark | instance-小時或 DPU-小時 | 調整 executor 大小、修正傾斜與 shuffle、EMR task 節點用 Spot、用臨時叢集或 Serverless 取代閒置叢集 |
+| CloudWatch | 日誌攝取的 GB、保留期、自訂指標 | prod 的日誌等級、每個 log group 都設保留期、不要每筆紀錄都打日誌 |
+| Athena | 掃描的位元組 | [§5-2](#5-2-the-cost-model-is-the-performance-model-) |
+
+- **成本歸屬：** 從 CDK app 對每個資源打上 **cost allocation tag**（要在 Billing 中啟用）；用
+  **Cost Explorer** 依標籤檢視；設 **AWS Budgets** 告警；用 **Cost Anomaly Detection** 抓沒人預料到的
+  失控迴圈或請求風暴。
+- **單位成本** —— 每攝取 1 GB、每處理一天的成本 —— 是資料量成長後仍然有意義的數字。總額因為資料量
+  翻倍而翻倍沒問題；每 GB 成本翻倍就有問題。
+
+<!-- 971f45bc1e3a -->
+## 10) 安全性與治理 ⭐⭐⭐⭐
 
 **每個 job 一個最小權限的 IAM role、到處都用 KMS 加密、私有網路，以及用 Lake Formation 決定
 誰能看到哪一欄。**
@@ -515,8 +856,8 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 
 ---
 
-<!-- dfce09ab06ec -->
-## 8) 完整設計題：從 RDS 訂單到 S3 lakehouse ⭐⭐⭐⭐⭐
+<!-- 5dcd9ad79685 -->
+## 11) 完整設計題：從 RDS 訂單到 S3 lakehouse ⭐⭐⭐⭐⭐
 
 **題目**：*「訂單存在 Aurora PostgreSQL 資料庫中。分析師每天早上要在 Athena 看到昨天各國的營收，
 財務要求更正與取消都要反映出來。請在 AWS 上設計。」*
@@ -545,11 +886,11 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 
 ---
 
-<!-- 9f777376d202 -->
-## 9) 面試工具箱 ⭐⭐⭐⭐⭐
+<!-- 493399db1ea7 -->
+## 12) 面試工具箱 ⭐⭐⭐⭐⭐
 
-<!-- 0e874ab4999b -->
-### 9-1) 快問快答
+<!-- 8a5e5dfc9622 -->
+### 12-1) 快問快答
 
 - **Q：Glue Data Catalog 是什麼？** —— 一個由 Athena、EMR、Glue 與 Redshift Spectrum 共用的
   託管 Hive metastore；對 Iceberg 表格，它只存指向目前 metadata 檔的指標。
@@ -571,9 +912,22 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
   snapshot export 讀；絕不對 primary 做全表掃描。
 - **Q：replication slot 陷阱是什麼？** —— 停掉的 CDC 消費者會讓 PostgreSQL 一直保留 WAL，
   直到儲存空間滿。
+- **Q：為什麼不全部用 Lambda？** —— 15 分鐘、10 GB、沒有共享狀態、沒有 shuffle。Lambda 對事件做出
+  反應並啟動 job；分散式的工作由 Spark 做。
+- **Q：SQS 的 visibility timeout 該設多長？** —— 至少是函式 timeout 的六倍，這樣慢的 batch 不會
+  重新出現、被執行兩次。
+- **Q：怎麼處理重複的 SQS 訊息？** —— 假設它一定會發生：穩定的業務鍵、用 DynamoDB 條件寫入認領，
+  以及冪等的寫入端（`MERGE`、確定性路徑）。
+- **Q：`ReportBatchItemFailures` 做什麼？** —— 只重試 batch 中失敗的訊息，而不是整個 batch。
+- **Q：Lambda 消費者的 `maxReceiveCount` 設多少？** —— 至少 5，因為節流與逾時都算一次接收；
+  而 DLQ 的保留期限要比來源佇列長。
+- **Q：Reserved concurrency 還是 maximum concurrency？** —— SQS 觸發用 event source mapping 的
+  maximum concurrency：多出來的訊息在佇列中等待，而不是被節流進 DLQ。
+- **Q：日誌在 S3 怎麼分區？** —— 日期優先，再加一個查詢會篩選的低基數 key；Parquet 檔案
+  128 MB – 1 GB；把小檔案壓實。
 
-<!-- 0e58ccdc423f -->
-### 9-2) 「我們的 Athena 查詢又慢、帳單又翻倍。你會怎麼做？」
+<!-- 1a6725c4ee9a -->
+### 12-2) 「我們的 Athena 查詢又慢、帳單又翻倍。你會怎麼做？」
 
 > 「我會從 Athena 計費的依據 —— 掃描的位元組 —— 開始，因為成本和延遲出自同一個原因。
 >
@@ -589,8 +943,45 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 > 然後加上護欄：每個團隊一個 workgroup 並設每查詢掃描上限，再對掃描位元組設告警。如果某個儀表板
 > 仍然整天跑同一個重度 join，那個工作負載就該放到 Redshift。」
 
-<!-- 727e2f5aa4d8 -->
-### 9-3) 服務速查表
+<!-- c45eeed175bf -->
+### 12-3) 「管線在一天 1 TB 時要兩小時；到 2 TB 卻要五小時。為什麼？」
+
+> 「兩倍的資料大約應該花兩倍的時間，所以多出來的那一小時才是重點 —— 有某個東西不再線性擴展了。
+> 我會依序走過整條管線，找出時間花到哪裡去了。
+>
+> 首先看輸入：資料量是真的均勻地翻倍，還是某個來源或某個叢集變大了 —— 那會指向傾斜？接著看佇列：
+> 最舊訊息的 age 有沒有在爬升，消費者有沒有碰到 concurrency 上限或被節流？
+>
+> 然後在 Spark UI 裡看 Spark job：哪個 stage 變長了。一個成長幅度超過輸入的 shuffle stage、
+> 少數幾個 task 跑得比中位數久很多，或溢寫到磁碟，都在說傾斜或分區太小；數千個很小的輸入檔案說的是
+> 上游的小檔案問題；job 開始前的長時間等待，說的是叢集沒有容量。
+>
+> 再來看依賴：下游變慢的資料庫或 API，會把它後面的一切都卡住。
+>
+> 解法跟著原因走 —— 傾斜就加分區或對 key 加鹽，小檔案就 compaction，只有下游還有空間時才調高
+> concurrency 上限，工作真的能水平擴展時才加 executor。我還會補上那個本來可以更早抓到它的指標：
+> 每 GB 的時長，並對它設告警，而不是只看總時長。」
+
+<!-- d5803c041987 -->
+### 12-4) 用你自己的管線回答「你是怎麼……的？」
+
+這些問題問的是*你的*系統，面試官會追問你說的每一句話。五條原則：
+
+1. **先講為什麼，再講怎麼做。** 開頭說出決策以及驅動它的限制，而不是列一串服務。
+2. **講出取捨。**「Lambda 運行更便宜、維運更簡單，但它做不了彙總，所以彙總交給 Spark。」
+3. **誠實地使用真實數字。** 1 TB/day 是每日平均 —— 平均攤開約 12 MB/s —— 不是尖峰；要知道你引用的是
+   哪一個，以及尖峰是多少。
+4. **主動展現生產環境思維：** 重試、冪等性、DLQ、監控、復原、成本。
+5. **區分你做過的與你知道的。** 被問「你是怎麼實作的？」時，只描述你實際做過的部分。替代方案放在
+   *「如果今天重新設計，我會……」*之下 —— 這樣能展現判斷力，又不會宣稱你沒做過的工作。
+
+如果只有時間準備其中三題，就練習 **為什麼用 Lambda 而不是 Spark**（[§7-1](#7-1-why-lambda-and-spark-not-one-of-them-)）、
+**重複訊息**（[§7-5](#7-5-duplicate-messages-and-idempotency-)）與 **S3 分區**
+（[§8-1](#8-1-hive-style-partitioning-and-partition-pruning-)）：每一題都能延伸成系統設計討論。
+把每個答案用英文大聲說出來，控制在一到兩分鐘，並準備好它底下的追問。
+
+<!-- a6b531ba3167 -->
+### 12-5) 服務速查表
 
 | 這樣說 | 當被問到 |
 |---|---|
@@ -603,3 +994,10 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 | 「掃描的位元組就是帳單」 | Athena 的效能與成本 |
 | 「可用性 vs 讀取擴展」 | Multi-AZ vs read replica |
 | 「從日誌做 CDC，不要用查詢」 | 從 RDS 擷取資料 |
+| 「Lambda 觸發，Spark 計算」 | Lambda vs Spark |
+| 「進來是至少一次，出去是冪等」 | 重複的 SQS 訊息 |
+| 「visibility ≥ 6 × 函式 timeout」 | SQS + Lambda 的重試 |
+| 「依最慢的下游決定 concurrency」 | 消費者 concurrency |
+| 「DLQ 隔離問題，不修好問題」 | Dead-letter queue |
+| 「日期優先、低基數、大檔案」 | S3 分區 |
+| 「對 SLA 告警，不只是對錯誤」 | 管線監控 |

@@ -22,7 +22,7 @@ minutes, open that topic's deep dive.
 | Stream pipelines | ⭐⭐⭐⭐ | event time, watermarks, state and exactly-once | [`de/stream_pipeline.md`](./de/stream_pipeline.md) |
 | Apache Flink | ⭐⭐⭐⭐ | the engine under most streaming answers — state backends, checkpoints, exactly-once with Kafka | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | choosing a store and defending the trade-off | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
-| AWS data services | ⭐⭐⭐⭐ | Glue vs EMR vs Athena, Iceberg on S3, getting data out of RDS | [`de/aws_data.md`](./de/aws_data.md) |
+| AWS data services | ⭐⭐⭐⭐ | Glue vs EMR vs Athena, Iceberg on S3, getting data out of RDS, S3 → SQS → Lambda ingestion, CDK and monitoring | [`de/aws_data.md`](./de/aws_data.md) |
 
 ---
 

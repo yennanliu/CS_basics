@@ -8,7 +8,7 @@
 
 ---
 
-<!-- 631ffc021014 -->
+<!-- f58268261401 -->
 ## 1) 主題地圖 ⭐⭐⭐⭐⭐
 
 | 主題 | 權重 | 面試官真正在探的 | 深入解析 |
@@ -23,7 +23,7 @@
 | 串流管線 | ⭐⭐⭐⭐ | 事件時間、watermark、狀態與 exactly-once | [`de/stream_pipeline.md`](./de/stream_pipeline.md) |
 | Apache Flink | ⭐⭐⭐⭐ | 大多數串流答案底下的那個引擎 —— state backend、checkpoint、搭配 Kafka 的 exactly-once | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | 選一個儲存並為取捨辯護 | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
-| AWS 資料服務 | ⭐⭐⭐⭐ | Glue vs EMR vs Athena、S3 上的 Iceberg、如何把資料從 RDS 取出 | [`de/aws_data.md`](./de/aws_data.md) |
+| AWS 資料服務 | ⭐⭐⭐⭐ | Glue vs EMR vs Athena、S3 上的 Iceberg、如何把資料從 RDS 取出、S3 → SQS → Lambda 資料攝取、CDK 與監控 | [`de/aws_data.md`](./de/aws_data.md) |
 
 ---
 
