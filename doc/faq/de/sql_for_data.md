@@ -648,7 +648,18 @@ SELECT order_id, status, updated_at FROM ranked WHERE rn = 1;
 SELECT order_id, COUNT(*) FROM order_changes GROUP BY order_id HAVING COUNT(*) > 1;
 ```
 
-`SELECT DISTINCT` only removes rows identical in **every** column; it is not a dedupe by key.
+- `SELECT DISTINCT` only removes rows identical in **every** column; it is not a dedupe by key.
+- **Make the order deterministic.** Two rows with the same `updated_at` let `ROW_NUMBER` pick
+  either one, and a rerun may pick the other. Add a tie-breaker that really orders the
+  changes — a source sequence or log position (LSN) if there is one:
+  `ORDER BY updated_at DESC, source_seq DESC`.
+- **`MAX(updated_at)` joined back is the wrong answer.** `JOIN (SELECT order_id,
+  MAX(updated_at) …)` returns *both* rows when two share the latest timestamp, so the
+  "one row per key" result has duplicates in it.
+- **Say what a duplicate is before removing one.** `paid` then `refunded` for order 1 are two
+  real changes, not a duplicate; the same change delivered twice is. The key is the table's
+  grain — `order_id` for a current-state table, `(order_id, version)` or `event_id` for a
+  change log.
 
 ### 7-3) Running totals and moving averages
 
@@ -942,6 +953,169 @@ WHERE  o.order_date >= DATE '2026-10-01' AND o.order_date < DATE '2026-11-01'
 The single-pass `HAVING` form reads the table once and extends naturally to "did X, Y and Z
 but not W".
 
+### 7-14) Rebuild validity intervals from a change log ⭐⭐⭐⭐
+
+**Order each key's changes by when they took effect, and let `LEAD` hand every version the
+start of the next one as its end — so a change that arrives late lands in the right place
+the next time the history is rebuilt.**
+
+This is the query behind an SCD Type 2 dimension and behind "late-arriving CDC": the
+Tokyo change below happened on 1 Feb but reached the pipeline on 5 Mar, after the
+Kaohsiung change.
+
+```sql
+-- PostgreSQL: rebuild each user's country history from a change log
+CREATE TEMP TABLE user_changes (
+  user_id     INT,
+  country     TEXT,
+  valid_from  DATE,       -- when the change took effect (event time)
+  arrived_at  DATE,       -- when the pipeline received it
+  source_seq  INT         -- the source's own order, e.g. an LSN
+);
+INSERT INTO user_changes VALUES
+  (1, 'TW', DATE '2026-01-01', DATE '2026-01-01', 101),
+  (1, 'KR', DATE '2026-03-01', DATE '2026-03-01', 103),
+  (1, 'JP', DATE '2026-02-01', DATE '2026-03-05', 102),   -- arrived late
+  (2, 'US', DATE '2026-01-15', DATE '2026-01-15', 201);
+
+SELECT user_id, country,
+       valid_from,
+       COALESCE(LEAD(valid_from) OVER w, DATE '9999-12-31') AS valid_to,   -- exclusive
+       LEAD(valid_from) OVER w IS NULL                       AS is_current
+FROM   user_changes
+WINDOW w AS (PARTITION BY user_id ORDER BY valid_from, source_seq)
+ORDER  BY user_id, valid_from;
+```
+
+```text
+user_id  country  valid_from  valid_to    is_current
+1        TW       2026-01-01  2026-02-01  false
+1        JP       2026-02-01  2026-03-01  false
+1        KR       2026-03-01  9999-12-31  true
+2        US       2026-01-15  9999-12-31  true
+```
+
+- **Order by event time, never by arrival time.** Ordered by `arrived_at`, JP would be the
+  current country.
+- **Half-open intervals** — `valid_from <= t < valid_to` — so a timestamp on a boundary
+  belongs to exactly one version. A point-in-time join is then
+  `ON f.user_id = d.user_id AND f.order_date >= d.valid_from AND f.order_date < d.valid_to`.
+- Two checks that should return no rows on any SCD2 table:
+
+```sql
+-- PostgreSQL: more than one current version per key
+SELECT user_id FROM dim_user_history WHERE is_current GROUP BY user_id HAVING COUNT(*) > 1;
+
+-- overlapping versions of the same key
+SELECT a.user_id, a.valid_from, b.valid_from
+FROM   dim_user_history a
+JOIN   dim_user_history b
+  ON   a.user_id = b.user_id
+ AND   a.valid_from < b.valid_from          -- each pair once
+ AND   b.valid_from < a.valid_to;           -- b starts before a ends
+```
+
+Rebuilding a key's whole history is the simplest correct answer to late data; doing it only
+for the keys that received a late change is the optimisation. How the dimension is loaded
+with `MERGE` is [data_modeling.md](./data_modeling.md)'s topic.
+
+### 7-15) Peak concurrency: overlapping intervals
+
+**Turn each interval into a `+1` at its start and a `−1` at its end, sort the points, and a
+running sum is the number open at each moment; its maximum is the peak.**
+
+The classic form is "most users online at once", "rooms needed for these meetings" or
+"maximum concurrent sessions".
+
+```sql
+-- PostgreSQL: the peak number of concurrent sessions, and when it happened
+CREATE TEMP TABLE sessions (session_id INT, start_ts TIMESTAMP, end_ts TIMESTAMP);
+INSERT INTO sessions VALUES
+  (1, TIMESTAMP '2026-11-01 10:00', TIMESTAMP '2026-11-01 10:30'),
+  (2, TIMESTAMP '2026-11-01 10:10', TIMESTAMP '2026-11-01 10:20'),
+  (3, TIMESTAMP '2026-11-01 10:15', TIMESTAMP '2026-11-01 10:45'),
+  (4, TIMESTAMP '2026-11-01 10:30', TIMESTAMP '2026-11-01 11:00');
+
+WITH points AS (
+  SELECT start_ts AS ts, +1 AS delta FROM sessions
+  UNION ALL
+  SELECT end_ts   AS ts, -1 AS delta FROM sessions
+), running AS (
+  SELECT ts,
+         SUM(delta) OVER (ORDER BY ts, delta          -- -1 before +1 at the same instant
+                          ROWS UNBOUNDED PRECEDING) AS open_sessions
+  FROM   points
+)
+SELECT ts, open_sessions
+FROM   running
+ORDER  BY open_sessions DESC, ts
+LIMIT  1;
+-- 2026-11-01 10:15, 3 (sessions 1, 2 and 3)
+```
+
+- **Ties decide the answer.** Session 1 ends at 10:30 as session 4 starts. Sorting `delta`
+  ascending puts the `−1` first, so they do not count as overlapping — right for half-open
+  intervals. Sort `+1` first if an end time is inclusive.
+- `ROWS`, not the default `RANGE`, so each point adds to the sum on its own row.
+- One sort over 2n points: O(n log n), and it works the same way in any warehouse. A
+  self-join that compares every pair is O(n²).
+
+### 7-16) Data quality checks as SQL assertions ⭐⭐⭐⭐
+
+**Write each check as a query that returns the bad rows, or a count that must be zero, and
+let the pipeline fail when it is not.**
+
+```sql
+-- PostgreSQL: one row per check, so the result can be stored and alerted on
+SELECT 'null_order_id' AS check_name, COUNT(*) AS failures
+FROM   orders WHERE order_id IS NULL
+UNION ALL
+SELECT 'duplicate_order_id', COUNT(*)
+FROM  (SELECT order_id FROM orders GROUP BY order_id HAVING COUNT(*) > 1) d
+UNION ALL
+SELECT 'negative_amount', COUNT(*)
+FROM   orders WHERE amount < 0
+UNION ALL
+SELECT 'unknown_status', COUNT(*)
+FROM   orders WHERE status NOT IN ('paid', 'refunded', 'cancelled')
+UNION ALL
+SELECT 'orphan_user_id', COUNT(*)                              -- referential integrity
+FROM   orders o WHERE NOT EXISTS (SELECT 1 FROM users u WHERE u.user_id = o.user_id);
+```
+
+Reconciliation compares the load with its source **for the same slice**, so a mismatch
+points at one day rather than at the whole table:
+
+```sql
+-- PostgreSQL: row count and revenue per day, source vs target
+WITH src AS (
+  SELECT order_date, COUNT(*) AS n, SUM(amount) AS revenue
+  FROM   staging_orders
+  WHERE  order_date >= DATE '2026-11-01' AND order_date < DATE '2026-11-08'
+  GROUP  BY order_date
+), tgt AS (
+  SELECT order_date, COUNT(*) AS n, SUM(amount) AS revenue
+  FROM   orders
+  WHERE  order_date >= DATE '2026-11-01' AND order_date < DATE '2026-11-08'
+  GROUP  BY order_date
+)
+SELECT COALESCE(s.order_date, t.order_date) AS order_date,
+       s.n AS src_rows, t.n AS tgt_rows, s.revenue AS src_revenue, t.revenue AS tgt_revenue
+FROM   src s
+FULL OUTER JOIN tgt t ON t.order_date = s.order_date      -- a day missing on either side shows up
+WHERE  s.n IS DISTINCT FROM t.n
+   OR  s.revenue IS DISTINCT FROM t.revenue;
+```
+
+- `FULL OUTER JOIN` plus `IS DISTINCT FROM` catches a day that exists on only one side, which
+  an inner join and `<>` would both hide.
+- `NOT EXISTS` rather than `NOT IN` for the orphan check, for the `NULL` reason in
+  [3-2](#3-2-the-not-in-trap-is-distinct-from-coalesce).
+- Not every failure should stop the pipeline: a `NULL` key fails the run, an orphan from a
+  dimension that has not arrived yet is quarantined or given an unknown member. Which checks
+  block, and the tools that run them (dbt tests, Great Expectations), are
+  [batch_pipeline.md](./batch_pipeline.md)'s.
+
 ---
 
 ## 8) Writing Data: MERGE and Upserts ⭐⭐⭐⭐
@@ -973,6 +1147,10 @@ WHEN NOT MATCHED THEN
 - The `AND … IS DISTINCT FROM …` condition skips no-op updates, which saves writes and keeps
   `updated_at` meaningful.
 - `MERGE` is idempotent when the source is: rerunning it with the same source changes nothing.
+- **Do not let an old change overwrite a newer one.** If changes can arrive out of order, or a
+  rerun replays an older batch, guard the update with the version:
+  `WHEN MATCHED AND s.updated_at > t.updated_at THEN UPDATE …` (or a source sequence number,
+  which is safer than a timestamp).
 
 ### 8-2) Upsert and partition overwrite
 
@@ -1167,6 +1345,8 @@ The integer-division row is the one that silently produces wrong answers: in Pos
 | Why did my join return more rows than the left table? | The right side has several rows per key — fan-out; check uniqueness. |
 | Why does `NOT IN` return nothing? | The subquery contains a `NULL`; use `NOT EXISTS`. |
 | How do you find duplicates? | `GROUP BY key HAVING COUNT(*) > 1`; to remove them, `ROW_NUMBER()` and keep 1. |
+| Latest row per key with `MAX(updated_at)` and a join back? | Returns two rows when two share the latest timestamp; use `ROW_NUMBER()` with a tie-breaker. |
+| A late change arrived — which version is current? | The one latest by event time (or source sequence), never by arrival time; rebuild the key's intervals with `LEAD`. |
 | Is a CTE computed once? | Engine-dependent: PostgreSQL 12+ inlines single-use CTEs, warehouses may recompute a reused one. |
 | How do you make a query faster? | Read `EXPLAIN`; filter early on indexed / partition columns; select fewer columns; aggregate before joining; fix skew. |
 | A view vs a materialised view? | A view is a stored query run each time; a materialised view stores the result and must be refreshed. |
