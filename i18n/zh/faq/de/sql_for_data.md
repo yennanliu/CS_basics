@@ -407,14 +407,23 @@ Window 的寫法只掃描一次表，被問到「能不能不用子查詢？」�
 
 <!--CODE-->
 
-<!-- 82ad9b0be05e -->
+<!-- 377626ab0010 -->
 ### 7-2) 去重：每個 key 保留最新的一列
 
 **把每個 key 的列由新到舊編號，保留第 1 號 —— 這是 CDC 與事件表收到同一筆紀錄不只一次時的標準清理方式。**
 
 <!--CODE-->
 
-`SELECT DISTINCT` 只會移除**每一個**欄位都相同的列；它不是依 key 去重。
+- `SELECT DISTINCT` 只會移除**每一個**欄位都相同的列；它不是依 key 去重。
+- **讓排序是確定的（deterministic）。** 兩列的 `updated_at` 相同時，`ROW_NUMBER` 可以任挑一列，
+  重跑時可能挑到另一列。加上一個真正能排定變更先後的 tie-breaker —— 有的話就用來源序號或
+  log 位置（LSN）：`ORDER BY updated_at DESC, source_seq DESC`。
+- **`MAX(updated_at)` 再 join 回原表是錯的答案。** `JOIN (SELECT order_id,
+  MAX(updated_at) …)` 在兩列共用最新時間戳時會回傳*兩列*，於是「每個 key 一列」的結果
+  裡就有重複。
+- **移除重複之前，先說清楚什麼叫重複。** 訂單 1 先 `paid` 再 `refunded` 是兩次真實的變更，
+  不是重複；同一次變更被送了兩次才是。key 就是這張表的粒度 —— 目前狀態表用 `order_id`，
+  變更日誌用 `(order_id, version)` 或 `event_id`。
 
 <!-- 44802e0b32bb -->
 ### 7-3) 累計總和與移動平均
@@ -522,7 +531,7 @@ Snowflake、BigQuery、Spark 與 DuckDB 也有 `PIVOT` / `UNPIVOT` 運算子，�
 訂單數為**零**的使用者不會出現在第一個查詢裡；如果題目要包含他們，
 就從 `users` 開始做 `LEFT JOIN`。PostgreSQL 也有 `width_bucket(amount, 0, 1000, 20)`。
 
-<!-- d895a019bdfe -->
+<!-- 3296f90da98b -->
 ### 7-13) 「做了 X 但沒做 Y」
 
 **要嘛在兩個集合之間做 anti-join，要嘛掃一次、對每個實體同時計算兩個條件，
@@ -532,12 +541,76 @@ Snowflake、BigQuery、Spark 與 DuckDB 也有 `PIVOT` / `UNPIVOT` 運算子，�
 
 單次掃描的 `HAVING` 寫法只讀一次表，而且能自然延伸到「做了 X、Y、Z 但沒做 W」。
 
+<!-- 4c23b86286c8 -->
+### 7-14) 從變更日誌重建有效區間 ⭐⭐⭐⭐
+
+**把每個 key 的變更依生效時間排序，讓 `LEAD` 把下一個版本的開始交給每個版本當作結束 ——
+這樣晚到的變更在下一次重建歷史時，就會落在正確的位置。**
+
+這就是 SCD Type 2 維度表背後的查詢，也是「late-arriving CDC」背後的查詢：下面的
+Tokyo 變更發生在 2 月 1 日，卻在 3 月 5 日才抵達 pipeline，比 Kaohsiung 的變更還晚。
+
+<!--CODE-->
+
+<!--CODE-->
+
+- **依事件時間排序，絕不依到達時間。** 如果依 `arrived_at` 排序，JP 會變成目前的國家。
+- **半開區間** —— `valid_from <= t < valid_to` —— 讓落在邊界上的時間點只屬於一個版本。
+  時間點 join 因此寫成
+  `ON f.user_id = d.user_id AND f.order_date >= d.valid_from AND f.order_date < d.valid_to`。
+- 任何 SCD2 表上都應該回傳零列的兩個檢查：
+
+<!--CODE-->
+
+重疊檢查拿每個版本，和排在它前面的版本中最晚的結束時間比較。這能抓到 `valid_from`
+**相同**的兩個版本 —— 用 `a.valid_from < b.valid_from` 的 self-join 會漏掉它們 ——
+而且只需排序一次，不必兩兩 join。
+
+重建一個 key 的整段歷史，是處理晚到資料最簡單又正確的答案；只對收到晚到變更的 key
+重建，則是最佳化。維度表如何用 `MERGE` 載入，是 [data_modeling.md](./data_modeling.md) 的主題。
+
+<!-- f76da1ca0b39 -->
+### 7-15) 尖峰同時數：重疊區間
+
+**把每個區間轉成開始時的 `+1` 與結束時的 `−1`，把這些點排序，累計和就是每個時刻開著的數量；
+它的最大值就是尖峰。**
+
+經典的出法是「同時在線最多的使用者數」、「這些會議需要幾間會議室」或「最大同時 session 數」。
+
+<!--CODE-->
+
+- **同時刻的排序決定答案。** session 1 在 10:30 結束時 session 4 正好開始。`delta` 由小到大
+  排序會把 `−1` 排在前面，所以兩者不算重疊 —— 對半開區間來說是對的。如果結束時間是包含的，
+  就把 `+1` 排在前面。
+- 用 `ROWS`，不要用預設的 `RANGE`，讓每個點在自己那一列上加進累計和。
+- 對 2n 個點排序一次：O(n log n)，在任何資料倉儲裡做法都一樣。兩兩比較的 self-join 是 O(n²)。
+
+<!-- 63589f442546 -->
+### 7-16) 把資料品質檢查寫成 SQL 斷言 ⭐⭐⭐⭐
+
+**把每個檢查寫成回傳壞資料列的查詢，或一個必須為零的計數，不為零時就讓 pipeline 失敗。**
+
+<!--CODE-->
+
+對帳（reconciliation）要拿載入結果和來源比較**同一個切片**，這樣不一致時指向的是某一天，
+而不是整張表：
+
+<!--CODE-->
+
+- `FULL OUTER JOIN` 加上 `IS DISTINCT FROM` 能抓到只存在於一側的日子，而 inner join 和 `<>`
+  都會把它藏起來。
+- 孤兒檢查用 `NOT EXISTS` 而不是 `NOT IN`，原因是 [3-2](#3-2-the-not-in-trap-is-distinct-from-coalesce)
+  講的 `NULL`。
+- 不是每個失敗都該停下 pipeline：`NULL` key 讓這次執行失敗；來自尚未抵達的維度的孤兒列則
+  放進隔離區，或給它一個 unknown member。哪些檢查要擋下、由哪些工具執行（dbt tests、
+  Great Expectations），是 [batch_pipeline.md](./batch_pipeline.md) 的主題。
+
 ---
 
 <!-- b98650aca258 -->
 ## 8) 寫入資料：MERGE 與 upsert ⭐⭐⭐⭐
 
-<!-- afbf380a56c4 -->
+<!-- 75e6285a877c -->
 ### 8-1) `MERGE`
 
 **`MERGE` 在一個原子陳述式裡把來源套用到目標：更新有配對的列、插入沒配對的、
@@ -550,6 +623,19 @@ Snowflake、BigQuery、Spark 與 DuckDB 也有 `PIVOT` / `UNPIVOT` 運算子，�
 - `AND … IS DISTINCT FROM …` 條件會略過沒有實際變化的更新，省下寫入，也讓
   `updated_at` 保有意義。
 - 當來源是冪等的，`MERGE` 就是冪等的：用同樣的來源重跑不會改變任何東西。
+
+**當變更可能亂序抵達或被重播時，只有較新的變更可以勝出 —— 所以要把來源自己的序號存進目標表並拿來比較。**
+
+<!--CODE-->
+
+- **用序號，不要用時間戳。** 兩筆變更可能共用同一個 `updated_at`。用
+  `s.updated_at > t.updated_at` 的話，第二筆會被拒絕，目標保留的是第一筆。序號為同一個 key
+  的每一筆變更排定先後，所以它同時決定哪一筆來源列最新，以及它是否勝過目標。
+- **保護條件取代 `IS DISTINCT FROM` 條件，而不是和它疊加。** 帶著相同國家的較新變更，仍然必須
+  把 `source_seq` 往前推。否則目標在序號 1 是 `A` 時，序號 4 的 `A` 會被略過，之後重播的
+  序號 3 的 `B` 就會通過保護條件、把它覆蓋掉。
+- 如果來源沒有序號，時間戳相同的變更就沒有正確答案。要把這點說出來，並要求來源提供序號
+  （Debezium 的每個事件都帶有 log 位置）。
 
 <!-- 441f00cf05d4 -->
 ### 8-2) Upsert 與分區覆寫
@@ -706,7 +792,7 @@ Snowflake、BigQuery、Spark 與 DuckDB 也有 `PIVOT` / `UNPIVOT` 運算子，�
 <!-- 48fa484c2aca -->
 ## 12) 快問快答 ⭐⭐⭐⭐
 
-<!-- 83661359a6f6 -->
+<!-- c8b86d49d3d1 -->
 ### 12-1) 常見問題的簡短答案
 
 | 問題 | 答案 |
@@ -720,6 +806,8 @@ Snowflake、BigQuery、Spark 與 DuckDB 也有 `PIVOT` / `UNPIVOT` 運算子，�
 | 為什麼 join 回傳的列比左表還多？ | 右側每個 key 有多列 —— fan-out；檢查唯一性。 |
 | 為什麼 `NOT IN` 什麼都沒回傳？ | 子查詢含有 `NULL`；改用 `NOT EXISTS`。 |
 | 怎麼找重複？ | `GROUP BY key HAVING COUNT(*) > 1`；要移除就用 `ROW_NUMBER()` 保留 1。 |
+| 用 `MAX(updated_at)` 再 join 回原表取每個 key 的最新列？ | 兩列共用最新時間戳時會回傳兩列；改用 `ROW_NUMBER()` 加上 tie-breaker。 |
+| 一筆變更晚到了 —— 哪個版本才是目前的？ | 依事件時間（或來源序號）最晚的那個，絕不是依到達時間；用 `LEAD` 重建該 key 的區間。 |
 | CTE 只會算一次嗎？ | 依引擎而定：PostgreSQL 12+ 會內聯只用一次的 CTE，資料倉儲可能會重算被重用的 CTE。 |
 | 怎麼讓查詢更快？ | 讀 `EXPLAIN`；盡早在有索引 / 分區的欄位上過濾；選更少的欄位；join 前先彙總；修掉傾斜。 |
 | view vs materialised view？ | view 是每次都會執行的已存查詢；materialised view 存下結果，必須刷新。 |
