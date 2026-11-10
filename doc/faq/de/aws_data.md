@@ -1,13 +1,14 @@
-# AWS Data Services: Glue, EMR, Iceberg, Athena and RDS
+# AWS Data Services: Glue, EMR, Iceberg, Athena, RDS, Lambda and SQS
 
-> **Scope** — the AWS data stack as a data engineering interview probes it: how S3, the Glue Data Catalog, Glue ETL, EMR, Athena and RDS fit together, choosing between the compute services, Glue jobs and bookmarks, EMR cluster anatomy and EMR Serverless, Apache Iceberg on S3 with the Glue catalog, Athena's cost model, partitions and Iceberg DML, getting data out of RDS (JDBC, snapshot export, DMS CDC, zero-ETL), security, and a worked RDS-to-lakehouse design. The engine-neutral comparison of Iceberg, Delta and Hudi is [batch_pipeline.md](./batch_pipeline.md)'s; Spark internals and tuning are [spark.md](./spark.md)'s; Redshift has its own older notes.
+> **Scope** — the AWS data stack as a data engineering interview probes it: how S3, the Glue Data Catalog, Glue ETL, EMR, Athena and RDS fit together, choosing between the compute services, Glue jobs and bookmarks, EMR cluster anatomy and EMR Serverless, Apache Iceberg on S3 with the Glue catalog, Athena's cost model, partitions and Iceberg DML, getting data out of RDS (JDBC, snapshot export, DMS CDC, zero-ETL), event-driven ingestion with S3, SQS and Lambda (Lambda vs Spark, timeouts, visibility timeout, duplicates and idempotency, DLQs, consumer concurrency), S3 partitioning and file sizes, AWS CDK, pipeline monitoring and cost, security, and a worked RDS-to-lakehouse design. The engine-neutral comparison of Iceberg, Delta and Hudi is [batch_pipeline.md](./batch_pipeline.md)'s; Spark internals and tuning are [spark.md](./spark.md)'s; Redshift has its own older notes.
 > **See also**: [`./batch_pipeline.md`](./batch_pipeline.md) — lake vs warehouse vs lakehouse, table formats, idempotency and backfills; [`./spark.md`](./spark.md) — the engine under Glue and EMR; [`./kafka.md`](./kafka.md) — CDC with Debezium and Kafka Connect; [`../db/faq_redshift.md`](../db/faq_redshift.md) — the Redshift notes; [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist.
 
 Most AWS data platforms are the same five pieces: **files in S3**, **a catalog that says which
 files are a table** (Glue Data Catalog), **a table format that makes those files transactional**
 (Iceberg), **engines that read and write them** (Glue, EMR, Athena), and **operational databases
-the data comes from** (RDS / Aurora). The interview rarely asks you to recite a service; it asks
-you to pick one and defend the trade-off.
+the data comes from** (RDS / Aurora). Around them sit the event-driven glue — **S3 events, SQS
+and Lambda** — and the code that deploys and watches it all (**CDK, CloudWatch**). The interview
+rarely asks you to recite a service; it asks you to pick one and defend the trade-off.
 
 ---
 
@@ -51,6 +52,10 @@ filter column and compacted."**
 | Migration / CDC | **AWS DMS** | full load + change data capture out of RDS into S3, Kinesis or MSK |
 | Governance | **Lake Formation** | table-, column-, row- and cell-level permissions on catalog tables |
 | Warehouse | **Redshift** | MPP columnar warehouse for heavy, repeated BI workloads |
+| Messaging | **Amazon SQS** | managed queue that decouples producers from consumers; at-least-once delivery |
+| Event compute | **AWS Lambda** | short, event-driven functions — validate, route, trigger — up to 15 minutes each |
+| Infrastructure as code | **AWS CDK** | TypeScript / Python that synthesises CloudFormation |
+| Observability | **Amazon CloudWatch** | metrics, logs and alarms for every service above |
 
 ### 1-2) Choosing the compute ⭐⭐⭐⭐⭐
 
@@ -68,7 +73,9 @@ how much data) is there?**
 
 The answer interviewers like: **"Athena for exploration, Glue or EMR Serverless for the
 pipelines, EMR on EC2 only when I need the control or the Spot savings, and Redshift only when
-a BI workload is heavy and repeated enough to pay for a warehouse."**
+a BI workload is heavy and repeated enough to pay for a warehouse."** Lambda is not in this
+table because it is not a place to run the transform: it reacts to events and starts the job
+that does ([§7-1](#7-1-why-lambda-and-spark-not-one-of-them-)).
 
 ---
 
@@ -698,7 +705,611 @@ CloudWatch's `TransactionLogsDiskUsage` and `OldestReplicationSlotLag` are the m
 
 ---
 
-## 7) Security and Governance ⭐⭐⭐⭐
+## 7) Event-Driven Ingestion: S3, SQS and Lambda ⭐⭐⭐⭐⭐
+
+**A common AWS shape for log and file ingestion: objects land in S3, an event per object goes
+to SQS, a Lambda consumer validates it and hands the heavy work to Spark, and the results go
+back to S3. Interviewers probe the edges: why the work is split that way, what Lambda cannot
+do, and what happens when a message arrives twice, fails forever, or arrives ten thousand at a
+time.**
+
+```text
+producers (cluster agents, apps)
+    |  PUT  s3://lake/landing/...                 ~1 TB/day of raw logs
+    v
+S3 landing  --event notification-->  SQS queue  --after maxReceiveCount-->  SQS DLQ
+                                         |
+                                         |  event source mapping: batch, window, max concurrency
+                                         v
+                                 Lambda consumer   validate, dedupe, record the batch
+                                         |
+                                         |  submit (one job per batch / window, not per message)
+                                         v
+                          Spark on EMR / EMR Serverless / Glue   parse, transform, aggregate
+                                         |
+                                         v
+                    S3 curated (Parquet / Iceberg, partitioned)  -->  Athena, reports
+```
+
+### 7-1) Why Lambda *and* Spark, not one of them ⭐⭐⭐⭐⭐
+
+**"They are not alternatives; they solve different shapes of work. Lambda runs short,
+event-driven tasks — validate a message, read metadata, route it, start the next stage. Spark
+runs the large distributed work — parse, join, shuffle and aggregate a terabyte across many
+executors. Each one is wasteful or impossible at the other's job."**
+
+| Workload | Fits | Why |
+|---|---|---|
+| React to one object landing; check its metadata and schema | **Lambda** | runs only when an event arrives; scales with the queue; nothing idle to pay for |
+| Route, enrich or reject a small record | **Lambda** | seconds of work, no cluster to start |
+| Parse and transform 1 TB of logs | **Spark** | partitions spread across executors; no 15-minute ceiling |
+| Joins, `groupBy`, window functions over the whole day | **Spark** | needs a shuffle — data moved between machines — which Lambda has no notion of |
+| Daily rollups and report tables | **Spark** (or Athena CTAS when it is plain SQL) | scans the whole partition once |
+
+- **Everything on Spark**: a cluster (or a Serverless application's startup) for every small
+  event adds latency and idle cost, and a long-running cluster sized for the daily peak sits
+  mostly empty.
+- **Everything on Lambda**: the 15-minute limit, the 10 GB memory cap and stateless,
+  share-nothing invocations make a distributed join or aggregation impossible without
+  rebuilding a worse Spark by hand.
+
+**Senior point:** the split is also a *failure boundary*. A bad message fails one Lambda
+invocation and goes to the DLQ; it does not fail a two-hour Spark job.
+
+### 7-2) Lambda vs long-running compute ⭐⭐⭐⭐
+
+**Compare them on run time, resources, cost model and operations — then match each to the
+workload rather than preferring "serverless" for its own sake.**
+
+| | AWS Lambda | Long-running compute (ECS / Fargate, EC2, EMR) |
+|---|---|---|
+| Run time | up to **15 minutes** per invocation | hours or days |
+| Resources | 128 MB – 10,240 MB memory; CPU scales with memory (up to 6 vCPU); `/tmp` up to 10 GB | any instance size; local disks; many nodes |
+| Scaling | per event, automatic, to the concurrency limit | auto scaling groups, cluster scaling — slower, but you control it |
+| State | none between invocations | in-memory state, caches, shuffle |
+| Cost model | per request + GB-seconds of run time; nothing when idle | per instance-second while running, busy or not |
+| Cost at steady high load | can exceed a well-used instance | cheaper per unit of work when kept busy; Spot on top |
+| Operations | no servers, patching or capacity planning | AMIs or images, scaling policies, cluster lifecycle |
+| Cold start | yes — milliseconds to seconds | none once warm |
+
+| Option | Pick it for |
+|---|---|
+| **Lambda** | short, spiky, event-driven work |
+| **ECS / Fargate** | a container that runs longer than 15 minutes, or holds a connection, with no cluster to run |
+| **EMR (EC2 or Serverless) / Glue** | distributed Spark — see [§1-2](#1-2-choosing-the-compute-) and [§3-4](#3-4-glue-or-emr-) |
+| **AWS Batch** | a large number of independent, container-sized jobs |
+
+**Senior point:** Lambda's fast scaling is not automatically good. Ten thousand messages at
+once can mean a thousand concurrent invocations hammering a database, an API or the Spark job
+submitter — see [§7-7](#7-7-controlling-consumer-concurrency-).
+
+### 7-3) Lambda's timeout and memory limits ⭐⭐⭐⭐
+
+**"I design the work to fit the limits rather than raising them until they stop failing: keep
+each invocation small, stream instead of loading, and hand anything big or long to Spark."**
+
+**Timeout (900 seconds at most):**
+
+- **Size the batch to the time.** The event source mapping's batch size and batching window
+  decide how much one invocation gets; size them so a batch finishes in a minute or two, well
+  inside the timeout.
+- **Split the work into stages.** Lambda validates and records the batch, then starts the
+  Spark job and returns; it never waits for a terabyte to be processed. A multi-step flow with
+  waits belongs to **Step Functions** or the orchestrator, not to a Lambda polling in a loop.
+- **Know what a timeout does to the message.** A timed-out invocation is a failure: the batch
+  becomes visible again and counts towards `maxReceiveCount`, so a job that always times out
+  ends in the DLQ.
+
+**Memory (128 MB – 10,240 MB):**
+
+- **Memory buys CPU.** Lambda allocates CPU in proportion to memory — 1,769 MB is one full
+  vCPU — so raising memory often makes a CPU-bound function faster *and* cheaper per run. Measure
+  it rather than guessing: cost per invocation, or per GB processed, is the number to compare.
+- **Stream, do not load.** Read an S3 object with a streaming body, line by line, instead of
+  `read()`-ing a 2 GB file into memory.
+- **`/tmp` is configurable up to 10 GB** for spill space, but a function that needs it is
+  usually a sign the work belongs on Spark.
+- **Reuse clients across invocations** — create `boto3` clients and connections outside the
+  handler, so a warm environment does not rebuild them.
+
+**Watch:** `Duration` against the timeout, `Errors`, `Throttles` and `ConcurrentExecutions` in
+CloudWatch, and *Max Memory Used* from each invocation's `REPORT` log line (or Lambda Insights).
+A function whose duration creeps towards its timeout as data grows is telling you it has
+outgrown Lambda.
+
+### 7-4) Consuming SQS with Lambda ⭐⭐⭐⭐⭐
+
+**SQS decouples the producers from the processing. Lambda's event source mapping polls the
+queue for you, invokes the function with a batch, and deletes the batch on success. Four
+settings decide whether it works: the message shape, the visibility timeout, the batch, and
+partial-batch failure reporting.**
+
+**1. Message shape — send a pointer, not the payload.** A message is capped at 1 MiB, so it
+carries the S3 location and the identity of the work, not the log lines:
+
+```json
+{
+  "event_id": "evt-20261110-cluster-a-000001",
+  "dataset": "cluster_logs",
+  "source": "cluster-a",
+  "s3_bucket": "data-lake",
+  "s3_key": "landing/date=2026-11-10/cluster-a/part-0001.json.gz",
+  "event_time": "2026-11-10T10:00:00Z"
+}
+```
+
+S3 event notifications have their own shape (a `Records` array with `bucket`, `key`,
+`versionId` and a `sequencer`); either way the consumer reads the object from S3.
+
+**2. Visibility timeout.** A received message is hidden from other consumers, not deleted. If
+the function succeeds, the mapping deletes it; if not, it reappears when the visibility timeout
+ends and is retried. Set it to **at least six times the function timeout, plus the batching
+window** (`MaximumBatchingWindowInSeconds`) — AWS's guidance — so a slow or throttled batch does
+not reappear and run twice while the first attempt is still going. With a 120-second function
+and a 10-second window, that is 6 × 120 + 10 = 730 seconds.
+
+**3. Batch size and window.** One invocation can take many messages:
+
+| Setting | Effect | Trade-off |
+|---|---|---|
+| `BatchSize` | up to 10,000 for a standard queue (10 for FIFO) | bigger batch → fewer invocations, but more to redo on failure and more time per run |
+| `MaximumBatchingWindowInSeconds` | wait up to N seconds (max 300) to fill a batch | fewer, fuller invocations at the cost of latency |
+| invocation payload | 6 MB per invocation | caps the batch however large `BatchSize` is |
+
+**4. Partial batch failures.** Without them, one bad message fails the whole batch and all
+of it is retried — re-running the messages that succeeded. With `ReportBatchItemFailures`
+switched on, the function returns the ids of only the messages that failed:
+
+```python
+# python — an SQS-triggered handler that retries only the messages that failed
+def handler(event, context):
+    failures = []
+    for record in event["Records"]:
+        try:
+            process_record(record)       # §7-5: parses the body; must be safe to run twice
+        except Exception:
+            # only this message returns to the queue; the rest of the batch is deleted
+            failures.append({"itemIdentifier": record["messageId"]})
+    return {"batchItemFailures": failures}
+```
+
+**Watch:** `ApproximateNumberOfMessagesVisible` (backlog), `ApproximateAgeOfOldestMessage`
+(how far behind the consumer is — the one to alarm on), `NumberOfMessagesReceived` vs
+`NumberOfMessagesDeleted`, and the function's `Errors` and `Duration`. A growing age means the
+consumer, or something downstream of it, cannot keep up.
+
+### 7-5) Duplicate messages and idempotency ⭐⭐⭐⭐⭐
+
+**"A standard queue delivers at least once, and S3 event notifications can repeat too, so I
+assume every message can arrive twice. Delivery is not exactly-once; I make the *processing*
+idempotent — running it twice leaves the same result as running it once."**
+
+Duplicates come from the queue itself, from a visibility timeout that ran out, from a batch
+that was retried, from a producer that retried a send, and from a DLQ replay. Three layers
+handle them:
+
+**1. A stable business key.** Dedupe on the producer's `event_id` (or, for S3 events, bucket +
+key + `versionId` / `sequencer`) — **not** SQS's `messageId`, which is new each time a producer
+re-sends the same event. For S3 events that only works if every input object lands under a
+**unique key that is never overwritten** (a UUID or the producer's sequence in the name): an
+overwrite under the same key looks like a duplicate of the first object, and the new data is
+skipped — or, read late, the first event processes the second object's bytes.
+
+**2. A claim ledger with a conditional write.** "Check, then process" is a race: two consumers
+can both see "not done". A DynamoDB conditional write lets exactly one of them claim the event,
+and a lease lets a retry take over from a consumer that died mid-run:
+
+```python
+# python — claim an event exactly once with a DynamoDB conditional write
+import json
+import time
+
+import boto3
+from botocore.exceptions import ClientError
+
+dynamodb = boto3.client("dynamodb")
+TABLE = "ingest_claims"           # partition key: event_id; TTL attribute: expires_at
+LEASE_SECONDS = 3 * 60            # a little over the function timeout (2 min), so a dead
+                                  # holder's claim frees up well before the retries run out
+TTL_SECONDS = 14 * 24 * 3600      # longer than queue + DLQ retention, so a replay is still caught
+
+
+def try_claim(event_id):
+    """Return 'CLAIMED', 'DONE' (a duplicate) or 'BUSY' (another consumer holds it)."""
+    now = int(time.time())
+    try:
+        dynamodb.put_item(
+            TableName=TABLE,
+            Item={
+                "event_id": {"S": event_id},
+                "status": {"S": "IN_PROGRESS"},
+                "lease_until": {"N": str(now + LEASE_SECONDS)},
+                "expires_at": {"N": str(now + TTL_SECONDS)},
+            },
+            # a new event, or one whose previous holder died and let its lease run out
+            ConditionExpression="attribute_not_exists(event_id) OR "
+                                "(#s = :in_progress AND lease_until < :now)",
+            ExpressionAttributeNames={"#s": "status"},
+            ExpressionAttributeValues={":in_progress": {"S": "IN_PROGRESS"},
+                                       ":now": {"N": str(now)}},
+            ReturnValuesOnConditionCheckFailure="ALL_OLD",
+        )
+        return "CLAIMED"
+    except ClientError as e:
+        if e.response["Error"]["Code"] != "ConditionalCheckFailedException":
+            raise
+        existing = e.response.get("Item", {})
+        return "DONE" if existing.get("status", {}).get("S") == "COMPLETED" else "BUSY"
+
+
+def process_record(record):
+    body = json.loads(record["body"])
+    event_id = body["event_id"]
+    state = try_claim(event_id)
+    if state == "DONE":
+        return                                    # duplicate delivery: nothing to do
+    if state == "BUSY":
+        raise RuntimeError(f"{event_id} is being processed elsewhere")   # retry later
+    try:
+        run_pipeline(body)                        # the real work, itself idempotent (layer 3);
+                                                  # defined elsewhere in the function
+    except Exception:
+        # release the claim so the retry can take it at once
+        dynamodb.delete_item(TableName=TABLE, Key={"event_id": {"S": event_id}})
+        raise
+    dynamodb.update_item(
+        TableName=TABLE,
+        Key={"event_id": {"S": event_id}},
+        UpdateExpression="SET #s = :done",
+        ExpressionAttributeNames={"#s": "status"},
+        ExpressionAttributeValues={":done": {"S": "COMPLETED"}},
+    )
+```
+
+(Powertools for AWS Lambda ships this pattern as its `idempotency` utility.)
+
+**When `run_pipeline` only submits a Spark job, `COMPLETED` means *submitted*, not *processed*.**
+The message is deleted once the submission is recorded, so the job's own failure must not depend
+on the message to be retried. Store the job's run id on the claim (`job_run_id`), and let the
+orchestrator — Step Functions, Airflow, or the job's own retry policy — watch that run to the end,
+retry it, and alarm when it fails for good. Make the submission itself idempotent too: a
+deterministic job name or client token derived from the event (or batch) id, so a duplicate
+submit finds the run that already exists.
+
+**3. An idempotent sink.** The ledger cuts duplicates; it cannot remove them, because the work
+can succeed and the process die before `COMPLETED` is written. So the output must be safe to
+write twice:
+
+| Sink | Idempotent write |
+|---|---|
+| S3 files | an output key derived from a **stable** identity — the input object's key, or the event id — so a retry overwrites what the first attempt wrote. A retry can regroup messages into a different batch, so a path named after the batch is deterministic only if the batch's membership is pinned first: write a batch manifest (batch id → event ids) before any output, and have a retry replay that manifest. Either way a reader must never see half of it |
+| Iceberg / Delta table | `MERGE` on the business key, or replace the batch's partition in one commit ([§4-2](#4-2-the-metadata-tree-and-the-commit-)) |
+| Database | upsert on a unique key |
+
+**FIFO queues are not the fix by themselves.** They deduplicate on a `MessageDeduplicationId`
+within a **five-minute** window and keep order within a `MessageGroupId`, at lower throughput.
+A replay from the DLQ an hour later is outside the window — business-level idempotency is
+still needed.
+
+**Senior point:** separate *delivery* from *effect*. The queue decides how often a message
+arrives; the pipeline decides that the data comes out the same however often it does.
+
+### 7-6) Dead-letter queues and replay ⭐⭐⭐⭐
+
+**A DLQ moves a message that keeps failing out of the main queue, so one poison message does
+not burn retries and capacity forever. It isolates the failure; it does not fix it — the
+alarm, the triage and the replay are the other half.**
+
+```text
+SQS main queue ──► Lambda consumer
+     ▲                 │
+     │ failed:         ├── success → message deleted
+     │ visible again   │
+     └─────────────────┘
+          after maxReceiveCount receives
+                 │
+                 ▼
+             SQS DLQ ──► alarm ──► triage ──► fix ──► redrive to the main queue
+```
+
+- **Redrive policy** on the main queue: the DLQ's ARN and `maxReceiveCount`. AWS recommends
+  **at least 5** for a Lambda consumer, because a throttled or timed-out batch also counts as a
+  receive — set it too low and healthy messages land in the DLQ during a spike.
+- **Retention**: in a standard queue a message keeps its *original* enqueue time when it moves
+  to the DLQ, so give the DLQ a **longer** retention than the source (up to 14 days) — or
+  messages expire there before anyone has looked.
+- **Alarm** on the DLQ's `ApproximateNumberOfMessagesVisible > 0`. A DLQ nobody watches is a
+  slower way of dropping data.
+- **Triage by cause:**
+
+| Cause | Action |
+|---|---|
+| transient — a network blip, a downstream outage, throttling | redrive once the dependency is healthy |
+| malformed message, missing field | fix the producer; redrive or discard after recording why |
+| missing or late data | data-quality investigation |
+| a bug in the consumer | fix, deploy, then redrive |
+
+- **Replay**: SQS's DLQ redrive (`StartMessageMoveTask`, or *Start DLQ redrive* in the
+  console) moves messages back to the source queue at a controlled rate. A replay is a
+  duplicate by definition — which is why [§7-5](#7-5-duplicate-messages-and-idempotency-)
+  comes first.
+
+### 7-7) Controlling consumer concurrency ⭐⭐⭐⭐
+
+**"I size concurrency to the slowest thing downstream, not to what Lambda can do. If the Spark
+cluster can take twenty job submissions a minute, five hundred concurrent consumers only make
+the queue someone else's problem."**
+
+Unbounded consumers exhaust database connections, trip API rate limits, submit too many Spark
+jobs and spend money fast. The controls, from the queue outwards:
+
+| Control | Limits | Note |
+|---|---|---|
+| **Maximum concurrency** on the SQS event source mapping | invocations driven by *this queue* | the right knob for SQS: the mapping stops polling at the cap, so excess messages simply wait in the queue |
+| **Reserved concurrency** on the function | *every* invocation of the function, from any source | also guarantees the function capacity in the account; but used alone with SQS, pollers still fetch messages, invocations get throttled, and throttled messages count towards `maxReceiveCount` — healthy messages drift into the DLQ |
+| **Batch size / window** | messages per invocation | concurrency × batch size is the messages in flight — 50 × 10 = 500 here, before duration and arrival rate decide the real throughput |
+| **Downstream** | the shared resource itself | RDS Proxy for connections, a job-submission queue or semaphore, one Spark job per batch or time window instead of per message, retries with exponential backoff and jitter |
+
+If both caps are set, keep the mapping's maximum concurrency **below** the function's reserved
+concurrency, so the mapping, not throttling, is what holds the line.
+
+**Watch:** `ConcurrentExecutions` and `Throttles` on the function, queue depth and age of the
+oldest message, and the downstream's own latency and submission rate. Rising queue age with flat
+concurrency means the cap is binding — raise it only if the downstream has headroom.
+
+---
+
+## 8) Laying Out Data in S3 ⭐⭐⭐⭐
+
+### 8-1) Hive-style partitioning and partition pruning ⭐⭐⭐⭐⭐
+
+**Partitioning is for the readers: a key in the path lets Spark, Athena and Glue skip every
+object outside the filter. Choose the keys from the queries that will run, in the order they
+filter.**
+
+```text
+s3://data-lake/curated/cluster_logs/
+    dt=2026-11-10/
+        cluster_id=cluster-a/
+            part-00000-....snappy.parquet      (~128 MB – 1 GB each)
+            part-00001-....snappy.parquet
+        cluster_id=cluster-b/
+            part-00000-....snappy.parquet
+    dt=2026-11-11/
+        ...
+```
+
+```sql
+-- sql — Athena / Spark SQL: the dt filter prunes every other day before a byte is read
+SELECT cluster_id,
+       COUNT(*) AS error_count
+FROM   curated.cluster_logs
+WHERE  dt = '2026-11-10'
+  AND  log_level = 'ERROR'
+GROUP  BY cluster_id;
+```
+
+- **Date first**, because almost every log query is bounded in time. One `dt=yyyy-MM-dd` key
+  is easier to filter on than `year=/month=/day=` (a range across a month boundary is one
+  comparison, not three).
+- **A second key only if queries filter on it and its cardinality is low** — `cluster_id`
+  with tens of values, yes; `request_id` or `user_id`, never.
+- **Hours** only when the data is big enough that an hour still makes large files, and queries
+  ask for hours.
+- Register partitions with **partition projection** or use **Iceberg** — see
+  [§5-3](#5-3-partitions-repair-add-or-project-) and
+  [§4-3](#4-3-hidden-partitioning-and-partition-evolution-).
+
+**Senior point:** S3 is object storage, not HDFS — a partition is just a key prefix. Pruning
+helps because the *engine* never lists or opens the skipped objects. Prefixes matter to S3
+itself only for request rates (about 3,500 writes and 5,500 reads per second per prefix), which
+is a different reason to spread keys.
+
+### 8-2) Cardinality, file size and the small-file problem ⭐⭐⭐⭐
+
+**Every partition key multiplies the number of directories; too many, and each holds a few
+tiny files. Small files cost on every read: more listings, more GET requests, more Spark tasks
+and more Parquet footers to open, for the same bytes.**
+
+| Lever | Practice |
+|---|---|
+| Format | **Parquet** (or ORC), compressed with Snappy or ZSTD — column pruning, predicate pushdown on row-group statistics, smaller scans |
+| Target file size | roughly **128 MB – 1 GB** per file |
+| Partitions | low-cardinality keys only; check the count per partition and the size per file |
+| Writing from Spark | `repartition` by the partition columns before `partitionBy`, so each task writes one file per partition instead of one per partition *per task*; `maxRecordsPerFile` as a ceiling |
+| Already small | a scheduled compaction job — or Iceberg's `rewrite_data_files` ([§4-5](#4-5-table-maintenance-)) |
+| Skew | one huge partition (a noisy cluster) and many tiny ones → salt or split the hot key, check the partition-size distribution |
+| Old data | S3 Lifecycle: raw to Standard-IA after 30 days, Glacier tiers after that, expire what the retention policy allows |
+
+```scala
+// scala — Spark: rebuild whole (dt, cluster_id) partitions, one sizeable file per task each
+logs
+  .repartition(col("dt"), col("cluster_id"))
+  .write
+  .mode("overwrite")
+  .option("partitionOverwriteMode", "dynamic")   // replace only the partitions present in logs
+  .option("maxRecordsPerFile", 5000000)
+  .partitionBy("dt", "cluster_id")
+  .parquet("s3://data-lake/curated/cluster_logs/")
+```
+
+- **Dynamic overwrite replaces every partition the write touches, whole.** Without it,
+  `overwrite` deletes the entire table first. With it, a re-run of one day is idempotent and
+  leaves the other days alone — **but only if `logs` holds the complete partition**. A later
+  partial batch for the same `(dt, cluster_id)` would wipe the rows earlier batches wrote. So
+  this shape is for a job that rebuilds whole partitions (the daily job reading the full day);
+  incremental batches append under batch-scoped keys ([§7-5](#7-5-duplicate-messages-and-idempotency-))
+  or `MERGE` into Iceberg.
+- **Check the committer.** On EMR, confirm the release's EMRFS S3-optimised committer supports
+  dynamic partition overwrite; where it does not, Spark falls back to a slower, rename-based
+  commit on S3.
+- **Hot keys cap the parallelism.** `repartition` by `(dt, cluster_id)` sends each pair to one
+  task, so a few huge pairs (a noisy cluster) are each written by a single task while the rest of
+  the cluster idles. Add a salt to the expression for those keys — e.g.
+  `repartition(col("dt"), col("cluster_id"), pmod(hash(col("request_id")), lit(8)))` — to split
+  them across tasks (a deterministic salt, not `rand()`, so a retried task regroups the same rows), and let compaction merge the extra files later.
+- **Not atomic on a plain S3 table** — a reader can see the partition mid-rewrite; Iceberg makes
+  it one commit.
+
+---
+
+## 9) Operating the Pipeline: CDK, Monitoring and Cost ⭐⭐⭐⭐
+
+### 9-1) Infrastructure as code with AWS CDK ⭐⭐⭐⭐
+
+**"Every bucket, queue, function, role and alarm is TypeScript in the repo, reviewed like code
+and deployed through the same pipeline to every environment. Nothing is clicked in the
+console, so dev, staging and prod differ only in the parameters we chose."**
+
+- **CDK** synthesises **CloudFormation**: `cdk synth` renders the template, `cdk diff` shows
+  what a change will do to the deployed stack, `cdk deploy` applies it.
+- **Constructs** are the unit of reuse — a `QueueWithDlq` or `IngestPipeline` construct
+  that bundles the queue, the DLQ, the consumer, its permissions and its alarms, so the next
+  pipeline cannot forget the DLQ.
+- **Environments** are stack parameters — names, concurrency caps, alarm thresholds, sizes —
+  not copies of the code.
+
+```typescript
+// typescript — AWS CDK v2: landing bucket → queue (+DLQ) → capped, batch-aware Lambda consumer
+import { Duration, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3n from 'aws-cdk-lib/aws-s3-notifications';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+
+export interface LogIngestProps extends StackProps {
+  maxConcurrency: number;          // per environment: small in dev, sized to the downstream in prod
+  maxQueueAgeSeconds: number;      // the freshness SLA, as an alarm threshold
+}
+
+export class LogIngestStack extends Stack {
+  constructor(scope: Construct, id: string, props: LogIngestProps) {
+    super(scope, id, props);
+
+    const lake = new s3.Bucket(this, 'Lake', {
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      enforceSSL: true,
+      removalPolicy: RemovalPolicy.RETAIN,           // deleting the stack never deletes the data
+    });
+
+    const functionTimeout = Duration.minutes(2);
+
+    const dlq = new sqs.Queue(this, 'IngestDlq', {
+      retentionPeriod: Duration.days(14),            // longer than the source: time to fix and replay
+    });
+    const queue = new sqs.Queue(this, 'IngestQueue', {
+      visibilityTimeout: Duration.seconds(730),      // 6 x the function timeout + the batching window
+      retentionPeriod: Duration.days(4),
+      deadLetterQueue: { queue: dlq, maxReceiveCount: 5 },
+    });
+    lake.addEventNotification(
+      s3.EventType.OBJECT_CREATED,
+      new s3n.SqsDestination(queue),
+      { prefix: 'landing/' },                       // producers write unique, never-overwritten keys
+    );
+
+    const consumer = new lambda.Function(this, 'Consumer', {
+      runtime: lambda.Runtime.PYTHON_3_12,
+      architecture: lambda.Architecture.ARM_64,
+      handler: 'consumer.handler',
+      code: lambda.Code.fromAsset('lambda/consumer'),
+      timeout: functionTimeout,
+      memorySize: 1769,                              // one full vCPU
+      environment: { LAKE_BUCKET: lake.bucketName },
+    });
+    lake.grantRead(consumer, 'landing/*');           // least privilege: only what it reads
+
+    consumer.addEventSource(new SqsEventSource(queue, {
+      batchSize: 50,
+      maxBatchingWindow: Duration.seconds(10),
+      reportBatchItemFailures: true,
+      maxConcurrency: props.maxConcurrency,
+    }));
+
+    new cloudwatch.Alarm(this, 'DlqNotEmpty', {
+      metric: dlq.metricApproximateNumberOfMessagesVisible(),
+      threshold: 0,
+      comparisonOperator: cloudwatch.ComparisonOperator.GREATER_THAN_THRESHOLD,
+      evaluationPeriods: 1,
+    });
+    new cloudwatch.Alarm(this, 'ConsumerFallingBehind', {
+      metric: queue.metricApproximateAgeOfOldestMessage(),
+      threshold: props.maxQueueAgeSeconds,
+      evaluationPeriods: 3,
+    });
+  }
+}
+```
+
+**Deployment:** pull request → unit tests (`aws-cdk-lib/assertions` can assert, say, that every
+queue has a redrive policy) → `cdk synth` and `cdk diff` posted on the review → deploy to
+staging → validate → deploy to prod.
+
+**Senior points:**
+
+- **An infrastructure deploy can destroy data.** Changing a resource's logical id or a
+  replacement-only property makes CloudFormation create a new one and delete the old — a
+  bucket or table goes with it. `RemovalPolicy.RETAIN` on stateful resources, and read the
+  `cdk diff` for `[-]` and *replace* before approving.
+- **A rollback restores the template, not the data**, and a stack stuck in
+  `UPDATE_ROLLBACK_FAILED` is its own incident.
+- **Least privilege comes cheap** with `grant*` methods; **no secrets in code** — Secrets
+  Manager or SSM Parameter Store; **tags** on every resource (`Tags.of(app).add(...)`) so cost
+  can be allocated.
+
+### 9-2) Monitoring pipeline health ⭐⭐⭐⭐⭐
+
+**"Green AWS metrics do not mean the data is right. I watch the infrastructure, but I alarm on
+the data: did it arrive on time, is it complete, and does it look right."**
+
+| Layer | Watch | It tells you |
+|---|---|---|
+| Ingestion | objects and bytes landed per hour, per source | a source went quiet, or doubled |
+| Queue | `ApproximateAgeOfOldestMessage`, visible messages, DLQ depth | the consumer is falling behind, or messages are failing |
+| Lambda | `Errors`, `Throttles`, `Duration` vs timeout, `ConcurrentExecutions` | the consumer is failing, capped, or outgrowing Lambda |
+| Spark | job duration, failed stages and executors, shuffle read/write, spill, task-time skew | the job is slowing down, and why |
+| Freshness | the latest complete partition, time of the last successful run | the data is late |
+| Completeness | row counts against the source or yesterday, every expected source present | the data is partial |
+| Quality | null rate on key fields, duplicate keys, parse-failure rate, schema drift | the data is wrong |
+
+- **Alarm on the SLA, not only on errors.** "Yesterday's logs are queryable by 08:00" is the
+  contract. If the job finishes at 08:45 with every service healthy, the pipeline has failed
+  its users — so alarm when the 08:00 partition is not complete, not when a job errors.
+- **End-to-end latency**: stamp `ingested_at` and `processed_at` on the records, and track the
+  p95 / p99 of the gap.
+- **Fewer, better alarms.** Page on SLA risk and the DLQ; send the rest to a dashboard. An
+  alarm nobody acts on trains people to ignore the one that matters.
+- **Gate the publish** on data-quality checks (Glue Data Quality, Deequ, Great Expectations), so
+  a bad day is held back rather than published and then explained.
+
+### 9-3) Watching the cost ⭐⭐⭐⭐
+
+**"At a terabyte a day, the bill is part of the design. I tag everything so it can be
+attributed, track cost per GB processed, and know which line each optimisation moves."**
+
+| Service | What drives the bill | The lever |
+|---|---|---|
+| S3 | stored GB, request count, transfer | Parquet + compression; fewer, bigger files; Lifecycle to IA / Glacier; expire what you may |
+| Lambda | requests + GB-seconds | batching, so fewer invocations; right-size memory; arm64 (Graviton) |
+| SQS | API requests (each up to 64 KB is one) | batched receive and delete — the event source mapping does this |
+| Spark on EMR / Glue | instance- or DPU-hours | right-size executors, fix skew and shuffle, Spot on EMR task nodes, transient clusters or Serverless instead of idle ones |
+| CloudWatch | log ingestion GB, retention, custom metrics | log level in prod, a retention period on every log group, no per-record logging |
+| Athena | bytes scanned | [§5-2](#5-2-the-cost-model-is-the-performance-model-) |
+
+- **Attribution:** **cost allocation tags** (activated in Billing) on every resource from the
+  CDK app; **Cost Explorer** by tag; **AWS Budgets** alerts; **Cost Anomaly Detection** for the
+  runaway loop or the request storm nobody expected.
+- **Unit cost** — cost per GB ingested, per day processed — is the number that stays
+  meaningful as volume grows. A total that doubles because volume doubled is fine; a cost per
+  GB that doubles is not.
+
+---
+
+## 10) Security and Governance ⭐⭐⭐⭐
 
 **Least-privilege IAM roles per job, encryption with KMS everywhere, private networking, and
 Lake Formation for who-sees-which-column.**
@@ -716,7 +1327,7 @@ Lake Formation for who-sees-which-column.**
 
 ---
 
-## 8) Worked Design: RDS Orders to an S3 Lakehouse ⭐⭐⭐⭐⭐
+## 11) Worked Design: RDS Orders to an S3 Lakehouse ⭐⭐⭐⭐⭐
 
 **Question**: *"Orders live in an Aurora PostgreSQL database. Analysts want yesterday's revenue
 by country in Athena every morning, and finance wants corrections and cancellations reflected.
@@ -759,9 +1370,9 @@ Failure modes worth naming unprompted:
 
 ---
 
-## 9) Interview Toolkit ⭐⭐⭐⭐⭐
+## 12) Interview Toolkit ⭐⭐⭐⭐⭐
 
-### 9-1) Quick Q → A
+### 12-1) Quick Q → A
 
 - **Q: What is the Glue Data Catalog?** — A managed Hive metastore shared by Athena, EMR, Glue
   and Redshift Spectrum; for Iceberg it stores only the pointer to the current metadata file.
@@ -785,8 +1396,24 @@ Failure modes worth naming unprompted:
   or read from a replica / snapshot export; never full scans of the primary.
 - **Q: What is the replication-slot trap?** — A stopped CDC consumer makes PostgreSQL retain WAL
   until storage fills.
+- **Q: Why not do everything in Lambda?** — 15 minutes, 10 GB, no shared state, no shuffle.
+  Lambda reacts to events and starts the job; Spark does the distributed work.
+- **Q: How long should the SQS visibility timeout be?** — At least six times the function
+  timeout plus the batching window, so a slow batch does not reappear and run twice.
+- **Q: How do you handle duplicate SQS messages?** — Assume them: a stable business key, a
+  claim with a DynamoDB conditional write, and an idempotent sink (`MERGE`, deterministic
+  paths).
+- **Q: What does `ReportBatchItemFailures` do?** — Retries only the failed messages of a
+  batch instead of the whole batch.
+- **Q: What `maxReceiveCount` for a Lambda consumer?** — At least 5, because throttles and
+  timeouts count as receives; and a DLQ retention longer than the source queue's.
+- **Q: Reserved concurrency or maximum concurrency?** — For an SQS trigger, the event source
+  mapping's maximum concurrency: excess messages wait in the queue instead of being throttled
+  into the DLQ.
+- **Q: How do you partition logs in S3?** — Date first, then a low-cardinality key the queries
+  filter on; Parquet files of 128 MB – 1 GB; compact the small ones.
 
-### 9-2) "Our Athena queries are slow and the bill doubled. What do you do?"
+### 12-2) "Our Athena queries are slow and the bill doubled. What do you do?"
 
 > "I would start from what Athena bills for, bytes scanned, because the cost and the latency
 > have the same cause.
@@ -805,7 +1432,51 @@ Failure modes worth naming unprompted:
 > scanned bytes. If a dashboard still runs the same heavy join all day, that workload belongs in
 > Redshift."
 
-### 9-3) Service cheat table
+### 12-3) "The pipeline took two hours at 1 TB a day; at 2 TB it takes five. Why?"
+
+> "Twice the data should take roughly twice the time, so the extra hour is the interesting part
+> — something stopped scaling linearly. I would walk the pipeline in order and look for where
+> the time went.
+>
+> First, the input: did the volume really double evenly, or did one source or one cluster grow,
+> which would point at skew? Then the queue: is the age of the oldest message climbing, and is
+> the consumer hitting its concurrency cap or throttling?
+>
+> Then the Spark job, in the Spark UI: which stage grew. A shuffle stage that grew more than the
+> input, a handful of tasks running far longer than the median, or spill to disk all say skew or
+> under-sized partitions; thousands of tiny input files say a small-file problem upstream; and a
+> long wait before the job starts says the cluster had no capacity.
+>
+> Then the dependencies: a slower database or API downstream holds everything behind it.
+>
+> The fix follows the cause — more partitions or a salted key for skew, compaction for small
+> files, a higher concurrency cap only if the downstream has room, or more executors when the
+> work genuinely scales out. And I would add the metric that would have caught it earlier:
+> duration per GB, alarmed on, rather than total duration."
+
+### 12-4) Answering "how did you …?" from your own pipeline
+
+These questions are about *your* system, and an interviewer probes what you say. Five rules:
+
+1. **Why before how.** Open with the decision and the constraint that drove it, not a list of
+   services.
+2. **Name the trade-off.** "Lambda was cheaper to run and simpler to operate, but it could
+   not do the aggregation, so that went to Spark."
+3. **Use real numbers, honestly.** 1 TB/day is a daily average — about 12 MB/s spread evenly —
+   not the peak; know which one you are quoting, and what the peak was.
+4. **Show production thinking unprompted:** retries, idempotency, the DLQ, monitoring, recovery,
+   cost.
+5. **Separate what you built from what you know.** To "how did you implement it?", describe
+   only what you did. Alternatives go under *"if I were to redesign it today, I would …"* — that
+   shows judgement without claiming work you did not do.
+
+If there is time for only three of them, rehearse **why Lambda and not Spark** ([§7-1](#7-1-why-lambda-and-spark-not-one-of-them-)),
+**duplicate messages** ([§7-5](#7-5-duplicate-messages-and-idempotency-)) and **S3
+partitioning** ([§8-1](#8-1-hive-style-partitioning-and-partition-pruning-)): each one also
+opens into a system-design discussion. Say each answer out loud in English in one to two
+minutes, and prepare the follow-up underneath it.
+
+### 12-5) Service cheat table
 
 | Say this | When asked about |
 |---|---|
@@ -818,3 +1489,10 @@ Failure modes worth naming unprompted:
 | "bytes scanned is the bill" | Athena performance and cost |
 | "availability vs read scale" | Multi-AZ vs read replicas |
 | "CDC from the log, not queries" | extracting from RDS |
+| "Lambda triggers, Spark computes" | Lambda vs Spark |
+| "at-least-once in, idempotent out" | duplicate SQS messages |
+| "visibility ≥ 6 × function timeout + batching window" | SQS + Lambda retries |
+| "size concurrency to the slowest downstream" | consumer concurrency |
+| "a DLQ isolates, it does not fix" | dead-letter queues |
+| "date first, low cardinality, big files" | S3 partitioning |
+| "alarm on the SLA, not only on errors" | pipeline monitoring |
