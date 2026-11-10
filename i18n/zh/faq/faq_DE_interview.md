@@ -1,14 +1,14 @@
-<!-- a07839365fff -->
+<!-- 41eb5cfbbd7f -->
 # 資料工程面試 FAQ
 
 > **範圍** — 資料工程師面試的高層次地圖與考前檢查清單：每個主題各列出你必須能說出口的幾個重點，並連到 `de/` 底下的深入解析，那裡才有機制、程式碼與追問題。
-> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) 與 [`de/aws_data.md`](./de/aws_data.md) —— 每個主題一份深入解析。
+> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md)、[`de/aws_data.md`](./de/aws_data.md)、[`de/data_performance.md`](./de/data_performance.md) 與 [`de/analytics.md`](./de/analytics.md) —— 每個主題一份深入解析。
 
 面試前一晚讀這份。底下任何一行如果你沒辦法在兩分鐘內講清楚，就打開那個主題的深入解析。
 
 ---
 
-<!-- f58268261401 -->
+<!-- 0a0a5028bec5 -->
 ## 1) 主題地圖 ⭐⭐⭐⭐⭐
 
 | 主題 | 權重 | 面試官真正在探的 | 深入解析 |
@@ -24,6 +24,8 @@
 | Apache Flink | ⭐⭐⭐⭐ | 大多數串流答案底下的那個引擎 —— state backend、checkpoint、搭配 Kafka 的 exactly-once | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | 選一個儲存並為取捨辯護 | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
 | AWS 資料服務 | ⭐⭐⭐⭐ | Glue vs EMR vs Athena、S3 上的 Iceberg、如何把資料從 RDS 取出、S3 → SQS → Lambda 資料攝取、CDK 與監控 | [`de/aws_data.md`](./de/aws_data.md) |
+| 儲存與處理效能 | ⭐⭐⭐⭐⭐ | 少讀、少搬、避免 Spark / 資料庫 / Trino 的 OOM、排序與壓實資料、讀與寫的取捨、SQL 改寫 | [`de/data_performance.md`](./de/data_performance.md) |
+| 分析 | ⭐⭐⭐⭐ | 精確的指標定義、不可加總的指標、A/B 測試的資料、找出指標變動的根因 | [`de/analytics.md`](./de/analytics.md) |
 
 ---
 
@@ -172,7 +174,7 @@
 
 ---
 
-<!-- 40c3427344e0 -->
+<!-- 847d46a3f7da -->
 ## 12) 考前檢查清單
 
 每個主題一行 —— 如果每一行你都能說出口，那一節就穩了。
@@ -187,3 +189,5 @@
 - **Stream** — 事件時間 + watermark、視窗類型、checkpoint、端到端 exactly-once
 - **SQL vs NoSQL** — ACID vs BASE、CAP/PACELC、各家族、查詢優先建模、「先用 Postgres」
 - **AWS** — 一個 Glue catalog 給所有引擎、Glue vs EMR、Iceberg commit = 交換指標、Athena 按掃描位元組計費、從 RDS 做 CDC + replication slot 陷阱
+- **Performance** — 先量測；剪枝 + 下推；先聚合再 join；不把無上限的東西集中到一個節點；排序 / Z-order + 壓實；`MERGE` 的來源先去重；每個索引都是寫入成本
+- **Analytics** — 定義分子 / 分母 / 時間窗 / 篩選條件；比率要用加總後相除，不是比率的平均；distinct count 不能相加；SRM 檢查；先問「資料對不對？」再講任何故事

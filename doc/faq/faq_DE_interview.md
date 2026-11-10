@@ -1,7 +1,7 @@
 # Data Engineering Interview FAQ
 
 > **Scope** — the high-level map of a data engineer interview and the last-minute checklist: for each topic, the handful of points you must be able to say out loud, and a link to the deep dive under `de/` that holds the mechanism, the code and the follow-up questions.
-> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) and [`de/aws_data.md`](./de/aws_data.md) — one deep dive per topic.
+> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md), [`de/aws_data.md`](./de/aws_data.md), [`de/data_performance.md`](./de/data_performance.md) and [`de/analytics.md`](./de/analytics.md) — one deep dive per topic.
 
 Read this file the night before. If any line below is something you cannot explain in two
 minutes, open that topic's deep dive.
@@ -23,6 +23,8 @@ minutes, open that topic's deep dive.
 | Apache Flink | ⭐⭐⭐⭐ | the engine under most streaming answers — state backends, checkpoints, exactly-once with Kafka | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | choosing a store and defending the trade-off | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
 | AWS data services | ⭐⭐⭐⭐ | Glue vs EMR vs Athena, Iceberg on S3, getting data out of RDS, S3 → SQS → Lambda ingestion, CDK and monitoring | [`de/aws_data.md`](./de/aws_data.md) |
+| Storage and processing performance | ⭐⭐⭐⭐⭐ | read less, move less, avoid OOM in Spark / databases / Trino, sort and compact data, read vs write trade-offs, SQL rewrites | [`de/data_performance.md`](./de/data_performance.md) |
+| Analytics | ⭐⭐⭐⭐ | precise metric definitions, non-additive metrics, A/B test data, root-causing a metric change | [`de/analytics.md`](./de/analytics.md) |
 
 ---
 
@@ -175,3 +177,5 @@ One line per topic — if you can say each of these out loud, the section is sol
 - **Stream** — event time + watermarks, window types, checkpoints, exactly-once end to end
 - **SQL vs NoSQL** — ACID vs BASE, CAP/PACELC, the families, query-first modeling, "start with Postgres"
 - **AWS** — one Glue catalog for every engine, Glue vs EMR, Iceberg commit = pointer swap, Athena bills bytes scanned, CDC out of RDS + the replication-slot trap
+- **Performance** — measure first; prune + push down; aggregate before join; nothing unbounded to one node; sort / Z-order + compact; `MERGE` on a deduplicated source; every index is a write cost
+- **Analytics** — define numerator / denominator / window / filters; ratio of sums, not average of ratios; distinct counts don't add; SRM check; "is the data right?" before any story
