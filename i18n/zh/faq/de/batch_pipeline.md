@@ -1,8 +1,8 @@
-<!-- 7f26d295f7f8 -->
+<!-- fb74e83190d9 -->
 # 批次資料管線
 
 > **範圍** —— 資料工程面試關於批次管線會問的一切：參考架構、ETL vs ELT、lake vs warehouse vs lakehouse、資料擷取模式、冪等性與回補、遲到資料、`MERGE`、用 Airflow 做編排、dbt、資料品質、檔案與表格格式、成本、故障處理、PII，以及一題完整的設計題。表格與分區設計在 schema 設計文件；串流在串流管線文件。
-> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單；[`./schema_design.md`](./schema_design.md)、[`./data_modeling.md`](./data_modeling.md)、[`./spark.md`](./spark.md)、[`./stream_pipeline.md`](./stream_pipeline.md)、[`./sql_for_data.md`](./sql_for_data.md)；以及較舊的 [`../faq_Airflow.md`](../faq_Airflow.md) 筆記。
+> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單；[`./schema_design.md`](./schema_design.md)、[`./data_modeling.md`](./data_modeling.md)、[`./spark.md`](./spark.md)、[`./stream_pipeline.md`](./stream_pipeline.md)、[`./sql_for_data.md`](./sql_for_data.md)；[`./aws_data.md`](./aws_data.md) —— 同一套架構在 AWS 上的做法（Glue、EMR、Athena、S3 上的 Iceberg）；以及較舊的 [`../faq_Airflow.md`](../faq_Airflow.md) 筆記。
 
 每個答案都先給你會說出口的那句話，再講機制，然後是面試官下一步會追問的取捨。
 
