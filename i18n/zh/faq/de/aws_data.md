@@ -592,7 +592,7 @@ invocation 一起打資料庫、API 或 Spark job 提交端 —— 見 [§7-7](#
 `ConcurrentExecutions`，以及每次 invocation `REPORT` 日誌行中的 *Max Memory Used*（或 Lambda
 Insights）。一個 duration 隨資料量成長而逐漸逼近 timeout 的函式，是在告訴你它已經長大到不適合 Lambda 了。
 
-<!-- 9a0d2dd43a79 -->
+<!-- d523d0c42db8 -->
 ### 7-4) 用 Lambda 消費 SQS ⭐⭐⭐⭐⭐
 
 **SQS 把生產者與處理端解耦。Lambda 的 event source mapping 替你輪詢佇列、以一個 batch 呼叫函式，
@@ -609,8 +609,9 @@ S3 event notification 有自己的形狀（一個 `Records` 陣列，含 `bucket
 
 **2. Visibility timeout。** 被接收的訊息只是對其他消費者隱藏，並沒有被刪除。函式成功時，mapping
 會刪除它；失敗時，它會在 visibility timeout 結束後重新出現並被重試。把它設為**至少是函式 timeout
-的六倍**（AWS 的建議），這樣一個慢的或被節流的 batch，不會在第一次嘗試還在執行時就重新出現、
-被執行兩次。
+的六倍，再加上 batching window**（`MaximumBatchingWindowInSeconds`）—— AWS 的建議 —— 這樣一個慢的或
+被節流的 batch，不會在第一次嘗試還在執行時就重新出現、被執行兩次。函式 120 秒、window 10 秒時，
+就是 6 × 120 + 10 = 730 秒。
 
 **3. Batch size 與 window。** 一次 invocation 可以拿多則訊息：
 
@@ -630,7 +631,7 @@ S3 event notification 有自己的形狀（一個 `Records` 陣列，含 `bucket
 `NumberOfMessagesDeleted`，以及函式的 `Errors` 與 `Duration`。age 持續增加，代表消費者或它下游的
 某個東西跟不上了。
 
-<!-- 12c9cbf6886c -->
+<!-- 09eb86f660f9 -->
 ### 7-5) 重複訊息與冪等性 ⭐⭐⭐⭐⭐
 
 **「Standard queue 是至少一次交付，S3 event notification 也可能重複，所以我假設每則訊息都可能抵達
@@ -641,6 +642,9 @@ S3 event notification 有自己的形狀（一個 `Records` 陣列，含 `bucket
 
 **1. 穩定的業務鍵。** 用生產者的 `event_id`（S3 事件則是 bucket + key + `versionId` /
 `sequencer`）去重 —— **不是** SQS 的 `messageId`，因為生產者每重送一次同樣的事件，它都會是新的。
+對 S3 事件而言，這只在每個輸入物件都落在**唯一、且永不被覆寫的 key** 下時才成立（檔名中帶 UUID 或
+生產者的序號）：同一個 key 被覆寫，看起來就像第一個物件的重複，新資料會被跳過 —— 或者，若讀得晚，
+第一個事件處理到的會是第二個物件的位元組。
 
 **2. 用條件寫入的認領帳本。** 「先檢查、再處理」有競態：兩個消費者可能都看到「尚未完成」。
 DynamoDB 的條件寫入只讓其中一個認領到該事件，而租約（lease）讓重試能接手一個在執行中途死掉的消費者：
@@ -649,12 +653,18 @@ DynamoDB 的條件寫入只讓其中一個認領到該事件，而租約（lease
 
 （Powertools for AWS Lambda 的 `idempotency` 工具就是這個模式。）
 
+**當 `run_pipeline` 只是提交一個 Spark job 時，`COMPLETED` 的意思是*已提交*，不是*已處理*。**
+提交被記錄後訊息就會被刪除，所以 job 本身的失敗不能靠這則訊息來重試。把 job 的 run id 存在認領紀錄上
+（`job_run_id`），讓排程器 —— Step Functions、Airflow，或 job 自己的重試策略 —— 盯著那次執行直到結束、
+重試它，並在它徹底失敗時告警。提交本身也要冪等：用從事件（或 batch）id 推導出的確定性 job 名稱或
+client token，讓重複的提交找到已經存在的那次執行。
+
 **3. 冪等的寫入端。** 帳本能減少重複，但無法消除重複，因為工作可能已經成功，而行程在寫入
 `COMPLETED` 之前就死了。所以輸出必須能安全地寫兩次：
 
 | 寫入端 | 冪等寫入 |
 |---|---|
-| S3 檔案 | 每個 batch 一個確定性路徑（`.../date=2026-11-10/batch_id=b-001/`），整批覆寫 —— 而且讀取端絕不能看到寫一半的結果 |
+| S3 檔案 | 從**穩定**的識別推導出的輸出 key —— 輸入物件的 key 或事件 id —— 讓重試覆寫第一次嘗試寫下的東西。重試可能把訊息重新分組到不同的 batch，所以以 batch 命名的路徑，只有在 batch 的成員先被固定下來時才是確定性的：在寫任何輸出之前先寫一份 batch manifest（batch id → 事件 id），重試時重播那份 manifest。不論哪一種，讀取端都絕不能看到寫一半的結果 |
 | Iceberg / Delta 表格 | 依業務鍵 `MERGE`，或在一次 commit 中替換該 batch 的 partition（[§4-2](#4-2-the-metadata-tree-and-the-commit-)） |
 | 資料庫 | 依唯一鍵 upsert |
 
@@ -739,7 +749,7 @@ DynamoDB 的條件寫入只讓其中一個認領到該事件，而租約（lease
 是因為*引擎*從不列出或開啟被跳過的物件。Prefix 對 S3 本身的意義只在請求速率（每個 prefix 每秒約
 3,500 次寫入與 5,500 次讀取），那是分散 key 的另一個理由。
 
-<!-- c8fc6042942e -->
+<!-- 3842609e6666 -->
 ### 8-2) 基數、檔案大小與小檔案問題 ⭐⭐⭐⭐
 
 **每多一個分區 key，目錄數就成倍增加；太多的話，每個目錄只裝著幾個小檔案。小檔案在每次讀取時都有
@@ -757,9 +767,19 @@ DynamoDB 的條件寫入只讓其中一個認領到該事件，而租約（lease
 
 <!--CODE-->
 
-搭配 `spark.sql.sources.partitionOverwriteMode=dynamic` 時，那個 `overwrite` 只替換 `logs` 中出現的
-分區，所以重跑某一天是冪等的，且不會動到其他天。在一般的 S3 表上，這個替換仍然不是原子的 ——
-讀取端可能看到重寫到一半的分區；Iceberg 讓它成為一次 commit。
+- **Dynamic overwrite 會整個替換這次寫入碰到的每個分區。** 沒有它，`overwrite` 會先刪掉整張表。有了它，
+  重跑某一天是冪等的，且不會動到其他天 —— **但前提是 `logs` 裝的是完整的分區**。之後同一個
+  `(dt, cluster_id)` 的部分 batch，會把先前 batch 寫入的列抹掉。所以這個形狀是給重建整個分區的 job
+  （讀取一整天的每日 job）用的；增量 batch 要寫在以 batch 為範圍的 key 下（[§7-5](#7-5-duplicate-messages-and-idempotency-)），
+  或 `MERGE` 進 Iceberg。
+- **檢查 committer。** 在 EMR 上，確認該版本的 EMRFS S3-optimised committer 支援 dynamic partition
+  overwrite；不支援時，Spark 會在 S3 上退回較慢、以 rename 為基礎的 commit。
+- **熱點 key 會限制平行度。** 依 `(dt, cluster_id)` 做 `repartition`，會把每一組送到同一個 task，所以少數幾組
+  巨大的（某個吵雜的叢集）各自只由一個 task 寫入，叢集其他部分則閒著。對這些 key 在運算式中加鹽 —— 例如
+  `repartition(col("dt"), col("cluster_id"), pmod(hash(col("request_id")), lit(8)))` —— 把它們分散到
+  多個 task（用確定性的鹽，而不是 `rand()`，這樣重試的 task 會把相同的列分到同一組），之後再讓 compaction
+  合併多出來的檔案。
+- **在一般的 S3 表上不是原子的** —— 讀取端可能看到重寫到一半的分區；Iceberg 讓它成為一次 commit。
 
 <!-- c32ee5c96929 -->
 ## 9) 管線維運：CDK、監控與成本 ⭐⭐⭐⭐
@@ -889,7 +909,7 @@ redrive policy）→ 把 `cdk synth` 與 `cdk diff` 貼在 review 上 → 部署
 <!-- 493399db1ea7 -->
 ## 12) 面試工具箱 ⭐⭐⭐⭐⭐
 
-<!-- 8a5e5dfc9622 -->
+<!-- 720207f0193a -->
 ### 12-1) 快問快答
 
 - **Q：Glue Data Catalog 是什麼？** —— 一個由 Athena、EMR、Glue 與 Redshift Spectrum 共用的
@@ -914,7 +934,7 @@ redrive policy）→ 把 `cdk synth` 與 `cdk diff` 貼在 review 上 → 部署
   直到儲存空間滿。
 - **Q：為什麼不全部用 Lambda？** —— 15 分鐘、10 GB、沒有共享狀態、沒有 shuffle。Lambda 對事件做出
   反應並啟動 job；分散式的工作由 Spark 做。
-- **Q：SQS 的 visibility timeout 該設多長？** —— 至少是函式 timeout 的六倍，這樣慢的 batch 不會
+- **Q：SQS 的 visibility timeout 該設多長？** —— 至少是函式 timeout 的六倍再加上 batching window，這樣慢的 batch 不會
   重新出現、被執行兩次。
 - **Q：怎麼處理重複的 SQS 訊息？** —— 假設它一定會發生：穩定的業務鍵、用 DynamoDB 條件寫入認領，
   以及冪等的寫入端（`MERGE`、確定性路徑）。
@@ -980,7 +1000,7 @@ redrive policy）→ 把 `cdk synth` 與 `cdk diff` 貼在 review 上 → 部署
 （[§8-1](#8-1-hive-style-partitioning-and-partition-pruning-)）：每一題都能延伸成系統設計討論。
 把每個答案用英文大聲說出來，控制在一到兩分鐘，並準備好它底下的追問。
 
-<!-- a6b531ba3167 -->
+<!-- e5da502cb0fb -->
 ### 12-5) 服務速查表
 
 | 這樣說 | 當被問到 |
@@ -996,7 +1016,7 @@ redrive policy）→ 把 `cdk synth` 與 `cdk diff` 貼在 review 上 → 部署
 | 「從日誌做 CDC，不要用查詢」 | 從 RDS 擷取資料 |
 | 「Lambda 觸發，Spark 計算」 | Lambda vs Spark |
 | 「進來是至少一次，出去是冪等」 | 重複的 SQS 訊息 |
-| 「visibility ≥ 6 × 函式 timeout」 | SQS + Lambda 的重試 |
+| 「visibility ≥ 6 × 函式 timeout + batching window」 | SQS + Lambda 的重試 |
 | 「依最慢的下游決定 concurrency」 | 消費者 concurrency |
 | 「DLQ 隔離問題，不修好問題」 | Dead-letter queue |
 | 「日期優先、低基數、大檔案」 | S3 分區 |

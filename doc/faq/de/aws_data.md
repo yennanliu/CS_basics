@@ -843,9 +843,10 @@ S3 event notifications have their own shape (a `Records` array with `bucket`, `k
 
 **2. Visibility timeout.** A received message is hidden from other consumers, not deleted. If
 the function succeeds, the mapping deletes it; if not, it reappears when the visibility timeout
-ends and is retried. Set it to **at least six times the function timeout** (AWS's guidance),
-so a slow or throttled batch does not reappear and run twice while the first attempt is still
-going.
+ends and is retried. Set it to **at least six times the function timeout, plus the batching
+window** (`MaximumBatchingWindowInSeconds`) — AWS's guidance — so a slow or throttled batch does
+not reappear and run twice while the first attempt is still going. With a 120-second function
+and a 10-second window, that is 6 × 120 + 10 = 730 seconds.
 
 **3. Batch size and window.** One invocation can take many messages:
 
@@ -865,7 +866,7 @@ def handler(event, context):
     failures = []
     for record in event["Records"]:
         try:
-            process_record(record)       # see §7-5: must be safe to run twice
+            process_record(record)       # §7-5: parses the body; must be safe to run twice
         except Exception:
             # only this message returns to the queue; the rest of the batch is deleted
             failures.append({"itemIdentifier": record["messageId"]})
@@ -889,7 +890,10 @@ handle them:
 
 **1. A stable business key.** Dedupe on the producer's `event_id` (or, for S3 events, bucket +
 key + `versionId` / `sequencer`) — **not** SQS's `messageId`, which is new each time a producer
-re-sends the same event.
+re-sends the same event. For S3 events that only works if every input object lands under a
+**unique key that is never overwritten** (a UUID or the producer's sequence in the name): an
+overwrite under the same key looks like a duplicate of the first object, and the new data is
+skipped — or, read late, the first event processes the second object's bytes.
 
 **2. A claim ledger with a conditional write.** "Check, then process" is a race: two consumers
 can both see "not done". A DynamoDB conditional write lets exactly one of them claim the event,
@@ -897,6 +901,7 @@ and a lease lets a retry take over from a consumer that died mid-run:
 
 ```python
 # python — claim an event exactly once with a DynamoDB conditional write
+import json
 import time
 
 import boto3
@@ -904,7 +909,8 @@ from botocore.exceptions import ClientError
 
 dynamodb = boto3.client("dynamodb")
 TABLE = "ingest_claims"           # partition key: event_id; TTL attribute: expires_at
-LEASE_SECONDS = 15 * 60           # longer than the function timeout
+LEASE_SECONDS = 3 * 60            # a little over the function timeout (2 min), so a dead
+                                  # holder's claim frees up well before the retries run out
 TTL_SECONDS = 14 * 24 * 3600      # longer than queue + DLQ retention, so a replay is still caught
 
 
@@ -936,7 +942,8 @@ def try_claim(event_id):
         return "DONE" if existing.get("status", {}).get("S") == "COMPLETED" else "BUSY"
 
 
-def process_record(record, body, run_pipeline):
+def process_record(record):
+    body = json.loads(record["body"])
     event_id = body["event_id"]
     state = try_claim(event_id)
     if state == "DONE":
@@ -944,7 +951,8 @@ def process_record(record, body, run_pipeline):
     if state == "BUSY":
         raise RuntimeError(f"{event_id} is being processed elsewhere")   # retry later
     try:
-        run_pipeline(body)                        # the real work, itself idempotent (layer 3)
+        run_pipeline(body)                        # the real work, itself idempotent (layer 3);
+                                                  # defined elsewhere in the function
     except Exception:
         # release the claim so the retry can take it at once
         dynamodb.delete_item(TableName=TABLE, Key={"event_id": {"S": event_id}})
@@ -960,13 +968,21 @@ def process_record(record, body, run_pipeline):
 
 (Powertools for AWS Lambda ships this pattern as its `idempotency` utility.)
 
+**When `run_pipeline` only submits a Spark job, `COMPLETED` means *submitted*, not *processed*.**
+The message is deleted once the submission is recorded, so the job's own failure must not depend
+on the message to be retried. Store the job's run id on the claim (`job_run_id`), and let the
+orchestrator — Step Functions, Airflow, or the job's own retry policy — watch that run to the end,
+retry it, and alarm when it fails for good. Make the submission itself idempotent too: a
+deterministic job name or client token derived from the event (or batch) id, so a duplicate
+submit finds the run that already exists.
+
 **3. An idempotent sink.** The ledger cuts duplicates; it cannot remove them, because the work
 can succeed and the process die before `COMPLETED` is written. So the output must be safe to
 write twice:
 
 | Sink | Idempotent write |
 |---|---|
-| S3 files | a deterministic path per batch (`.../date=2026-11-10/batch_id=b-001/`), overwritten as a whole — and a reader must never see half of it |
+| S3 files | an output key derived from a **stable** identity — the input object's key, or the event id — so a retry overwrites what the first attempt wrote. A retry can regroup messages into a different batch, so a path named after the batch is deterministic only if the batch's membership is pinned first: write a batch manifest (batch id → event ids) before any output, and have a retry replay that manifest. Either way a reader must never see half of it |
 | Iceberg / Delta table | `MERGE` on the business key, or replace the batch's partition in one commit ([§4-2](#4-2-the-metadata-tree-and-the-commit-)) |
 | Database | upsert on a unique key |
 
@@ -1106,20 +1122,34 @@ and more Parquet footers to open, for the same bytes.**
 | Old data | S3 Lifecycle: raw to Standard-IA after 30 days, Glacier tiers after that, expire what the retention policy allows |
 
 ```scala
-// scala — Spark: one sizeable file per (dt, cluster_id) instead of one per task per partition
+// scala — Spark: rebuild whole (dt, cluster_id) partitions, one sizeable file per task each
 logs
   .repartition(col("dt"), col("cluster_id"))
   .write
   .mode("overwrite")
+  .option("partitionOverwriteMode", "dynamic")   // replace only the partitions present in logs
   .option("maxRecordsPerFile", 5000000)
   .partitionBy("dt", "cluster_id")
   .parquet("s3://data-lake/curated/cluster_logs/")
 ```
 
-With `spark.sql.sources.partitionOverwriteMode=dynamic`, that `overwrite` replaces only the
-partitions present in `logs`, so a re-run of one day is idempotent and leaves the other days
-alone. On a plain S3 table the replacement is still not atomic — a reader can see the
-partition mid-rewrite; Iceberg makes it one commit.
+- **Dynamic overwrite replaces every partition the write touches, whole.** Without it,
+  `overwrite` deletes the entire table first. With it, a re-run of one day is idempotent and
+  leaves the other days alone — **but only if `logs` holds the complete partition**. A later
+  partial batch for the same `(dt, cluster_id)` would wipe the rows earlier batches wrote. So
+  this shape is for a job that rebuilds whole partitions (the daily job reading the full day);
+  incremental batches append under batch-scoped keys ([§7-5](#7-5-duplicate-messages-and-idempotency-))
+  or `MERGE` into Iceberg.
+- **Check the committer.** On EMR, confirm the release's EMRFS S3-optimised committer supports
+  dynamic partition overwrite; where it does not, Spark falls back to a slower, rename-based
+  commit on S3.
+- **Hot keys cap the parallelism.** `repartition` by `(dt, cluster_id)` sends each pair to one
+  task, so a few huge pairs (a noisy cluster) are each written by a single task while the rest of
+  the cluster idles. Add a salt to the expression for those keys — e.g.
+  `repartition(col("dt"), col("cluster_id"), pmod(hash(col("request_id")), lit(8)))` — to split
+  them across tasks (a deterministic salt, not `rand()`, so a retried task regroups the same rows), and let compaction merge the extra files later.
+- **Not atomic on a plain S3 table** — a reader can see the partition mid-rewrite; Iceberg makes
+  it one commit.
 
 ---
 
@@ -1172,14 +1202,14 @@ export class LogIngestStack extends Stack {
       retentionPeriod: Duration.days(14),            // longer than the source: time to fix and replay
     });
     const queue = new sqs.Queue(this, 'IngestQueue', {
-      visibilityTimeout: Duration.minutes(12),       // 6 x the function timeout
+      visibilityTimeout: Duration.seconds(730),      // 6 x the function timeout + the batching window
       retentionPeriod: Duration.days(4),
       deadLetterQueue: { queue: dlq, maxReceiveCount: 5 },
     });
     lake.addEventNotification(
       s3.EventType.OBJECT_CREATED,
       new s3n.SqsDestination(queue),
-      { prefix: 'landing/' },
+      { prefix: 'landing/' },                       // producers write unique, never-overwritten keys
     );
 
     const consumer = new lambda.Function(this, 'Consumer', {
@@ -1369,7 +1399,7 @@ Failure modes worth naming unprompted:
 - **Q: Why not do everything in Lambda?** — 15 minutes, 10 GB, no shared state, no shuffle.
   Lambda reacts to events and starts the job; Spark does the distributed work.
 - **Q: How long should the SQS visibility timeout be?** — At least six times the function
-  timeout, so a slow batch does not reappear and run twice.
+  timeout plus the batching window, so a slow batch does not reappear and run twice.
 - **Q: How do you handle duplicate SQS messages?** — Assume them: a stable business key, a
   claim with a DynamoDB conditional write, and an idempotent sink (`MERGE`, deterministic
   paths).
@@ -1461,7 +1491,7 @@ minutes, and prepare the follow-up underneath it.
 | "CDC from the log, not queries" | extracting from RDS |
 | "Lambda triggers, Spark computes" | Lambda vs Spark |
 | "at-least-once in, idempotent out" | duplicate SQS messages |
-| "visibility ≥ 6 × function timeout" | SQS + Lambda retries |
+| "visibility ≥ 6 × function timeout + batching window" | SQS + Lambda retries |
 | "size concurrency to the slowest downstream" | consumer concurrency |
 | "a DLQ isolates, it does not fix" | dead-letter queues |
 | "date first, low cardinality, big files" | S3 partitioning |
