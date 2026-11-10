@@ -323,10 +323,16 @@ The planner expected 10,000 rows and got 2,000,000 — 200 times more. Typical c
 - it puts the "small" input on the wrong side of a join.
 
 A quick way to rank nodes is the **error factor**: the larger of estimated and actual rows
-divided by the smaller (counting 0 as 1). Remember to multiply actual rows by `loops` first.
-Factors under about 10× are normal; 100× or more on a node with expensive parents is worth
-investigating. Always look at the **lowest** node with a big mismatch — the errors above it
-are usually inherited from it.
+divided by the smaller (counting 0 as 1). Compare the numbers as printed: the estimate and the
+actual count are **both per loop**, so an inner node estimated at `rows=1` that shows
+`rows=1 loops=1000` is estimated correctly. Multiply by `loops` only to get the node's total
+work. Factors under about 10× are normal; 100× or more on a node with expensive parents is
+worth investigating.
+
+One exception before blaming statistics: a node that was **stopped early** reports fewer actual
+rows than estimated by design — the child of a `Limit`, or a Merge Join input left unread once
+the other input ran out. That mismatch is not a bad estimate. Otherwise, always look at the
+**lowest** node with a big mismatch — the errors above it are usually inherited from it.
 
 ### 4-2) Causes and fixes
 
@@ -481,10 +487,12 @@ actual time and the `temp read` / `temp written` counts.
 | filter earlier, select fewer columns | less data reaches the sort or hash, and narrower rows fit more per MB |
 | drop an `ORDER BY` nobody needs; add the `LIMIT` they do | removes the sort, or turns it into a top-N heapsort |
 | fix the estimate (§4) | the planner may choose a different join or size the hash correctly |
-| `SET work_mem = '256MB';` for this session or transaction | more memory for this query only |
+| `SET LOCAL work_mem = '256MB';` inside the query's transaction | more memory for this query only; reverts at commit or rollback |
 | pre-aggregate, or process in batches | each step handles less data |
 
-Raise `work_mem` **per session**, not globally: the limit applies to **each** sort and hash
+Raise `work_mem` **per transaction**, not globally. A plain `SET` lasts for the rest of the
+session — on a pooled connection it leaks into whoever borrows that connection next — so use
+`SET LOCAL`, or `RESET work_mem` afterwards. And the limit applies to **each** sort and hash
 node in **each** query, and parallel workers each get their own. A query with five hash nodes
 and four workers can use twenty times the setting. And if the real cause is reading a billion
 rows you do not need, more memory just makes the wrong plan finish slightly sooner.
@@ -597,7 +605,7 @@ an index on `order_date` may well lose to the Seq Scan — measure it. A coverin
 `(order_date) INCLUDE (user_id, amount)` makes an Index Only Scan possible.
 
 **B — shrink the hash build.** The planner hashes `users` because it is the smaller input; it
-only needs `user_id` and `country`, and raising `work_mem` for this session may bring
+only needs `user_id` and `country`, and raising `work_mem` for this transaction (`SET LOCAL`) may bring
 `Batches` down to 1.
 
 **C — aggregate before joining.** Collapse 20M orders to one row per user first, so the join
@@ -621,7 +629,7 @@ The plan, not intuition, decides.
 
 ### 8-4) Proving the fix
 
-Change one thing, re-run `EXPLAIN (ANALYZE, BUFFERS)`, and compare:
+Change one thing, re-run `EXPLAIN (ANALYZE, BUFFERS)`, and compare the plans:
 
 | Measure | Before | Goal |
 |---|---|---|
@@ -629,9 +637,13 @@ Change one thing, re-run `EXPLAIN (ANALYZE, BUFFERS)`, and compare:
 | rows read from `orders` | 100M | lower |
 | `Hash` batches | 32 | 1, or fewer |
 | `temp written` | high | near zero |
-| result | 20 rows | **identical** |
+| result | 20 rows | **identical**, checked separately |
 
-The result must match exactly. A faster query with a different answer is a bug.
+The result must match exactly, and `EXPLAIN ANALYZE` cannot prove it: it throws the query's
+output away, so its row count shows only that both versions return 20 rows, not that the 20
+revenue figures agree. Run both queries against the same data snapshot (one `REPEATABLE READ`
+transaction, or a frozen copy) and diff the result rows — `EXCEPT` in both directions should
+return nothing. A faster query with a different answer is a bug.
 
 ---
 
