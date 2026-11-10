@@ -395,7 +395,7 @@ compaction 還會恢復讓跳過機制有效的佈局。**
 小檔案及其成因在管線中的視角見
 [`./batch_pipeline.md` §7-4](./batch_pipeline.md#7-4-the-small-files-problem-and-compaction)。
 
-<!-- 9c43969f1112 -->
+<!-- 445ef5c4ec8d -->
 ### 5-4) 合併資料集：`MERGE`、copy-on-write 與 merge-on-read
 
 **`MERGE` 把一批變更 upsert 進資料表；在 lakehouse 中，copy-on-write（寫時複製）會改寫變更碰到的
@@ -419,7 +419,7 @@ compaction 還會恢復讓跳過機制有效的佈局。**
   都不是 null —— `NULL` 永遠不會比較為較大 —— 所以來源端會先排除沒有時間戳的列（送進隔離表，
   而不是直接丟掉）。
 - 可以的話，把**分區欄位加進 `ON` 子句**（`AND t.event_date = s.event_date`），讓引擎 prune
-  目標檔案，而不是掃描整張表 —— 但前提是該欄位對同一個 key **永遠不會改變**。如果某列的
+  目標檔案，而不是掃描整張表 —— 但前提是該欄位對同一個 key **永遠不會改變**，而且**永遠不是 `NULL`**（`NULL = NULL` 不為真，所以兩個 `NULL` 日期不會相符 —— 若可能出現 `NULL`，改用 `IS NOT DISTINCT FROM` 這類 null-safe 比較）。如果某列的
   `event_date` 會變動，舊的那列就不再相符，`WHEN NOT MATCHED` 會插入一筆重複資料。
 
 <!-- d914c3cd6e85 -->
@@ -543,7 +543,7 @@ B-tree 與 LSM 的背景知識，以及三種放大，見
 <!-- 5db0ad8c9d61 -->
 ## 7) 讓查詢變快的 SQL 改寫 ⭐⭐⭐⭐⭐
 
-<!-- ada664609f97 -->
+<!-- a01ace4e6d11 -->
 ### 7-1) 改寫對照表
 
 **大多數慢 SQL 的修正方式，是給 optimizer 一個它用得上的 predicate、在昂貴的步驟之前先減少
@@ -553,7 +553,7 @@ B-tree 與 LSM 的背景知識，以及三種放大，見
 |---|---|---|
 | `WHERE DATE(created_at) = '2026-11-01'` | `WHERE created_at >= '2026-11-01' AND created_at < '2026-11-02'` | sargable：能用上索引或 partition pruning |
 | 回傳大量重複的 `WHERE id IN (SELECT …)`，或先 `JOIN` 再 `DISTINCT` | `WHERE EXISTS (SELECT 1 …)` | semi-join 在第一個符合就停，而且從不放大列數 |
-| `WHERE id NOT IN (SELECT col …)` | `WHERE NOT EXISTS (…)` | 會規劃成 anti-join —— 但 `col` 含 `NULL` 時兩者**並不等價**：`NOT IN` 會回傳零列，`NOT EXISTS` 會回傳沒有對應的列（通常才是本意） |
+| `WHERE id NOT IN (SELECT col …)` | `WHERE NOT EXISTS (…)` | 會規劃成 anti-join —— 但**只有在 `id` 與 `col` 都不是 null 時兩者才等價**：`col` 含 `NULL` 時，`NOT IN` 會回傳零列，`NOT EXISTS` 會回傳沒有對應的列（通常才是本意）；`id` 為 `NULL` 的列會被 `NOT IN` 排除，卻會被 `NOT EXISTS` 保留 |
 | 先 join 明細，再 `GROUP BY` | 先對明細 `GROUP BY`，再 join | 抵達 join 的列數更少 |
 | `UNION` | 各部分不可能重疊時用 `UNION ALL` | 沒有去重用的 sort 或 hash |
 | `SELECT *` | 你會用到的欄位 | columnar 引擎只讀那些欄；covering index 成為可能 |

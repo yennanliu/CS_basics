@@ -505,7 +505,9 @@ WHEN NOT MATCHED THEN
   the source drops rows without one (route them to a quarantine table, not the bin).
 - Add the **partition column to the `ON` clause** when you can (`AND t.event_date = s.event_date`)
   so the engine prunes target files instead of scanning the whole table — but only when that
-  column **never changes** for a key. If a row's `event_date` can move, the old row no longer
+  column **never changes** for a key and is **never `NULL`** (`NULL = NULL` is not true, so
+  two `NULL` dates do not match — use a null-safe comparison such as `IS NOT DISTINCT FROM` if
+  `NULL`s are possible). If a row's `event_date` can move, the old row no longer
   matches and `WHEN NOT MATCHED` inserts a duplicate.
 
 ### 5-5) Merging sorted data at scale: external merge sort
@@ -661,7 +663,7 @@ an expensive step, or asking for less than the query currently asks for.**
 |---|---|---|
 | `WHERE DATE(created_at) = '2026-11-01'` | `WHERE created_at >= '2026-11-01' AND created_at < '2026-11-02'` | sargable: the index or partition pruning can be used |
 | `WHERE id IN (SELECT …)` that returns many duplicates, or a `JOIN` then `DISTINCT` | `WHERE EXISTS (SELECT 1 …)` | a semi-join stops at the first match and never multiplies rows |
-| `WHERE id NOT IN (SELECT col …)` | `WHERE NOT EXISTS (…)` | planned as an anti-join — but **not equivalent** when `col` has `NULL`s: `NOT IN` then returns no rows, `NOT EXISTS` returns the unmatched ones (usually what was meant) |
+| `WHERE id NOT IN (SELECT col …)` | `WHERE NOT EXISTS (…)` | planned as an anti-join — but **equivalent only when both `id` and `col` are non-null**: with a `NULL` in `col`, `NOT IN` returns no rows while `NOT EXISTS` returns the unmatched ones (usually what was meant); a `NULL` `id` is dropped by `NOT IN` but kept by `NOT EXISTS` |
 | join detail, then `GROUP BY` | `GROUP BY` the detail first, then join | fewer rows reach the join |
 | `UNION` | `UNION ALL` when the parts cannot overlap | no deduplicating sort or hash |
 | `SELECT *` | the columns you use | columnar engines read only those; covering indexes become possible |
@@ -734,11 +736,12 @@ columns `NOT NULL` or `COALESCE` them in both the `ORDER BY` and the predicate. 
 at once and leaves a vacuum backlog; deleting in bounded chunks keeps each transaction short.**
 
 ```sql
--- PostgreSQL: delete in batches of 10 000 by primary key; repeat until it affects 0 rows.
--- (Not by ctid: on a partitioned table two partitions can share a ctid.)
+-- PostgreSQL: delete in batches of 10 000 by the full primary key; repeat until it affects 0 rows.
+-- (Not by ctid: on a partitioned table two partitions can share a ctid. And the key of a table
+--  partitioned by event_date must include event_date, so match (event_date, event_id), not event_id.)
 DELETE FROM events
-WHERE  event_id IN (
-  SELECT event_id
+WHERE  (event_date, event_id) IN (
+  SELECT event_date, event_id
   FROM   events
   WHERE  event_date < DATE '2025-01-01'
   LIMIT  10000

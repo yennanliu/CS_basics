@@ -297,7 +297,10 @@ print(assign_variant("user_42", "checkout_v2"))   # stable on every call
   across variants. If the variant changes who reaches the screen, analyse by assignment.
 - **Randomisation unit = analysis unit**: randomise by user, then compute one value per user.
   Treating each page view as independent when users were randomised overstates significance.
-- Metrics start **at exposure time**; events before it cannot have been caused by the variant.
+- Metrics start at a **common start time** for everyone in the analysis: **assignment time**
+  for an assignment analysis — every assigned user, including those never exposed, who count
+  with zero activity — or the **trigger time** (logged in both groups) for a triggered one.
+  Events before that cannot have been caused by the variant.
 
 ### 4-3) Sample ratio mismatch
 
