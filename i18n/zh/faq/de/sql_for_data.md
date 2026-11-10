@@ -1,8 +1,8 @@
-<!-- 1e78c607a9cf -->
+<!-- a434f340dd0b -->
 # 資料工程用 SQL
 
 > **範圍** —— 資料工程面試所考的分析型 SQL：查詢如何被求值、join 與其演算法、NULL 語意、彙總、window function、CTE 與遞迴、經典面試查詢題型、MERGE 與 upsert、日期與時區、查詢效能，以及 PostgreSQL、BigQuery、Snowflake、Spark SQL 之間的方言差異。資料表設計歸 [schema_design.md](./schema_design.md)；選哪種資料庫歸 [sql_vs_nosql.md](./sql_vs_nosql.md)。
-> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單；[`./data_modeling.md`](./data_modeling.md) —— 這些查詢所跑的星型模型；[`./spark.md`](./spark.md) —— Spark SQL 如何執行它們；[`../sql/faq_sql.md`](../sql/faq_sql.md) —— 較舊、較長的 SQL 筆記。
+> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單；[`./data_modeling.md`](./data_modeling.md) —— 這些查詢所跑的星型模型；[`./spark.md`](./spark.md) —— Spark SQL 如何執行它們；[`./sql_explain.md`](./sql_explain.md) —— 深入讀懂查詢計畫；[`../sql/faq_sql.md`](../sql/faq_sql.md) —— 較舊、較長的 SQL 筆記。
 
 除非 code block 的第一行寫了別的方言，否則每個查詢都是 **PostgreSQL**。每一節都先給你會說出口的那句話，
 再講機制，最後是面試官接著會問的取捨。
@@ -732,7 +732,7 @@ Tokyo 變更發生在 2 月 1 日，卻在 3 月 5 日才抵達 pipeline，比 K
 - BigQuery 依掃描的 bytes 計費，所以對一般的表掃描，`LIMIT` 不會降低成本 ——
   `SELECT * … LIMIT 10` 仍然會讀取每一個被選的欄位。
 
-<!-- bd7492f13251 -->
+<!-- 2f92b7bf3c3a -->
 ### 10-3) 讀懂 `EXPLAIN`
 
 **`EXPLAIN` 顯示最佳化器選擇的計畫；`EXPLAIN ANALYZE` 會真的執行查詢，並加上實際列數與時間 ——
@@ -749,6 +749,9 @@ Tokyo 變更發生在 2 月 1 日，卻在 3 月 5 日才抵達 pipeline，比 K
 - **Sort / Hash spill 到磁碟**（`external merge`、`Batches: > 1`）—— `work_mem` 太小，
   或到達該節點的資料太多。
 - 在資料倉儲或 Spark 的計畫裡：shuffle 最多 bytes 的 stage，以及 join 是 broadcast 還是 shuffle。
+
+完整的解說 —— 節點類型、loops、spill、buffers 與一個完整的診斷範例 —— 在
+[`./sql_explain.md`](./sql_explain.md)。
 
 <!-- a482049bf96a -->
 ### 10-4) 傾斜與超大型 join
