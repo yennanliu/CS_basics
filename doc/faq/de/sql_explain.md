@@ -323,16 +323,23 @@ The planner expected 10,000 rows and got 2,000,000 — 200 times more. Typical c
 - it puts the "small" input on the wrong side of a join.
 
 A quick way to rank nodes is the **error factor**: the larger of estimated and actual rows
-divided by the smaller (counting 0 as 1). Compare the numbers as printed: the estimate and the
-actual count are **both per loop**, so an inner node estimated at `rows=1` that shows
-`rows=1 loops=1000` is estimated correctly. Multiply by `loops` only to get the node's total
-work. Factors under about 10× are normal; 100× or more on a node with expensive parents is
-worth investigating.
+divided by the smaller (counting 0 as 1). Factors under about 10× are normal; 100× or more on
+a node with expensive parents is worth investigating. Three things keep the comparison honest:
 
-One exception before blaming statistics: a node that was **stopped early** reports fewer actual
-rows than estimated by design — the child of a `Limit`, or a Merge Join input left unread once
-the other input ran out. That mismatch is not a bad estimate. Otherwise, always look at the
-**lowest** node with a big mismatch — the errors above it are usually inherited from it.
+- **Compare per loop.** The estimate and the actual count are **both per loop**, so an inner node
+  estimated at `rows=1` that shows `rows=1 loops=1000` is estimated correctly. Actual rows ×
+  `loops` is the node's total **output**, not its work — a scan can output nothing and still
+  read the whole table; its time and buffer counts show the work.
+- **A displayed 0 may be rounded.** PostgreSQL 17 and earlier round actual rows per loop to a
+  whole number, so 10,000 rows over a million loops prints as `rows=0`, and the exact factor
+  cannot be recovered. PostgreSQL 18 prints two decimals.
+- **A node stopped early reads low.** The child of a `Limit`, or a Merge Join input left unread
+  once the other input ran out, can report fewer rows than estimated even when the estimate is
+  right. A low count there may be early termination rather than bad statistics — check before
+  blaming either.
+
+Then look at the **lowest** node with a big mismatch — the errors above it are usually
+inherited from it.
 
 ### 4-2) Causes and fixes
 
@@ -487,12 +494,13 @@ actual time and the `temp read` / `temp written` counts.
 | filter earlier, select fewer columns | less data reaches the sort or hash, and narrower rows fit more per MB |
 | drop an `ORDER BY` nobody needs; add the `LIMIT` they do | removes the sort, or turns it into a top-N heapsort |
 | fix the estimate (§4) | the planner may choose a different join or size the hash correctly |
-| `SET LOCAL work_mem = '256MB';` inside the query's transaction | more memory for this query only; reverts at commit or rollback |
+| `SET LOCAL work_mem = '256MB';` in a transaction of its own around the query | more memory until that transaction ends; reverts at commit or rollback |
 | pre-aggregate, or process in batches | each step handles less data |
 
 Raise `work_mem` **per transaction**, not globally. A plain `SET` lasts for the rest of the
 session — on a pooled connection it leaks into whoever borrows that connection next — so use
-`SET LOCAL`, or `RESET work_mem` afterwards. And the limit applies to **each** sort and hash
+`SET LOCAL`, which lasts until the transaction ends (so give the query a transaction of its own),
+or `RESET work_mem` afterwards. And the limit applies to **each** sort and hash
 node in **each** query, and parallel workers each get their own. A query with five hash nodes
 and four workers can use twenty times the setting. And if the real cause is reading a billion
 rows you do not need, more memory just makes the wrong plan finish slightly sooner.
