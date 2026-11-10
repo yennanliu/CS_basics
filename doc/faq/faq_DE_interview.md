@@ -1,7 +1,7 @@
 # Data Engineering Interview FAQ
 
 > **Scope** — the high-level map of a data engineer interview and the last-minute checklist: for each topic, the handful of points you must be able to say out loud, and a link to the deep dive under `de/` that holds the mechanism, the code and the follow-up questions.
-> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md) and [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) — one deep dive per topic.
+> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) and [`de/aws_data.md`](./de/aws_data.md) — one deep dive per topic.
 
 Read this file the night before. If any line below is something you cannot explain in two
 minutes, open that topic's deep dive.
@@ -22,6 +22,7 @@ minutes, open that topic's deep dive.
 | Stream pipelines | ⭐⭐⭐⭐ | event time, watermarks, state and exactly-once | [`de/stream_pipeline.md`](./de/stream_pipeline.md) |
 | Apache Flink | ⭐⭐⭐⭐ | the engine under most streaming answers — state backends, checkpoints, exactly-once with Kafka | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | choosing a store and defending the trade-off | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
+| AWS data services | ⭐⭐⭐⭐ | Glue vs EMR vs Athena, Iceberg on S3, getting data out of RDS | [`de/aws_data.md`](./de/aws_data.md) |
 
 ---
 

@@ -1,14 +1,14 @@
-<!-- ca8aa68f6f0e -->
+<!-- a07839365fff -->
 # 資料工程面試 FAQ
 
 > **範圍** — 資料工程師面試的高層次地圖與考前檢查清單：每個主題各列出你必須能說出口的幾個重點，並連到 `de/` 底下的深入解析，那裡才有機制、程式碼與追問題。
-> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md) 與 [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) —— 每個主題一份深入解析。
+> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) 與 [`de/aws_data.md`](./de/aws_data.md) —— 每個主題一份深入解析。
 
 面試前一晚讀這份。底下任何一行如果你沒辦法在兩分鐘內講清楚，就打開那個主題的深入解析。
 
 ---
 
-<!-- e784f9b5bd75 -->
+<!-- 631ffc021014 -->
 ## 1) 主題地圖 ⭐⭐⭐⭐⭐
 
 | 主題 | 權重 | 面試官真正在探的 | 深入解析 |
@@ -23,6 +23,7 @@
 | 串流管線 | ⭐⭐⭐⭐ | 事件時間、watermark、狀態與 exactly-once | [`de/stream_pipeline.md`](./de/stream_pipeline.md) |
 | Apache Flink | ⭐⭐⭐⭐ | 大多數串流答案底下的那個引擎 —— state backend、checkpoint、搭配 Kafka 的 exactly-once | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | 選一個儲存並為取捨辯護 | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
+| AWS 資料服務 | ⭐⭐⭐⭐ | Glue vs EMR vs Athena、S3 上的 Iceberg、如何把資料從 RDS 取出 | [`de/aws_data.md`](./de/aws_data.md) |
 
 ---
 

@@ -1,7 +1,7 @@
 # Batch Data Pipelines
 
 > **Scope** — everything a data engineer interview asks about batch pipelines: the reference architecture, ETL vs ELT, lake vs warehouse vs lakehouse, ingestion patterns, idempotency and backfills, late data, `MERGE`, orchestration with Airflow, dbt, data quality, file and table formats, cost, failure handling, PII, and a worked design question. Table and partition design lives in the schema design doc; streaming lives in the stream pipeline doc.
-> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./schema_design.md`](./schema_design.md), [`./data_modeling.md`](./data_modeling.md), [`./spark.md`](./spark.md), [`./stream_pipeline.md`](./stream_pipeline.md), [`./sql_for_data.md`](./sql_for_data.md); the older [`../faq_Airflow.md`](../faq_Airflow.md) notes.
+> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./schema_design.md`](./schema_design.md), [`./data_modeling.md`](./data_modeling.md), [`./spark.md`](./spark.md), [`./stream_pipeline.md`](./stream_pipeline.md), [`./sql_for_data.md`](./sql_for_data.md); [`./aws_data.md`](./aws_data.md) — the same architecture on AWS (Glue, EMR, Athena, Iceberg on S3); the older [`../faq_Airflow.md`](../faq_Airflow.md) notes.
 
 Every answer leads with the sentence you would say out loud, then the mechanism, then the
 trade-off an interviewer pushes on next.
