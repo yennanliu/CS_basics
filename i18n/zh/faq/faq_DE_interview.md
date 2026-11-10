@@ -174,7 +174,7 @@
 
 ---
 
-<!-- 847d46a3f7da -->
+<!-- c33a383c6a03 -->
 ## 12) 考前檢查清單
 
 每個主題一行 —— 如果每一行你都能說出口，那一節就穩了。
@@ -190,4 +190,4 @@
 - **SQL vs NoSQL** — ACID vs BASE、CAP/PACELC、各家族、查詢優先建模、「先用 Postgres」
 - **AWS** — 一個 Glue catalog 給所有引擎、Glue vs EMR、Iceberg commit = 交換指標、Athena 按掃描位元組計費、從 RDS 做 CDC + replication slot 陷阱
 - **Performance** — 先量測；剪枝 + 下推；先聚合再 join；不把無上限的東西集中到一個節點；排序 / Z-order + 壓實；`MERGE` 的來源先去重；每個索引都是寫入成本
-- **Analytics** — 定義分子 / 分母 / 時間窗 / 篩選條件；比率要用加總後相除，不是比率的平均；distinct count 不能相加；SRM 檢查；先問「資料對不對？」再講任何故事
+- **Analytics** — 定義分子 / 分母 / 時間窗 / 篩選條件；比率要用（可加總的部分）加總後相除，不是比率的平均；distinct count 不能相加；SRM 檢查；先問「資料對不對？」再講任何故事

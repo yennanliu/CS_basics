@@ -269,8 +269,10 @@ result.write.mode("overwrite").parquet("s3://lake/tmp/report/")
 for row in result.toLocalIterator():
     handle(row)
 
-# Bound what reaches the driver; fail fast instead of OOM-ing (default 1g)
-spark.conf.set("spark.driver.maxResultSize", "1g")
+# Bound what reaches the driver; fail fast instead of OOM-ing (default 1g).
+# It is read when the SparkContext starts — spark.conf.set at runtime does not change it:
+#   spark-submit --conf spark.driver.maxResultSize=1g ...
+#   SparkSession.builder.config("spark.driver.maxResultSize", "1g").getOrCreate()
 ```
 
 The full error → cause → fix table is [`./spark.md` §15-1](./spark.md#15-1-out-of-memory),
@@ -426,8 +428,12 @@ CALL lake.system.rewrite_data_files(
 
 ```python
 # Spark: sort within each output file without a global sort (no single-reducer bottleneck)
+from pyspark.sql import functions as F
+
+FILES_PER_DATE = 8                            # size so each file lands at ~128 MB – 1 GB
 (events
-   .repartition("event_date")                 # one writer per date partition
+   .repartition("event_date",                 # a few writers per date, not one: a big day
+                F.pmod(F.hash("user_id"), F.lit(FILES_PER_DATE)))   # is split across 8 tasks
    .sortWithinPartitions("country", "user_id")
    .write.partitionBy("event_date")
    .mode("overwrite")
@@ -482,6 +488,7 @@ USING (
     SELECT *,
            ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY updated_at DESC) AS rn
     FROM   staging_customer_changes
+    WHERE  updated_at IS NOT NULL                -- DESC puts NULLs first: quarantine them instead
   ) ranked
   WHERE rn = 1                                   -- one row per key: the latest change
 ) AS s
@@ -493,9 +500,13 @@ WHEN NOT MATCHED THEN
   VALUES (s.customer_id, s.email, s.country, s.updated_at);
 ```
 
-- The `s.updated_at > t.updated_at` guard makes a replayed or out-of-order batch harmless.
+- The `s.updated_at > t.updated_at` guard makes a replayed or out-of-order batch harmless. It
+  needs a non-null timestamp on both sides — a `NULL` never compares greater — which is why
+  the source drops rows without one (route them to a quarantine table, not the bin).
 - Add the **partition column to the `ON` clause** when you can (`AND t.event_date = s.event_date`)
-  so the engine prunes target files instead of scanning the whole table.
+  so the engine prunes target files instead of scanning the whole table — but only when that
+  column **never changes** for a key. If a row's `event_date` can move, the old row no longer
+  matches and `WHEN NOT MATCHED` inserts a duplicate.
 
 ### 5-5) Merging sorted data at scale: external merge sort
 
@@ -650,7 +661,7 @@ an expensive step, or asking for less than the query currently asks for.**
 |---|---|---|
 | `WHERE DATE(created_at) = '2026-11-01'` | `WHERE created_at >= '2026-11-01' AND created_at < '2026-11-02'` | sargable: the index or partition pruning can be used |
 | `WHERE id IN (SELECT …)` that returns many duplicates, or a `JOIN` then `DISTINCT` | `WHERE EXISTS (SELECT 1 …)` | a semi-join stops at the first match and never multiplies rows |
-| `WHERE id NOT IN (SELECT col …)` | `WHERE NOT EXISTS (…)` | correct when `col` has `NULL`s, and planned as an anti-join |
+| `WHERE id NOT IN (SELECT col …)` | `WHERE NOT EXISTS (…)` | planned as an anti-join — but **not equivalent** when `col` has `NULL`s: `NOT IN` then returns no rows, `NOT EXISTS` returns the unmatched ones (usually what was meant) |
 | join detail, then `GROUP BY` | `GROUP BY` the detail first, then join | fewer rows reach the join |
 | `UNION` | `UNION ALL` when the parts cannot overlap | no deduplicating sort or hash |
 | `SELECT *` | the columns you use | columnar engines read only those; covering indexes become possible |
@@ -712,7 +723,10 @@ LIMIT  50;
 ```
 
 The tie-breaker (`order_id`) makes the order total, so no row is skipped or repeated when
-two rows share a timestamp. The cost: no "jump to page 2001" — only next / previous.
+two rows share a timestamp. The sort keys must be `NOT NULL`: a row comparison with a `NULL`
+is unknown, so a page ending on a `NULL` `created_at` returns an empty next page — declare the
+columns `NOT NULL` or `COALESCE` them in both the `ORDER BY` and the predicate. The cost: no
+"jump to page 2001" — only next / previous.
 
 ### 7-4) Large updates and deletes in chunks
 
@@ -720,10 +734,11 @@ two rows share a timestamp. The cost: no "jump to page 2001" — only next / pre
 at once and leaves a vacuum backlog; deleting in bounded chunks keeps each transaction short.**
 
 ```sql
--- PostgreSQL: delete in batches of 10 000; repeat until it affects 0 rows
+-- PostgreSQL: delete in batches of 10 000 by primary key; repeat until it affects 0 rows.
+-- (Not by ctid: on a partitioned table two partitions can share a ctid.)
 DELETE FROM events
-WHERE  ctid IN (
-  SELECT ctid
+WHERE  event_id IN (
+  SELECT event_id
   FROM   events
   WHERE  event_date < DATE '2025-01-01'
   LIMIT  10000

@@ -112,9 +112,12 @@ SELECT
   DATE(event_ts)              AS activity_date,      -- event_ts stored in UTC
   COUNT(DISTINCT user_id)     AS dau
 FROM   events
-WHERE  event_name NOT IN ('push_received', 'background_sync')   -- not user activity
+WHERE  is_foreground = TRUE                                     -- foreground app events only
   AND  user_id IS NOT NULL                                       -- logged-in users only
-  AND  user_id NOT IN (SELECT user_id FROM internal_users)       -- staff and test accounts
+  AND  NOT EXISTS (SELECT 1 FROM internal_users i                -- staff and test accounts
+                   WHERE i.user_id = events.user_id)             -- (NOT IN breaks on a NULL id)
+  AND  NOT EXISTS (SELECT 1 FROM known_bots b                    -- known bots
+                   WHERE b.user_id = events.user_id)
 GROUP  BY DATE(event_ts);
 ```
 
@@ -142,7 +145,9 @@ WHERE  stat_date BETWEEN DATE '2026-11-01' AND DATE '2026-11-07';
 ```
 
 - Tables should store **numerators and denominators**, not precomputed rates, so any rollup
-  stays correct.
+  stays correct — as long as both are **additive** across the rollup. A ratio of distinct
+  counts (stickiness, users who converted ÷ active users over a week) needs each count
+  recomputed at the target grain first (see [§3-2](#3-2-non-additive-metrics-distinct-users-across-days)).
 - **Simpson's paradox**: a rate can rise in every segment while falling overall, because the
   **mix** shifted towards a lower-rate segment — always check the mix when a ratio moves (see
   [§5-2](#5-2-decomposing-the-change-rate-vs-mix)).
@@ -285,8 +290,11 @@ print(assign_variant("user_42", "checkout_v2"))   # stable on every call
 
 - Including the experiment name in the hash keeps different experiments **independent** —
   otherwise the same users are always in treatment together.
-- **Exposure, not assignment**: analyse users who reached the changed screen. Users assigned
-  but never exposed dilute the effect.
+- **Assignment first, exposure with care**: the safe overall comparison is everyone
+  *assigned*. Restricting to users who reached the changed screen removes the dilution from
+  users who never saw it, but is unbiased only if the trigger is the same in both groups —
+  log the trigger in control too (counterfactual logging) and check that its rate matches
+  across variants. If the variant changes who reaches the screen, analyse by assignment.
 - **Randomisation unit = analysis unit**: randomise by user, then compute one value per user.
   Treating each page view as independent when users were randomised overstates significance.
 - Metrics start **at exposure time**; events before it cannot have been caused by the variant.
@@ -379,10 +387,10 @@ split the change into both before blaming any one segment.**
 WITH by_platform AS (
   SELECT
     platform,
-    SUM(CASE WHEN week = 'this' THEN visits END) AS visits_this,
-    SUM(CASE WHEN week = 'last' THEN visits END) AS visits_last,
-    SUM(CASE WHEN week = 'this' THEN orders END) AS orders_this,
-    SUM(CASE WHEN week = 'last' THEN orders END) AS orders_last
+    SUM(CASE WHEN week = 'this' THEN visits ELSE 0 END) AS visits_this,  -- 0, not NULL, when a
+    SUM(CASE WHEN week = 'last' THEN visits ELSE 0 END) AS visits_last,  -- platform is new or gone
+    SUM(CASE WHEN week = 'this' THEN orders ELSE 0 END) AS orders_this,
+    SUM(CASE WHEN week = 'last' THEN orders ELSE 0 END) AS orders_last
   FROM weekly_platform_stats
   GROUP BY platform
 )
@@ -426,7 +434,9 @@ for sub-second, user-facing analytics.**
 - Point each dashboard at a **pre-aggregated table at the grain it displays** — daily ×
   country, not raw events.
 - **Partition by date** and make the dashboard's date filter required, so every query prunes.
-- Refresh **incrementally** — today's partition, not the whole history.
+- Refresh **incrementally** — today's partition plus the days late data can still change
+  (three days, for the DAU definition in [§2-2](#2-2-defining-a-metric-precisely)), not the
+  whole history.
 - Use **approximate distinct counts** or sketches for user counts across arbitrary ranges.
 - Watch the most expensive dashboard queries (warehouse query history) — a few tiles usually
   account for most of the cost.

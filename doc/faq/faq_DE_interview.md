@@ -178,4 +178,4 @@ One line per topic — if you can say each of these out loud, the section is sol
 - **SQL vs NoSQL** — ACID vs BASE, CAP/PACELC, the families, query-first modeling, "start with Postgres"
 - **AWS** — one Glue catalog for every engine, Glue vs EMR, Iceberg commit = pointer swap, Athena bills bytes scanned, CDC out of RDS + the replication-slot trap
 - **Performance** — measure first; prune + push down; aggregate before join; nothing unbounded to one node; sort / Z-order + compact; `MERGE` on a deduplicated source; every index is a write cost
-- **Analytics** — define numerator / denominator / window / filters; ratio of sums, not average of ratios; distinct counts don't add; SRM check; "is the data right?" before any story
+- **Analytics** — define numerator / denominator / window / filters; ratio of sums (of additive parts), not average of ratios; distinct counts don't add; SRM check; "is the data right?" before any story

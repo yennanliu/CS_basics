@@ -82,7 +82,7 @@ collect、足夠的 partition 數、讓引擎 spill），以及少寫（用增�
 | 選擇 | 用在 | 原因 |
 |---|---|---|
 | **Parquet / ORC**（columnar） | 分析用的資料表、data lake | column pruning、統計資訊、編碼 |
-| **Avro**（列式、帶 schema） | Kafka 訊息、落地原始紀錄 | 整筆紀錄寫入、schema 演進 |
+| **Avro**（逐筆儲存的 row-based 格式、帶 schema） | Kafka 訊息、落地原始紀錄 | 整筆紀錄寫入、schema 演進 |
 | **CSV / JSON** | 只用在邊界的資料交換 | 沒有型別、沒有統計資訊、解析慢 —— 一抵達就轉換 |
 
 | Codec | 取捨 |
@@ -395,7 +395,7 @@ compaction 還會恢復讓跳過機制有效的佈局。**
 小檔案及其成因在管線中的視角見
 [`./batch_pipeline.md` §7-4](./batch_pipeline.md#7-4-the-small-files-problem-and-compaction)。
 
-<!-- 2690fa0becd8 -->
+<!-- 9c43969f1112 -->
 ### 5-4) 合併資料集：`MERGE`、copy-on-write 與 merge-on-read
 
 **`MERGE` 把一批變更 upsert 進資料表；在 lakehouse 中，copy-on-write（寫時複製）會改寫變更碰到的
@@ -415,9 +415,12 @@ compaction 還會恢復讓跳過機制有效的佈局。**
 
 <!--CODE-->
 
-- `s.updated_at > t.updated_at` 這個保護條件讓重播或亂序的批次變得無害。
+- `s.updated_at > t.updated_at` 這個保護條件讓重播或亂序的批次變得無害。它需要兩邊的時間戳
+  都不是 null —— `NULL` 永遠不會比較為較大 —— 所以來源端會先排除沒有時間戳的列（送進隔離表，
+  而不是直接丟掉）。
 - 可以的話，把**分區欄位加進 `ON` 子句**（`AND t.event_date = s.event_date`），讓引擎 prune
-  目標檔案，而不是掃描整張表。
+  目標檔案，而不是掃描整張表 —— 但前提是該欄位對同一個 key **永遠不會改變**。如果某列的
+  `event_date` 會變動，舊的那列就不再相符，`WHEN NOT MATCHED` 會插入一筆重複資料。
 
 <!-- d914c3cd6e85 -->
 ### 5-5) 大規模合併排序資料：external merge sort
@@ -540,7 +543,7 @@ B-tree 與 LSM 的背景知識，以及三種放大，見
 <!-- 5db0ad8c9d61 -->
 ## 7) 讓查詢變快的 SQL 改寫 ⭐⭐⭐⭐⭐
 
-<!-- 12520baa443c -->
+<!-- ada664609f97 -->
 ### 7-1) 改寫對照表
 
 **大多數慢 SQL 的修正方式，是給 optimizer 一個它用得上的 predicate、在昂貴的步驟之前先減少
@@ -550,7 +553,7 @@ B-tree 與 LSM 的背景知識，以及三種放大，見
 |---|---|---|
 | `WHERE DATE(created_at) = '2026-11-01'` | `WHERE created_at >= '2026-11-01' AND created_at < '2026-11-02'` | sargable：能用上索引或 partition pruning |
 | 回傳大量重複的 `WHERE id IN (SELECT …)`，或先 `JOIN` 再 `DISTINCT` | `WHERE EXISTS (SELECT 1 …)` | semi-join 在第一個符合就停，而且從不放大列數 |
-| `WHERE id NOT IN (SELECT col …)` | `WHERE NOT EXISTS (…)` | `col` 含 `NULL` 時仍然正確，而且會規劃成 anti-join |
+| `WHERE id NOT IN (SELECT col …)` | `WHERE NOT EXISTS (…)` | 會規劃成 anti-join —— 但 `col` 含 `NULL` 時兩者**並不等價**：`NOT IN` 會回傳零列，`NOT EXISTS` 會回傳沒有對應的列（通常才是本意） |
 | 先 join 明細，再 `GROUP BY` | 先對明細 `GROUP BY`，再 join | 抵達 join 的列數更少 |
 | `UNION` | 各部分不可能重疊時用 `UNION ALL` | 沒有去重用的 sort 或 hash |
 | `SELECT *` | 你會用到的欄位 | columnar 引擎只讀那些欄；covering index 成為可能 |
@@ -573,13 +576,15 @@ B-tree 與 LSM 的背景知識，以及三種放大，見
 它回傳相同的答案，因為 `SUM` 是可分解的 —— 每個使用者小計的總和就是總計。它**不**適用於跨 join
 的 `COUNT(DISTINCT …)`，也不適用於以「平均的平均」計算的平均值（見 [`./analytics.md` §2-3](./analytics.md#2-3-ratio-metrics-and-the-averaging-trap)）。
 
-<!-- 3ce96480e5ec -->
+<!-- 2f28dcde8632 -->
 ### 7-3) 改寫實例：keyset 分頁
 
 <!--CODE-->
 
 Tie-breaker（`order_id`）讓順序成為全序，所以兩列時間戳相同時也不會有列被跳過或重複。
-代價：不能「跳到第 2001 頁」—— 只有下一頁 / 上一頁。
+排序鍵必須是 `NOT NULL`：與 `NULL` 做列比較的結果是 unknown，所以一頁若停在 `created_at` 為
+`NULL` 的列，下一頁會是空的 —— 把這些欄位宣告為 `NOT NULL`，或在 `ORDER BY` 與 predicate
+兩處都用 `COALESCE` 處理。代價：不能「跳到第 2001 頁」—— 只有下一頁 / 上一頁。
 
 <!-- 50715e2d9b64 -->
 ### 7-4) 分塊進行大量更新與刪除
