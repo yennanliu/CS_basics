@@ -1151,14 +1151,38 @@ WHEN NOT MATCHED THEN
 - The `AND … IS DISTINCT FROM …` condition skips no-op updates, which saves writes and keeps
   `updated_at` meaningful.
 - `MERGE` is idempotent when the source is: rerunning it with the same source changes nothing.
-- **Do not let an old change overwrite a newer one.** If changes can arrive out of order, or a
-  rerun replays an older batch, make the version the update condition:
-  `WHEN MATCHED AND s.updated_at > t.updated_at THEN UPDATE SET country = s.country,
-  updated_at = s.updated_at` (a source sequence number is safer than a timestamp). This
-  **replaces** the `IS DISTINCT FROM` filter rather than being added to it. A newer event that
-  carries the same country must still move `updated_at` forward. Otherwise, with the target at
-  `A` from time 10, an `A` at time 12 is skipped, and a replayed `B` from time 11 then passes
-  the guard and overwrites it.
+
+**When changes can arrive out of order or be replayed, only a newer change may win — so store
+the source's own sequence in the target and compare it.**
+
+```sql
+-- PostgreSQL 15+: CDC that may arrive late or be replayed; source_seq is the source's
+-- order for the key (a log sequence number, a per-key version)
+MERGE INTO dim_user AS t
+USING (
+  SELECT user_id, country, updated_at, source_seq
+  FROM  (SELECT s.*, ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY source_seq DESC) AS rn
+         FROM   stg_user s) d
+  WHERE  rn = 1                                    -- the newest change per key in this batch
+) AS s
+ON t.user_id = s.user_id
+WHEN MATCHED AND s.source_seq > t.source_seq THEN  -- only a newer change wins
+  UPDATE SET country = s.country, updated_at = s.updated_at, source_seq = s.source_seq
+WHEN NOT MATCHED THEN
+  INSERT (user_id, country, updated_at, source_seq)
+  VALUES (s.user_id, s.country, s.updated_at, s.source_seq);
+```
+
+- **A sequence, not a timestamp.** Two changes can share an `updated_at`. With
+  `s.updated_at > t.updated_at` the second one is rejected and the target keeps the first. The
+  sequence orders every change to a key, so it decides both which source row is newest and
+  whether it beats the target.
+- **The guard replaces the `IS DISTINCT FROM` filter; it is not added to it.** A newer change
+  that carries the same country must still move `source_seq` forward. Otherwise, with the target
+  at `A` from sequence 1, an `A` at sequence 4 is skipped, and a replayed `B` from sequence 3
+  then passes the guard and overwrites it.
+- With no sequence in the source, ties between timestamps have no right answer. Say so, and
+  ask for one (Debezium carries the log position in every event).
 
 ### 8-2) Upsert and partition overwrite
 
