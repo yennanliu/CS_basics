@@ -1,7 +1,7 @@
 # SQL for Data Engineering
 
 > **Scope** — analytical SQL as a data engineering interview tests it: how a query is evaluated, joins and their algorithms, NULL semantics, aggregation, window functions, CTEs and recursion, the classic interview query patterns, MERGE and upserts, dates and time zones, query performance, and the dialect differences between PostgreSQL, BigQuery, Snowflake and Spark SQL. Table design is [schema_design.md](./schema_design.md)'s; choosing a database is [sql_vs_nosql.md](./sql_vs_nosql.md)'s.
-> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./data_modeling.md`](./data_modeling.md) — the star schemas these queries run on; [`./spark.md`](./spark.md) — how Spark SQL executes them; [`../sql/faq_sql.md`](../sql/faq_sql.md) — the older, longer SQL notes.
+> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./data_modeling.md`](./data_modeling.md) — the star schemas these queries run on; [`./spark.md`](./spark.md) — how Spark SQL executes them; [`./sql_explain.md`](./sql_explain.md) — reading query plans in depth; [`../sql/faq_sql.md`](../sql/faq_sql.md) — the older, longer SQL notes.
 
 Every query is **PostgreSQL** unless the first line of its fence names another dialect. Each
 section leads with the sentence you would say out loud, then the mechanism, then the trade-off
@@ -1323,6 +1323,9 @@ What to look for:
   or too much data reaching that node.
 - In a warehouse or Spark plan: the stage with the most bytes shuffled, and whether the join is
   broadcast or shuffle.
+
+The full walk-through — node types, loops, spills, buffers and a worked diagnosis — is
+[`./sql_explain.md`](./sql_explain.md).
 
 ### 10-4) Skew and very large joins
 
