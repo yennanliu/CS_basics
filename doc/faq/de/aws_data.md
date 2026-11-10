@@ -448,9 +448,14 @@ not owning the schedule.
 A **GDPR delete** takes more than `DELETE`. The row becomes invisible, but its bytes survive in
 three places: in the *live* data file when the delete was merge-on-read (only a delete file
 masks it), in older snapshots reachable by time travel, and in copies outside the table. So:
-`DELETE`, then rewrite the affected files (`rewrite_data_files` / `OPTIMIZE`) so the current
-snapshot no longer holds the row, then expire the snapshots that still do, then purge the other
-copies — the raw CDC landing zone, and noncurrent S3 object versions if bucket versioning is on.
+`DELETE`, then **force** a rewrite of the affected files so the current snapshot no longer holds
+the row — the defaults skip a data file with too few delete files, which is exactly the
+one-row erasure case. In Spark, pass `options => map('delete-file-threshold', '1')` to
+`rewrite_data_files`; in Athena, set the table property `optimize_rewrite_delete_file_threshold`
+to `1` before `OPTIMIZE`. **Verify** that no delete files remain in the affected partitions (the
+`delete_files` metadata table) before going on. Then expire the snapshots that still hold the
+row, then purge the other copies — the raw CDC landing zone, and noncurrent S3 object versions
+if bucket versioning is on.
 
 ### 4-6) Wiring Spark to Iceberg and the Glue catalog
 

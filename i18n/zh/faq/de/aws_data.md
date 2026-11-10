@@ -301,7 +301,7 @@ serverless Spark ETL job —— 外加圍繞它們的 Data Quality 規則與 wor
 
 列層級刪除需要 format version 2；Athena 能讀寫 Iceberg v2。
 
-<!-- d1971f56f87d -->
+<!-- 7428d5729211 -->
 ### 4-5) 表格維護 ⭐⭐⭐⭐⭐
 
 **從不維護的 Iceberg 表格每天都變得更慢、更貴：小檔案、堆積的 delete 檔、數千個 snapshot，
@@ -322,8 +322,11 @@ snapshot 保留與孤兒檔案刪除；**S3 Tables**（table bucket）儲存 Ice
 
 **GDPR 刪除**光靠 `DELETE` 不夠。該列會變得看不見，但它的位元組還留在三個地方：如果刪除是
 merge-on-read，它仍在*目前*的資料檔中（只是被 delete 檔遮住）；在可透過 time travel 讀到的舊
-snapshot 中；以及表格以外的複本中。所以要：`DELETE`，接著重寫受影響的檔案（`rewrite_data_files` /
-`OPTIMIZE`），讓目前的 snapshot 不再含有該列，再讓仍含有它的 snapshot 過期，最後清除其他複本 ——
+snapshot 中；以及表格以外的複本中。所以要：`DELETE`，接著**強制**重寫受影響的檔案，讓目前的 snapshot 不再含有該列 ——
+預設值會跳過 delete 檔太少的資料檔，而這正是只刪一列的情況。在 Spark 中，對 `rewrite_data_files`
+傳入 `options => map('delete-file-threshold', '1')`；在 Athena 中，`OPTIMIZE` 之前先把表格屬性
+`optimize_rewrite_delete_file_threshold` 設為 `1`。繼續之前先**確認**受影響的分區中已沒有任何
+delete 檔（`delete_files` metadata 表）。接著讓仍含有該列的 snapshot 過期，最後清除其他複本 ——
 raw CDC 落地區，以及若 bucket 開了版本控制，S3 的非目前版本物件。
 
 <!-- 3abb803c8237 -->
