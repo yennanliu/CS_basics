@@ -143,7 +143,8 @@ spark = glue_context.spark_session
 job = Job(glue_context)
 job.init(args["JOB_NAME"], args)
 
-# transformation_ctx is the bookmark key: without it, every run re-reads everything
+# transformation_ctx names this source's bookmark state; bookmarks themselves are switched
+# on by the job argument --job-bookmark-option job-bookmark-enable (off = full reread)
 raw = glue_context.create_dynamic_frame.from_catalog(
     database="raw",
     table_name="orders_cdc",
@@ -152,28 +153,41 @@ raw = glue_context.create_dynamic_frame.from_catalog(
 changes = raw.toDF()
 changes.createOrReplaceTempView("changes")
 
-# keep the latest change per key, then upsert (Op = 'D' is a delete from DMS)
+# keep the latest change per key, then upsert. Op = 'D' is a DMS delete; Op is NULL on
+# full-load rows unless the task sets IncludeOpForFullLoad. change_seq is DMS's source
+# change sequence (the AR_H_CHANGE_SEQ header, added by a transformation rule): unlike
+# updated_at it is unique and in commit order, so a delete never ties with the update before it
 spark.sql("""
     MERGE INTO glue_catalog.silver.orders AS t
     USING (
         SELECT * FROM (
-            SELECT *, ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY updated_at DESC) AS rn
+            SELECT *, ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY change_seq DESC) AS rn
             FROM changes
         ) WHERE rn = 1
     ) AS s
     ON t.order_id = s.order_id
-    WHEN MATCHED AND s.Op = 'D' THEN DELETE
-    WHEN MATCHED THEN UPDATE SET t.status = s.status, t.amount = s.amount, t.updated_at = s.updated_at
-    WHEN NOT MATCHED AND s.Op <> 'D' THEN
-        INSERT (order_id, customer_id, status, amount, updated_at)
-        VALUES (s.order_id, s.customer_id, s.status, s.amount, s.updated_at)
+    -- a stale replay (s.change_seq <= t.change_seq) matches no clause, so the row is left alone
+    WHEN MATCHED AND s.change_seq > t.change_seq AND s.Op = 'D' THEN DELETE
+    WHEN MATCHED AND s.change_seq > t.change_seq THEN UPDATE SET
+        t.status = s.status, t.amount = s.amount, t.order_ts = s.order_ts,
+        t.updated_at = s.updated_at, t.change_seq = s.change_seq
+    WHEN NOT MATCHED AND (s.Op IS NULL OR s.Op <> 'D') THEN
+        INSERT (order_id, customer_id, status, amount, order_ts, updated_at, change_seq)
+        VALUES (s.order_id, s.customer_id, s.status, s.amount, s.order_ts, s.updated_at, s.change_seq)
 """)
 
 job.commit()  # the bookmark advances only here, after the write succeeded
 ```
 
 The job enables Iceberg with the job parameter `--datalake-formats iceberg` plus the catalog
-settings in [§4-6](#4-6-wiring-spark-to-iceberg-and-the-glue-catalog).
+settings in [§4-6](#4-6-wiring-spark-to-iceberg-and-the-glue-catalog), and bookmarks with
+`--job-bookmark-option job-bookmark-enable`.
+
+- **Ordering CDC events**: order by the source's change sequence (DMS `AR_H_CHANGE_SEQ`, a
+  Debezium LSN), never by `updated_at` — two events can share a timestamp, and a delete may not
+  carry one. Keeping `change_seq` on the target row lets the `MERGE` ignore an older event that
+  is replayed later. A hard delete removes that version, so if an older update for a deleted key
+  can still arrive in a later batch, keep a tombstone (soft delete) instead.
 
 - **`DynamicFrame` vs `DataFrame`**: a `DynamicFrame` tolerates a column with mixed types
   (a *choice* type, resolved with `resolveChoice`) and plugs into bookmarks and catalog sinks.
@@ -190,8 +204,9 @@ settings in [§4-6](#4-6-wiring-spark-to-iceberg-and-the-glue-catalog).
 **A bookmark records what the last successful run processed — S3 objects by modification time,
 or JDBC rows by a monotonically increasing key — so the next run reads only new input.**
 
-- It needs `job.init`, a `transformation_ctx` on each source, and `job.commit()` at the end.
-  Missing any of the three silently turns the job back into a full reload.
+- It needs the job argument `--job-bookmark-option job-bookmark-enable` (the default is
+  disabled), plus `job.init`, a `transformation_ctx` on each source, and `job.commit()` at the
+  end. Missing any of the four silently turns the job back into a full reload.
 - It is **at-least-once**: a run that writes and then fails before `commit()` will reprocess
   the same input. So the write must be idempotent — `MERGE` on a key, or overwrite the
   partition for the run's logical date — never a blind append.
@@ -365,7 +380,8 @@ CREATE TABLE glue_catalog.silver.orders (
     status       STRING,
     amount       DECIMAL(12, 2),
     order_ts     TIMESTAMP,
-    updated_at   TIMESTAMP
+    updated_at   TIMESTAMP,
+    change_seq   STRING          -- DMS AR_H_CHANGE_SEQ: fixed-width, so it sorts as a string
 )
 USING iceberg
 PARTITIONED BY (days(order_ts))
@@ -429,8 +445,12 @@ retention and orphan-file deletion for Iceberg tables automatically; **S3 Tables
 buckets) store Iceberg tables with maintenance built into the bucket. Both trade control for
 not owning the schedule.
 
-Expiring snapshots is also how a **GDPR delete** finally leaves storage: `DELETE` makes the row
-invisible, but the old files stay readable through time travel until they are expired.
+A **GDPR delete** takes more than `DELETE`. The row becomes invisible, but its bytes survive in
+three places: in the *live* data file when the delete was merge-on-read (only a delete file
+masks it), in older snapshots reachable by time travel, and in copies outside the table. So:
+`DELETE`, then rewrite the affected files (`rewrite_data_files` / `OPTIMIZE`) so the current
+snapshot no longer holds the row, then expire the snapshots that still do, then purge the other
+copies — the raw CDC landing zone, and noncurrent S3 object versions if bucket versioning is on.
 
 ### 4-6) Wiring Spark to Iceberg and the Glue catalog
 
@@ -551,8 +571,9 @@ USING staging.customer_changes AS s
     ON t.customer_id = s.customer_id
 WHEN MATCHED AND s.op = 'D' THEN DELETE
 WHEN MATCHED THEN UPDATE SET email = s.email, country = s.country, updated_at = s.updated_at
-WHEN NOT MATCHED THEN INSERT (customer_id, email, country, updated_at)
-                      VALUES (s.customer_id, s.email, s.country, s.updated_at);
+WHEN NOT MATCHED AND (s.op IS NULL OR s.op <> 'D')     -- a replayed delete must not reinsert
+    THEN INSERT (customer_id, email, country, updated_at)
+         VALUES (s.customer_id, s.email, s.country, s.updated_at);
 
 -- time travel, and the metadata tables
 SELECT COUNT(*) FROM silver.customers FOR TIMESTAMP AS OF (current_timestamp - interval '1' day);
@@ -686,7 +707,7 @@ Lake Formation for who-sees-which-column.**
 | Network | VPC endpoints for S3, Glue, Athena; RDS in private subnets |
 | Secrets | Secrets Manager, referenced by the Glue connection |
 | Audit | CloudTrail for API calls; Lake Formation and S3 access logs for data access |
-| PII deletes | Iceberg `DELETE` + snapshot expiry + orphan cleanup ([§4-5](#4-5-table-maintenance-)) |
+| PII deletes | Iceberg `DELETE`, rewrite the affected files, then snapshot expiry; purge raw copies and old S3 versions ([§4-5](#4-5-table-maintenance-)) |
 
 ---
 
@@ -697,7 +718,7 @@ by country in Athena every morning, and finance wants corrections and cancellati
 Design it on AWS."*
 
 ```text
-Aurora PostgreSQL  ──DMS (full load, then CDC)──►  S3 raw/orders/   (Parquet, Op column)
+Aurora PostgreSQL  ──DMS (full load, then CDC)──►  S3 raw/orders/   (Parquet, Op + change_seq)
                                                          │
         Step Functions / MWAA, hourly                    ▼
           └─► Glue job: dedupe latest per key, MERGE ──► Iceberg silver.orders  (merge-on-read)
@@ -713,6 +734,7 @@ Aurora PostgreSQL  ──DMS (full load, then CDC)──►  S3 raw/orders/   (P
 | Decision | Reason |
 |---|---|
 | **DMS CDC**, not a JDBC pull on `updated_at` | sees hard deletes and cancellations; no load on the primary |
+| **`IncludeOpForFullLoad=true` + a change-sequence column** | full-load rows get an `Op` like CDC rows (otherwise it is NULL, which the `MERGE` must treat as an insert); the sequence orders events per key |
 | **Raw kept as landed** | replayable: a bug in silver is fixed by re-running from raw |
 | **Iceberg silver with `MERGE`** | row-level corrections; atomic publish; time travel for "what did the report say yesterday?" |
 | **Merge-on-read + nightly compaction** | hourly upserts stay cheap; reads stay fast |
@@ -724,7 +746,8 @@ Aurora PostgreSQL  ──DMS (full load, then CDC)──►  S3 raw/orders/   (P
 Failure modes worth naming unprompted:
 
 - **DMS task stops** → the PostgreSQL slot retains WAL ([§6-4](#6-4-cdc-prerequisites-and-the-replication-slot-trap-)); alarm on lag and disk.
-- **Out-of-order changes** → dedupe by the source commit timestamp / LSN, not by arrival time.
+- **Out-of-order or replayed changes** → dedupe by the source change sequence / LSN, not by
+  `updated_at` or arrival time, and skip an event older than the row's stored sequence.
 - **Schema change upstream** → DMS carries added columns; the `MERGE` lists columns explicitly,
   and Iceberg evolves the table by column id.
 - **Compaction vs `MERGE` conflict** → compaction scoped to partitions older than today.

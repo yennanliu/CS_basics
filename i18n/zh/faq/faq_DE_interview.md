@@ -172,7 +172,7 @@
 
 ---
 
-<!-- cdbf3a3840bd -->
+<!-- 40c3427344e0 -->
 ## 12) 考前檢查清單
 
 每個主題一行 —— 如果每一行你都能說出口，那一節就穩了。
@@ -186,3 +186,4 @@
 - **Schema** — 查詢 + 粒度、代理鍵、依日期分區、相容的演進、DECIMAL + UTC
 - **Stream** — 事件時間 + watermark、視窗類型、checkpoint、端到端 exactly-once
 - **SQL vs NoSQL** — ACID vs BASE、CAP/PACELC、各家族、查詢優先建模、「先用 Postgres」
+- **AWS** — 一個 Glue catalog 給所有引擎、Glue vs EMR、Iceberg commit = 交換指標、Athena 按掃描位元組計費、從 RDS 做 CDC + replication slot 陷阱

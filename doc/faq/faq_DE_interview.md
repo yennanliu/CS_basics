@@ -174,3 +174,4 @@ One line per topic — if you can say each of these out loud, the section is sol
 - **Schema** — queries + grain, surrogate keys, partition by date, compatible evolution, DECIMAL + UTC
 - **Stream** — event time + watermarks, window types, checkpoints, exactly-once end to end
 - **SQL vs NoSQL** — ACID vs BASE, CAP/PACELC, the families, query-first modeling, "start with Postgres"
+- **AWS** — one Glue catalog for every engine, Glue vs EMR, Iceberg commit = pointer swap, Athena bills bytes scanned, CDC out of RDS + the replication-slot trap

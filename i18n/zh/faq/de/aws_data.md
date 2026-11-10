@@ -117,7 +117,7 @@ serverless Spark ETL job —— 外加圍繞它們的 Data Quality 規則與 wor
 4. Athena 的 **partition projection** —— 完全不儲存分區（見 [§5-3](#5-3-partitions-repair-add-or-project-)）。
 5. **Iceberg** —— commit 本身就記錄了新檔案；沒有東西需要註冊。
 
-<!-- 60fd98e96a16 -->
+<!-- 62f6c349d6b4 -->
 ### 2-4) 一個 Glue ETL job ⭐⭐⭐⭐
 
 **Glue job 就是外面包了一層 Glue context 的 Spark 應用程式：`GlueContext` 負責讀寫 catalog，
@@ -126,7 +126,12 @@ serverless Spark ETL job —— 外加圍繞它們的 Data Quality 規則與 wor
 <!--CODE-->
 
 這個 job 用 job 參數 `--datalake-formats iceberg` 加上 [§4-6](#4-6-wiring-spark-to-iceberg-and-the-glue-catalog)
-的 catalog 設定來啟用 Iceberg。
+的 catalog 設定來啟用 Iceberg，並用 `--job-bookmark-option job-bookmark-enable` 啟用 bookmark。
+
+- **CDC 事件的排序**：依來源的變更序號排序（DMS 的 `AR_H_CHANGE_SEQ`、Debezium 的 LSN），
+  絕不依 `updated_at` —— 兩個事件可能有相同的時間戳，而刪除事件可能根本沒有。把 `change_seq`
+  存在目標列上，`MERGE` 就能忽略稍後才被重播的舊事件。硬刪除會把這個版本一起刪掉，所以如果
+  已刪除 key 的舊更新仍可能在之後的批次出現，就改留 tombstone（軟刪除）。
 
 - **`DynamicFrame` vs `DataFrame`**：`DynamicFrame` 能容忍同一欄有多種型別（*choice* 型別，
   用 `resolveChoice` 解決），並能接上 bookmark 與 catalog sink。凡是像 SQL 的處理就用 `toDF()`
@@ -137,14 +142,15 @@ serverless Spark ETL job —— 外加圍繞它們的 Data Quality 規則與 wor
 - **Python shell jobs** 用一小部分 DPU 跑純 Python —— 適合呼叫 API 或處理小檔案，不適合
   任何需要 Spark 的工作。
 
-<!-- 79a09f9b4f04 -->
+<!-- ebab3cbffa18 -->
 ### 2-5) Job bookmark 與冪等性 ⭐⭐⭐⭐⭐
 
 **Bookmark 記錄上一次成功執行處理了什麼 —— S3 物件依修改時間，JDBC 列依單調遞增的 key ——
 讓下一次執行只讀新的輸入。**
 
-- 它需要 `job.init`、每個來源上的 `transformation_ctx`，以及最後的 `job.commit()`。
-  少了任何一個，job 都會悄悄退回全量重載。
+- 它需要 job 參數 `--job-bookmark-option job-bookmark-enable`（預設是停用），再加上
+  `job.init`、每個來源上的 `transformation_ctx`，以及最後的 `job.commit()`。
+  少了這四個中的任何一個，job 都會悄悄退回全量重載。
 - 它是 **at-least-once**：一次寫入後、在 `commit()` 之前失敗的執行，會重新處理同一批輸入。
   所以寫入必須冪等 —— 依 key 做 `MERGE`，或覆寫該次執行邏輯日期的分區 —— 絕不能盲目 append。
 - 對 JDBC，預設以主鍵為 key（用 `jobBookmarkKeys` 指定其他欄位）；不單調的 key、或原地更新的列，
@@ -295,7 +301,7 @@ serverless Spark ETL job —— 外加圍繞它們的 Data Quality 規則與 wor
 
 列層級刪除需要 format version 2；Athena 能讀寫 Iceberg v2。
 
-<!-- f73aac137121 -->
+<!-- d1971f56f87d -->
 ### 4-5) 表格維護 ⭐⭐⭐⭐⭐
 
 **從不維護的 Iceberg 表格每天都變得更慢、更貴：小檔案、堆積的 delete 檔、數千個 snapshot，
@@ -314,8 +320,11 @@ serverless Spark ETL job —— 外加圍繞它們的 Data Quality 規則與 wor
 snapshot 保留與孤兒檔案刪除；**S3 Tables**（table bucket）儲存 Iceberg 表格，維護內建在 bucket 裡。
 兩者都是用掌控權換取不必自己管排程。
 
-讓 snapshot 過期也是 **GDPR 刪除**最終離開儲存的方式：`DELETE` 讓該列看不見，但舊檔案在過期前
-仍可透過 time travel 讀到。
+**GDPR 刪除**光靠 `DELETE` 不夠。該列會變得看不見，但它的位元組還留在三個地方：如果刪除是
+merge-on-read，它仍在*目前*的資料檔中（只是被 delete 檔遮住）；在可透過 time travel 讀到的舊
+snapshot 中；以及表格以外的複本中。所以要：`DELETE`，接著重寫受影響的檔案（`rewrite_data_files` /
+`OPTIMIZE`），讓目前的 snapshot 不再含有該列，再讓仍含有它的 snapshot 過期，最後清除其他複本 ——
+raw CDC 落地區，以及若 bucket 開了版本控制，S3 的非目前版本物件。
 
 <!-- 3abb803c8237 -->
 ### 4-6) 把 Spark 接上 Iceberg 與 Glue catalog
@@ -484,7 +493,7 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 
 ---
 
-<!-- e538f6451220 -->
+<!-- a2668b72b23b -->
 ## 7) 安全性與治理 ⭐⭐⭐⭐
 
 **每個 job 一個最小權限的 IAM role、到處都用 KMS 加密、私有網路，以及用 Lake Formation 決定
@@ -499,11 +508,11 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 | 網路 | S3、Glue、Athena 的 VPC endpoint；RDS 放在私有子網路 |
 | 秘密資訊 | Secrets Manager，由 Glue connection 引用 |
 | 稽核 | API 呼叫用 CloudTrail；資料存取用 Lake Formation 與 S3 存取日誌 |
-| PII 刪除 | Iceberg `DELETE` + snapshot 過期 + 孤兒檔案清理（[§4-5](#4-5-table-maintenance-)） |
+| PII 刪除 | Iceberg `DELETE`、重寫受影響的檔案，再讓 snapshot 過期；清除 raw 複本與 S3 舊版本（[§4-5](#4-5-table-maintenance-)） |
 
 ---
 
-<!-- eba6daac22d2 -->
+<!-- dfce09ab06ec -->
 ## 8) 完整設計題：從 RDS 訂單到 S3 lakehouse ⭐⭐⭐⭐⭐
 
 **題目**：*「訂單存在 Aurora PostgreSQL 資料庫中。分析師每天早上要在 Athena 看到昨天各國的營收，
@@ -514,6 +523,7 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 | 決策 | 理由 |
 |---|---|
 | **DMS CDC**，而不是依 `updated_at` 做 JDBC 拉取 | 看得到硬刪除與取消；不對 primary 造成負載 |
+| **`IncludeOpForFullLoad=true` + 變更序號欄位** | 全量載入的列也會像 CDC 列一樣帶 `Op`（否則是 NULL，`MERGE` 必須把它當成新增）；序號決定每個 key 的事件順序 |
 | **原始資料照落地的樣子保留** | 可重播：silver 的 bug 從 raw 重跑就能修好 |
 | **Iceberg silver 搭配 `MERGE`** | 列層級更正；原子發布；用 time travel 回答「昨天的報表說了什麼？」 |
 | **Merge-on-read + 夜間 compaction** | 每小時的 upsert 保持便宜；讀取保持快速 |
@@ -525,7 +535,8 @@ CloudWatch 的 `TransactionLogsDiskUsage` 與 `OldestReplicationSlotLag` 是該�
 值得主動提出的故障模式：
 
 - **DMS task 停止** → PostgreSQL 的 slot 保留 WAL（[§6-4](#6-4-cdc-prerequisites-and-the-replication-slot-trap-)）；對延遲與磁碟設告警。
-- **變更亂序** → 依來源 commit 時間 / LSN 去重，而不是依到達時間。
+- **變更亂序或被重播** → 依來源變更序號 / LSN 去重，而不是依 `updated_at` 或到達時間，
+  並跳過比該列已存序號更舊的事件。
 - **上游 schema 變更** → DMS 會帶上新增的欄位；`MERGE` 明確列出欄位，Iceberg 依欄位 id 演進表格。
 - **Compaction 與 `MERGE` 衝突** → compaction 只限定在今天以前的分區。
 
