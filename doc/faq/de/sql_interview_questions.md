@@ -340,8 +340,8 @@ FROM   ranked
 WHERE  rn = 1;
 ```
 
-Spark, BigQuery, Snowflake and DuckDB can filter on the window directly with `QUALIFY rn = 1`,
-which saves the CTE.
+BigQuery, Snowflake, DuckDB and Spark 4.2+ can filter on the window directly with
+`QUALIFY rn = 1`, which saves the CTE; Spark 4.1 and earlier need the CTE or a subquery.
 
 **Follow-up — two rows share `updated_at`. How is the result deterministic?** Without a
 tie-breaker `ROW_NUMBER` picks either row, and a rerun on a different partitioning may pick the
@@ -406,9 +406,13 @@ WHEN NOT MATCHED THEN
 
 The batch must be deduplicated **before** the `MERGE`: two source rows matching one target row
 is an error in PostgreSQL, Spark / Delta and Snowflake (*"cannot affect row a second time"*).
-To keep the `MERGE` cheap on a big target, partition the target by event date and add the
-batch's date range to the `ON` clause, so only the touched partitions are read. §10-1 covers the
-watermark.
+To keep the `MERGE` cheap on a big target you can add the batch's event-date range to the `ON`
+clause, so only the touched partitions are read — **but only under a contract that an event's
+date never changes**, so every existing row for the batch's keys is inside that range. Without
+it, a correction that moves an event to another date finds no match in the pruned range and the
+`MERGE` inserts a second row for the same `event_id`. If dates can change, match on `event_id`
+alone and get the speed from the target's layout instead — clustering or Z-ordering on
+`event_id` so the key lookup skips files. §10-1 covers the watermark.
 
 ### 4-2) Deduplicate with a status priority
 
@@ -716,16 +720,28 @@ retained AS (
   FROM   cohort c
   JOIN   activity a ON a.user_id = c.user_id AND a.activity_date >= c.cohort_date
   GROUP  BY c.cohort_date, a.activity_date - c.cohort_date
+),
+offsets AS (                                   -- the day offsets the report asks for
+  SELECT day_number FROM (VALUES (0), (1), (7), (30)) AS o(day_number)
+),
+eligible AS (                                  -- only offsets a cohort is old enough to have
+  SELECT s.cohort_date, s.cohort_users, o.day_number
+  FROM   cohort_size s
+  CROSS  JOIN offsets o
+  WHERE  s.cohort_date + o.day_number <= (SELECT MAX(activity_date) FROM activity)
 )
-SELECT r.cohort_date, r.day_number, s.cohort_users, r.active_users,
-       ROUND(100.0 * r.active_users / s.cohort_users, 1) AS retention_pct
-FROM   retained r
-JOIN   cohort_size s USING (cohort_date)
-ORDER  BY r.cohort_date, r.day_number;
+SELECT e.cohort_date, e.day_number, e.cohort_users,
+       COALESCE(r.active_users, 0)                                     AS active_users,
+       ROUND(100.0 * COALESCE(r.active_users, 0) / e.cohort_users, 1) AS retention_pct
+FROM   eligible e
+LEFT   JOIN retained r ON r.cohort_date = e.cohort_date AND r.day_number = e.day_number
+ORDER  BY e.cohort_date, e.day_number;
 ```
 
 The 11-01 cohort has three users (10, 11, 13); on day 1 only user 11 is active, so day-1
-retention is 33.3 %.
+retention is 33.3 %. The `eligible` step is what makes a mature cohort with nobody back on day
+7 show **0 %** instead of no row at all — `retained` only has the cohort-day pairs where someone
+was active — and it leaves out offsets a cohort is too young to have reached.
 
 **The bug this version avoids.** A common write-up computes `COUNT(DISTINCT c.user_id)` and
 `COUNT(DISTINCT a.user_id)` in the same `GROUP BY cohort_date, day_number` after a `LEFT JOIN`
@@ -734,10 +750,9 @@ table turns the `LEFT JOIN` into an inner join, so users who never came back van
 each `day_number` group the "cohort size" is just the users active that day — so retention is
 100 % on every row. Compute the denominator once per cohort, separately.
 
-Production notes: day offsets in a cohort table are usually limited (`day_number IN (1, 7,
-30)`), cohorts younger than the offset are excluded rather than shown as 0 %, and the signup
-date comes from a `users` table rather than `MIN(event_time)`, which shifts when old events are
-backfilled.
+Production note: the signup date comes from a `users` table rather than `MIN(event_time)`,
+which shifts when old events are backfilled; and "as of" is the last day the activity data is
+complete, not today.
 
 ### 6-3) DAU, WAU and MAU
 
@@ -1001,7 +1016,7 @@ Lin (2) manages Ned (4) and Oli (5).
 - **The other direction** — the chain *up* to the CEO is the same query with the join flipped
   (`e.employee_id = r.manager_id`).
 - **Where it runs** — PostgreSQL, MySQL 8, SQL Server, Snowflake, BigQuery, DuckDB, and Spark
-  from 3.5 onward (earlier Spark has no recursive CTE, so the loop is written in the driver,
+  from 4.1 onward (earlier Spark has no recursive CTE, so the loop is written in the driver,
   one join per level). A deep, wide hierarchy queried often is better flattened once into a
   closure table `(ancestor, descendant, depth)` so the question becomes a plain join.
 
@@ -1282,44 +1297,61 @@ target commits."**
 CREATE TABLE etl_watermark (job TEXT PRIMARY KEY, high_water TIMESTAMP NOT NULL);
 INSERT INTO etl_watermark VALUES ('orders_sync', TIMESTAMP '2026-11-01 00:00');
 
-CREATE TABLE src_orders (order_id INT, status TEXT, amount NUMERIC(10, 2), updated_at TIMESTAMP);
+CREATE TABLE src_orders (order_id INT, status TEXT, amount NUMERIC(10, 2),
+                         updated_at TIMESTAMP, change_seq BIGINT);   -- change_seq: the source's order
 INSERT INTO src_orders VALUES
-  (1, 'paid',     30, TIMESTAMP '2026-11-01 10:00'),
-  (1, 'refunded', 30, TIMESTAMP '2026-11-01 15:00'),   -- two versions of one key in the batch
-  (2, 'paid',     50, TIMESTAMP '2026-11-01 11:00');
+  (1, 'paid',     30, TIMESTAMP '2026-11-01 10:00', 1),
+  (1, 'refunded', 30, TIMESTAMP '2026-11-01 15:00', 3),  -- two versions of one key in the batch
+  (2, 'paid',     50, TIMESTAMP '2026-11-01 11:00', 2),
+  (2, 'paid',     55, TIMESTAMP '2026-11-01 11:00', 4);  -- a correction with the same timestamp
 
 CREATE TABLE dim_orders (order_id INT PRIMARY KEY, status TEXT, amount NUMERIC(10, 2),
-                         updated_at TIMESTAMP);
+                         updated_at TIMESTAMP, change_seq BIGINT);
 
--- 1. read the batch above the watermark (minus a lookback), one version per key
-MERGE INTO dim_orders t
-USING (
-  SELECT order_id, status, amount, updated_at
-  FROM (
-    SELECT s.*, ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY updated_at DESC) AS rn
-    FROM   src_orders s
-    WHERE  s.updated_at > (SELECT high_water - INTERVAL '1 hour'
-                           FROM etl_watermark WHERE job = 'orders_sync')
-  ) b
-  WHERE rn = 1
-) s
-ON t.order_id = s.order_id
+BEGIN;
+
+-- 1. snapshot the batch once: above the watermark (minus a lookback), one version per key
+CREATE TEMP TABLE stg_orders AS
+SELECT order_id, status, amount, updated_at, change_seq
+FROM (
+  SELECT s.*, ROW_NUMBER() OVER (PARTITION BY order_id
+                                 ORDER BY updated_at DESC, change_seq DESC) AS rn
+  FROM   src_orders s
+  WHERE  s.updated_at > (SELECT high_water - INTERVAL '1 hour'
+                         FROM etl_watermark WHERE job = 'orders_sync')
+) b
+WHERE rn = 1;
+
 -- 2. replace only with a newer version, so replaying an old batch changes nothing
-WHEN MATCHED AND s.updated_at > t.updated_at THEN
-  UPDATE SET status = s.status, amount = s.amount, updated_at = s.updated_at
+MERGE INTO dim_orders t
+USING stg_orders s
+ON t.order_id = s.order_id
+WHEN MATCHED AND (s.updated_at, s.change_seq) > (t.updated_at, t.change_seq) THEN
+  UPDATE SET status = s.status, amount = s.amount,
+             updated_at = s.updated_at, change_seq = s.change_seq
 WHEN NOT MATCHED THEN
-  INSERT (order_id, status, amount, updated_at)
-  VALUES (s.order_id, s.status, s.amount, s.updated_at);
+  INSERT (order_id, status, amount, updated_at, change_seq)
+  VALUES (s.order_id, s.status, s.amount, s.updated_at, s.change_seq);
 
--- 3. advance the watermark to what was actually read — after the MERGE has committed
+-- 3. advance the watermark to the newest row of the batch that was merged
 UPDATE etl_watermark
-SET    high_water = GREATEST(high_water, (SELECT MAX(updated_at) FROM src_orders))
+SET    high_water = GREATEST(high_water,
+                             COALESCE((SELECT MAX(updated_at) FROM stg_orders), high_water))
 WHERE  job = 'orders_sync';                            -- never moves backwards
+
+COMMIT;
 ```
 
-In PostgreSQL wrap steps 1–3 in one transaction; on a lakehouse, where the target and the
-watermark live in different systems, the guarantee comes from the `MERGE` being idempotent
-instead.
+Order 1 ends `refunded`; order 2 ends at 55, because the version order is `(updated_at,
+change_seq)` — a timestamp alone would pick either 11:00 row, and a strict `updated_at >` would
+reject the same-timestamp correction on the next run.
+
+**The watermark comes from the staging table, not from a second read of `src_orders`.** Under
+PostgreSQL's default `READ COMMITTED`, each statement sees a new snapshot even inside one
+transaction: a row committed to the source between the `MERGE` and the `UPDATE` would push the
+watermark past a row the `MERGE` never read, and the next run would skip it for good. Staging
+the batch pins one snapshot for both. On a lakehouse, where the target and the watermark live
+in different systems, the guarantee comes from the `MERGE` being idempotent instead.
 
 The production shape of the same job:
 
@@ -1414,36 +1446,77 @@ INSERT INTO dim_customer VALUES
   (1, 101, 'Taipei', DATE '2025-01-01', NULL, TRUE),
   (2, 102, 'Osaka',  DATE '2025-03-01', NULL, TRUE);
 
-CREATE TABLE stg_customer (customer_id INT, address TEXT, change_date DATE);
-INSERT INTO stg_customer VALUES
-  (101, 'Tokyo', DATE '2025-07-01'),    -- moved
-  (102, 'Osaka', DATE '2025-07-01'),    -- unchanged
-  (103, 'Seoul', DATE '2025-07-01');    -- new customer
+INSERT INTO dim_customer VALUES
+  (3, 104, 'Busan',  DATE '2025-05-01', NULL, TRUE);
 
--- 1. close the current row of every customer whose address changed
+CREATE TABLE stg_customer (customer_id INT, address TEXT, change_date DATE, change_seq BIGINT);
+INSERT INTO stg_customer VALUES
+  (101, 'Kyoto',   DATE '2025-07-01', 1),  -- moved twice on one day:
+  (101, 'Tokyo',   DATE '2025-07-01', 2),  --   the later change wins at day grain
+  (102, 'Osaka',   DATE '2025-07-01', 3),  -- unchanged
+  (103, 'Seoul',   DATE '2025-07-01', 4),  -- new customer
+  (104, 'Incheon', DATE '2025-04-01', 5);  -- late: older than the current Busan row
+
+BEGIN;
+
+-- 0. one change per customer: the latest of the batch
+CREATE TEMP TABLE stg_latest AS
+SELECT customer_id, address, change_date
+FROM (
+  SELECT s.*, ROW_NUMBER() OVER (PARTITION BY customer_id
+                                 ORDER BY change_date DESC, change_seq DESC) AS rn
+  FROM   stg_customer s
+) t
+WHERE rn = 1;
+
+-- 1. route late changes away: one dated on or before the current row's start belongs in the
+--    middle of the history, so it goes to the rebuild path, never to the close-and-insert below
+CREATE TEMP TABLE stg_late AS
+SELECT s.*
+FROM   stg_latest s
+JOIN   dim_customer d ON d.customer_id = s.customer_id AND d.is_current
+WHERE  s.change_date <= d.valid_from
+  AND  d.address IS DISTINCT FROM s.address;
+
+DELETE FROM stg_latest WHERE customer_id IN (SELECT customer_id FROM stg_late);
+
+-- 2. close the current row of every customer whose address changed
 UPDATE dim_customer d
 SET    valid_to = s.change_date, is_current = FALSE
-FROM   stg_customer s
+FROM   stg_latest s
 WHERE  d.customer_id = s.customer_id
   AND  d.is_current
   AND  d.address IS DISTINCT FROM s.address;
 
--- 2. insert a current row for every customer who has none with this address
+-- 3. insert a current row for every customer who now has none
 INSERT INTO dim_customer
 SELECT (SELECT COALESCE(MAX(customer_sk), 0) FROM dim_customer)
          + ROW_NUMBER() OVER (ORDER BY s.customer_id),
        s.customer_id, s.address, s.change_date, NULL, TRUE
-FROM   stg_customer s
+FROM   stg_latest s
 WHERE  NOT EXISTS (SELECT 1 FROM dim_customer d
                    WHERE d.customer_id = s.customer_id AND d.is_current);
+
+COMMIT;
 ```
 
 After the run customer 101 has a closed Taipei row (`valid_to` 2025-07-01) and a current Tokyo
-row, 102 is untouched, 103 is new. (Use a sequence or identity column for `customer_sk` in a
-real table; the `MAX + ROW_NUMBER` keeps the example portable.)
+row, 102 is untouched, 103 is new, and 104's Incheon change sits in `stg_late` for the history
+rebuild while Busan stays current. `BEGIN` / `COMMIT` matter: in autocommit mode the close would
+commit on its own, and a failed insert would leave the customer with no current row. (Use a
+sequence or identity column for `customer_sk` in a real table; the `MAX + ROW_NUMBER` keeps the
+example portable.)
 
-**Follow-up — how does the new version arrive?** Exactly as above: step 1 closes, step 2
-inserts. Step 2's `NOT EXISTS … is_current` catches both the customers step 1 just closed and
+The invariant — at most one current row per customer — is enforced by the database, not by the
+care taken above:
+
+```sql
+-- PostgreSQL only: a partial unique index (DuckDB, Spark and most warehouses have none)
+CREATE UNIQUE INDEX dim_customer_one_current ON dim_customer (customer_id) WHERE is_current;
+```
+
+**Follow-up — how does the new version arrive?** Exactly as above: step 2 closes, step 3
+inserts. Step 3's `NOT EXISTS … is_current` catches both the customers step 2 just closed and
 brand-new ones, with one statement. The order matters — close first, then insert. On Delta or
 Snowflake the same thing is often written as **one `MERGE`** whose source is the staging rows
 unioned with a copy of each changed row under a `NULL` merge key, so the changed customer both
@@ -1451,16 +1524,13 @@ matches (close) and does not match (insert) in a single atomic statement.
 
 **Follow-up — a rerun must not create two current rows.** Three layers:
 
-1. **The statements are idempotent.** Rerun with the same staging data: step 1 finds Tokyo
-   current and equal to the staging row, so it closes nothing; step 2 finds a current row, so it
+1. **The statements are idempotent.** Rerun with the same staging data: step 2 finds Tokyo
+   current and equal to the staging row, so it closes nothing; step 3 finds a current row, so it
    inserts nothing.
 2. **One transaction** around both statements, so a failure between them cannot leave a closed
    row with no successor.
-3. **A constraint that makes the bad state impossible** — in PostgreSQL a partial unique index,
-   `CREATE UNIQUE INDEX ON dim_customer (customer_id) WHERE is_current;`. Warehouses without
-   one run the check after the load and fail the job:
-   `SELECT customer_id FROM dim_customer WHERE is_current GROUP BY customer_id HAVING
-   COUNT(*) > 1`.
+3. **A constraint that makes the bad state impossible** — the partial unique index above.
+   Warehouses without one run the validation checks below after the load and fail the job.
 
 Compare with `IS DISTINCT FROM` (null-safe) — `address <> s.address` is `UNKNOWN` when either
 side is NULL, so a change to or from NULL is silently missed. With many tracked columns, compare
@@ -1470,13 +1540,16 @@ a **hash of the tracked columns** rather than each column.
 dimension is broken:
 
 ```sql
--- 1. at most one current row per customer
-SELECT customer_id, COUNT(*) AS current_rows
-FROM   dim_customer WHERE is_current
-GROUP  BY customer_id HAVING COUNT(*) > 1;
+-- 1. exactly one current row per customer: catches none as well as two
+SELECT customer_id, COUNT(*) FILTER (WHERE is_current) AS current_rows
+FROM   dim_customer
+GROUP  BY customer_id
+HAVING COUNT(*) FILTER (WHERE is_current) <> 1;
 
--- 2. no interval that ends before it starts
-SELECT * FROM dim_customer WHERE valid_to IS NOT NULL AND valid_to <= valid_from;
+-- 2. the current row is open; a closed row ends after it starts
+SELECT * FROM dim_customer
+WHERE  (is_current AND valid_to IS NOT NULL)
+   OR  (NOT is_current AND (valid_to IS NULL OR valid_to <= valid_from));
 
 -- 3. no gap or overlap: each version ends exactly where the next one starts
 SELECT customer_id, valid_from, valid_to, next_from
@@ -1525,7 +1598,7 @@ WHERE  NOT EXISTS (SELECT 1 FROM dim_orders d WHERE d.order_id = s.order_id);
 -- 3. totals agree with the source's latest versions
 WITH latest AS (
   SELECT DISTINCT ON (order_id) order_id, amount
-  FROM   src_orders ORDER BY order_id, updated_at DESC
+  FROM   src_orders ORDER BY order_id, updated_at DESC, change_seq DESC
 )
 SELECT (SELECT SUM(amount) FROM latest) AS source_total,
        (SELECT SUM(amount) FROM dim_orders) AS target_total

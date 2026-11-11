@@ -180,7 +180,7 @@ anti-join，只能拿它去比對一個 hash 過的 subplan 來過濾。
 <!-- 4049738b77e0 -->
 ## 4) 去重 ⭐⭐⭐⭐⭐
 
-<!-- f1207df038c9 -->
+<!-- b682cce53fe4 -->
 ### 4-1) Q2 —— 保留每個事件的最新版本
 
 > 每個事件有 `event_id`、`user_id`、`event_time` 與 `updated_at`。同一個 `event_id` 可能出現
@@ -191,7 +191,8 @@ anti-join，只能拿它去比對一個 hash 過的 subplan 來過濾。
 
 <!--CODE-->
 
-Spark、BigQuery、Snowflake 與 DuckDB 可以直接用 `QUALIFY rn = 1` 對 window 過濾，省掉 CTE。
+BigQuery、Snowflake、DuckDB 與 Spark 4.2+ 可以直接用 `QUALIFY rn = 1` 對 window 過濾，省掉 CTE；
+Spark 4.1 以前仍需要 CTE 或子查詢。
 
 **追問 —— 兩列的 `updated_at` 相同，結果要怎麼確定？** 沒有 tie-breaker 時 `ROW_NUMBER` 會任選
 一列，換一種 partitioning 重跑可能選到另一列 —— 同樣的輸入產出兩張不同的表。加一個真正能排序
@@ -222,8 +223,11 @@ spill 到磁碟。要點出的問題與修法：
 
 批次必須在 `MERGE` **之前**去重：兩筆來源列對到同一筆目標列，在 PostgreSQL、Spark / Delta 與
 Snowflake 上都是錯誤（*"cannot affect row a second time"*）。要讓大目標表上的 `MERGE` 便宜，
-把目標表依事件日期分區，並把批次的日期範圍加進 `ON` 子句，只讀被碰到的 partition。watermark
-在 §10-1。
+可以把批次的事件日期範圍加進 `ON` 子句，只讀被碰到的 partition —— **但前提是有「事件日期永不改變」
+的約定**，讓批次中 key 的既有列一定落在這個範圍內。沒有這個約定時，把事件改到另一天的更正在被修剪
+過的範圍裡找不到對應，`MERGE` 就會為同一個 `event_id` 插入第二列。日期可能改變時，只用 `event_id`
+比對，改從目標表的配置取得速度 —— 依 `event_id` 做 clustering 或 Z-order，讓 key 查找能跳過檔案。
+watermark 在 §10-1。
 
 <!-- 9925900276ea -->
 ### 4-2) 依狀態優先序去重
@@ -373,7 +377,7 @@ Snowflake 上都是錯誤（*"cannot affect row a second time"*）。要讓大�
 4. **一個查詢只做一個 distinct** —— 在 Spark 中，一個查詢裡對不同欄位做好幾個 `COUNT(DISTINCT …)`，
    會讓資料每個欄位展開一次（`Expand` 運算子）。把它們拆開，或先預聚合。
 
-<!-- 3ef4b4616715 -->
+<!-- 575f28a532a5 -->
 ### 6-2) Cohort 留存
 
 > 在 d 日註冊的使用者中，有多少比例在 d + 1、d + 7 與 d + 30 日是活躍的？
@@ -384,6 +388,8 @@ Snowflake 上都是錯誤（*"cannot affect row a second time"*）。要讓大�
 <!--CODE-->
 
 11-01 這個 cohort 有三個使用者（10、11、13）；第 1 天只有使用者 11 活躍，所以第 1 天留存率是 33.3 %。
+`eligible` 這一步讓第 7 天沒有人回來的成熟 cohort 顯示 **0 %**，而不是整列消失 —— `retained` 只有
+有人活躍的 cohort-天數組合 —— 同時排除 cohort 還太年輕、尚未到達的天數差。
 
 **這個版本避開的 bug。** 常見的寫法在 `LEFT JOIN` 加上 `WHERE a.activity_date >= c.cohort_date`
 之後，在同一個 `GROUP BY cohort_date, day_number` 裡計算 `COUNT(DISTINCT c.user_id)` 與
@@ -391,9 +397,8 @@ Snowflake 上都是錯誤（*"cannot affect row a second time"*）。要讓大�
 回來的使用者就消失了；而在每個 `day_number` 群組裡，「cohort 大小」其實就是當天活躍的使用者 ——
 所以每一列的留存率都是 100 %。分母要每個 cohort 另外算一次。
 
-Production 注意事項：cohort 表的天數差通常有限定（`day_number IN (1, 7, 30)`），比天數差還年輕的
-cohort 要排除，而不是顯示成 0 %；註冊日要來自 `users` 表，而不是 `MIN(event_time)`，因為舊事件
-回補時後者會移動。
+Production 注意事項：註冊日要來自 `users` 表，而不是 `MIN(event_time)`，因為舊事件回補時後者會
+移動；而「截至」指的是活動資料完整的最後一天，不是今天。
 
 <!-- 2c924f817316 -->
 ### 6-3) DAU、WAU 與 MAU
@@ -510,7 +515,7 @@ pipeline 沒有跑？」**
 <!-- 9d420d83b86d -->
 ## 8) 遞迴 CTE：階層資料 ⭐⭐⭐
 
-<!-- 6b5ec0983cd6 -->
+<!-- 481948a6b904 -->
 ### 8-1) 某個主管底下所有直接與間接的部屬
 
 **「遞迴 CTE：anchor 是那位主管，遞迴成員 join 主管已經在結果裡的員工，當某一輪沒有新增任何列
@@ -527,7 +532,7 @@ Lin（2）管理 Ned（4）與 Oli（5）。
   停下來，但會默默回傳錯的列，所以只把它當最後防線。
 - **另一個方向** —— 往*上*到 CEO 的那條鏈，是把 join 反過來的同一個查詢
   （`e.employee_id = r.manager_id`）。
-- **在哪裡能跑** —— PostgreSQL、MySQL 8、SQL Server、Snowflake、BigQuery、DuckDB，以及 3.5 之後的
+- **在哪裡能跑** —— PostgreSQL、MySQL 8、SQL Server、Snowflake、BigQuery、DuckDB，以及 4.1 之後的
   Spark（更早的 Spark 沒有遞迴 CTE，所以迴圈寫在 driver 裡，每一層一次 join）。又深又寬、經常被
   查詢的階層，最好一次攤平成一張 closure table `(ancestor, descendant, depth)`，問題就變成普通的
   join。
@@ -746,7 +751,7 @@ PostgreSQL 對 `EXISTS` / `IN` 會這麼做，但 `SELECT` 清單裡的純量子
 <!-- 58bd73ad82b5 -->
 ## 10) 增量 ETL 與資料品質 ⭐⭐⭐⭐⭐
 
-<!-- 6ae7def14894 -->
+<!-- bcdd7ad85d64 -->
 ### 10-1) Q7 —— 只處理上次執行之後變動的資料
 
 > 每天讀取來源表自上次執行以來新增或更新的列。
@@ -757,8 +762,14 @@ PostgreSQL 對 `EXISTS` / `IN` 會這麼做，但 `SELECT` 清單裡的純量子
 
 <!--CODE-->
 
-在 PostgreSQL 中把步驟 1–3 包在同一個 transaction 裡；在 lakehouse 上目標表與 watermark 位於不同
-系統，保證改由 `MERGE` 的冪等性來提供。
+訂單 1 最後是 `refunded`；訂單 2 最後是 55，因為版本順序是 `(updated_at, change_seq)` —— 只靠
+時間戳會任選其中一筆 11:00 的列，而嚴格的 `updated_at >` 會在下一次執行時拒絕同一時間戳的更正。
+
+**Watermark 取自 staging 表，而不是再讀一次 `src_orders`。** 在 PostgreSQL 預設的 `READ COMMITTED`
+下，即使在同一個 transaction 裡，每個語句看到的也是新的 snapshot：在 `MERGE` 與 `UPDATE` 之間 commit
+進來源的列，會把 watermark 推過一筆 `MERGE` 從沒讀到的列，下一次執行就永遠跳過它。把批次放進 staging
+讓兩者使用同一個 snapshot。在 lakehouse 上目標表與 watermark 位於不同系統，保證改由 `MERGE` 的冪等性
+來提供。
 
 同一個 job 在 production 上的樣子：
 
@@ -804,7 +815,7 @@ watermark，能的話放在同一個 transaction；如果 job 在兩者之間掛
 `WHEN MATCHED AND s.op = 'D' THEN DELETE`。`ON` 條件只放 key，把「是否較新」的判斷放在 `WHEN`
 子句；在分區的 lakehouse 表上，把 partition 範圍加進 `ON`，讓 `MERGE` 只讀被碰到的 partition。
 
-<!-- e6f01ff2a3e0 -->
+<!-- c7f1256a1e24 -->
 ### 10-2) Q8 —— SCD Type 2：保留客戶住過的每一個地址
 
 **「每次變動都關閉目前那一列 —— 設定 `valid_to` 與 `is_current = false` —— 並插入新的目前列。
@@ -826,25 +837,27 @@ Type 3 保留一個「前一個值」欄位；真實的表通常依欄位混用�
 <!--CODE-->
 
 執行之後，客戶 101 有一列已關閉的 Taipei（`valid_to` 2025-07-01）與一列目前的 Tokyo，102 不變，
-103 是新的。（真實的表要用 sequence 或 identity 欄位當 `customer_sk`；`MAX + ROW_NUMBER` 只是讓
-範例可攜。）
+103 是新的，而 104 的 Incheon 變動留在 `stg_late` 等待歷史重建，Busan 仍是目前列。`BEGIN` / `COMMIT`
+很重要：在 autocommit 模式下關閉會自己 commit，插入一旦失敗，客戶就沒有目前列了。（真實的表要用
+sequence 或 identity 欄位當 `customer_sk`；`MAX + ROW_NUMBER` 只是讓範例可攜。）
 
-**追問 —— 新版本到達時怎麼處理？** 就像上面：步驟 1 關閉，步驟 2 插入。步驟 2 的
-`NOT EXISTS … is_current` 用一個語句同時接住步驟 1 剛關閉的客戶與全新的客戶。順序很重要 —— 先關閉，
+「每個客戶至多一筆目前列」這個不變式由資料庫強制，而不是靠上面的小心：
+
+<!--CODE-->
+
+**追問 —— 新版本到達時怎麼處理？** 就像上面：步驟 2 關閉，步驟 3 插入。步驟 3 的
+`NOT EXISTS … is_current` 用一個語句同時接住步驟 2 剛關閉的客戶與全新的客戶。順序很重要 —— 先關閉，
 再插入。在 Delta 或 Snowflake 上，同樣的事常寫成**一個 `MERGE`**：來源是 staging 的列，再 union
 上每一筆有變動的列、以 `NULL` 當 merge key 的副本，讓有變動的客戶在同一個原子語句裡既對得上
 （關閉）又對不上（插入）。
 
 **追問 —— 重跑不能產生兩筆目前列。** 三層防護：
 
-1. **語句本身冪等。** 用同樣的 staging 資料重跑：步驟 1 發現 Tokyo 是目前列且與 staging 相同，
-   所以什麼都不關；步驟 2 發現已有目前列，所以什麼都不插入。
+1. **語句本身冪等。** 用同樣的 staging 資料重跑：步驟 2 發現 Tokyo 是目前列且與 staging 相同，
+   所以什麼都不關；步驟 3 發現已有目前列，所以什麼都不插入。
 2. **一個 transaction** 包住兩個語句，所以兩者之間的失敗不會留下一列已關閉卻沒有後繼的列。
-3. **讓壞狀態不可能發生的約束** —— 在 PostgreSQL 中是 partial unique index：
-   `CREATE UNIQUE INDEX ON dim_customer (customer_id) WHERE is_current;`。沒有這種約束的資料倉儲
-   在載入後執行檢查並讓 job 失敗：
-   `SELECT customer_id FROM dim_customer WHERE is_current GROUP BY customer_id HAVING
-   COUNT(*) > 1`。
+3. **讓壞狀態不可能發生的約束** —— 上面的 partial unique index。沒有這種約束的資料倉儲在載入後
+   執行下面的驗證檢查，並讓 job 失敗。
 
 比較時用 `IS DISTINCT FROM`（null-safe）—— 任一邊為 NULL 時 `address <> s.address` 是 `UNKNOWN`，
 所以變成 NULL 或從 NULL 變回來的變動會被默默漏掉。追蹤的欄位很多時，比較**追蹤欄位的 hash**，而不是逐欄比較。
