@@ -1284,6 +1284,44 @@ partitions or use an index; `WHERE created_at >= '2026-01-01' AND created_at < '
 can (§9-2). The half-open range is also correct for timestamps, where `BETWEEN … AND
 '2026-12-31'` loses the last day after midnight.
 
+### 9-11) A daily join of two large tables shuffles both sides every run. How do you stop paying for it?
+
+**"If one side is small enough, I broadcast it. If both are large and the join runs every day on
+the same key, I bucket both tables on that key with the same bucket count, so the join reads
+bucket *i* against bucket *i* and nothing is shuffled. Then I check the plan to confirm it."**
+
+| Situation | What removes the shuffle |
+|---|---|
+| One side fits in executor memory | a broadcast join (hint, or raise `spark.sql.autoBroadcastJoinThreshold`) |
+| Both sides large, same join key every run | **bucketing** both tables: `CLUSTERED BY (customer_id) INTO 64 BUCKETS`, the same count on both sides |
+| Iceberg tables | the same `bucket(n, customer_id)` partition transform on both tables, plus a storage-partitioned join |
+| Delta liquid clustering or Z-order | **does not** remove it. Clustering only lets filters skip files |
+
+```sql
+-- spark sql — prove it: no Exchange on either branch, from the join down through the Sort to the scan
+EXPLAIN FORMATTED
+SELECT c.customer_id, c.customer_name, SUM(o.amount) AS total_amount
+FROM   customers_bucketed c
+JOIN   orders_bucketed    o ON c.customer_id = o.customer_id
+GROUP  BY c.customer_id, c.customer_name;
+```
+
+Follow-ups worth getting ahead of:
+
+- **Bucket counts differ (64 against 128)**: only the side with fewer buckets is shuffled.
+  `spark.sql.bucketing.coalesceBucketsInJoin.enabled` merges the larger side's buckets instead in a
+  sort-merge join. It does not when that side is a shuffled-hash join's build side.
+- **The key is cast or the types differ**: a cast on one side (`INT` against `BIGINT`) can shuffle only
+  that side, when Spark keeps the other side's bucketed layout. Wrapping the key on both sides shuffles both.
+- **A hot key**: it lands in one bucket. AQE cannot split it either, because a bucketed join has
+  no shuffle partition to split.
+- **The cost**: extra work at write time, a bucket count you cannot change without rewriting the
+  table, and more files with each append.
+
+The DDL, the plans before and after, every condition that brings the Exchange back, how to choose
+the bucket count, and the bucketing vs clustering table are in
+[`spark.md` §6-4](./spark.md#6-4-bucketing).
+
 ---
 
 ## 10) Incremental ETL and Data Quality ⭐⭐⭐⭐⭐
