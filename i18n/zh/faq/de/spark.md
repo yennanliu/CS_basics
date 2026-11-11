@@ -404,7 +404,7 @@ Spark 會在同一個 task 裡讀兩張表的第 *i* 個 bucket，join 兩側的
 - Delta Lake 表不支援 `bucketBy`。在 lakehouse 上，對應的做法是 Iceberg 的 `bucket(n, col)`
   partition transform（見下方的比較表）。
 
-<!-- d226560b61cf -->
+<!-- 97db497409e8 -->
 #### 哪些條件要對上，否則 Exchange 會回來
 
 以下每一條都在 Spark 4.0.1 上驗證過，測試時關掉了 broadcast join，以強制走 sort-merge join：
@@ -412,7 +412,7 @@ Spark 會在同一個 task 裡讀兩張表的第 *i* 個 bucket，join 兩側的
 | 條件 | 不成立時會發生什麼 |
 |---|---|
 | Join key 就是 bucket 欄位 | 用別的欄位 join，或在兩側都把 key 包起來（`CAST(customer_id AS STRING)`），**兩側**都會被 shuffle。Scan 上會顯示 `Bucketed: false (disabled by query planner)` |
-| 兩側的 key 型別相同 | `INT` key 對 `BIGINT` key 時，`INT` 那一側會被插入隱式轉型。Spark 保留另一側的 bucketed 佈局，**只 shuffle 被轉型的那一側**來對上它 |
+| 兩側的 key 型別相同 | `INT` key 對 `BIGINT` key 時，`INT` 那一側會被插入隱式轉型。當 Spark 能保留另一側的 bucketed 佈局時，會**只 shuffle 被轉型的那一側**來對上它（Spark 4.0.1 的 sort-merge join 就是如此）。不要假設每種 join 都這樣 |
 | Bucket 數相同 | 64 對 128，或 64 對 16：Spark **只 shuffle bucket 數較少的那一側**，讓它對上另一側，另一側保持 bucketed。這是一次 shuffle 而不是兩次，但也不是零 |
 | ……或其中一個數是另一個的倍數 | 開啟 `spark.sql.bucketing.coalesceBucketsInJoin.enabled=true`（預設關閉），且比例在 `spark.sql.bucketing.coalesceBucketsInJoin.maxBucketRatio`（預設 4）以內時，Spark 改為合併較多那一側的 bucket。Scan 會顯示 `SelectedBucketsCount: 128 out of 128 (Coalesced to 64)`，而且沒有 Exchange。這適用於 sort-merge join。在 shuffled-hash join 中，若較多 bucket 的一側是 build side，Spark 不會合併它，較少的一側仍會被 shuffle |
 | Join 是 sort-merge 或 shuffled-hash join | 如果有一側小於 `spark.sql.autoBroadcastJoinThreshold`，Spark 會 broadcast 它，不使用 bucket。這是正確的選擇，因為 broadcast 更便宜 |

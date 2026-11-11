@@ -750,7 +750,7 @@ PostgreSQL 對 `EXISTS` / `IN` 會這麼做，但 `SELECT` 清單裡的純量子
 也用不上索引；`WHERE created_at >= '2026-01-01' AND created_at < '2027-01-01'` 可以（§9-2）。
 半開區間對時間戳也才正確，`BETWEEN … AND '2026-12-31'` 會漏掉最後一天午夜之後的資料。
 
-<!-- 222a4036605a -->
+<!-- 3a46fee0d03d -->
 ### 9-11) 兩張大表每天的 join，每次都 shuffle 兩側。怎麼不再付這筆成本？
 
 **「如果有一側夠小，我就 broadcast 它。如果兩側都很大，而且 join 每天都用同一個 key，我會把兩張表
@@ -771,7 +771,7 @@ PostgreSQL 對 `EXISTS` / `IN` 會這麼做，但 `SELECT` 清單裡的純量子
 - **Bucket 數不同（64 對 128）**：只有 bucket 數較少的一側會被 shuffle。
   `spark.sql.bucketing.coalesceBucketsInJoin.enabled` 在 sort-merge join 中會改為合併較多那一側的 bucket；
   但若那一側是 shuffled-hash join 的 build side，就不會合併。
-- **Key 被轉型或型別不同**：只有一側被轉型（`INT` 對 `BIGINT`）時只 shuffle 那一側；兩側都把 key 包起來，兩側都會被 shuffle。
+- **Key 被轉型或型別不同**：只有一側被轉型（`INT` 對 `BIGINT`）時，若 Spark 能保留另一側的 bucketed 佈局，可能只 shuffle 那一側；兩側都把 key 包起來，兩側都會被 shuffle。
 - **熱門 key**：它會落在同一個 bucket。AQE 也切不開它，因為 bucketed join 沒有 shuffle partition 可切。
 - **代價**：寫入時多花的工、不重寫整張表就改不了的 bucket 數，以及每次 append 都會增加的檔案。
 

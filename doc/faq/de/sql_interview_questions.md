@@ -1311,8 +1311,8 @@ Follow-ups worth getting ahead of:
 - **Bucket counts differ (64 against 128)**: only the side with fewer buckets is shuffled.
   `spark.sql.bucketing.coalesceBucketsInJoin.enabled` merges the larger side's buckets instead in a
   sort-merge join. It does not when that side is a shuffled-hash join's build side.
-- **The key is cast or the types differ**: a cast on one side (`INT` against `BIGINT`) shuffles only
-  that side. Wrapping the key on both sides shuffles both.
+- **The key is cast or the types differ**: a cast on one side (`INT` against `BIGINT`) can shuffle only
+  that side, when Spark keeps the other side's bucketed layout. Wrapping the key on both sides shuffles both.
 - **A hot key**: it lands in one bucket. AQE cannot split it either, because a bucketed join has
   no shuffle partition to split.
 - **The cost**: extra work at write time, a bucket count you cannot change without rewriting the
