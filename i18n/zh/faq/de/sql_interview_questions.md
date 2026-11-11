@@ -735,7 +735,7 @@ stage 的 task 很少，是 partition 數的問題。一邊小到可以 broadcas
 這題順勢會帶出的面試建議：如果你在真實 job 上做過這件事，說出你實際做了其中哪幾項、前後量到了
 什麼，並把它和你*也會*考慮的修法分開講。
 
-<!-- d4c42c31901f -->
+<!-- 88ea07ac82ac -->
 ### 9-10) 要點名的兩個反模式：相關子查詢，以及在 partition 欄位上套函式
 
 **相關子查詢** —— 引用了外層列的子查詢，邏輯上每一列都要執行一次：
@@ -749,6 +749,33 @@ PostgreSQL 對 `EXISTS` / `IN` 會這麼做，但 `SELECT` 清單裡的純量子
 **在 partition 或有索引的欄位上套函式** —— `WHERE YEAR(created_at) = 2026` 無法修剪 partition，
 也用不上索引；`WHERE created_at >= '2026-01-01' AND created_at < '2027-01-01'` 可以（§9-2）。
 半開區間對時間戳也才正確，`BETWEEN … AND '2026-12-31'` 會漏掉最後一天午夜之後的資料。
+
+<!-- e9119043c025 -->
+### 9-11) 兩張大表每天的 join，每次都 shuffle 兩側。怎麼不再付這筆成本？
+
+**「如果有一側夠小，我就 broadcast 它。如果兩側都很大，而且 join 每天都用同一個 key，我會把兩張表
+都依這個 key、用相同的 bucket 數做 bucketing，讓 join 以第 *i* 個 bucket 對第 *i* 個 bucket 讀取，
+完全不用 shuffle。然後檢查執行計畫來確認。」**
+
+| 情況 | 什麼能省掉 shuffle |
+|---|---|
+| 有一側放得進 executor 記憶體 | broadcast join（hint，或調高 `spark.sql.autoBroadcastJoinThreshold`） |
+| 兩側都很大，每次都用同一個 join key | 兩張表都做 **bucketing**：`CLUSTERED BY (customer_id) INTO 64 BUCKETS`，兩側 bucket 數相同 |
+| Iceberg 表 | 兩張表用相同的 `bucket(n, customer_id)` partition transform，再加上 storage-partitioned join |
+| Delta liquid clustering 或 Z-order | **不能**省掉。Clustering 只讓過濾條件能略過檔案 |
+
+<!--CODE-->
+
+值得先準備好的追問：
+
+- **Bucket 數不同（64 對 128）**：只有 bucket 數較少的一側會被 shuffle。
+  `spark.sql.bucketing.coalesceBucketsInJoin.enabled` 會改為合併較多那一側的 bucket。
+- **Key 被轉型或型別不同**：兩側又都會被 shuffle。
+- **熱門 key**：它會落在同一個 bucket。AQE 也切不開它，因為 bucketed join 沒有 shuffle partition 可切。
+- **代價**：寫入時多花的工、不重寫整張表就改不了的 bucket 數，以及每次 append 都會增加的檔案。
+
+DDL、前後的執行計畫、每個讓 Exchange 回來的條件、如何選 bucket 數，以及 bucketing 與 clustering
+的比較表，都在 [`spark.md` §6-4](./spark.md#6-4-bucketing)。
 
 ---
 
