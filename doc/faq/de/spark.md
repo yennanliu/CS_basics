@@ -508,10 +508,10 @@ forced:
 
 | Condition | What happens when it does not hold |
 |---|---|
-| The join keys are the bucket columns | Join on another column, or wrap the key (`CAST(customer_id AS STRING)`), and **both** sides are shuffled. The scans show `Bucketed: false (disabled by query planner)` |
-| The key types are the same on both sides | A `BIGINT` against a `STRING` gets an implicit cast, which is the case above |
+| The join keys are the bucket columns | Join on another column, or wrap the key on both sides (`CAST(customer_id AS STRING)`), and **both** sides are shuffled. The scans show `Bucketed: false (disabled by query planner)` |
+| The key types are the same on both sides | An `INT` key against a `BIGINT` key gets an implicit cast on the `INT` side. Spark keeps the other side bucketed and shuffles **only the cast side** to match it |
 | The bucket counts are the same | 64 against 128, or 64 against 16: Spark shuffles **only the side with fewer buckets** so it matches the other side, and keeps the other side bucketed. It is one shuffle, not two, but it is not zero |
-| …or one count is a multiple of the other | With `spark.sql.bucketing.coalesceBucketsInJoin.enabled=true` (off by default), and a ratio within `spark.sql.bucketing.coalesceBucketsInJoin.maxBucketRatio` (default 4), Spark merges the larger side's buckets instead. The scan shows `SelectedBucketsCount: 128 out of 128 (Coalesced to 64)` and there is no Exchange |
+| …or one count is a multiple of the other | With `spark.sql.bucketing.coalesceBucketsInJoin.enabled=true` (off by default), and a ratio within `spark.sql.bucketing.coalesceBucketsInJoin.maxBucketRatio` (default 4), Spark merges the larger side's buckets instead. The scan shows `SelectedBucketsCount: 128 out of 128 (Coalesced to 64)` and there is no Exchange. This holds for a sort-merge join. In a shuffled-hash join, Spark does not coalesce the larger side when that side is the build side, so the smaller side is still shuffled |
 | The join is a sort-merge or shuffled-hash join | If one side fits under `spark.sql.autoBroadcastJoinThreshold`, Spark broadcasts it and does not use the buckets. That is the right choice, because a broadcast is cheaper still |
 | Both tables were bucketed by Spark | Spark hashes with Murmur3 and Hive uses its own hash, so a Hive-bucketed table does not line up with a Spark one |
 
@@ -541,10 +541,12 @@ HashAggregate                                  <- GROUP BY customer_id, customer
          +- Scan parquet orders_bucketed       Bucketed: true, SelectedBucketsCount: 64 out of 64
 ```
 
-- **The claim is "no `Exchange` directly under the join."** A plan can still contain other
-  Exchanges, and each of those is a separate question.
-- **Both scans show `Bucketed: true`.** `Bucketed: false (disabled by query planner)` names the
-  side that will be shuffled.
+- **The claim is "no `Exchange` between the join and either scan."** Follow both input branches
+  down through the `Sort` to the scan. In the plan before bucketing, too, a `Sort` is the join's
+  direct child and the `Exchange` sits under it. Exchanges above the join are separate questions.
+- **`Bucketed: true` on both scans is not proof by itself.** `Bucketed: false (disabled by query
+  planner)` names a side that will be shuffled. But with `autoBucketedScan.enabled=false`, a scan
+  still reports `Bucketed: true` when an Exchange sits right above it, so the branches decide.
 - **The `Sort` stays.** By default Spark 3+ does not rely on the per-bucket sort order, because
   a bucket can be several files. So `SORTED BY` is not what removes the shuffle.
 - **A `GROUP BY` that contains the bucket key reuses the join's partitioning**, so the plan
@@ -557,7 +559,7 @@ HashAggregate                                  <- GROUP BY customer_id, customer
 |---|---|---|
 | Hive / Spark `CLUSTERED BY (k) INTO n BUCKETS` | **bucketing**: hashes rows into n files per partition when the table is written | yes, when the conditions above hold |
 | Delta `CLUSTER BY (k)` (liquid clustering), `OPTIMIZE … ZORDER BY` | puts similar values in the same files, so filters skip files | **no**. Reads get cheaper, and the join still shuffles |
-| Iceberg `PARTITIONED BY (bucket(n, k))` | hash partitioning stored as table partitions | yes, through a **storage-partitioned join** (Spark 3.3+): `spark.sql.sources.v2.bucketing.enabled=true` plus Iceberg's `spark.sql.iceberg.planning.preserve-data-grouping=true`, with both tables using the same transform |
+| Iceberg `PARTITIONED BY (bucket(n, k))` | hash partitioning stored as table partitions | yes, through a **storage-partitioned join** (Spark 3.3+): `spark.sql.sources.v2.bucketing.enabled=true` plus Iceberg's `spark.sql.iceberg.planning.preserve-data-grouping=true`, with both tables using the same transform. If the two tables do not hold the same set of bucket values, Spark 3.4 also needs `spark.sql.sources.v2.bucketing.pushPartValues.enabled=true` (off by default there, on by default in Spark 4.0) |
 | Spark SQL `SELECT … CLUSTER BY k` | `DISTRIBUTE BY k SORT BY k` for this query's output | no, because it is a shuffle itself |
 
 **Clustering makes a filter read less, and bucketing makes a join move less.** Neither one does
@@ -598,7 +600,7 @@ that AQE can split it. See [§7-3](#7-3-data-skew-spotting-it-and-fixing-it).
 - *"Success looks like a `BroadcastHashJoin` with no Exchange."* A broadcast has its own
   `BroadcastExchange`, and when it happens Spark does not use the buckets.
 - *"A different bucket count turns the optimisation off."* Only the side with fewer buckets is
-  shuffled, and with coalescing enabled neither side is.
+  shuffled, and with coalescing enabled (in a sort-merge join) neither side is.
 - *"Set `autoBroadcastJoinThreshold = -1` to make bucketing work."* That only forces a
   sort-merge join on small demo tables. In production, a side small enough to broadcast should
   be broadcast.
@@ -608,7 +610,7 @@ that AQE can split it. See [§7-3](#7-3-data-skew-spotting-it-and-fixing-it).
 > For a join that runs every day on `customer_id`, I would bucket both tables by `customer_id`
 > with the same power-of-two bucket count, written with a repartition so each bucket is one
 > file. Then Spark joins bucket *i* to bucket *i* without shuffling either side. I would
-> confirm it in `EXPLAIN FORMATTED`: no `Exchange` under the join, and `Bucketed: true` on both
+> confirm it in `EXPLAIN FORMATTED`: no `Exchange` on either branch of the join, and `Bucketed: true` on both
 > scans. It costs extra at write time and the bucket count is fixed, so it is only worth doing
 > for a recurring join. It also makes skew harder, because AQE cannot split a bucket. On Delta,
 > liquid clustering is not a substitute. It improves file skipping but still shuffles, and the

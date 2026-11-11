@@ -404,17 +404,17 @@ Spark 會在同一個 task 裡讀兩張表的第 *i* 個 bucket，join 兩側的
 - Delta Lake 表不支援 `bucketBy`。在 lakehouse 上，對應的做法是 Iceberg 的 `bucket(n, col)`
   partition transform（見下方的比較表）。
 
-<!-- 64d532ad0efd -->
+<!-- d226560b61cf -->
 #### 哪些條件要對上，否則 Exchange 會回來
 
 以下每一條都在 Spark 4.0.1 上驗證過，測試時關掉了 broadcast join，以強制走 sort-merge join：
 
 | 條件 | 不成立時會發生什麼 |
 |---|---|
-| Join key 就是 bucket 欄位 | 用別的欄位 join，或把 key 包起來（`CAST(customer_id AS STRING)`），**兩側**都會被 shuffle。Scan 上會顯示 `Bucketed: false (disabled by query planner)` |
-| 兩側的 key 型別相同 | `BIGINT` 對 `STRING` 會被插入隱式轉型，也就是上一列的情況 |
+| Join key 就是 bucket 欄位 | 用別的欄位 join，或在兩側都把 key 包起來（`CAST(customer_id AS STRING)`），**兩側**都會被 shuffle。Scan 上會顯示 `Bucketed: false (disabled by query planner)` |
+| 兩側的 key 型別相同 | `INT` key 對 `BIGINT` key 時，`INT` 那一側會被插入隱式轉型。Spark 保留另一側的 bucketed 佈局，**只 shuffle 被轉型的那一側**來對上它 |
 | Bucket 數相同 | 64 對 128，或 64 對 16：Spark **只 shuffle bucket 數較少的那一側**，讓它對上另一側，另一側保持 bucketed。這是一次 shuffle 而不是兩次，但也不是零 |
-| ……或其中一個數是另一個的倍數 | 開啟 `spark.sql.bucketing.coalesceBucketsInJoin.enabled=true`（預設關閉），且比例在 `spark.sql.bucketing.coalesceBucketsInJoin.maxBucketRatio`（預設 4）以內時，Spark 改為合併較多那一側的 bucket。Scan 會顯示 `SelectedBucketsCount: 128 out of 128 (Coalesced to 64)`，而且沒有 Exchange |
+| ……或其中一個數是另一個的倍數 | 開啟 `spark.sql.bucketing.coalesceBucketsInJoin.enabled=true`（預設關閉），且比例在 `spark.sql.bucketing.coalesceBucketsInJoin.maxBucketRatio`（預設 4）以內時，Spark 改為合併較多那一側的 bucket。Scan 會顯示 `SelectedBucketsCount: 128 out of 128 (Coalesced to 64)`，而且沒有 Exchange。這適用於 sort-merge join。在 shuffled-hash join 中，若較多 bucket 的一側是 build side，Spark 不會合併它，較少的一側仍會被 shuffle |
 | Join 是 sort-merge 或 shuffled-hash join | 如果有一側小於 `spark.sql.autoBroadcastJoinThreshold`，Spark 會 broadcast 它，不使用 bucket。這是正確的選擇，因為 broadcast 更便宜 |
 | 兩張表都由 Spark 做 bucketing | Spark 用 Murmur3 做 hash，Hive 用自己的 hash，所以 Hive bucketed 的表和 Spark 的對不上 |
 
@@ -422,28 +422,30 @@ Spark 會在同一個 task 裡讀兩張表的第 *i* 個 bucket，join 兩側的
 `spark.sql.sources.bucketing.autoBucketedScan.enabled`（同樣預設開啟）會在查詢用不到 bucket 時，
 把 bucketed scan 關掉，`disabled by query planner` 這段文字就是這麼來的。
 
-<!-- 68c717f1b908 -->
+<!-- 1c1eaf2c5075 -->
 #### 用 `EXPLAIN FORMATTED` 證明
 
 <!--CODE-->
 
-- **要證明的是「join 正下方沒有 `Exchange`」。** 計畫裡仍可能有其他 Exchange，
-  每一個都是另一個問題。
-- **兩個 scan 都顯示 `Bucketed: true`。** 顯示 `Bucketed: false (disabled by query planner)`
-  的那一側就是會被 shuffle 的一側。
+- **要證明的是「join 到任一側 scan 之間都沒有 `Exchange`」。** 沿著兩條輸入分支往下，經過 `Sort`
+  一路看到 scan。即使在 bucketing 之前的計畫裡，join 的直接子節點也是 `Sort`，`Exchange` 在它下面。
+  Join 上方的 Exchange 是另一個問題。
+- **兩個 scan 都顯示 `Bucketed: true` 本身不是證據。** 顯示 `Bucketed: false (disabled by query planner)`
+  的一側會被 shuffle。但在 `autoBucketedScan.enabled=false` 時，即使正上方就有 Exchange，scan
+  仍會顯示 `Bucketed: true`，所以要以分支為準。
 - **`Sort` 還在。** Spark 3+ 預設不依賴每個 bucket 內的排序，因為一個 bucket 可能有好幾個檔案。
   所以移除 shuffle 的不是 `SORTED BY`。
 - **包含 bucket key 的 `GROUP BY` 會沿用 join 的分區方式**，所以上面的計畫在 join 之後也沒有
   Exchange。改成 `GROUP BY order_date` 就會在 join 上方多一個 Exchange，因為資料列必須依另一個 key 重新分組。
 
-<!-- dfec7590fb46 -->
+<!-- 0c7fa66932c6 -->
 #### Bucketing 與 clustering：同一個字，不同的東西
 
 | 語法 | 做什麼 | 能省掉 join 的 shuffle 嗎？ |
 |---|---|---|
 | Hive / Spark `CLUSTERED BY (k) INTO n BUCKETS` | **bucketing**：寫表時把資料列 hash 到每個 partition 的 n 個檔案 | 可以，前提是上面的條件成立 |
 | Delta `CLUSTER BY (k)`（liquid clustering）、`OPTIMIZE … ZORDER BY` | 把相近的值放進同一批檔案，讓過濾條件能略過檔案 | **不能**。讀取變便宜了，join 照樣 shuffle |
-| Iceberg `PARTITIONED BY (bucket(n, k))` | 以表 partition 的形式儲存的 hash 分區 | 可以，透過 **storage-partitioned join**（Spark 3.3+）：`spark.sql.sources.v2.bucketing.enabled=true` 加上 Iceberg 的 `spark.sql.iceberg.planning.preserve-data-grouping=true`，兩張表要用相同的 transform |
+| Iceberg `PARTITIONED BY (bucket(n, k))` | 以表 partition 的形式儲存的 hash 分區 | 可以，透過 **storage-partitioned join**（Spark 3.3+）：`spark.sql.sources.v2.bucketing.enabled=true` 加上 Iceberg 的 `spark.sql.iceberg.planning.preserve-data-grouping=true`，兩張表要用相同的 transform。如果兩張表擁有的 bucket 值集合不同，Spark 3.4 還需要 `spark.sql.sources.v2.bucketing.pushPartValues.enabled=true`（3.4 預設關閉，Spark 4.0 預設開啟） |
 | Spark SQL `SELECT … CLUSTER BY k` | 對這個查詢的輸出做 `DISTRIBUTE BY k SORT BY k` | 不能，因為它本身就是一次 shuffle |
 
 **Clustering 讓過濾讀得更少，bucketing 讓 join 搬得更少。** 兩者都不能取代對方。
@@ -474,7 +476,7 @@ AQE 也就沒有東西可切。可以把熱門 key 分開處理（過濾出來�
 或只在這一個查詢關掉 bucketing（`spark.sql.sources.bucketing.enabled=false`），讓 AQE 能切分它。
 見 [§7-3](#7-3-data-skew-spotting-it-and-fixing-it)。
 
-<!-- 363a2ca4f48d -->
+<!-- 50f84914e0d0 -->
 #### 聽到這些說法時要更正
 
 - *「網路成本降到零。」* 消失的是 **shuffle**。放在 S3 或其他物件儲存上的 bucket 檔案仍然是透過網路讀取，
@@ -482,17 +484,17 @@ AQE 也就沒有東西可切。可以把熱門 key 分開處理（過濾出來�
   在同一個 task 裡讀入兩邊的第 *i* 個 bucket 檔案就夠了。
 - *「成功的樣子是沒有 Exchange 的 `BroadcastHashJoin`。」* Broadcast 本身就有 `BroadcastExchange`，
   而且走 broadcast 時 Spark 不會使用 bucket。
-- *「Bucket 數不同，這個優化就失效。」* 只有 bucket 數較少的一側會被 shuffle，開啟合併後兩側都不會。
+- *「Bucket 數不同，這個優化就失效。」* 只有 bucket 數較少的一側會被 shuffle，開啟合併後（在 sort-merge join 中）兩側都不會。
 - *「設 `autoBroadcastJoinThreshold = -1`，bucketing 才會生效。」* 這只是在小的示範表上強制走
   sort-merge join。正式環境中，小到可以 broadcast 的一側就應該 broadcast。
 
-<!-- d54f36ac0973 -->
+<!-- 8024179f19d8 -->
 #### 口頭怎麼說
 
 > For a join that runs every day on `customer_id`, I would bucket both tables by `customer_id`
 > with the same power-of-two bucket count, written with a repartition so each bucket is one
 > file. Then Spark joins bucket *i* to bucket *i* without shuffling either side. I would
-> confirm it in `EXPLAIN FORMATTED`: no `Exchange` under the join, and `Bucketed: true` on both
+> confirm it in `EXPLAIN FORMATTED`: no `Exchange` on either branch of the join, and `Bucketed: true` on both
 > scans. It costs extra at write time and the bucket count is fixed, so it is only worth doing
 > for a recurring join. It also makes skew harder, because AQE cannot split a bucket. On Delta,
 > liquid clustering is not a substitute. It improves file skipping but still shuffles, and the
