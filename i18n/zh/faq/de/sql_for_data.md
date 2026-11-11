@@ -1,8 +1,8 @@
-<!-- 9531b70139f3 -->
+<!-- 56f279e38cff -->
 # 資料工程用 SQL
 
 > **範圍** —— 資料工程面試所考的分析型 SQL：查詢如何被求值、join 與其演算法、NULL 語意、彙總、window function、CTE 與遞迴、經典面試查詢題型、MERGE 與 upsert、日期與時區、查詢效能，以及 PostgreSQL、BigQuery、Snowflake、Spark SQL 之間的方言差異。資料表設計歸 [schema_design.md](./schema_design.md)；選哪種資料庫歸 [sql_vs_nosql.md](./sql_vs_nosql.md)。
-> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單；[`./data_modeling.md`](./data_modeling.md) —— 這些查詢所跑的星型模型；[`./spark.md`](./spark.md) —— Spark SQL 如何執行它們；[`./sql_explain.md`](./sql_explain.md) —— 深入讀懂查詢計畫；[`./data_performance.md`](./data_performance.md) —— 跨引擎的 SQL 改寫、OOM 與儲存配置；[`./analytics.md`](./analytics.md) —— 這些查詢所計算的指標；[`../sql/faq_sql.md`](../sql/faq_sql.md) —— 較舊、較長的 SQL 筆記。
+> **另見**：[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單；[`./data_modeling.md`](./data_modeling.md) —— 這些查詢所跑的星型模型；[`./spark.md`](./spark.md) —— Spark SQL 如何執行它們；[`./sql_explain.md`](./sql_explain.md) —— 深入讀懂查詢計畫；[`./data_performance.md`](./data_performance.md) —— 跨引擎的 SQL 改寫、OOM 與儲存配置；[`./analytics.md`](./analytics.md) —— 這些查詢所計算的指標；[`./sql_interview_questions.md`](./sql_interview_questions.md) —— 資深面試題連同追問的解答；[`../sql/faq_sql.md`](../sql/faq_sql.md) —— 較舊、較長的 SQL 筆記。
 
 除非 code block 的第一行寫了別的方言，否則每個查詢都是 **PostgreSQL**。每一節都先給你會說出口的那句話，
 再講機制，最後是面試官接著會問的取捨。
