@@ -752,7 +752,9 @@ each `day_number` group the "cohort size" is just the users active that day — 
 
 Production note: the signup date comes from a `users` table rather than `MIN(event_time)`,
 which shifts when old events are backfilled; and "as of" is the last day the activity data is
-complete, not today.
+complete, not today. The sample treats `MAX(activity_date)` as complete; a production job
+replaces that expression with a trusted completeness watermark — the last day whose load
+finished — or a partly loaded day reports retention that is too low.
 
 ### 6-3) DAU, WAU and MAU
 
@@ -1017,7 +1019,9 @@ Lin (2) manages Ned (4) and Oli (5).
   (`e.employee_id = r.manager_id`).
 - **Where it runs** — PostgreSQL, MySQL 8, SQL Server, Snowflake, BigQuery, DuckDB, and Spark
   from 4.1 onward (earlier Spark has no recursive CTE, so the loop is written in the driver,
-  one join per level). A deep, wide hierarchy queried often is better flattened once into a
+  one join per level). The engines share the recursion, not the dialect: the cycle guard above
+  uses PostgreSQL's `ARRAY[…]`, `||` and `<> ALL`, so on Spark, BigQuery or Snowflake rewrite
+  it with that engine's array functions (`array_contains`, `ARRAY_CONCAT`, …). A deep, wide hierarchy queried often is better flattened once into a
   closure table `(ancestor, descendant, depth)` so the question becomes a plain join.
 
 ---
@@ -1298,7 +1302,8 @@ CREATE TABLE etl_watermark (job TEXT PRIMARY KEY, high_water TIMESTAMP NOT NULL)
 INSERT INTO etl_watermark VALUES ('orders_sync', TIMESTAMP '2026-11-01 00:00');
 
 CREATE TABLE src_orders (order_id INT, status TEXT, amount NUMERIC(10, 2),
-                         updated_at TIMESTAMP, change_seq BIGINT);   -- change_seq: the source's order
+                         updated_at TIMESTAMP NOT NULL,
+                         change_seq BIGINT    NOT NULL);   -- change_seq: the source's order
 INSERT INTO src_orders VALUES
   (1, 'paid',     30, TIMESTAMP '2026-11-01 10:00', 1),
   (1, 'refunded', 30, TIMESTAMP '2026-11-01 15:00', 3),  -- two versions of one key in the batch
@@ -1306,11 +1311,12 @@ INSERT INTO src_orders VALUES
   (2, 'paid',     55, TIMESTAMP '2026-11-01 11:00', 4);  -- a correction with the same timestamp
 
 CREATE TABLE dim_orders (order_id INT PRIMARY KEY, status TEXT, amount NUMERIC(10, 2),
-                         updated_at TIMESTAMP, change_seq BIGINT);
+                         updated_at TIMESTAMP NOT NULL, change_seq BIGINT NOT NULL);
 
 BEGIN;
 
 -- 1. snapshot the batch once: above the watermark (minus a lookback), one version per key
+DROP TABLE IF EXISTS stg_orders;                       -- safe to rerun in the same session
 CREATE TEMP TABLE stg_orders AS
 SELECT order_id, status, amount, updated_at, change_seq
 FROM (
@@ -1339,12 +1345,18 @@ SET    high_water = GREATEST(high_water,
                              COALESCE((SELECT MAX(updated_at) FROM stg_orders), high_water))
 WHERE  job = 'orders_sync';                            -- never moves backwards
 
+DROP TABLE stg_orders;
 COMMIT;
 ```
 
 Order 1 ends `refunded`; order 2 ends at 55, because the version order is `(updated_at,
 change_seq)` — a timestamp alone would pick either 11:00 row, and a strict `updated_at >` would
 reject the same-timestamp correction on the next run.
+
+Both markers are `NOT NULL`. A `NULL` `change_seq` would sort **first** under `DESC` in
+PostgreSQL and make the tuple comparison `UNKNOWN`, so a same-timestamp correction would be
+silently rejected — a source that can emit NULL markers fails validation in staging rather than
+reaching the `MERGE` or the watermark.
 
 **The watermark comes from the staging table, not from a second read of `src_orders`.** Under
 PostgreSQL's default `READ COMMITTED`, each statement sees a new snapshot even inside one
@@ -1452,60 +1464,88 @@ INSERT INTO dim_customer VALUES
 CREATE TABLE stg_customer (customer_id INT, address TEXT, change_date DATE, change_seq BIGINT);
 INSERT INTO stg_customer VALUES
   (101, 'Kyoto',   DATE '2025-07-01', 1),  -- moved twice on one day:
-  (101, 'Tokyo',   DATE '2025-07-01', 2),  --   the later change wins at day grain
-  (102, 'Osaka',   DATE '2025-07-01', 3),  -- unchanged
-  (103, 'Seoul',   DATE '2025-07-01', 4),  -- new customer
-  (104, 'Incheon', DATE '2025-04-01', 5);  -- late: older than the current Busan row
+  (101, 'Tokyo',   DATE '2025-07-01', 2),  --   the day's last change wins
+  (101, 'Nagoya',  DATE '2025-07-03', 3),  -- and again two days later: a version of its own
+  (102, 'Osaka',   DATE '2025-07-01', 4),  -- unchanged
+  (103, 'Seoul',   DATE '2025-07-01', 5),  -- new customer
+  (104, 'Incheon', DATE '2025-04-01', 6);  -- late: older than the current Busan row
+
+-- changes too old to apply here wait for the history rebuild (kept across runs)
+CREATE TABLE dim_customer_late (customer_id INT, address TEXT, change_date DATE);
 
 BEGIN;
+DROP TABLE IF EXISTS stg_daily;                -- safe to rerun in the same session
+DROP TABLE IF EXISTS stg_chain;
 
--- 0. one change per customer: the latest of the batch
-CREATE TEMP TABLE stg_latest AS
+-- 0. one change per customer per day: the day's last
+CREATE TEMP TABLE stg_daily AS
 SELECT customer_id, address, change_date
 FROM (
-  SELECT s.*, ROW_NUMBER() OVER (PARTITION BY customer_id
-                                 ORDER BY change_date DESC, change_seq DESC) AS rn
+  SELECT s.*, ROW_NUMBER() OVER (PARTITION BY customer_id, change_date
+                                 ORDER BY change_seq DESC) AS rn
   FROM   stg_customer s
 ) t
 WHERE rn = 1;
 
--- 1. route late changes away: one dated on or before the current row's start belongs in the
---    middle of the history, so it goes to the rebuild path, never to the close-and-insert below
-CREATE TEMP TABLE stg_late AS
-SELECT s.*
-FROM   stg_latest s
-JOIN   dim_customer d ON d.customer_id = s.customer_id AND d.is_current
-WHERE  s.change_date <= d.valid_from
-  AND  d.address IS DISTINCT FROM s.address;
+-- 1. route late changes: dated on or before the current row's start and different from the
+--    version valid on that day (a replayed change matches it and is skipped)
+INSERT INTO dim_customer_late
+SELECT s.customer_id, s.address, s.change_date
+FROM   stg_daily s
+JOIN   dim_customer cur ON cur.customer_id = s.customer_id AND cur.is_current
+LEFT   JOIN dim_customer h ON h.customer_id = s.customer_id
+                          AND h.valid_from <= s.change_date
+                          AND (s.change_date < h.valid_to OR h.valid_to IS NULL)
+WHERE  s.change_date <= cur.valid_from
+  AND  h.address IS DISTINCT FROM s.address
+  AND  NOT EXISTS (SELECT 1 FROM dim_customer_late l
+                   WHERE l.customer_id = s.customer_id AND l.change_date = s.change_date
+                     AND l.address = s.address);
 
-DELETE FROM stg_latest WHERE customer_id IN (SELECT customer_id FROM stg_late);
+-- 2. the new versions: changes after the current row's start, minus no-ops, each one ending
+--    where the next begins
+CREATE TEMP TABLE stg_chain AS
+WITH newer AS (
+  SELECT s.customer_id, s.address, s.change_date,
+         COALESCE(LAG(s.address) OVER (PARTITION BY s.customer_id ORDER BY s.change_date),
+                  cur.address) AS prev_address
+  FROM   stg_daily s
+  LEFT   JOIN dim_customer cur ON cur.customer_id = s.customer_id AND cur.is_current
+  WHERE  cur.customer_id IS NULL OR s.change_date > cur.valid_from
+),
+changed AS (
+  SELECT * FROM newer WHERE address IS DISTINCT FROM prev_address
+)
+SELECT customer_id, address, change_date AS valid_from,
+       LEAD(change_date) OVER (PARTITION BY customer_id ORDER BY change_date) AS valid_to
+FROM   changed;
 
--- 2. close the current row of every customer whose address changed
+-- 3. close each changed customer's current row where its first new version starts
 UPDATE dim_customer d
-SET    valid_to = s.change_date, is_current = FALSE
-FROM   stg_latest s
-WHERE  d.customer_id = s.customer_id
-  AND  d.is_current
-  AND  d.address IS DISTINCT FROM s.address;
+SET    valid_to = c.first_from, is_current = FALSE
+FROM   (SELECT customer_id, MIN(valid_from) AS first_from
+        FROM stg_chain GROUP BY customer_id) c
+WHERE  d.customer_id = c.customer_id
+  AND  d.is_current;
 
--- 3. insert a current row for every customer who now has none
+-- 4. insert the chain; only its last version is current
 INSERT INTO dim_customer
 SELECT (SELECT COALESCE(MAX(customer_sk), 0) FROM dim_customer)
-         + ROW_NUMBER() OVER (ORDER BY s.customer_id),
-       s.customer_id, s.address, s.change_date, NULL, TRUE
-FROM   stg_latest s
-WHERE  NOT EXISTS (SELECT 1 FROM dim_customer d
-                   WHERE d.customer_id = s.customer_id AND d.is_current);
+         + ROW_NUMBER() OVER (ORDER BY customer_id, valid_from),
+       customer_id, address, valid_from, valid_to, valid_to IS NULL
+FROM   stg_chain;
 
+DROP TABLE stg_daily;
+DROP TABLE stg_chain;
 COMMIT;
 ```
 
-After the run customer 101 has a closed Taipei row (`valid_to` 2025-07-01) and a current Tokyo
-row, 102 is untouched, 103 is new, and 104's Incheon change sits in `stg_late` for the history
-rebuild while Busan stays current. `BEGIN` / `COMMIT` matter: in autocommit mode the close would
-commit on its own, and a failed insert would leave the customer with no current row. (Use a
-sequence or identity column for `customer_sk` in a real table; the `MAX + ROW_NUMBER` keeps the
-example portable.)
+After the run customer 101 has Taipei closed on 07-01, Tokyo from 07-01 to 07-03 (Kyoto lost to
+Tokyo on the same day) and Nagoya current from 07-03; 102 is untouched, 103 is new, and 104's
+Incheon change waits in `dim_customer_late` for the history rebuild while Busan stays current.
+`BEGIN` / `COMMIT` matter: in autocommit mode the close would commit on its own, and a failed
+insert would leave the customer with no current row. (Use a sequence or identity column for
+`customer_sk` in a real table; the `MAX + ROW_NUMBER` keeps the example portable.)
 
 The invariant — at most one current row per customer — is enforced by the database, not by the
 care taken above:
@@ -1515,18 +1555,20 @@ care taken above:
 CREATE UNIQUE INDEX dim_customer_one_current ON dim_customer (customer_id) WHERE is_current;
 ```
 
-**Follow-up — how does the new version arrive?** Exactly as above: step 2 closes, step 3
-inserts. Step 3's `NOT EXISTS … is_current` catches both the customers step 2 just closed and
-brand-new ones, with one statement. The order matters — close first, then insert. On Delta or
+**Follow-up — how does the new version arrive?** Exactly as above: step 2 turns the batch
+into versions — each change compared with the one before it (or the current row) so a no-op is
+dropped, and each version ending where the next begins — step 3 closes the current row at the
+first new version, and step 4 inserts them all. A brand-new customer has no current row, so it
+only gets step 4. The order matters — close first, then insert. On Delta or
 Snowflake the same thing is often written as **one `MERGE`** whose source is the staging rows
 unioned with a copy of each changed row under a `NULL` merge key, so the changed customer both
 matches (close) and does not match (insert) in a single atomic statement.
 
 **Follow-up — a rerun must not create two current rows.** Three layers:
 
-1. **The statements are idempotent.** Rerun with the same staging data: step 2 finds Tokyo
-   current and equal to the staging row, so it closes nothing; step 3 finds a current row, so it
-   inserts nothing.
+1. **The statements are idempotent.** Rerun with the same staging data: every change is now
+   on or before its customer's current start, and equal to the version valid that day, so step 1
+   routes nothing new and step 2 builds an empty chain — steps 3 and 4 do nothing.
 2. **One transaction** around both statements, so a failure between them cannot leave a closed
    row with no successor.
 3. **A constraint that makes the bad state impossible** — the partial unique index above.
@@ -1563,16 +1605,18 @@ WHERE  next_from IS NOT NULL AND valid_to IS DISTINCT FROM next_from;
 
 **Follow-up — several changes on the same day?** Decide the grain with the business first:
 
-- **Day grain** — only the last change of the day counts. Dedupe staging to one row per
-  customer per day (`ROW_NUMBER() … ORDER BY change_ts DESC`) before the load.
-- **Every change** — make `valid_from` / `valid_to` timestamps, order the batch's changes by
-  timestamp (and a sequence for ties), and build each version's `valid_to` as the next
-  version's `valid_from` with `LEAD`; then close the existing current row at the batch's first
-  change and insert the whole chain.
+- **Day grain** — what the example does: step 0 keeps the day's last change per customer, so
+  Kyoto loses to Tokyo, while changes on **different** days stay separate versions (Tokyo, then
+  Nagoya). Deduping the batch to one row per customer instead would silently stretch Tokyo
+  over Nagoya's days.
+- **Every change** — the same load with `valid_from` / `valid_to` as timestamps and step 0
+  partitioned by the change's timestamp (a sequence breaks ties), so every change is a version.
 - **A late change** older than the current version must be **inserted into the middle** of the
-  history: split the version it falls in, which rewrites `valid_to` on its predecessor. A batch
-  job that rebuilds a key's intervals from the full change log with `LEAD` handles this cleanly
-  ([`sql_for_data.md`](./sql_for_data.md) §7-14).
+  history: split the version it falls in, which rewrites `valid_to` on its predecessor. That is
+  why step 1 parks it in `dim_customer_late` instead of applying it — comparing it with the
+  version **valid on its date**, not the current one, so a late change back to today's address
+  is still caught. A batch job that rebuilds those keys' intervals from the full change log with
+  `LEAD` handles it cleanly ([`sql_for_data.md`](./sql_for_data.md) §7-14).
 
 Use **half-open intervals** — `valid_from <= t AND (t < valid_to OR valid_to IS NULL)` — with
 `valid_to` equal to the next version's `valid_from`, rather than "the day before". The

@@ -377,7 +377,7 @@ watermark 在 §10-1。
 4. **一個查詢只做一個 distinct** —— 在 Spark 中，一個查詢裡對不同欄位做好幾個 `COUNT(DISTINCT …)`，
    會讓資料每個欄位展開一次（`Expand` 運算子）。把它們拆開，或先預聚合。
 
-<!-- 575f28a532a5 -->
+<!-- 59f1e9c6a370 -->
 ### 6-2) Cohort 留存
 
 > 在 d 日註冊的使用者中，有多少比例在 d + 1、d + 7 與 d + 30 日是活躍的？
@@ -398,7 +398,9 @@ watermark 在 §10-1。
 所以每一列的留存率都是 100 %。分母要每個 cohort 另外算一次。
 
 Production 注意事項：註冊日要來自 `users` 表，而不是 `MIN(event_time)`，因為舊事件回補時後者會
-移動；而「截至」指的是活動資料完整的最後一天，不是今天。
+移動；而「截至」指的是活動資料完整的最後一天，不是今天。範例把 `MAX(activity_date)` 當成已完整；
+production 的 job 要把這個運算式換成可信的完整度 watermark —— 載入已完成的最後一天 —— 否則載入到一半
+的那天會回報過低的留存率。
 
 <!-- 2c924f817316 -->
 ### 6-3) DAU、WAU 與 MAU
@@ -515,7 +517,7 @@ pipeline 沒有跑？」**
 <!-- 9d420d83b86d -->
 ## 8) 遞迴 CTE：階層資料 ⭐⭐⭐
 
-<!-- 481948a6b904 -->
+<!-- 5845ef50767f -->
 ### 8-1) 某個主管底下所有直接與間接的部屬
 
 **「遞迴 CTE：anchor 是那位主管，遞迴成員 join 主管已經在結果裡的員工，當某一輪沒有新增任何列
@@ -533,7 +535,9 @@ Lin（2）管理 Ned（4）與 Oli（5）。
 - **另一個方向** —— 往*上*到 CEO 的那條鏈，是把 join 反過來的同一個查詢
   （`e.employee_id = r.manager_id`）。
 - **在哪裡能跑** —— PostgreSQL、MySQL 8、SQL Server、Snowflake、BigQuery、DuckDB，以及 4.1 之後的
-  Spark（更早的 Spark 沒有遞迴 CTE，所以迴圈寫在 driver 裡，每一層一次 join）。又深又寬、經常被
+  Spark（更早的 Spark 沒有遞迴 CTE，所以迴圈寫在 driver 裡，每一層一次 join）。這些引擎共有的是遞迴，不是方言：
+  上面的環路防護用的是 PostgreSQL 的 `ARRAY[…]`、`||` 與 `<> ALL`，所以在 Spark、BigQuery 或 Snowflake
+  上要改用該引擎的陣列函式（`array_contains`、`ARRAY_CONCAT`、…）。又深又寬、經常被
   查詢的階層，最好一次攤平成一張 closure table `(ancestor, descendant, depth)`，問題就變成普通的
   join。
 
@@ -751,7 +755,7 @@ PostgreSQL 對 `EXISTS` / `IN` 會這麼做，但 `SELECT` 清單裡的純量子
 <!-- 58bd73ad82b5 -->
 ## 10) 增量 ETL 與資料品質 ⭐⭐⭐⭐⭐
 
-<!-- bcdd7ad85d64 -->
+<!-- 753068e7aed7 -->
 ### 10-1) Q7 —— 只處理上次執行之後變動的資料
 
 > 每天讀取來源表自上次執行以來新增或更新的列。
@@ -764,6 +768,10 @@ PostgreSQL 對 `EXISTS` / `IN` 會這麼做，但 `SELECT` 清單裡的純量子
 
 訂單 1 最後是 `refunded`；訂單 2 最後是 55，因為版本順序是 `(updated_at, change_seq)` —— 只靠
 時間戳會任選其中一筆 11:00 的列，而嚴格的 `updated_at >` 會在下一次執行時拒絕同一時間戳的更正。
+
+兩個標記都是 `NOT NULL`。`NULL` 的 `change_seq` 在 PostgreSQL 的 `DESC` 排序下會排在**最前面**，
+並讓 tuple 比較變成 `UNKNOWN`，於是同一時間戳的更正會被默默拒絕 —— 可能產生 NULL 標記的來源要在
+staging 的驗證就失敗，而不是進到 `MERGE` 或 watermark。
 
 **Watermark 取自 staging 表，而不是再讀一次 `src_orders`。** 在 PostgreSQL 預設的 `READ COMMITTED`
 下，即使在同一個 transaction 裡，每個語句看到的也是新的 snapshot：在 `MERGE` 與 `UPDATE` 之間 commit
@@ -815,7 +823,7 @@ watermark，能的話放在同一個 transaction；如果 job 在兩者之間掛
 `WHEN MATCHED AND s.op = 'D' THEN DELETE`。`ON` 條件只放 key，把「是否較新」的判斷放在 `WHEN`
 子句；在分區的 lakehouse 表上，把 partition 範圍加進 `ON`，讓 `MERGE` 只讀被碰到的 partition。
 
-<!-- c7f1256a1e24 -->
+<!-- 7230d710910b -->
 ### 10-2) Q8 —— SCD Type 2：保留客戶住過的每一個地址
 
 **「每次變動都關閉目前那一列 —— 設定 `valid_to` 與 `is_current = false` —— 並插入新的目前列。
@@ -836,8 +844,9 @@ Type 3 保留一個「前一個值」欄位；真實的表通常依欄位混用�
 
 <!--CODE-->
 
-執行之後，客戶 101 有一列已關閉的 Taipei（`valid_to` 2025-07-01）與一列目前的 Tokyo，102 不變，
-103 是新的，而 104 的 Incheon 變動留在 `stg_late` 等待歷史重建，Busan 仍是目前列。`BEGIN` / `COMMIT`
+執行之後，客戶 101 的 Taipei 在 07-01 關閉，Tokyo 從 07-01 到 07-03（同一天的 Kyoto 輸給了 Tokyo），
+Nagoya 從 07-03 起是目前列；102 不變，103 是新的，而 104 的 Incheon 變動留在 `dim_customer_late` 等待
+歷史重建，Busan 仍是目前列。`BEGIN` / `COMMIT`
 很重要：在 autocommit 模式下關閉會自己 commit，插入一旦失敗，客戶就沒有目前列了。（真實的表要用
 sequence 或 identity 欄位當 `customer_sk`；`MAX + ROW_NUMBER` 只是讓範例可攜。）
 
@@ -845,16 +854,17 @@ sequence 或 identity 欄位當 `customer_sk`；`MAX + ROW_NUMBER` 只是讓範�
 
 <!--CODE-->
 
-**追問 —— 新版本到達時怎麼處理？** 就像上面：步驟 2 關閉，步驟 3 插入。步驟 3 的
-`NOT EXISTS … is_current` 用一個語句同時接住步驟 2 剛關閉的客戶與全新的客戶。順序很重要 —— 先關閉，
+**追問 —— 新版本到達時怎麼處理？** 就像上面：步驟 2 把批次變成版本 —— 每次變動都和它前一次
+（或目前列）比較，無變化的就丟掉，每個版本結束在下一個版本開始之處 —— 步驟 3 在第一個新版本開始時
+關閉目前列，步驟 4 把它們全部插入。全新的客戶沒有目前列，所以只會經過步驟 4。順序很重要 —— 先關閉，
 再插入。在 Delta 或 Snowflake 上，同樣的事常寫成**一個 `MERGE`**：來源是 staging 的列，再 union
 上每一筆有變動的列、以 `NULL` 當 merge key 的副本，讓有變動的客戶在同一個原子語句裡既對得上
 （關閉）又對不上（插入）。
 
 **追問 —— 重跑不能產生兩筆目前列。** 三層防護：
 
-1. **語句本身冪等。** 用同樣的 staging 資料重跑：步驟 2 發現 Tokyo 是目前列且與 staging 相同，
-   所以什麼都不關；步驟 3 發現已有目前列，所以什麼都不插入。
+1. **語句本身冪等。** 用同樣的 staging 資料重跑：每次變動現在都落在它客戶目前列的開始日或之前，
+   且等於當天有效的版本，所以步驟 1 不會再送出新的列，步驟 2 建出空的鏈 —— 步驟 3 與 4 什麼都不做。
 2. **一個 transaction** 包住兩個語句，所以兩者之間的失敗不會留下一列已關閉卻沒有後繼的列。
 3. **讓壞狀態不可能發生的約束** —— 上面的 partial unique index。沒有這種約束的資料倉儲在載入後
    執行下面的驗證檢查，並讓 job 失敗。
@@ -868,14 +878,16 @@ sequence 或 identity 欄位當 `customer_sk`；`MAX + ROW_NUMBER` 只是讓範�
 
 **追問 —— 同一天有好幾次變動？** 先和業務方決定粒度：
 
-- **日粒度** —— 只算當天最後一次變動。載入前把 staging 去重成每個客戶每天一列
-  （`ROW_NUMBER() … ORDER BY change_ts DESC`）。
-- **每次變動** —— 讓 `valid_from` / `valid_to` 變成時間戳，依時間戳（tie 時再依序號）排序批次裡
-  的變動，用 `LEAD` 把每個版本的 `valid_to` 設為下一個版本的 `valid_from`；然後在批次第一次變動時
-  關閉既有的目前列，並插入整條鏈。
+- **日粒度** —— 範例就是這麼做：步驟 0 為每個客戶保留當天最後一次變動，所以 Kyoto 輸給 Tokyo，
+  而**不同**天的變動仍是各自的版本（先 Tokyo，再 Nagoya）。若把批次去重成每個客戶一列，就會默默把
+  Tokyo 延伸到 Nagoya 的那幾天。
+- **每次變動** —— 同樣的載入，但 `valid_from` / `valid_to` 用時間戳，步驟 0 依變動的時間戳分組
+  （tie 時用序號），讓每次變動都成為一個版本。
 - **遲到的變動**比目前版本還舊時，必須**插入到歷史中間**：切開它所落入的那個版本，這會改寫它前一個
-  版本的 `valid_to`。從完整的變動日誌用 `LEAD` 重建一個 key 所有區間的批次 job，能乾淨地處理這種
-  情況（[`sql_for_data.md`](./sql_for_data.md) §7-14）。
+  版本的 `valid_to`。這就是為什麼步驟 1 把它放進 `dim_customer_late` 而不是直接套用 —— 而且是和**它
+  那一天有效的版本**比較，而不是和目前版本比較，所以一筆改回今天地址的遲到變動仍會被抓到。從完整的
+  變動日誌用 `LEAD` 重建那些 key 所有區間的批次 job，能乾淨地處理這種情況
+  （[`sql_for_data.md`](./sql_for_data.md) §7-14）。
 
 用**半開區間** —— `valid_from <= t AND (t < valid_to OR valid_to IS NULL)` —— 並讓 `valid_to`
 等於下一個版本的 `valid_from`，而不是「前一天」。題目的範例表把 Taipei 關在 2025-06-30（含）；
