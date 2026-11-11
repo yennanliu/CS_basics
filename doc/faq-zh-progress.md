@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 1744 / 1744 sections (100%)
+## Status — 1788 / 1788 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -77,6 +77,7 @@ half-translated document renders with English gaps rather than failing.
 | [de/spark](./faq/de/spark.md) | 75 | [✅](../i18n/zh/faq/de/spark.md) |
 | [de/sql_explain](./faq/de/sql_explain.md) | 45 | [✅](../i18n/zh/faq/de/sql_explain.md) |
 | [de/sql_for_data](./faq/de/sql_for_data.md) | 62 | [✅](../i18n/zh/faq/de/sql_for_data.md) |
+| [de/sql_interview_questions](./faq/de/sql_interview_questions.md) | 44 | [✅](../i18n/zh/faq/de/sql_interview_questions.md) |
 | [de/sql_vs_nosql](./faq/de/sql_vs_nosql.md) | 52 | [✅](../i18n/zh/faq/de/sql_vs_nosql.md) |
 | [de/stream_pipeline](./faq/de/stream_pipeline.md) | 54 | [✅](../i18n/zh/faq/de/stream_pipeline.md) |
 | [faq_Airflow](./faq/faq_Airflow.md) | 1 | [✅](../i18n/zh/faq/faq_Airflow.md) |

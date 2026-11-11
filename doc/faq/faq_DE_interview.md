@@ -1,7 +1,7 @@
 # Data Engineering Interview FAQ
 
 > **Scope** — the high-level map of a data engineer interview and the last-minute checklist: for each topic, the handful of points you must be able to say out loud, and a link to the deep dive under `de/` that holds the mechanism, the code and the follow-up questions.
-> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md), [`de/aws_data.md`](./de/aws_data.md), [`de/data_performance.md`](./de/data_performance.md) and [`de/analytics.md`](./de/analytics.md) — one deep dive per topic.
+> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md), [`de/aws_data.md`](./de/aws_data.md), [`de/data_performance.md`](./de/data_performance.md) and [`de/analytics.md`](./de/analytics.md) — one deep dive per topic; [`de/sql_interview_questions.md`](./de/sql_interview_questions.md) — the senior SQL question bank, every question answered.
 
 Read this file the night before. If any line below is something you cannot explain in two
 minutes, open that topic's deep dive.
@@ -17,6 +17,7 @@ minutes, open that topic's deep dive.
 | Hadoop ecosystem | ⭐⭐⭐ | the foundations, and what replaced each piece | [`de/hadoop.md`](./de/hadoop.md) |
 | Data modeling | ⭐⭐⭐⭐⭐ | grain, star schemas and history (SCD) | [`de/data_modeling.md`](./de/data_modeling.md) |
 | SQL for data | ⭐⭐⭐⭐⭐ | window functions and the classic patterns, written live | [`de/sql_for_data.md`](./de/sql_for_data.md) |
+| Senior SQL questions | ⭐⭐⭐⭐⭐ | each classic question answered with its follow-ups: scale, skew, reruns, `MERGE`, SCD 2, the slow-query diagnosis | [`de/sql_interview_questions.md`](./de/sql_interview_questions.md) |
 | Batch pipelines | ⭐⭐⭐⭐ | idempotency, backfills, data quality | [`de/batch_pipeline.md`](./de/batch_pipeline.md) |
 | Schema design | ⭐⭐⭐⭐ | designing tables from access patterns, and evolving them safely | [`de/schema_design.md`](./de/schema_design.md) |
 | Stream pipelines | ⭐⭐⭐⭐ | event time, watermarks, state and exactly-once | [`de/stream_pipeline.md`](./de/stream_pipeline.md) |
@@ -93,7 +94,7 @@ Deep dive: [`de/data_modeling.md`](./de/data_modeling.md).
 - **Fan-out** — joining to a many-rows-per-key table double-counts; aggregate first, check the grain.
 - **Warehouse cost** — bytes scanned: no `SELECT *`, filter on the partition column, let clustering skip blocks.
 
-Deep dive: [`de/sql_for_data.md`](./de/sql_for_data.md).
+Deep dive: [`de/sql_for_data.md`](./de/sql_for_data.md); drill: [`de/sql_interview_questions.md`](./de/sql_interview_questions.md).
 
 ---
 

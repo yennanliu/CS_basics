@@ -1,14 +1,14 @@
-<!-- 41eb5cfbbd7f -->
+<!-- 9edc0f6949db -->
 # 資料工程面試 FAQ
 
 > **範圍** — 資料工程師面試的高層次地圖與考前檢查清單：每個主題各列出你必須能說出口的幾個重點，並連到 `de/` 底下的深入解析，那裡才有機制、程式碼與追問題。
-> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md)、[`de/aws_data.md`](./de/aws_data.md)、[`de/data_performance.md`](./de/data_performance.md) 與 [`de/analytics.md`](./de/analytics.md) —— 每個主題一份深入解析。
+> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md)、[`de/aws_data.md`](./de/aws_data.md)、[`de/data_performance.md`](./de/data_performance.md) 與 [`de/analytics.md`](./de/analytics.md) —— 每個主題一份深入解析；[`de/sql_interview_questions.md`](./de/sql_interview_questions.md) —— 資深 SQL 題庫，每一題都附上解答。
 
 面試前一晚讀這份。底下任何一行如果你沒辦法在兩分鐘內講清楚，就打開那個主題的深入解析。
 
 ---
 
-<!-- 0a0a5028bec5 -->
+<!-- aa6aa8c961fd -->
 ## 1) 主題地圖 ⭐⭐⭐⭐⭐
 
 | 主題 | 權重 | 面試官真正在探的 | 深入解析 |
@@ -18,6 +18,7 @@
 | Hadoop 生態系 | ⭐⭐⭐ | 基礎，以及每個元件被什麼取代 | [`de/hadoop.md`](./de/hadoop.md) |
 | 資料建模 | ⭐⭐⭐⭐⭐ | 粒度、星型模型與歷史（SCD） | [`de/data_modeling.md`](./de/data_modeling.md) |
 | 資料用 SQL | ⭐⭐⭐⭐⭐ | 現場寫出 window function 與經典題型 | [`de/sql_for_data.md`](./de/sql_for_data.md) |
+| 資深 SQL 面試題 | ⭐⭐⭐⭐⭐ | 每道經典題連同追問一起回答：資料規模、skew、重跑、`MERGE`、SCD 2、慢查詢診斷 | [`de/sql_interview_questions.md`](./de/sql_interview_questions.md) |
 | 批次管線 | ⭐⭐⭐⭐ | 冪等性、回補、資料品質 | [`de/batch_pipeline.md`](./de/batch_pipeline.md) |
 | Schema 設計 | ⭐⭐⭐⭐ | 從存取模式設計資料表，並安全地演進 | [`de/schema_design.md`](./de/schema_design.md) |
 | 串流管線 | ⭐⭐⭐⭐ | 事件時間、watermark、狀態與 exactly-once | [`de/stream_pipeline.md`](./de/stream_pipeline.md) |
@@ -89,7 +90,7 @@
 
 ---
 
-<!-- 009c4a42f252 -->
+<!-- f446658e1105 -->
 ## 6) 資料用 SQL ⭐⭐⭐⭐⭐
 
 - **執行順序** —— `FROM` → `WHERE` → `GROUP BY` → `HAVING` → window → `SELECT` → `ORDER BY` → `LIMIT`；所以 window 的結果不能在 `WHERE` 裡過濾。
@@ -99,7 +100,7 @@
 - **Fan-out** —— join 到每個 key 有多列的表會重複計算；先彙總，檢查粒度。
 - **資料倉儲成本** —— 掃描的 bytes：不要 `SELECT *`、在分區欄位上過濾、讓 clustering 跳過區塊。
 
-深入解析：[`de/sql_for_data.md`](./de/sql_for_data.md)。
+深入解析：[`de/sql_for_data.md`](./de/sql_for_data.md)；練習題：[`de/sql_interview_questions.md`](./de/sql_interview_questions.md)。
 
 ---
 
