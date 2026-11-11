@@ -545,7 +545,8 @@ HashAggregate                                  <- GROUP BY customer_id, customer
   down through the `Sort` to the scan. In the plan before bucketing, too, a `Sort` is the join's
   direct child and the `Exchange` sits under it. Exchanges above the join are separate questions.
 - **`Bucketed: true` on both scans is not proof by itself.** `Bucketed: false (disabled by query
-  planner)` names a side that will be shuffled. But with `autoBucketedScan.enabled=false`, a scan
+  planner)` only says that side's buckets are unused: a broadcast join's streamed side reports it
+  without being shuffled. With `autoBucketedScan.enabled=false`, a scan
   still reports `Bucketed: true` when an Exchange sits right above it, so the branches decide.
 - **The `Sort` stays.** By default Spark 3+ does not rely on the per-bucket sort order, because
   a bucket can be several files. So `SORTED BY` is not what removes the shuffle.
@@ -559,7 +560,7 @@ HashAggregate                                  <- GROUP BY customer_id, customer
 |---|---|---|
 | Hive / Spark `CLUSTERED BY (k) INTO n BUCKETS` | **bucketing**: hashes rows into n files per partition when the table is written | yes, when the conditions above hold |
 | Delta `CLUSTER BY (k)` (liquid clustering), `OPTIMIZE … ZORDER BY` | puts similar values in the same files, so filters skip files | **no**. Reads get cheaper, and the join still shuffles |
-| Iceberg `PARTITIONED BY (bucket(n, k))` | hash partitioning stored as table partitions | yes, through a **storage-partitioned join** (Spark 3.3+): `spark.sql.sources.v2.bucketing.enabled=true` plus Iceberg's `spark.sql.iceberg.planning.preserve-data-grouping=true`, with both tables using the same transform. If the two tables do not hold the same set of bucket values, Spark 3.4 also needs `spark.sql.sources.v2.bucketing.pushPartValues.enabled=true` (off by default there, on by default in Spark 4.0) |
+| Iceberg `PARTITIONED BY (bucket(n, k))` | hash partitioning stored as table partitions | yes, through a **storage-partitioned join** (Spark 3.3+): `spark.sql.sources.v2.bucketing.enabled=true` plus Iceberg's `spark.sql.iceberg.planning.preserve-data-grouping=true`, with both tables using the same transform. If the two tables do not hold the same set of bucket values, Spark 3.4 and 3.5 also need `spark.sql.sources.v2.bucketing.pushPartValues.enabled=true` (off by default there, on by default in Spark 4.0). Spark 3.3 has no such setting and needs the same partition values on both sides |
 | Spark SQL `SELECT … CLUSTER BY k` | `DISTRIBUTE BY k SORT BY k` for this query's output | no, because it is a shuffle itself |
 
 **Clustering makes a filter read less, and bucketing makes a join move less.** Neither one does
@@ -600,7 +601,8 @@ that AQE can split it. See [§7-3](#7-3-data-skew-spotting-it-and-fixing-it).
 - *"Success looks like a `BroadcastHashJoin` with no Exchange."* A broadcast has its own
   `BroadcastExchange`, and when it happens Spark does not use the buckets.
 - *"A different bucket count turns the optimisation off."* Only the side with fewer buckets is
-  shuffled, and with coalescing enabled (in a sort-merge join) neither side is.
+  shuffled. With coalescing enabled, in a sort-merge join, neither side is, provided one count
+  divides the other within `maxBucketRatio`: 64 against 128 coalesces, and 64 against 100 does not.
 - *"Set `autoBroadcastJoinThreshold = -1` to make bucketing work."* That only forces a
   sort-merge join on small demo tables. In production, a side small enough to broadcast should
   be broadcast.
