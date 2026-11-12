@@ -1,7 +1,7 @@
 # Data Engineering Interview FAQ
 
 > **Scope** — the high-level map of a data engineer interview and the last-minute checklist: for each topic, the handful of points you must be able to say out loud, and a link to the deep dive under `de/` that holds the mechanism, the code and the follow-up questions.
-> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md), [`de/aws_data.md`](./de/aws_data.md), [`de/data_performance.md`](./de/data_performance.md) and [`de/analytics.md`](./de/analytics.md) — one deep dive per topic; [`de/sql_interview_questions.md`](./de/sql_interview_questions.md) — the senior SQL question bank, every question answered.
+> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md), [`de/aws_data.md`](./de/aws_data.md), [`de/aws_service_selection.md`](./de/aws_service_selection.md), [`de/data_performance.md`](./de/data_performance.md) and [`de/analytics.md`](./de/analytics.md) — one deep dive per topic; [`de/sql_interview_questions.md`](./de/sql_interview_questions.md) — the senior SQL question bank, every question answered.
 
 Read this file the night before. If any line below is something you cannot explain in two
 minutes, open that topic's deep dive.
@@ -24,6 +24,7 @@ minutes, open that topic's deep dive.
 | Apache Flink | ⭐⭐⭐⭐ | the engine under most streaming answers — state backends, checkpoints, exactly-once with Kafka | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | choosing a store and defending the trade-off | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
 | AWS data services | ⭐⭐⭐⭐ | Glue vs EMR vs Athena, Iceberg on S3, getting data out of RDS, S3 → SQS → Lambda ingestion, CDK and monitoring | [`de/aws_data.md`](./de/aws_data.md) |
+| AWS service selection | ⭐⭐⭐⭐ | defending one service against its look-alikes: Kinesis vs Firehose vs MSK, SQS vs EventBridge, Step Functions vs MWAA, Athena vs Redshift, who can read the lake | [`de/aws_service_selection.md`](./de/aws_service_selection.md) |
 | Storage and processing performance | ⭐⭐⭐⭐⭐ | read less, move less, avoid OOM in Spark / databases / Trino, sort and compact data, read vs write trade-offs, SQL rewrites | [`de/data_performance.md`](./de/data_performance.md) |
 | Analytics | ⭐⭐⭐⭐ | precise metric definitions, non-additive metrics, A/B test data, root-causing a metric change | [`de/analytics.md`](./de/analytics.md) |
 
