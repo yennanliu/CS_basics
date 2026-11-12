@@ -1,14 +1,14 @@
-<!-- 9edc0f6949db -->
+<!-- d4374690cef2 -->
 # 資料工程面試 FAQ
 
 > **範圍** — 資料工程師面試的高層次地圖與考前檢查清單：每個主題各列出你必須能說出口的幾個重點，並連到 `de/` 底下的深入解析，那裡才有機制、程式碼與追問題。
-> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md)、[`de/aws_data.md`](./de/aws_data.md)、[`de/data_performance.md`](./de/data_performance.md) 與 [`de/analytics.md`](./de/analytics.md) —— 每個主題一份深入解析；[`de/sql_interview_questions.md`](./de/sql_interview_questions.md) —— 資深 SQL 題庫，每一題都附上解答。
+> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md)、[`de/aws_data.md`](./de/aws_data.md)、[`de/aws_service_selection.md`](./de/aws_service_selection.md)、[`de/data_performance.md`](./de/data_performance.md) 與 [`de/analytics.md`](./de/analytics.md) —— 每個主題一份深入解析；[`de/sql_interview_questions.md`](./de/sql_interview_questions.md) —— 資深 SQL 題庫，每一題都附上解答。
 
 面試前一晚讀這份。底下任何一行如果你沒辦法在兩分鐘內講清楚，就打開那個主題的深入解析。
 
 ---
 
-<!-- aa6aa8c961fd -->
+<!-- 9621c3c1e1af -->
 ## 1) 主題地圖 ⭐⭐⭐⭐⭐
 
 | 主題 | 權重 | 面試官真正在探的 | 深入解析 |
@@ -25,6 +25,7 @@
 | Apache Flink | ⭐⭐⭐⭐ | 大多數串流答案底下的那個引擎 —— state backend、checkpoint、搭配 Kafka 的 exactly-once | [`de/flink.md`](./de/flink.md) |
 | SQL vs NoSQL | ⭐⭐⭐⭐ | 選一個儲存並為取捨辯護 | [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md) |
 | AWS 資料服務 | ⭐⭐⭐⭐ | Glue vs EMR vs Athena、S3 上的 Iceberg、如何把資料從 RDS 取出、S3 → SQS → Lambda 資料攝取、CDK 與監控 | [`de/aws_data.md`](./de/aws_data.md) |
+| AWS 服務選型 | ⭐⭐⭐⭐ | 為一個服務對它的相近服務辯護：Kinesis vs Firehose vs MSK、SQS vs EventBridge、Step Functions vs MWAA、Athena vs Redshift、誰能讀取 data lake | [`de/aws_service_selection.md`](./de/aws_service_selection.md) |
 | 儲存與處理效能 | ⭐⭐⭐⭐⭐ | 少讀、少搬、避免 Spark / 資料庫 / Trino 的 OOM、排序與壓實資料、讀與寫的取捨、SQL 改寫 | [`de/data_performance.md`](./de/data_performance.md) |
 | 分析 | ⭐⭐⭐⭐ | 精確的指標定義、不可加總的指標、A/B 測試的資料、找出指標變動的根因 | [`de/analytics.md`](./de/analytics.md) |
 

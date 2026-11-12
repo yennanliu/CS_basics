@@ -1,8 +1,8 @@
-<!-- fea729d77c44 -->
+<!-- 304e60aee005 -->
 # AWS 資料服務：Glue、EMR、Iceberg、Athena、RDS、Lambda 與 SQS
 
 > **範圍** —— 資料工程面試所考的 AWS 資料技術棧：S3、Glue Data Catalog、Glue ETL、EMR、Athena 與 RDS 如何拼在一起、如何在各種運算服務之間做選擇、Glue job 與 bookmark、EMR 叢集組成與 EMR Serverless、在 S3 上搭配 Glue catalog 使用 Apache Iceberg、Athena 的計費模型、分區與 Iceberg DML、如何把資料從 RDS 取出（JDBC、snapshot export、DMS CDC、zero-ETL）、用 S3、SQS 與 Lambda 做事件驅動的資料攝取（Lambda vs Spark、timeout、visibility timeout、重複訊息與冪等性、DLQ、消費者 concurrency）、S3 分區與檔案大小、AWS CDK、管線監控與成本、安全性，以及一題從 RDS 到 lakehouse 的完整設計題。Iceberg、Delta 與 Hudi 的引擎中立比較歸 [batch_pipeline.md](./batch_pipeline.md)；Spark 內部機制與調校歸 [spark.md](./spark.md)；Redshift 另有較舊的筆記。
-> **另見**：[`./batch_pipeline.md`](./batch_pipeline.md) —— lake vs warehouse vs lakehouse、表格格式、冪等性與回補；[`./spark.md`](./spark.md) —— Glue 與 EMR 底下的引擎；[`./kafka.md`](./kafka.md) —— 用 Debezium 與 Kafka Connect 做 CDC；[`../db/faq_redshift.md`](../db/faq_redshift.md) —— Redshift 筆記；[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單。
+> **另見**：[`./aws_service_selection.md`](./aws_service_selection.md) —— 在功能相近的服務之間做選擇：Kinesis vs Firehose vs MSK、SQS vs EventBridge、Step Functions vs MWAA、Athena vs Redshift、RDS vs DynamoDB；[`./batch_pipeline.md`](./batch_pipeline.md) —— lake vs warehouse vs lakehouse、表格格式、冪等性與回補；[`./spark.md`](./spark.md) —— Glue 與 EMR 底下的引擎；[`./kafka.md`](./kafka.md) —— 用 Debezium 與 Kafka Connect 做 CDC；[`../db/faq_redshift.md`](../db/faq_redshift.md) —— Redshift 筆記；[`../faq_DE_interview.md`](../faq_DE_interview.md) —— 總覽與考前檢查清單。
 
 大多數 AWS 資料平台都是同樣五塊：**S3 裡的檔案**、**說明哪些檔案構成一張表的 catalog**
 （Glue Data Catalog）、**讓這些檔案具備交易性的表格格式**（Iceberg）、**讀寫它們的引擎**
