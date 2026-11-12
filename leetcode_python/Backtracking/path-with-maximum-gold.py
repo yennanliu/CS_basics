@@ -175,6 +175,69 @@ class Solution(object):
 
 
 # V0-0-1
+# IDEA: DFS + BACKTRACK (GPT)
+# time = O(4^(m*n)), m = rows, n = cols
+# space = O(m*n)
+class Solution(object):
+    def getMaximumGold(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        # Edge case
+        if not grid or not grid[0]:
+            return 0
+
+        self.max_gold = 0
+
+        l = len(grid)
+        w = len(grid[0])
+
+        # Try every non-zero cell as starting point
+        for y in range(l):
+            for x in range(w):
+
+                if grid[y][x] > 0:
+                    cur_gold = 0
+                    self.helper(grid, x, y, cur_gold)
+
+        return self.max_gold
+
+    def helper(self, grid, x, y, cur_gold):
+
+        l = len(grid)
+        w = len(grid[0])
+
+        # 1. Boundary check
+        if x < 0 or x >= w or y < 0 or y >= l:
+            return
+
+        # 2. Check whether cell is empty or visited
+        if grid[y][x] <= 0:
+            return
+
+        # 3. Collect gold
+        val = grid[y][x]
+        cur_gold += val
+
+        # 4. Update maximum gold
+        self.max_gold = max(self.max_gold, cur_gold)
+
+        # 5. Mark as visited
+        grid[y][x] = -1
+
+        # 6. Explore four directions
+        self.helper(grid, x + 1, y, cur_gold)
+        self.helper(grid, x - 1, y, cur_gold)
+        self.helper(grid, x, y + 1, cur_gold)
+        self.helper(grid, x, y - 1, cur_gold)
+
+        # 7. Backtracking: restore original value
+        grid[y][x] = val
+
+
+
+# V0-0-2
 # IDEA: DFS + BACKTRACK (gemini)
 # time = O(4^(m*n)), m = rows, n = cols
 # space = O(m*n)
@@ -219,7 +282,7 @@ class Solution(object):
         return self.max_gold
 
 
-# V0-0-2
+# V0-0-3
 # IDEA: DFS + BACKTRACK (GPT)
 # time = O(4^(m*n)), m = rows, n = cols
 # space = O(m*n)
