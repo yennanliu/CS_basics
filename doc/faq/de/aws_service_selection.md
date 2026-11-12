@@ -175,9 +175,11 @@ it flushes when the buffer reaches a size (1–128 MB) or an interval (0–900 s
 
 - *"Firehose is a cheaper Kafka."* It is a delivery pipe, not an event platform: no consumer
   groups, no offsets, no replay. When the destination fails it retries: for S3 until the
-  source's retention runs out — 24 hours for Direct PUT, after which the data is lost — and for
-  Redshift, OpenSearch, Splunk or HTTP for a configured duration, then backs the failed records
-  up to an error prefix in S3. So alarm on delivery, not only on the error prefix.
+  source's retention runs out — 24 hours for Direct PUT, after which the data is lost; for
+  OpenSearch, Splunk or HTTP for a configured duration, then backs the failed records up to an
+  error prefix in S3; for Redshift it keeps the staged S3 objects and writes a manifest of the
+  skipped ones under `errors/`, which you `COPY` to backfill. So alarm on delivery, not only on
+  the error prefix.
 - *"Kinesis and Kafka are the same thing."* Both are partitioned logs with many consumers and
   replay, but the scaling unit differs (a shard has fixed throughput; a Kafka partition is
   bounded by its broker), and so do retention limits, consumer APIs and the ecosystem.
@@ -404,7 +406,8 @@ A read from the lake succeeds only if **no** layer it crosses denies it **and** 
 ```
 
 An explicit deny anywhere wins. In the same account, S3 grants access when **either** the
-identity policy **or** the bucket policy allows it; across accounts **both** must. The usual
+identity policy **or** the bucket policy allows it; across accounts **both** must. Either way,
+a permissions boundary, a session policy or an SCP can still cap it without any deny. The usual
 debugging miss is **KMS**: the role can list and get the object, and the read still fails with
 an access error because it may not decrypt.
 
@@ -412,8 +415,10 @@ an access error because it may not decrypt.
 
 1. **IAM roles** per job and service, least privilege, scoped to their prefixes and tables.
 2. **Bucket policies** with explicit `Deny` statements — for principals outside the expected
-   set, requests without TLS, and requests not through the VPC endpoint. An allow-list alone does
-   not restrict a same-account role whose IAM policy already grants access.
+   set, requests without TLS, and requests not through the VPC endpoint. Scope that last deny
+   with exceptions for AWS services that call S3 on your behalf (`aws:ViaAWSService`, service
+   principals such as Firehose's role), or it blocks Athena, Lake Formation or delivery. An
+   allow-list alone does not restrict a same-account role whose IAM policy already grants access.
 3. **Block Public Access** on, at the account level.
 4. **SSE-KMS** for sensitive data, with key policies that name who may decrypt.
 5. **Lake Formation** for table-, column- and row-level access, with LF-tags at scale.
