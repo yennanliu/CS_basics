@@ -28,6 +28,85 @@ The number of nodes in the given tree will be in the range [1, 100].
 
 # V0 
 
+
+# V0-1
+# IDEA: IN-ORDER DFS (gpt)
+class Solution(object):
+    def increasingBST(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: Optional[TreeNode]
+        """
+        if not root:
+            return None
+
+        self.list = []
+
+        # Step 1: Inorder traversal
+        self.dfs(root)
+
+        # Step 2: Rebuild the tree
+        dummy = TreeNode(0)
+        tmp = dummy
+
+        for node in self.list:
+            node.left = None
+            tmp.right = node
+            tmp = tmp.right
+
+        return dummy.right
+
+    def dfs(self, root):
+        if not root:
+            return
+
+        self.dfs(root.left)
+        self.list.append(root)
+        self.dfs(root.right)
+
+
+# V0-2
+# IDEA: IN-ORDER DFS (gemini)
+class Solution(object):
+    def increasingBST(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        if not root:
+            return None
+
+        nodes = []
+
+        # 1. 中序走訪 (In-order Traversal)：左 -> 根 -> 右
+        # BST 的中序走訪剛好會由小到大排好所有節點
+        def inorder(node):
+            if not node:
+                return
+            inorder(node.left)
+            nodes.append(node)
+            inorder(node.right)
+
+        inorder(root)
+
+        # 2. 重新串接節點
+        # 題目要求：所有節點的 left 必須為 None，且只有 right 連向下一個節點
+        new_root = nodes[0]
+        current = new_root
+        current.left = None  # 確保根節點的左子樹為空
+
+        for i in range(1, len(nodes)):
+            next_node = nodes[i]
+            next_node.left = None     # 清除左子樹
+            current.right = next_node # 右子樹指向下一個節點
+            current = next_node       # 移動指針
+
+        # 最後一個節點的右子樹設為 None
+        current.right = None
+
+        return new_root
+
+
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82349263
 # Definition for a binary tree node.
