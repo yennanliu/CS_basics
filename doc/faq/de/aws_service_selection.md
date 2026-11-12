@@ -174,8 +174,10 @@ it flushes when the buffer reaches a size (1–128 MB) or an interval (0–900 s
 **Traps:**
 
 - *"Firehose is a cheaper Kafka."* It is a delivery pipe, not an event platform: no consumer
-  groups, no offsets, no replay. When the destination fails it retries and then writes the
-  failed records to an error prefix in S3.
+  groups, no offsets, no replay. When the destination fails it retries: for S3 until the
+  source's retention runs out — 24 hours for Direct PUT, after which the data is lost — and for
+  Redshift, OpenSearch, Splunk or HTTP for a configured duration, then backs the failed records
+  up to an error prefix in S3. So alarm on delivery, not only on the error prefix.
 - *"Kinesis and Kafka are the same thing."* Both are partitioned logs with many consumers and
   replay, but the scaling unit differs (a shard has fixed throughput; a Kafka partition is
   bounded by its broker), and so do retention limits, consumer APIs and the ecosystem.
@@ -354,8 +356,10 @@ schedules, dependencies and backfills; EventBridge to start things when somethin
 ### 7-2) Choosing ⭐⭐⭐⭐
 
 - **A few AWS steps with branching and retries** (start a Glue job, wait, run Athena, notify) →
-  **Step Functions.** Standard workflows run for up to a year with exactly-once step execution;
-  Express workflows are for short, high-volume event processing.
+  **Step Functions.** Standard workflows run for up to a year and execute each step once per
+  attempt — but a `Retry` policy re-runs a failed task, so the task's side effect (a write, a
+  job start) must still be idempotent. Express workflows are for short, high-volume event
+  processing.
 - **Many interdependent pipelines, schedules, backfills of past dates, cross-system tasks** →
   **MWAA.** Backfilling a date range is what Airflow is built around; the price is an
   environment that runs, and costs, around the clock.
@@ -386,11 +390,12 @@ Redshift Spectrum, EMR, Glue).
 
 ### 8-2) Why "I gave it IAM access" is not enough ⭐⭐⭐⭐⭐
 
-A read from the lake succeeds only if **every** layer it crosses allows it:
+A read from the lake succeeds only if **no** layer it crosses denies it **and** the grants that apply allow it:
 
 ```text
  caller's IAM policy        may this role call s3:GetObject / glue:GetTable / athena:...?
- S3 bucket policy           does the bucket allow this principal (and this VPC endpoint)?
+ S3 bucket policy           cross-account: must allow this principal; same account: an IAM allow
+                            is enough, so the bucket policy restricts only by explicit Deny
  KMS key policy             may this role kms:Decrypt with the key the object was written with?
  Lake Formation grant       does the role hold SELECT on this table / column / row?
  Glue catalog policy        is the catalog resource shared with this account?
@@ -398,14 +403,17 @@ A read from the lake succeeds only if **every** layer it crosses allows it:
  Organizations SCP          does the account's guardrail allow the action at all?
 ```
 
-An explicit deny anywhere wins. The usual debugging miss is **KMS**: the role can list and
-get the object, and the read still fails with an access error because it may not decrypt.
+An explicit deny anywhere wins. In the same account, S3 grants access when **either** the
+identity policy **or** the bucket policy allows it; across accounts **both** must. The usual
+debugging miss is **KMS**: the role can list and get the object, and the read still fails with
+an access error because it may not decrypt.
 
 ### 8-3) "How do you secure an S3 data lake?" ⭐⭐⭐⭐⭐
 
 1. **IAM roles** per job and service, least privilege, scoped to their prefixes and tables.
-2. **Bucket policies** that allow only the expected principals, require TLS, and can require
-   access through a VPC endpoint.
+2. **Bucket policies** with explicit `Deny` statements — for principals outside the expected
+   set, requests without TLS, and requests not through the VPC endpoint. An allow-list alone does
+   not restrict a same-account role whose IAM policy already grants access.
 3. **Block Public Access** on, at the account level.
 4. **SSE-KMS** for sensitive data, with key policies that name who may decrypt.
 5. **Lake Formation** for table-, column- and row-level access, with LF-tags at scale.

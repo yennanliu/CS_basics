@@ -142,7 +142,7 @@ S3 是什麼、不是什麼：
 | 維運 | 低到中（provisioned 模式要規劃 shard） | 最低 | 中到高（broker、partition、升級） |
 | 最適場景 | 在 AWS 上做即時處理且有多個 consumer | 把 log 與事件落地到 S3 / Redshift / OpenSearch | 既有的 Kafka 環境或需要 Kafka 生態系 |
 
-<!-- e0804602add2 -->
+<!-- 87c5ba15ae9c -->
 ### 3-3) 怎麼選 ⭐⭐⭐⭐⭐
 
 - **只是要把資料落地到 S3（或 Redshift、OpenSearch）？** → **Firehose。** 它會批次寫入、可以寫成
@@ -160,7 +160,9 @@ enhanced fan-out 更低）。Firehose 的延遲來自它的**緩衝**：當緩�
 **陷阱：**
 
 - *「Firehose 是比較便宜的 Kafka。」* 它是一條投遞管線，不是事件平台：沒有 consumer group、沒有
-  offset、沒有 replay。目的地失敗時它會重試，然後把失敗的 record 寫到 S3 的錯誤 prefix。
+  offset、沒有 replay。目的地失敗時它會重試：寫 S3 時一直重試到來源的保留期限用完 —— Direct PUT 是
+  24 小時，之後資料就遺失 —— 寫 Redshift、OpenSearch、Splunk 或 HTTP 時則重試一段設定的時間，再把
+  失敗的 record 備份到 S3 的錯誤 prefix。所以要對投遞本身設告警，而不只是看錯誤 prefix。
 - *「Kinesis 和 Kafka 是同一種東西。」* 兩者都是有多個 consumer、可 replay 的分區 log，但擴展單位
   不同（shard 的吞吐量是固定的；Kafka partition 受限於它所在的 broker），保留期限、consumer API
   與生態系也不同。
@@ -341,11 +343,12 @@ MWAA；某件事發生時要啟動東西，用 EventBridge。」**
 | 維運 | 無，依狀態轉換次數付費 | 永遠開著的環境、Airflow 升級 | 無 |
 | 適合 | 由 AWS 服務組成的 serverless 管線 | 已經在用 Airflow、有數百個 DAG 的團隊 | 放在兩者前面當觸發器 |
 
-<!-- 432f6b77cde6 -->
+<!-- 3eee5da7f6f2 -->
 ### 7-2) 怎麼選 ⭐⭐⭐⭐
 
 - **幾個 AWS 步驟，加上分支與重試**（啟動 Glue job、等待、跑 Athena、通知）→ **Step Functions。**
-  Standard workflow 最長可跑一年，每個步驟恰好執行一次；Express workflow 用於短時間、大量的事件處理。
+  Standard workflow 最長可跑一年，每次嘗試中每個步驟只執行一次 —— 但 `Retry` policy 會重跑失敗的
+  task，所以 task 的副作用（一次寫入、啟動一個 job）仍必須是冪等的。Express workflow 用於短時間、大量的事件處理。
 - **許多互相依賴的管線、排程、回補過去的日期、跨系統的任務** → **MWAA。** 回補一段日期範圍正是
   Airflow 的核心設計；代價是一個全天候運行、全天候計費的環境。
 - **「檔案落地時執行」或「每天 02:00 執行」** → 用 **EventBridge**（rule 或 Scheduler）啟動
@@ -374,21 +377,23 @@ Glue 自己的 **workflow 與 trigger** 也能串起 Glue job 與 crawler；每�
 **一句話說明 Catalog vs Lake Formation：** Data Catalog 說明**資料是什麼**；Lake Formation 決定
 **誰可以看到其中哪一部分** —— 對於與它整合的引擎（Athena、Redshift Spectrum、EMR、Glue）。
 
-<!-- 3e5e2d557ea6 -->
+<!-- 814ccc9bae5e -->
 ### 8-2) 為什麼「我給了它 IAM 權限」還不夠 ⭐⭐⭐⭐⭐
 
-從 lake 讀取資料，只有在它經過的**每一層**都允許時才會成功：
+從 lake 讀取資料，只有在它經過的各層**沒有任何一層拒絕**、**而且**適用的授權允許時才會成功：
 
 <!--CODE-->
 
-任何一處的明確拒絕（explicit deny）都會勝出。最常見的除錯盲點是 **KMS**：role 可以列舉並
+任何一處的明確拒絕（explicit deny）都會勝出。在同一個帳號內，只要 identity policy **或** bucket policy
+其中之一允許，S3 就會放行；跨帳號時則**兩者**都必須允許。最常見的除錯盲點是 **KMS**：role 可以列舉並
 get 物件，讀取卻仍然以存取錯誤失敗，因為它沒有解密的權限。
 
-<!-- c14b7fdd57d6 -->
+<!-- 94edfecc6dbf -->
 ### 8-3) 「你怎麼保護 S3 data lake？」 ⭐⭐⭐⭐⭐
 
 1. 每個 job 與服務各自一個 **IAM role**，最小權限，範圍限定在它們的 prefix 與表格。
-2. **Bucket policy** 只允許預期的 principal、要求 TLS，並可要求必須經由 VPC endpoint 存取。
+2. **Bucket policy** 用明確的 `Deny` 敘述 —— 拒絕預期範圍以外的 principal、沒有 TLS 的請求，以及
+   不經由 VPC endpoint 的請求。光靠允許清單（allow-list），擋不住 IAM policy 已經授權的同帳號 role。
 3. 在帳號層級開啟 **Block Public Access**。
 4. 敏感資料用 **SSE-KMS**，並在 key policy 中指名誰可以解密。
 5. 用 **Lake Formation** 做表、欄、列層級的存取控制，規模大時用 LF-tags。
