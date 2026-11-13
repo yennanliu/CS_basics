@@ -13,6 +13,8 @@
 		- 陣列
 			- https://yennj12.js.org/CS_basics/cheatsheets/array.zh.html
 
+				- 1-2-5) 陣列＋雜湊索引表（用「和最後一個交換」做 O(1) 刪除） 
+
 
 	- Done
 		- Hash Map Cheatsheet（雜湊表速查）
