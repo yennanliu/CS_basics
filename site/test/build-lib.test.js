@@ -876,3 +876,41 @@ test('stampDrillVerdicts leaves a page with no Drill Path unchanged', () => {
   const html = '<h2 id="overview">Overview</h2><p>LC 1</p>';
   assert.equal(lib.stampDrillVerdicts(html, VERDICTS), html);
 });
+
+// ── markCardSlots ─────────────────────────────────────────────────────────
+
+test('markCardSlots tags a slot label on its own line and one that opens a paragraph', () => {
+  const out = lib.markCardSlots(
+    '<p><strong>Traps</strong></p>\n<ul><li>x</li></ul>\n<p><strong>Drill</strong> — LC 1 · LC 2</p>'
+  );
+  assert.ok(out.includes('<p class="slot slot-traps slot-block"><strong class="slot-label">Traps</strong></p>'));
+  // The dash that joined label and text goes: the label's box is the separator now.
+  assert.ok(out.includes('<p class="slot slot-drill"><strong class="slot-label">Drill</strong> LC 1 · LC 2</p>'));
+});
+
+test('markCardSlots gives the 中文 label the same kind as the English one', () => {
+  const out = lib.markCardSlots('<p><strong>陷阱</strong></p><p><strong>不適用時</strong> — 巢狀深度不固定</p>');
+  assert.ok(out.includes('class="slot slot-traps slot-block"'));
+  assert.ok(out.includes('<p class="slot slot-notthis"><strong class="slot-label">不適用時</strong> 巢狀深度不固定</p>'));
+});
+
+test('markCardSlots leaves a bolded sentence, a mid-paragraph bold and a list item alone', () => {
+  const html =
+    '<p><strong>Java 的對應寫法：</strong></p>' +
+    '<p><strong><code>list.sort()</code> sorts in place.</strong></p>' +
+    '<p><strong>Bold</strong> then more prose with no dash.</p>' +
+    '<p>Text with <strong>Traps</strong> inside.</p>' +
+    '<ul><li><strong>Off by one.</strong> text</li></ul>';
+  assert.equal(lib.markCardSlots(html), html);
+});
+
+test('markCardSlots tags an unknown short lead-in as a plain label', () => {
+  const out = lib.markCardSlots('<p><strong>Worked elsewhere</strong></p>');
+  assert.ok(out.includes('class="slot slot-note slot-block"'));
+});
+
+test('markCardSlots reads the older spellings of Traps as traps', () => {
+  for (const label of ['Pitfalls', 'Common mistakes', '容易踩到的坑']) {
+    assert.ok(lib.markCardSlots(`<p><strong>${label}</strong></p>`).includes('slot-traps'), label);
+  }
+});

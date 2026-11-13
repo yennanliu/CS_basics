@@ -1075,3 +1075,112 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 .lc-verdict-ok    { background: var(--inverse-bg); color: var(--inverse-text); border-color: var(--inverse-bg); }
 .lc-verdict-again { font-weight: 700; color: var(--text); }
 .lc-verdict-none  { color: var(--text-dim); border-style: dashed; border-color: var(--border); }
+
+/* ── Reading layout (cheatsheet pages: build-lib.js READING_CLASS) ─
+   Two things were hard to read on a long sheet. A sub-heading was bold
+   text at body size, so a new section did not look like one; and a
+   card's slot label (Traps, Drill, …) was bold text inside the
+   paragraph it labels. Here a heading level is told apart by its box,
+   not only its size, and a slot label is a tag set off from its text.
+
+   The rest of the system is ink only. This adds one accent, for
+   "you are at a heading / a label", and one warning hue, for the two
+   slots that say what goes wrong. Nothing else takes a colour.
+   ─────────────────────────────────────────────────────────────── */
+:root {
+  --accent:        #0a4fa8;
+  --accent-bg:     #eaf2fd;
+  --accent-border: #a9c7ef;
+  --warn:          #a8321d;
+  --warn-bg:       #fdf0ec;
+  --warn-border:   #e6b3a6;
+}
+[data-theme="dark"] {
+  --accent:        #7fb6ff;
+  --accent-bg:     #0c1a2c;
+  --accent-border: #1f3d63;
+  --warn:          #ff9b85;
+  --warn-bg:       #2a1310;
+  --warn-border:   #5c2a20;
+}
+
+/* h2: a chapter. Full-contrast rule under it. */
+.reading-v2 > h2 {
+  font-size: 26px; margin-top: 56px; padding-bottom: 10px;
+  border-bottom: 2px solid var(--text);
+}
+/* h3: a part of a chapter. Accent rule, shorter than the chapter's. */
+.reading-v2 h3 {
+  font-size: 22px; margin-top: 44px; margin-bottom: 14px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--accent-border);
+}
+/* h4: the sub-title. A tinted band across the column, so the start of a
+   section is visible while scrolling. The priority tier keeps the left
+   rule it had; an unmarked heading gets the accent. */
+.reading-v2 h4 {
+  font-size: 19px; line-height: 1.4;
+  margin: 40px 0 14px; padding: 9px 14px;
+  background: var(--accent-bg);
+  border-left: 4px solid var(--accent);
+}
+.reading-v2 h4[data-prio] { padding-left: 14px; border-left-width: 4px; }
+/* h5: one pattern card. Coloured title over a rule, lighter than the band
+   of the section that holds it. */
+.reading-v2 h5 {
+  font-size: 18px; font-weight: 700; line-height: 1.4;
+  margin: 30px 0 12px; padding-bottom: 5px;
+  color: var(--accent);
+  border-bottom: 1px dashed var(--accent-border);
+}
+.reading-v2 h3 > a.header-anchor,
+.reading-v2 h4 > a.header-anchor,
+.reading-v2 h5 > a.header-anchor { color: inherit; }
+.reading-v2 h5 > a.header-anchor { text-decoration: none; }
+.reading-v2 h5 .prio-stars { color: var(--accent); }
+
+/* A card slot: the label is a tag, the text after it is body text. */
+.reading-v2 .slot { margin-top: 18px; }
+.reading-v2 .slot-block { margin-bottom: 8px; }
+.reading-v2 .slot-label {
+  display: inline-block; margin-right: 8px; padding: 1px 9px;
+  font-size: 14px; font-weight: 700; line-height: 1.6; letter-spacing: 0.04em;
+  white-space: nowrap; vertical-align: 0.08em;
+  color: var(--accent); background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+}
+/* The key point is the one line to remember, so the whole line is boxed. */
+.reading-v2 .slot-key {
+  padding: 10px 14px;
+  background: var(--accent-bg); border-left: 3px solid var(--accent);
+}
+.reading-v2 .slot-key .slot-label {
+  color: var(--inverse-text); background: var(--accent); border-color: var(--accent);
+}
+[data-theme="dark"] .reading-v2 .slot-key .slot-label { color: #000000; }
+/* A problem card writes its key point as a quote (`> **Key point** — …`).
+   There the quote is the box, so the line inside it does not draw a second. */
+.reading-v2 blockquote > .slot { margin-top: 0; }
+.reading-v2 blockquote > .slot-key { padding: 0; background: none; border-left: 0; }
+.reading-v2 blockquote:has(> .slot-key) {
+  padding: 10px 14px;
+  background: var(--accent-bg); border-left: 3px solid var(--accent);
+}
+/* What goes wrong: the two slots that warn. */
+.reading-v2 .slot-traps .slot-label,
+.reading-v2 .slot-notthis .slot-label {
+  color: var(--warn); background: var(--warn-bg); border-color: var(--warn-border);
+}
+.reading-v2 .slot-traps + ul { border-left: 2px solid var(--warn-border); }
+/* What follows a label on its own line belongs to it. */
+.reading-v2 .slot-block + ul,
+.reading-v2 .slot-block + ol,
+.reading-v2 .slot-block + .table-wrap,
+.reading-v2 .slot-block + .code-block-wrapper,
+.reading-v2 .slot-block + pre { margin-top: 0; }
+
+@media (max-width: 768px) {
+  .reading-v2 > h2 { font-size: 21px; margin-top: 40px; }
+  .reading-v2 h3 { font-size: 19px; margin-top: 32px; }
+  .reading-v2 h4 { font-size: 17px; margin-top: 28px; padding: 8px 10px; }
+  .reading-v2 h5 { font-size: 17px; }
+}
