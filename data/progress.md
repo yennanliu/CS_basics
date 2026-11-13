@@ -6,6 +6,17 @@
 	- todo in progress.txt
 
 
+- Cheatsheet review
+	
+	- Hash Map Cheatsheet（雜湊表速查）
+		- https://yennj12.js.org/CS_basics/cheatsheets/hash_map.zh.html#%E6%A8%A1%E6%9D%BF-1%E6%9F%A5%E8%A3%9C%E6%95%B8--lc-1
+			- 模板 4：前綴和計數表 —— LC 560 
+
+
+
+
+
+
 # 2026-11-06
 
 - TODO:
