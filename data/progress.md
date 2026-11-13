@@ -10,11 +10,13 @@
 - Cheatsheet review
 	
 	- Doing
-		- 雙指標
-			- htstps://yennj12.js.org/CS_basics/cheatsheets/2_pointers.zh.html
+		- 陣列
+			- https://yennj12.js.org/CS_basics/cheatsheets/array.zh.html
+
 
 	- Done
 		- Hash Map Cheatsheet（雜湊表速查）
+		- 雙指標
 
 
 
@@ -22,7 +24,7 @@
 - TO practive
 
 	- Hash map
-	
+
 		- 模板 4 —— 一樣是對前綴和掃一趟，只是鍵換成起點的值，值換成最小前綴。
 			- 3026
 
@@ -41,6 +43,9 @@
 		- 模板 4：子序列比對，一個指標永遠前進 — LC 392 
 
 		- 模板 5：合併兩個有序陣列，從後面往前填 — LC 88
+
+		- 可刪字元的回文
+			- 	LC 680, LC 1216 — palindrome.md
 
 
 
