@@ -47,6 +47,18 @@
 		- 可刪字元的回文
 			- 	LC 680, LC 1216 — palindrome.md
 
+	- Array
+
+		-  Lazy iterator
+			- 251
+			— LC 341
+
+		- Template 4: Frequency Array + Running Count (!!!)
+			- 2657
+
+		- 1-2-3) 索引貢獻計數（統計每個元素在所有子陣列中出現幾次）
+			- 2063
+
 
 
 
