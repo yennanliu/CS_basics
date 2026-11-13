@@ -905,10 +905,12 @@ test('markCardSlots leaves a bolded sentence, a mid-paragraph bold and a list it
 });
 
 test('markCardSlots tags an unknown short lead-in as a plain label', () => {
-  const out = lib.markCardSlots('<p><strong>Common mistakes</strong></p>');
+  const out = lib.markCardSlots('<p><strong>Worked elsewhere</strong></p>');
   assert.ok(out.includes('class="slot slot-note slot-block"'));
 });
 
-test('the reading-layout pilot is one sheet', () => {
-  assert.deepEqual([...lib.READING_V2], ['array']);
+test('markCardSlots reads the older spellings of Traps as traps', () => {
+  for (const label of ['Pitfalls', 'Common mistakes', '容易踩到的坑']) {
+    assert.ok(lib.markCardSlots(`<p><strong>${label}</strong></p>`).includes('slot-traps'), label);
+  }
 });

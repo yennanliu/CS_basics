@@ -915,7 +915,7 @@
   }
 
 
-  // ── Reading layout (pilot) ───────────────────────────────────────────────
+  // ── Reading layout ────────────────────────────────────────────────────────
   // A pattern card's slots are written as a bold lead-in: `**Traps**` on a line
   // of its own, or `**Drill** — LC 1 · LC 2` opening a paragraph. Rendered, that
   // lead-in was bold body text at body size, so the label and what it labels
@@ -924,17 +924,20 @@
   // languages, and a lead-in that is not one of the seven slots is still tagged
   // as a plain label.
   //
-  // READING_V2 lists the sheets that get this layout. It is a pilot list, not a
-  // feature flag to keep: once the layout is agreed, every sheet gets it and
-  // this set goes away.
-  const READING_V2 = new Set(['array']);
+  // Every cheatsheet page gets it, with READING_CLASS on its content box. The
+  // FAQ and behavioral pages share the template but not the card vocabulary, so
+  // they do not.
+  const READING_CLASS = 'reading-v2';
 
   const SLOT_KINDS = {
     recognise: ['recognise', 'recognize', '辨識'],
     key: ['key point', '關鍵', '重點'],
     complexity: ['complexity', '複雜度'],
     dryrun: ['dry run', '試跑', '手動追蹤'],
-    traps: ['traps', '陷阱'],
+    traps: [
+      'traps', 'pitfalls', 'common pitfalls', 'gotchas', 'common mistakes',
+      '陷阱', '常見陷阱', '容易踩到的坑', '常見錯誤'
+    ],
     notthis: ['not this if', '不適用時'],
     drill: ['drill', '練習']
   };
@@ -963,7 +966,7 @@
 
   return {
     markCardSlots,
-    READING_V2,
+    READING_CLASS,
     stampDrillVerdicts,
     verdictBadge,
     slugify,

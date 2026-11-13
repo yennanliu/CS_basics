@@ -1076,7 +1076,7 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 .lc-verdict-again { font-weight: 700; color: var(--text); }
 .lc-verdict-none  { color: var(--text-dim); border-style: dashed; border-color: var(--border); }
 
-/* ── Reading layout (pilot: build-lib.js READING_V2) ──────────────
+/* ── Reading layout (cheatsheet pages: build-lib.js READING_CLASS) ─
    Two things were hard to read on a long sheet. A sub-heading was bold
    text at body size, so a new section did not look like one; and a
    card's slot label (Traps, Drill, …) was bold text inside the
@@ -1157,6 +1157,14 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
   color: var(--inverse-text); background: var(--accent); border-color: var(--accent);
 }
 [data-theme="dark"] .reading-v2 .slot-key .slot-label { color: #000000; }
+/* A problem card writes its key point as a quote (`> **Key point** — …`).
+   There the quote is the box, so the line inside it does not draw a second. */
+.reading-v2 blockquote > .slot { margin-top: 0; }
+.reading-v2 blockquote > .slot-key { padding: 0; background: none; border-left: 0; }
+.reading-v2 blockquote:has(> .slot-key) {
+  padding: 10px 14px;
+  background: var(--accent-bg); border-left: 3px solid var(--accent);
+}
 /* What goes wrong: the two slots that warn. */
 .reading-v2 .slot-traps .slot-label,
 .reading-v2 .slot-notthis .slot-label {

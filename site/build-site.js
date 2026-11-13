@@ -12,7 +12,7 @@ const {
   buildCheatsheetIndex, splitLeadingH1, buildPageContent, extractScope,
   titleCaseFromFile, summariseDoc,
   isoDate,
-  stampDrillVerdicts, markCardSlots, READING_V2,
+  stampDrillVerdicts, markCardSlots, READING_CLASS,
   drillSummary,
 } = require('./build-lib');
 
@@ -404,8 +404,7 @@ if (cheatsheetFiles.length > 0) {
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
     htmlContent = stampDrillVerdicts(annotated, drillVerdicts);
-    const readingV2 = READING_V2.has(baseName);
-    if (readingV2) htmlContent = markCardSlots(htmlContent);
+    htmlContent = markCardSlots(htmlContent);
     // Read back for the index: how much of this sheet's drill is ok, and what is next.
     const drill = drillSummary(htmlContent);
 
@@ -455,7 +454,7 @@ if (cheatsheetFiles.length > 0) {
         indexLabel: 'Cheat Sheets',
         githubHref: `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}`,
         titleId,
-        contentClass: readingV2 ? 'reading-v2' : '',
+        contentClass: READING_CLASS,
         meta: `<span class="cat-chip">${category}</span>` +
           `<span class="tier-chip tier-${tier}">${prioBadge(tier)}` +
           `<span class="tier-label">${cheatsheetMeta.tierLabels[String(tier)].label}</span></span>` +
@@ -572,8 +571,8 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml, 'zh');
     htmlContent = corpus === 'cheatsheet' ? stampDrillVerdicts(annotated, drillVerdicts, 'zh') : annotated;
-    const readingV2 = corpus === 'cheatsheet' && READING_V2.has(page.file);
-    if (readingV2) htmlContent = markCardSlots(htmlContent);
+    const isSheet = corpus === 'cheatsheet';
+    if (isSheet) htmlContent = markCardSlots(htmlContent);
     const title = h1Title || page.title;
     const headings = extractHeadings(htmlContent);
     const description = describe(raw, headings) || page.description;
@@ -594,7 +593,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
         indexLabel,
         githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${doc.store}`,
         titleId,
-        contentClass: readingV2 ? 'reading-v2' : '',
+        contentClass: isSheet ? READING_CLASS : '',
         labels: ZH_LABELS,
         meta: meta(page),
         legend: hasPriority ? priorityLegend('zh') : ''
