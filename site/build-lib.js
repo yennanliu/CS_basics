@@ -797,7 +797,7 @@
 
   function buildPageContent({
     title, htmlContent, toc, lastMod, indexHref, indexLabel, githubHref,
-    meta = '', legend = '', titleId = null, labels = {}
+    meta = '', legend = '', titleId = null, labels = {}, contentClass = ''
   }) {
     const L = Object.assign({}, PAGE_LABELS, labels);
     return `
@@ -813,7 +813,7 @@
               </div>
             </div>
             ${legend}
-            <div class="cheatsheet-content">
+            <div class="cheatsheet-content${contentClass ? ` ${contentClass}` : ''}">
               ${htmlContent}
             </div>
             <div class="cheatsheet-footer">
@@ -914,7 +914,56 @@
     return html;
   }
 
+
+  // ── Reading layout (pilot) ───────────────────────────────────────────────
+  // A pattern card's slots are written as a bold lead-in: `**Traps**` on a line
+  // of its own, or `**Drill** — LC 1 · LC 2` opening a paragraph. Rendered, that
+  // lead-in was bold body text at body size, so the label and what it labels
+  // read as one run. markCardSlots tags the paragraph and its label so the
+  // stylesheet can set the label apart; the slot kind is looked up in both
+  // languages, and a lead-in that is not one of the seven slots is still tagged
+  // as a plain label.
+  //
+  // READING_V2 lists the sheets that get this layout. It is a pilot list, not a
+  // feature flag to keep: once the layout is agreed, every sheet gets it and
+  // this set goes away.
+  const READING_V2 = new Set(['array']);
+
+  const SLOT_KINDS = {
+    recognise: ['recognise', 'recognize', '辨識'],
+    key: ['key point', '關鍵', '重點'],
+    complexity: ['complexity', '複雜度'],
+    dryrun: ['dry run', '試跑', '手動追蹤'],
+    traps: ['traps', '陷阱'],
+    notthis: ['not this if', '不適用時'],
+    drill: ['drill', '練習']
+  };
+  const SLOT_BY_LABEL = new Map();
+  for (const kind of Object.keys(SLOT_KINDS)) {
+    for (const label of SLOT_KINDS[kind]) SLOT_BY_LABEL.set(label, kind);
+  }
+  // A label, not a bolded sentence: short, plain text, no closing punctuation.
+  const SLOT_LABEL_MAX = 28;
+
+  function markCardSlots(html) {
+    return html.replace(
+      /<p><strong>([^<]{1,80})<\/strong>(\s*(?:—|–)\s*|\s*(?=<\/p>))/g,
+      (all, label, tail) => {
+        const text = label.trim();
+        if (text.length > SLOT_LABEL_MAX || /[.。:：!！?？]$/.test(text)) return all;
+        const kind = SLOT_BY_LABEL.get(text.toLowerCase()) || 'note';
+        // `tail` is the dash that joined label and text; the label is now set
+        // apart by its own box, so the dash would be a second separator.
+        const inline = /\S/.test(tail);
+        return `<p class="slot slot-${kind}${inline ? '' : ' slot-block'}">` +
+          `<strong class="slot-label">${text}</strong>${inline ? ' ' : ''}`;
+      }
+    );
+  }
+
   return {
+    markCardSlots,
+    READING_V2,
     stampDrillVerdicts,
     verdictBadge,
     slugify,
