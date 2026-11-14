@@ -13,7 +13,7 @@
 		- 陣列
 			- https://yennj12.js.org/CS_basics/cheatsheets/array.zh.html
 
-				- 1-2-5) 陣列＋雜湊索引表（用「和最後一個交換」做 O(1) 刪除） 
+				- 1-2-9) 用三次反轉原地旋轉 
 
 
 	- Done
@@ -60,6 +60,9 @@
 
 		- 1-2-3) 索引貢獻計數（統計每個元素在所有子陣列中出現幾次）
 			- 2063
+
+		- Template 9: Cyclic Sort, Index as Hash 
+			— LC 41
 
 
 
