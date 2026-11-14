@@ -1,4 +1,6 @@
-20261113: SQL 50: 197(again), 1661(again),577(again),1280(again) (Basic Aggregate Functions) | TODO: 251, 2657 | leetcode 150:   | blind 75:
+20261114: neetcode 150: | blind 75:
+
+20261113: SQL 50: 197(again), 1661(again),577(again),1280(again) (Basic Aggregate Functions), 1251(again) | TODO: 251, 2657 | leetcode 150:   | blind 75:
 
 20261112: neetcode 150: 897(ok),373(ok*),1219(OK*) | blind 75:
 
