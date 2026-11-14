@@ -10,15 +10,15 @@
 - Cheatsheet review
 	
 	- Doing
-		- 陣列
-			- https://yennj12.js.org/CS_basics/cheatsheets/array.zh.html
+		- 差分陣列
+			- https://yennj12.js.org/CS_basics/cheatsheets/difference_array.zh.html
 
-				- 1-2-9) 用三次反轉原地旋轉 
 
 
 	- Done
 		- Hash Map Cheatsheet（雜湊表速查）
 		- 雙指標
+		- 陣列
 
 
 
@@ -63,6 +63,9 @@
 
 		- Template 9: Cyclic Sort, Index as Hash 
 			— LC 41
+
+		- Template 11: Running State Scan, Last-Seen Index 
+			— LC 849
 
 
 
