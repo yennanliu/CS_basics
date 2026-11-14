@@ -49,6 +49,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: UNION FIND (gpt)
+# ->  UF + {email: accout_idx}  + uf.union(i, email_to_id[email]) 
+
 """
 NOTE !!!
 
@@ -145,6 +147,9 @@ class Solution(object):
         # value = account index
         #
         # 記錄每個 email 第一次出現在哪個 account。
+        #
+        #
+        # { email: account_idx }
         email_to_id = {}
 
         # --------------------------------------------------
@@ -504,6 +509,79 @@ class Solution(object):
                 dfs(email, component)
                 # 將收集到的連通分量排序，並加上姓名
                 res.append([email_to_name[email]] + sorted(component))
+
+        return res
+
+
+# V0-4
+# IDEA: UF + {email: accout_idx}  + uf.union(i, email_to_id[email]) (gemini)
+from collections import defaultdict
+
+class UF(object):
+    def __init__(self, n):
+        # 初始化每個節點的父節點為自己
+        self.parent = list(range(n))
+
+    def get_parent(self, x):
+        # 尋找根節點，並伴隨路徑壓縮 (Path Compression)
+        if self.parent[x] == x:
+            return x
+        self.parent[x] = self.get_parent(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        root_x = self.get_parent(x)
+        root_y = self.get_parent(y)
+        if root_x != root_y:
+            self.parent[root_x] = root_y
+
+    def is_same_parent(self, x, y):
+        return self.get_parent(x) == self.get_parent(y)
+
+
+class Solution(object):
+    def accountsMerge(self, accounts):
+        """
+        :type accounts: List[List[str]]
+        :rtype: List[List[str]]
+        """
+        if not accounts:
+            return []
+
+        email_to_idx = {}
+        email_to_name = {}
+        
+        # 1. 建立每個唯一 email 的整數索引編號，並記錄 email 對應的名稱
+        idx = 0
+        for acc in accounts:
+            name = acc[0]
+            for email in acc[1:]:
+                if email not in email_to_idx:
+                    email_to_idx[email] = idx
+                    idx += 1
+                email_to_name[email] = name
+
+        # 初始化並查集，大小為總 unique email 數量
+        uf = UF(idx)
+
+        # 2. 將同一個帳戶中的 email 進行 union
+        for acc in accounts:
+            first_email = acc[1]
+            first_idx = email_to_idx[first_email]
+            for email in acc[2:]:
+                uf.union(first_idx, email_to_idx[email])
+
+        # 3. 根據根節點將 email 進行分組
+        root_to_emails = defaultdict(list)
+        for email, email_idx in email_to_idx.items():
+            root_idx = uf.get_parent(email_idx)
+            root_to_emails[root_idx].append(email)
+
+        # 4. 組裝最終輸出結果（題目要求 email 需排序，且開頭帶有姓名）
+        res = []
+        for root_idx, emails in root_to_emails.items():
+            name = email_to_name[emails[0]]
+            res.append([name] + sorted(emails))
 
         return res
 
