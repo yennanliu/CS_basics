@@ -12,6 +12,7 @@
 	- Doing
 		- 差分陣列
 			- https://yennj12.js.org/CS_basics/cheatsheets/difference_array.zh.html
+				- 2) LC 範例
 
 
 
@@ -67,6 +68,36 @@
 		- Template 11: Running State Scan, Last-Seen Index 
 			— LC 849
 
+
+
+	- 差分陣列
+
+		- 模板 5：搭配座標壓縮的最佳化版
+
+		- 模板 6：覆蓋圖 + 貪婪填補
+			- LC 3964
+
+		- 模板 7：區間指派 + 區間 Max（線段樹搭配懶標記傳遞)
+			- 699
+
+		- easy
+			LC 598: Range Addition II - 找出最小受影響區域
+			LC 1854: Maximum Population Year - 簡單時間軸
+			LC 1893: Check if All Integers in Range Are Covered - 區間覆蓋
+
+		- Medium（核心）
+
+
+			LC 370: Range Addition - 經典差分陣列
+			LC 1109: Corporate Flight Bookings - 航班座位分配
+			LC 1094: Car Pooling - 資源容量驗證
+			LC 253: Meeting Rooms II - 最少需要幾間會議室
+			LC 729: My Calendar I - 不能重複預訂
+			LC 731: My Calendar II - 允許重複預訂一次
+			LC 2021: Street Light Brightness - 區間照明
+			LC 2158: Amount of New Area Painted - 顏色區段
+			LC 2536: Increment Submatrices by One - 二維更新
+			LC 2772: Apply Operations to Array - 全部歸零
 
 
 
