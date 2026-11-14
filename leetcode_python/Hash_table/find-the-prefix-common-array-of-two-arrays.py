@@ -47,6 +47,132 @@ It is guaranteed that A and B are both a permutation of n integers.
 """
 
 # V0
+class Solution(object):
+    def findThePrefixCommonArray(self, A, B):
+        """
+        :type A: List[int]
+        :type B: List[int]
+        :rtype: List[int]
+        """
+        pass
+
+
+# V0-1
+# IDEA: COUNTER + val_a is common, val_b is common check (gpt)
+from collections import Counter
+
+class Solution(object):
+    def findThePrefixCommonArray(self, A, B):
+        """
+        :type A: List[int]
+        :type B: List[int]
+        :rtype: List[int]
+        """
+        # Edge case
+        if not A or not B:
+            return []
+
+        cnt_a = Counter()
+        cnt_b = Counter()
+
+        n = len(A)
+        res = [0] * n
+
+        common = 0
+
+        for i in range(n):
+            val_a = A[i]
+            val_b = B[i]
+
+            # Update frequency
+            cnt_a[val_a] += 1
+            cnt_b[val_b] += 1
+
+            # Check whether val_a becomes common
+            if cnt_a[val_a] == 1 and cnt_b[val_a] > 0:
+                common += 1
+
+            # Check whether val_b becomes common
+            if val_b != val_a:
+                if cnt_b[val_b] == 1 and cnt_a[val_b] > 0:
+                    common += 1
+
+            res[i] = common
+
+        return res
+
+
+# V0-2
+# IDEA: SET + val_a is common, val_b is common check (gpt)
+class Solution(object):
+    def findThePrefixCommonArray(self, A, B):
+        if not A or not B:
+            return []
+
+        seen_a = set()
+        seen_b = set()
+
+        res = []
+        common = 0
+
+        for i in range(len(A)):
+            a = A[i]
+            b = B[i]
+
+            seen_a.add(a)
+            seen_b.add(b)
+
+            if a in seen_b:
+                common += 1
+
+            if b != a and b in seen_a:
+                common += 1
+
+            res.append(common)
+
+        return res
+
+
+# V0-3
+# IDEA: SET + val_a is common, val_b is common check (GEMINI)
+class Solution(object):
+    def findThePrefixCommonArray(self, A, B):
+        """
+        :type A: List[int]
+        :type B: List[int]
+        :rtype: List[int]
+        """
+        if not A or not B:
+            return []
+
+        n = len(A)
+        res = [0] * n
+        
+        seen_a = set()
+        seen_b = set()
+        common = 0
+
+        for i in range(n):
+            val_a = A[i]
+            val_b = B[i]
+
+            seen_a.add(val_a)
+            seen_b.add(val_b)
+
+            # 檢查新加入的 val_a 是否已經在 B 的前綴中出現過
+            if val_a in seen_b:
+                common += 1
+            
+            # 檢查新加入的 val_b 是否已經在 A 的前綴中出現過（注意：若 val_a == val_b 避免重複計算）
+            if val_b in seen_a and val_b != val_a:
+                common += 1
+
+            res[i] = common
+
+        return res
+
+
+# V0-4
 # IDEA : FREQUENCY ARRAY + RUNNING COMMON COUNT
 #
 #   A and B are permutations, so every value appears at most ONCE in each
