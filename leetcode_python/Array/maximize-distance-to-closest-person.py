@@ -44,67 +44,90 @@ At least one seat is occupied.
 
 """
 
-# V0 
-
-# V1 
-# https://blog.csdn.net/fuxuemingzhu/article/details/80643250
-# time = O(n)
-# space = O(n)
+# V0
+# IDEA : ONE PASS OVER THE GAPS BETWEEN OCCUPIED SEATS
+#
+#   Every empty seat sits in one of three kinds of gap:
+#     - leading gap  (before the first person): sit at seat 0  -> dist = first
+#     - trailing gap (after the last person)  : sit at seat n-1 -> dist = n-1-last
+#     - middle gap   (between two people p, q): sit in the middle -> dist = (q-p)//2
+#   The answer is the max over all gaps, so one scan that remembers the
+#   previous occupied seat is enough.
+#
+#   e.g. seats = [1,0,0,0,1,0,1]
+#        people at 0,4,6 -> middle gaps (4-0)//2 = 2, (6-4)//2 = 1
+#        no leading / trailing gap -> answer 2
+#
+# time = O(n), space = O(1)
 class Solution(object):
     def maxDistToClosest(self, seats):
         """
         :type seats: List[int]
         :rtype: int
         """
-        index = -200000
-        _len = len(seats)
-        ans = [0] * _len
-        for i in range(_len):
-            if seats[i] == 1:
-                index = i
-            else:
-                ans[i] = abs(i - index)
-        index = -200000
-        for i in range(_len - 1, -1, -1):
-            if seats[i] == 1:
-                index = i
-            else:
-                ans[i] = min(abs(i - index), ans[i])
-        return max(ans)
+        n = len(seats)
+        prev_person = -1  # index of the last occupied seat seen, -1 = none yet
+        best = 0
 
-# V1'
-# https://www.jiuzhang.com/solution/maximize-distance-to-closest-person/#tag-highlight-lang-python
-# time = O(n)
-# space = O(1)
-class Solution:
-    """
-    @param seats: an array
-    @return: the maximum distance
-    """
-    def maxDistToClosest(self, seats):
-        # Write your code here.
-        res = i = 0
-        for j in range(len(seats)):
-            if seats[j]:
-                res = max(res, j - i + 1 >> 1) if i else j
-                i = j + 1
-        return max(res, len(seats) - i)
+        for i in range(n):
+            if seats[i] != 1:
+                continue
 
-# V2 
-# time = O(n)
-# space = O(1)
-class Solution(object):
+            if prev_person == -1:
+                # leading gap: Alex sits at seat 0, i seats away from this person
+                best = i
+            else:
+                # middle gap: the best seat is halfway between the two people
+                best = max(best, (i - prev_person) // 2)
+
+            prev_person = i
+
+        # NOTE !!! the trailing gap is only measured after the loop:
+        #          Alex sits at the last seat, n-1-prev_person away
+        best = max(best, n - 1 - prev_person)
+
+        return best
+
+
+# V1
+# IDEA : TWO PASSES — DISTANCE TO THE NEAREST PERSON ON EACH SIDE
+#
+#   left[i]  = distance from seat i to the closest person at or before i
+#   right[i] = distance from seat i to the closest person at or after i
+#   The closest person to an empty seat i is min(left[i], right[i]);
+#   the answer is the max of that over all empty seats.
+#   Easier to derive live than V0, at the cost of O(n) extra space.
+#
+# time = O(n), space = O(n)
+class Solution2(object):
     def maxDistToClosest(self, seats):
         """
         :type seats: List[int]
         :rtype: int
         """
-        prev, result = -1, 1
-        for i in range(len(seats)):
-            if seats[i]:
-                if prev < 0:
-                    result = i
-                else:
-                    result = max(result, (i-prev)//2)
-                prev = i
-        return max(result, len(seats)-1-prev)
+        n = len(seats)
+        NO_PERSON = float('inf')
+
+        # left-to-right: distance to the nearest person on the left
+        left = [NO_PERSON] * n
+        for i in range(n):
+            if seats[i] == 1:
+                left[i] = 0
+            elif i > 0 and left[i - 1] != NO_PERSON:
+                left[i] = left[i - 1] + 1
+
+        # right-to-left: distance to the nearest person on the right
+        right = [NO_PERSON] * n
+        for i in range(n - 1, -1, -1):
+            if seats[i] == 1:
+                right[i] = 0
+            elif i < n - 1 and right[i + 1] != NO_PERSON:
+                right[i] = right[i + 1] + 1
+
+        best = 0
+        for i in range(n):
+            if seats[i] == 0:
+                closest = min(left[i], right[i])
+                best = max(best, closest)
+
+        return best
