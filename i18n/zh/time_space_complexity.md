@@ -395,7 +395,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 
 把表格當成練習用：遮住後三欄，先把複雜度和理由說出口，再對答案。Quiz 會把同樣的題目連同程式碼一起出給你。
 
-<!-- 3a098eac5d20 -->
+<!-- c9bf43bd549c -->
 ### Google 面試官怎麼聽你的複雜度回答
 
 複雜度算在 *problem solving* 與 *verification* 兩項訊號裡；答錯或講不出理由，扣的分比初版寫得慢還多。同樣是 O(n)，評分可以差很多：
@@ -405,7 +405,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 | 「O(n)。」 | Leaning no hire（傾向不錄取） | 只有答案沒有理由，面試官還得再追問 |
 | 「O(n)，一個迴圈。」 | Leaning hire（傾向錄取），前提是答對 | 有給理由，但常漏掉攤銷的內層迴圈或藏起來的切片 |
 | 「時間 O(n)：`right` 和 `left` 各自最多移動 n 次，所以內層 `while` 加總是 n。空間 O(k)，是 deque。」 | Hire（錄取） | 點出決定複雜度的那一行、每個上界用的是哪個變數，並把空間分開講 |
-| ……再加上「用 heap 是 O(n log k)，靠 deque 才做到線性。」 | Strong hire（強力錄取） | 還把解法放進各種替代方案裡比較，而這正是下一個追問要問的 |
+| ……再加上「會移除過期元素的 heap 是 O(n log k)，lazy heap 可能變成 O(n log n)；靠 deque 才做到線性。」 | Strong hire（強力錄取） | 還把解法放進各種替代方案裡比較，而這正是下一個追問要問的 |
 
 **用四句話回答：** *(1) 先定義變數*（「n = len(nums)，k = 視窗大小」）；*(2) 時間，以及決定它的那一行*；*(3) 空間，以及佔用空間的結構，遞迴堆疊和輸出分開說*；*(4) 取捨*，也就是較慢的暴力解是什麼，以及更快或更省空間的解法要付出什麼代價。
 
@@ -427,7 +427,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 | 289 | Game of Life | O(m·n) | O(1) | 每格固定讀 9 個鄰居；下一代狀態存在同一格的第 1 個位元 | 複製盤面要 O(m·n) 空間；追問會要求原地完成 |
 | 442 | Find All Duplicates in an Array | O(n) | O(1) | 用 `nums[v−1]` 的正負號標記 v 出現過 | 只因為值落在 1..n 才行得通 |
 
-<!-- 118afc253683 -->
+<!-- 2712a8cf9eda -->
 ### 雙指標與滑動視窗（Two Pointers & Sliding Window）
 
 面試官在聽的是**攤銷**論證。「`left` 只會往前走」這句話，就能把巢狀的 `while` 變成 O(n)。
@@ -437,7 +437,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 | 88 | Merge Sorted Array | O(m + n) | O(1) | 從尾端往前寫，每個位置只寫一次 | 從前往後合併需要複製，或是 O(m·n) 的搬移 |
 | **567** | Permutation in String | O(m + n) | O(1) | 滑動一次；每次比較視窗是 26 格，屬於常數 | 這個比較是 O(26)，不是 O(m) |
 | 283 | Move Zeroes | O(n) | O(1) | `fast` 掃一次，每個元素最多交換一次 | 迴圈裡 `remove(0)` + `append(0)` 是 O(n²) |
-| **239** | Sliding Window Maximum | O(n) | O(k) | 每個索引進出 deque 各最多一次 | 每個視窗都呼叫 `max` 是 O(n·k)；用 heap 是 O(n log k)。見下方卡片 |
+| **239** | Sliding Window Maximum | O(n) | O(k) | 每個索引進出 deque 各最多一次 | 每個視窗都呼叫 `max` 是 O(n·k)。heap 只有在移除過期元素、大小維持在 k 時才是 O(n log k)；lazy heap 會留著過期元素，遇到遞增陣列會長到 O(n)，成本是 O(n log n)。見下方卡片 |
 | 340 | Longest Substring with At Most K Distinct | O(n) | O(k) | `left` 永遠不往回走 | 空間是 O(k) 不是 O(n)：收縮會把表的大小壓住 |
 | 1438 | Longest Subarray with Abs Diff ≤ Limit | O(n) | O(n) | 兩個單調 deque（最大與最小），每個元素各進出一次 | 用 heap 或 SortedList 存視窗是 O(n log n) |
 | 977 | Squares of a Sorted Array | O(n) | O(1) | 最大的平方一定在兩端之一；從尾端往前填 | 先平方再排序是 O(n log n) |
@@ -520,7 +520,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 | 863 | All Nodes Distance K | O(n) | O(n) | 父節點對照表，再用 `seen` 做 BFS | `range(k)` 迴圈不會讓成本乘上 k：沒有節點被走訪兩次 |
 | 116 | Populating Next Right Pointers | O(n) | O(1) | 沿著上一層已設好的 `next` 連結走完每一層 | 用佇列的 BFS 要 O(n) 空間；追問要求 O(1) |
 
-<!-- 28fe6c55e516 -->
+<!-- ef67b28a205f -->
 ### 堆積（Heap）
 
 面試官在聽的是 heap 的大小。heap 限制在 k 個時是 **O(n log k)**，不是 O(n log n)。另外 `heapify` 是 O(n)。
@@ -532,7 +532,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 | **703** | Kth Largest Element in a Stream | 每次 add O(log k) | O(k) | 大小上限 k 的 min-heap | 用已排序串列，每次插入要搬移，是 O(k) |
 | **355** | Design Twitter | 每次 feed O(f) | O(f) | 每位追蹤對象最多取 10 則，heap 上限 10 | 合併整條時間軸，是對所有推文的 O(N log N) |
 | 692 | Top K Frequent Words | O(n + k log u) | O(u) | 計數、`heapify`（O(u)），再 pop k 次 | `heapify` 是線性；一個個 push 才是 u log u |
-| 373 | Find K Pairs with Smallest Sums | O(k log k) | O(k) | 每一列放一個起點；某列的配對被 pop 時才往前推進 | 產生全部 m·n 組配對差得多 |
+| 373 | Find K Pairs with Smallest Sums | O(k log k) | O(k) | 只在前 min(m, k) 列各放一個起點；某列的配對被 pop 時才往前推進 | m 列全部放起點會讓 heap 變成 O(m)，k 很小時就不是 O(k)。產生全部 m·n 組配對差得多 |
 
 <!-- 037e908a339a -->
 ### 圖（Graphs）
@@ -612,7 +612,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 | 93 | Restore IP Addresses | O(1) | O(1) | 4 段 × 每段 ≤ 3 位數，最多 3^4 個葉節點 | 看起來是指數級，但深度和分支數都是固定的 |
 | 797 | All Paths From Source to Target | O(n·2^n) | O(n) 額外 | DAG 最多可能有 2^(n−2) 條路徑，每條都要複製 | 不是 O(V + E)：刻意不用 `visited` |
 
-<!-- 9cbbcbca9645 -->
+<!-- 5bdda8cc4d5c -->
 ### 字典樹（Tries）
 
 面試官在聽的是用**單字長度 L** 表示的複雜度，而不是單字的數量。正因為與單字數量無關，才要用 trie。
@@ -621,7 +621,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 |---|---|---|---|---|---|
 | **208** | Implement Trie | 每次操作 O(L) | 每次插入 O(L) | 每個字元一次 dict 查找 | 兩個複雜度裡都沒有 n |
 | **211** | Add and Search Words | 搜尋最壞 O(26^L) | O(L) 堆疊 | 每個 `.` 都分岔到所有子節點 | 一般單字是 O(L)；只有萬用字元才是指數級 |
-| **212** | Word Search II | O(m·n·3^L) | O(k) | 透過 trie 共用同一次 DFS | 每個單字各跑一次 LC 79 會乘上 w |
+| **212** | Word Search II | O(K + m·n·3^L) | O(K + L) | 建 trie 是 O(K)，K = 所有單字的總字元數；之後從每格跑 DFS，透過 trie 共用，L = 最長單字長度 | 空間是 trie（O(K)）加上 DFS 堆疊（O(L)）。每個單字各跑一次 LC 79 會讓搜尋乘上 w |
 
 <!-- 1acc5ccc89bc -->
 ### 區間（Intervals）
@@ -712,7 +712,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 
 表格裡大多數的複雜度一句話就能說明。這三題是例外：最直覺的第一個答案是錯的，而追問正是為了測這一點。
 
-<!-- c9b4935cb6c6 -->
+<!-- 95494a6e4753 -->
 #### Sliding Window Maximum — LC 239
 
 > **Key point** — `for` 裡的 `while` 並不是每步 O(k)。每個索引只 append 一次、最多 pop 一次，所以整個執行過程的 pop 總數最多 n 次。
@@ -721,7 +721,7 @@ hashmap 的空間是**所有 key 底下存的元素總數**，不是「一個 ke
 
 <!--CODE-->
 
-**怎麼說：**「時間 O(n)。內層 `while` 是攤銷的：每個索引只 push 一次、最多 pop 一次，所以整個執行過程最多 n 次 pop。deque 額外佔 O(k) 空間。替代方案是每個視窗呼叫 `max` 的 O(n·k)，以及用 heap 的 O(n log k)。」
+**怎麼說：**「時間 O(n)。內層 `while` 是攤銷的：每個索引只 push 一次、最多 pop 一次，所以整個執行過程最多 n 次 pop。deque 額外佔 O(k) 空間。替代方案是每個視窗呼叫 `max` 的 O(n·k)，以及 heap：若移除過期元素讓它維持在 k，是 O(n log k) 時間、O(k) 空間；但常見的 lazy heap 在遞增陣列上會留著過期元素，是 O(n log n) 時間、O(n) 空間。」
 
 <!-- 92d994b98b1b -->
 #### LRU Cache — LC 146

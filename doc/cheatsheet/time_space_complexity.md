@@ -768,7 +768,7 @@ Complexity is scored under *problem solving* and *verification*, and a wrong or 
 | "It's O(n)." | Leaning no hire | Gives the bound but not the reason; the interviewer has to ask for the reason |
 | "O(n) — one loop." | Leaning hire, if correct | States the reason, but often misses an amortised inner loop or a hidden slice |
 | "O(n) time: `right` and `left` each move at most n times, so the inner `while` totals n. O(k) space for the deque." | Hire | Names the line that sets the bound, the variable each bound is in, and space separately |
-| …plus "a heap gives O(n log k); the deque is what gets us linear." | Strong hire | Also places the solution among the alternatives, which is what the follow-up was going to ask |
+| …plus "a heap that drops expired entries is O(n log k), and a lazy one can grow to O(n log n); the deque is what gets us linear." | Strong hire | Also places the solution among the alternatives, which is what the follow-up was going to ask |
 
 **Say your answer in four sentences:** *(1) define the variables* ("n = len(nums), k = window"); *(2) time, and the line that sets it*; *(3) space, and the structure that holds it, with the recursion stack and the output stated separately*; *(4) the trade-off*, meaning the slower brute force and what a faster or leaner answer would cost.
 
@@ -798,7 +798,7 @@ What the interviewer listens for: an **amortised** argument. "`left` only moves 
 | 88 | Merge Sorted Array | O(m + n) | O(1) | Write from the back; each slot is written once | Merging forward needs a copy or O(m·n) shifting |
 | **567** | Permutation in String | O(m + n) | O(1) | One slide; each window compare is 26 slots, a constant | The comparison is O(26), not O(m) |
 | 283 | Move Zeroes | O(n) | O(1) | One `fast` pass with at most one swap per element | `remove(0)` + `append(0)` in a loop is O(n²) |
-| **239** | Sliding Window Maximum | O(n) | O(k) | Each index enters and leaves the deque at most once | Calling `max` on each window is O(n·k); a heap is O(n log k). See the card below |
+| **239** | Sliding Window Maximum | O(n) | O(k) | Each index enters and leaves the deque at most once | Calling `max` on each window is O(n·k). A heap is O(n log k) only if it removes expired entries and stays at k; a lazy heap keeps them, so on an increasing array it grows to O(n) and costs O(n log n). See the card below |
 | 340 | Longest Substring with At Most K Distinct | O(n) | O(k) | `left` never moves back | Space is O(k), not O(n): the shrink caps the map |
 | 1438 | Longest Subarray with Abs Diff ≤ Limit | O(n) | O(n) | Two monotonic deques, max and min, each push/pop once | A heap or SortedList of the window gives O(n log n) |
 | 977 | Squares of a Sorted Array | O(n) | O(1) | The largest square is at one of the two ends; fill from the back | Squaring then sorting is O(n log n) |
@@ -888,7 +888,7 @@ What the interviewer listens for: the size of the heap. **O(n log k)** with a he
 | **703** | Kth Largest Element in a Stream | O(log k) per add | O(k) | Min-heap capped at k | A sorted list is O(k) per insert because of the shift |
 | **355** | Design Twitter | O(f) per feed | O(f) | Up to 10 tweets per followee, heap capped at 10 | Merging whole timelines is O(N log N) over all tweets |
 | 692 | Top K Frequent Words | O(n + k log u) | O(u) | Count, `heapify` (O(u)), then k pops | `heapify` is linear; pushing one at a time is u log u |
-| 373 | Find K Pairs with Smallest Sums | O(k log k) | O(k) | One seed per row; advance a row only when its pair is popped | Generating all m·n pairs is far worse |
+| 373 | Find K Pairs with Smallest Sums | O(k log k) | O(k) | Seed only the first min(m, k) rows; advance a row only when its pair is popped | Seeding all m rows makes the heap O(m), which breaks O(k) when k is small. Generating all m·n pairs is far worse |
 
 ### Graphs
 
@@ -972,7 +972,7 @@ What the interviewer listens for: bounds in **word length L**, not in the number
 |---|---|---|---|---|---|
 | **208** | Implement Trie | O(L) per operation | O(L) per insert | One dict hop per character | No n in either bound |
 | **211** | Add and Search Words | O(26^L) worst for search | O(L) stack | Each `.` forks into every child | Plain words are O(L); only the wildcard is exponential |
-| **212** | Word Search II | O(m·n·3^L) | O(k) | One DFS shared through the trie | Running LC 79 once per word multiplies by w |
+| **212** | Word Search II | O(K + m·n·3^L) | O(K + L) | Building the trie is O(K), K = total characters in the words; then one DFS per cell, shared through the trie, L = longest word | Space is the trie (O(K)) plus the DFS stack (O(L)). Running LC 79 once per word multiplies the search by w |
 
 ### Intervals
 
@@ -1086,7 +1086,7 @@ class Solution:
         return result
 ```
 
-**How to say it:** "O(n) time. The inner `while` is amortised: every index is pushed once and popped at most once, so it does at most n pops over the whole run. O(k) extra space for the deque. The alternatives are O(n·k) for a `max` per window and O(n log k) for a heap."
+**How to say it:** "O(n) time. The inner `while` is amortised: every index is pushed once and popped at most once, so it does at most n pops over the whole run. O(k) extra space for the deque. The alternatives are O(n·k) for a `max` per window, and a heap: O(n log k) time and O(k) space if expired entries are removed so it stays at k, but O(n log n) time and O(n) space for the usual lazy heap, which keeps expired entries on an increasing array."
 
 #### LRU Cache — LC 146
 
