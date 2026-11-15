@@ -43,7 +43,7 @@ half-translated document renders with English gaps rather than failing.
   is what makes a problem findable on LeetCode itself.
 
 
-## Status — 4635 / 4635 sections (100%)
+## Status — 4659 / 4659 sections (100%)
 
 | Cheatsheet | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -170,7 +170,7 @@ half-translated document renders with English gaps rather than failing.
 | [string_examples](./cheatsheet/string_examples.md) | 19 | [✅](../i18n/zh/string_examples.md) |
 | [string_matching_kmp_rolling_hash](./cheatsheet/string_matching_kmp_rolling_hash.md) | 44 | [✅](../i18n/zh/string_matching_kmp_rolling_hash.md) |
 | [string_operations](./cheatsheet/string_operations.md) | 11 | [✅](../i18n/zh/string_operations.md) |
-| [time_space_complexity](./cheatsheet/time_space_complexity.md) | 44 | [✅](../i18n/zh/time_space_complexity.md) |
+| [time_space_complexity](./cheatsheet/time_space_complexity.md) | 68 | [✅](../i18n/zh/time_space_complexity.md) |
 | [topology_sorting](./cheatsheet/topology_sorting.md) | 49 | [✅](../i18n/zh/topology_sorting.md) |
 | [topology_sorting_examples](./cheatsheet/topology_sorting_examples.md) | 12 | [✅](../i18n/zh/topology_sorting_examples.md) |
 | [tree](./cheatsheet/tree.md) | 53 | [✅](../i18n/zh/tree.md) |
