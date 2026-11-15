@@ -139,6 +139,61 @@ class Solution(object):
 
 
 
+# V0-0-1
+# IDEA: BIG PQ + cool down q (QUEUE) + counter (map)
+import heapq
+from collections import Counter, deque
+
+
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        """
+        :type tasks: List[str]
+        :type n: int
+        :rtype: int
+        """
+        if not tasks:
+            return 0
+
+        cnt = Counter(tasks)
+
+        # Max Heap: store negative frequencies
+        pq = []
+
+        for k, v in cnt.items():
+            heapq.heappush(pq, -v)
+
+        # Cooldown Queue: [remaining_count, ready_time]
+        cool_q = deque()
+
+        time = 0
+
+        while pq or cool_q:
+
+            time += 1
+
+            # 1. Move tasks whose cooldown has finished back to heap
+            while cool_q and cool_q[0][1] <= time:
+                _cnt, _ready_time = cool_q.popleft()
+                heapq.heappush(pq, _cnt)
+
+            # 2. Execute the task with the highest remaining frequency
+            if pq:
+                task_cnt = heapq.heappop(pq)
+
+                # One execution completed
+                task_cnt += 1
+
+                # Still have remaining executions
+                if task_cnt < 0:
+                    ready_time = time + n + 1
+                    cool_q.append([task_cnt, ready_time])
+
+            # If pq is empty, this time slot is idle
+
+        return time
+
+
 # V0-1
 # IDEA: BIG PQ + QUEUE + counter (map)
 # time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet

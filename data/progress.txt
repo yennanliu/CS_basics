@@ -1,4 +1,4 @@
-20261115: SQL 50:  1070(again), 1789(again), 180(again), 1164(again), 1204(again) (Subqueries) | TODO: 3964, 767(ok**)  |  neetcode 150: | blind 75:
+20261115: SQL 50:  1070(again), 1789(again), 180(again), 1164(again), 1204(again) (Subqueries) | TODO: 3964, 767(ok**), 621(again)  |  neetcode 150: | blind 75:
 
 
 20261114: SQL 50: 1633(again), 1211(again), 1174(again), 550(again) | TODO: 41, 2657 (again), 721(again) |  nesetcode 150: | blind 75:
