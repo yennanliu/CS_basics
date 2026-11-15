@@ -571,8 +571,10 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml, 'zh');
     htmlContent = corpus === 'cheatsheet' ? stampDrillVerdicts(annotated, drillVerdicts, 'zh') : annotated;
-    const isSheet = corpus === 'cheatsheet';
-    if (isSheet) htmlContent = markCardSlots(htmlContent);
+    // The reading layout (heading boxes, slot tags) on the translated cheatsheets
+    // and FAQs, matching their English pages.
+    const readingLayout = corpus === 'cheatsheet' || corpus === 'faq';
+    if (readingLayout) htmlContent = markCardSlots(htmlContent);
     const title = h1Title || page.title;
     const headings = extractHeadings(htmlContent);
     const description = describe(raw, headings) || page.description;
@@ -593,7 +595,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
         indexLabel,
         githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${doc.store}`,
         titleId,
-        contentClass: isSheet ? READING_CLASS : '',
+        contentClass: readingLayout ? READING_CLASS : '',
         labels: ZH_LABELS,
         meta: meta(page),
         legend: hasPriority ? priorityLegend('zh') : ''
@@ -674,7 +676,7 @@ if (faqFiles.length > 0) {
     const enHeadingIds = headingIds(htmlContent);
     const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
     const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
-    htmlContent = annotated;
+    htmlContent = markCardSlots(annotated);
     const pageTitle = h1Title || title;
     const docHeadings = extractHeadings(htmlContent);
     // summariseDoc falls back in order: the Scope line if the FAQ has one (17
@@ -709,6 +711,7 @@ if (faqFiles.length > 0) {
         indexLabel: 'FAQs',
         githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${filePath}`,
         titleId,
+        contentClass: READING_CLASS,
         meta: `<span class="cat-chip">${category}</span>`,
         legend: hasPriority ? PRIORITY_LEGEND : ''
       })
