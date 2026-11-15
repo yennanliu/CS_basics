@@ -12,6 +12,7 @@
 	- Doing
 		- 二分搜尋
 			- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
+				- 變形 — 區間內計數：Upper Bound − Lower Bound (LC 2080) 
 
 
 	- Done
@@ -97,6 +98,14 @@
 			LC 2158: Amount of New Area Painted - 顏色區段
 			LC 2536: Increment Submatrices by One - 二維更新
 			LC 2772: Apply Operations to Array - 全部歸零
+
+
+	- 二分搜尋
+
+		- 模板 2：Lower 與 Upper Bound
+			- LC 34
+			- LC 35
+			- 852, 162
 
 
 
