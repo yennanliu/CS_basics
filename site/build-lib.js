@@ -924,9 +924,9 @@
   // languages, and a lead-in that is not one of the seven slots is still tagged
   // as a plain label.
   //
-  // Every cheatsheet page gets it, with READING_CLASS on its content box. The
-  // FAQ and behavioral pages share the template but not the card vocabulary, so
-  // they do not.
+  // Every cheatsheet and FAQ page gets it, with READING_CLASS on its content box:
+  // an FAQ has no card slots, but its long sections need the same heading
+  // contrast, and its short bold lead-ins (`**Redshift** — …`) read as labels.
   const READING_CLASS = 'reading-v2';
 
   const SLOT_KINDS = {
