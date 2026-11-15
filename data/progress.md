@@ -10,16 +10,15 @@
 - Cheatsheet review
 	
 	- Doing
-		- 差分陣列
-			- https://yennj12.js.org/CS_basics/cheatsheets/difference_array.zh.html
-				- 2) LC 範例
-
+		- 二分搜尋
+			- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
 
 
 	- Done
 		- Hash Map Cheatsheet（雜湊表速查）
 		- 雙指標
 		- 陣列
+		- 差分陣列
 
 
 
