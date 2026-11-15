@@ -1,6 +1,6 @@
 # Time & Space Complexity — Classic LC Code Walkthroughs
 
-> **Scope** — **Walkthroughs** — how to argue the complexity of an actual LC solution, one classic per technique.
+> **Scope** — **Walkthroughs** — how to argue the complexity of an actual LC solution: one worked classic per technique, then a by-topic review table of the frequently asked problems, each with the line that sets its bound and the follow-up an interviewer asks.
 > **See also**: [complexity_cheatsheet.md](./complexity_cheatsheet.md) — the lookup tables; [complexity_drills.md](./complexity_drills.md) — self-test drills.
 
 > **What this doc is:** a code-first companion. For each classic LeetCode problem we show the
@@ -753,7 +753,412 @@ collapsing space to **O(1)** while staying O(n) time.
 
 ---
 
-## 12) Quick Reference — "How to argue complexity in an interview"
+## 12) Classic LC Review by Topic — the Interviewer's Table ⭐⭐⭐⭐⭐
+
+Sections 1–11 derive one classic per technique, line by line. This section covers breadth: the **frequently asked problems** that are not worked above, grouped by topic. They are the Blind 75 and NeetCode 150 entries in the [Complexity Quiz](https://yennanliu.github.io/CS_basics/lc-complexity-quiz.html), plus its *Interview essentials* set. Each row gives the bound, **the line or structure that sets it**, and the follow-up or trap an interviewer is most likely to raise. A **bold** LC number is in the [L3 core set](https://yennanliu.github.io/CS_basics/l3-core.html).
+
+Use the tables as a drill: cover the last three columns, say the bound and why out loud, then check. The quiz asks the same problems with the code in front of you.
+
+### How a Google interviewer hears a complexity answer
+
+Complexity is scored under *problem solving* and *verification*, and a wrong or unexplained bound costs more than a slow first draft. The same O(n) can be scored very differently:
+
+| What the candidate says | How it reads | Why |
+|---|---|---|
+| "It's O(n)." | Leaning no hire | Gives the bound but not the reason; the interviewer has to ask for the reason |
+| "O(n) — one loop." | Leaning hire, if correct | States the reason, but often misses an amortised inner loop or a hidden slice |
+| "O(n) time: `right` and `left` each move at most n times, so the inner `while` totals n. O(k) space for the deque." | Hire | Names the line that sets the bound, the variable each bound is in, and space separately |
+| …plus "a heap that drops expired entries is O(n log k), and a lazy one can grow to O(n log n); the deque is what gets us linear." | Strong hire | Also places the solution among the alternatives, which is what the follow-up was going to ask |
+
+**Say your answer in four sentences:** *(1) define the variables* ("n = len(nums), k = window"); *(2) time, and the line that sets it*; *(3) space, and the structure that holds it, with the recursion stack and the output stated separately*; *(4) the trade-off*, meaning the slower brute force and what a faster or leaner answer would cost.
+
+### Arrays & Hashing
+
+What the interviewer listens for: whether you can say what the hash map **buys** (a log factor or a second loop) and what it **costs** (O(n) space). Then the follow-up asks for O(1) space.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **121** | Best Time to Buy and Sell Stock | O(n) | O(1) | One pass; a running minimum and a best profit | Checking every buy/sell pair is O(n²) |
+| **238** | Product of Array Except Self | O(n) | O(1) | A prefix pass, then a suffix pass; two loops in sequence add | The output array is not counted; the suffix is one variable |
+| **217** | Contains Duplicate | O(n) | O(n) | One pass with an O(1) average `in seen` | Sort and compare neighbours: O(1) space, O(n log n) time |
+| 169 | Majority Element | O(n) | O(1) | Boyer–Moore keeps `candidate` and `count` | `Counter` is O(n) space; sorting is O(n log n) |
+| 41 | First Missing Positive | O(n) | O(1) | Each swap puts one value in its final slot, so there are at most n swaps in total | A `while` inside a `for` that is still linear: count swaps, not loops |
+| 36 | Valid Sudoku | O(1) | O(1) | A fixed 9 × 9 board, 81 cells × 3 keys | There is no n; on a general n × n board it is O(n²) |
+| 525 | Contiguous Array | O(n) | O(n) | Map 0 → −1, then "seen this prefix sum before" | Counting both digits for every subarray is O(n²) |
+| 974 | Subarray Sums Divisible by K | O(n) | O(min(n, k)) | One pass; the keys are remainders 0..k−1 | O(n) space is safe but loose: the map holds at most k keys |
+| 289 | Game of Life | O(m·n) | O(1) | 9 constant reads per cell; the next state goes in bit 1 of the same cell | Copying the board is O(m·n) space; the follow-up asks for in place |
+| 442 | Find All Duplicates in an Array | O(n) | O(1) | The sign of `nums[v−1]` marks v as seen | Only works because values lie in 1..n |
+
+### Two Pointers & Sliding Window
+
+What the interviewer listens for: an **amortised** argument. "`left` only moves forward" is the sentence that turns a nested `while` into O(n).
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| 88 | Merge Sorted Array | O(m + n) | O(1) | Write from the back; each slot is written once | Merging forward needs a copy or O(m·n) shifting |
+| **567** | Permutation in String | O(m + n) | O(1) | One slide; each window compare is 26 slots, a constant | The comparison is O(26), not O(m) |
+| 283 | Move Zeroes | O(n) | O(1) | One `fast` pass with at most one swap per element | `remove(0)` + `append(0)` in a loop is O(n²) |
+| **239** | Sliding Window Maximum | O(n) | O(k) | Each index enters and leaves the deque at most once | Calling `max` on each window is O(n·k). A heap is O(n log k) only if it removes expired entries and stays at k; a lazy heap keeps them, so on an increasing array it grows to O(n) and costs O(n log n). See the card below |
+| 340 | Longest Substring with At Most K Distinct | O(n) | O(k) | `left` never moves back | Space is O(k), not O(n): the shrink caps the map |
+| 1438 | Longest Subarray with Abs Diff ≤ Limit | O(n) | O(n) | Two monotonic deques, max and min, each push/pop once | A heap or SortedList of the window gives O(n log n) |
+| 977 | Squares of a Sorted Array | O(n) | O(1) | The largest square is at one of the two ends; fill from the back | Squaring then sorting is O(n log n) |
+
+### Stack
+
+What the interviewer listens for: "every element is pushed once and popped at most once". That one sentence settles almost every monotonic-stack bound.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **150** | Evaluate Reverse Polish Notation | O(n) | O(n) | One push or two pops per token | Pop order: the second operand comes off first |
+| **853** | Car Fleet | O(n log n) | O(n) | Sorting by position; the sweep after it is linear | Simulating the cars catching up is O(n²) |
+| 402 | Remove K Digits | O(n) | O(n) | Monotonic stack; there are only n pushes in total | Rescanning from the start after each removal is O(n·k) |
+| 735 | Asteroid Collision | O(n) | O(n) | A destroyed asteroid never comes back, so total pops ≤ n | One big asteroid clearing many looks like O(n²) |
+| 907 | Sum of Subarray Minimums | O(n) | O(n) | Two monotonic passes find the previous and next smaller element | `>` on one side and `>=` on the other avoids double-counting equal values |
+| 503 | Next Greater Element II | O(n) | O(n) | 2n iterations, but indices are pushed only in the first n | Going around twice doubles the scan, not the stack work |
+| 1249 | Minimum Remove to Make Valid Parentheses | O(n) | O(n) | Match pass + leftover pass + one `join` | `result += c` in a loop can be O(n²) |
+| 227 | Basic Calculator II | O(n) | O(n) | `*` and `/` fold into the top; `sum` at the end | O(1) space: keep a running total and the last term |
+| 85 | Maximal Rectangle | O(m·n) | O(n) | LC 84 run on each row's histogram, O(n) per row | It reads as O(m·n²); it is m runs of an amortised O(n) |
+
+### Binary Search
+
+What the interviewer listens for: **what is being halved**. It may be an index range, a 2-D range flattened to one, or a range of possible answers. Name it.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **74** | Search a 2D Matrix | O(log(m·n)) | O(1) | One search over m·n flat positions, `mid // n, mid % n` | = log m + log n, so two searches give the same bound |
+| 34 | Find First and Last Position | O(log n) | O(1) | Two lower-bound searches | Finding one match and expanding is O(n) on `[7,7,7,…]` |
+| **4** | Median of Two Sorted Arrays | O(log min(m, n)) | O(1) | Binary search for the cut in the **shorter** array | Merging is O(m + n), which the problem rules out |
+| 162 | Find Peak Element | O(log n) | O(1) | Moving toward the larger neighbour keeps a peak in range | The array is unsorted, so people assume O(n) |
+| 528 | Random Pick with Weight | O(log n) per pick | O(n) | `bisect` over the prefix sums | Expanding each weight into copies is O(W) space |
+| 540 | Single Element in a Sorted Array | O(log n) | O(1) | Pairs start at even indices until the single element | XOR is O(n), the LC 136 answer, and misses the sorted property |
+| 1539 | Kth Missing Positive Number | O(log n) | O(1) | `arr[i] − (i + 1)` is monotone, so binary search on it | Walking 1, 2, 3… is O(n + k), and k can be much larger than n |
+
+### Linked List
+
+What the interviewer listens for: the **O(1)-space** answer. Most list problems have an easy O(n)-space version (a set, or copying the values to an array), and the question is there to see whether you can avoid it.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **206** | Reverse Linked List | O(n) | O(1) | One walk, three pointers | The recursive version is O(n) stack |
+| **141** | Linked List Cycle | O(n) | O(1) | Inside the cycle, `fast` gains one node per step | A `seen` set is O(n) space |
+| **21** | Merge Two Sorted Lists | O(n + m) | O(1) | Splice existing nodes; attach the leftover in O(1) | The recursive version is O(n + m) stack |
+| **19** | Remove Nth Node From End | O(L) | O(1) | Move `fast` n ahead, then walk both together | Copying the nodes into a list to index from the back is O(L) space |
+| **143** | Reorder List | O(n) | O(1) | Find the middle → reverse → weave: three passes in sequence | An array of nodes is the same time but O(n) space |
+| **138** | Copy List with Random Pointer | O(n) | O(n) | Two passes with an old → new map | O(1) space: interleave the clones, then split |
+| 148 | Sort List | O(n log n) | O(log n) | Top-down merge sort, log n levels | O(1) space needs bottom-up merge sort |
+| 234 | Palindrome Linked List | O(n) | O(1) | Reverse the second half in place and compare | `vals == vals[::-1]` is O(n) space |
+| **287** | Find the Duplicate Number | O(n) | O(1) | Floyd on `i → nums[i]` | A set uses O(n) space; sorting mutates the input |
+| **25** | Reverse Nodes in k-Group | O(n) | O(1) | Each node is walked twice: a check pass and a reverse pass | n/k groups × O(k) = O(n), not O(n·k) |
+| 160 | Intersection of Two Linked Lists | O(m + n) | O(1) | After switching lists, both pointers are equally far from the end | It looks like it could loop forever; it ends within m + n steps |
+| **2** | Add Two Numbers | O(m + n) | O(1) aux | One pass plus the carry; the new nodes are the output | Converting to integers overflows in fixed-width languages |
+| 142 | Linked List Cycle II | O(n) | O(1) | Meeting point → restart from the head → meet at the entry | The second `while` runs after the first, not inside it |
+| 92 | Reverse Linked List II | O(n) | O(1) | Walk to `left`, then head-insert `right − left` times | Copying the values to a list is O(n) space |
+
+### Trees
+
+What the interviewer listens for: **space = height**, said as "O(h): log n balanced, n skewed". And a check that no subtree is walked once per ancestor, the hidden O(n²).
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **98** | Validate Binary Search Tree | O(n) | O(h) | Pass a `(lo, hi)` range down, O(1) per node | Calling `max(left)` / `min(right)` at every node is O(n²) |
+| **543** | Diameter of Binary Tree | O(n) | O(h) | One post-order pass returns the depth | A separate `depth()` called from every node is O(n²) |
+| **105** | Construct Tree from Preorder & Inorder | O(n) | O(n) | Value → index map; one `next()` per node | `inorder.index()` + slicing is O(n²) |
+| **230** | Kth Smallest Element in a BST | O(h + k) | O(h) | Iterative in-order traversal that stops at k | Collecting the full in-order list is O(n) time and space |
+| **199** | Binary Tree Right Side View | O(n) | O(w) | Level BFS; `len(q)` fixes each level's size | The `for` inside the `while` still visits each node once |
+| **110** | Balanced Binary Tree | O(n) | O(h) | Return the height, or −1 for unbalanced, in one pass | Top-down `height()` at each node: O(n log n) balanced, O(n²) skewed |
+| **235** | LCA of a BST | O(h) | O(1) | The BST order picks one direction per level | LC 236 on a general tree is O(n) |
+| **572** | Subtree of Another Tree | O(m·n) | O(m + n) | `same()` started from each of the m nodes | O(m + n): serialise both with null markers and use KMP |
+| 108 | Sorted Array to BST | O(n) | O(log n) | Pick the middle; the result is balanced | Slicing `nums[:mid]` adds O(n log n) copying |
+| 437 | Path Sum III | O(n) | O(n) | Prefix sum + hash map; undo on the way back up | Starting a new count at every node is O(n²) |
+| **100** | Same Tree | O(n) | O(h) | Lock-step recursion | It is the inner loop of LC 572, where it stops being linear |
+| 113 | Path Sum II | O(n·h) | O(h) aux | Each matching leaf copies a path of up to h values | Saying O(n) counts the visits but forgets the copies |
+| 662 | Maximum Width of Binary Tree | O(n) | O(n) | Level BFS with positional indices | The width can be 2^h, but the work is per node |
+| 450 | Delete Node in a BST | O(h) | O(h) | One path down, plus the successor's left spine | O(log n) only if the tree is balanced |
+| 863 | All Nodes Distance K | O(n) | O(n) | Parent map, then BFS with `seen` | The `range(k)` loop does not multiply the cost: no node is visited twice |
+| 116 | Populating Next Right Pointers | O(n) | O(1) | Walk each level along the `next` links set on the level above | Queue BFS is O(n) space; the follow-up asks for O(1) |
+
+### Heap
+
+What the interviewer listens for: the size of the heap. **O(n log k)** with a heap capped at k, not O(n log n). And `heapify` is O(n).
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **621** | Task Scheduler | O(t) | O(1) | Counting plus a formula over ≤ 26 counts | A slot-by-slot simulation gets described as O(t·n) |
+| **1046** | Last Stone Weight | O(n log n) | O(n) | < n rounds × O(log n) heap operations | Re-sorting every round is O(n² log n) |
+| **703** | Kth Largest Element in a Stream | O(log k) per add | O(k) | Min-heap capped at k | A sorted list is O(k) per insert because of the shift |
+| **355** | Design Twitter | O(f) per feed | O(f) | Up to 10 tweets per followee, heap capped at 10 | Merging whole timelines is O(N log N) over all tweets |
+| 692 | Top K Frequent Words | O(n + k log u) | O(u) | Count, `heapify` (O(u)), then k pops | `heapify` is linear; pushing one at a time is u log u |
+| 373 | Find K Pairs with Smallest Sums | O(k log k) | O(k) | Seed only the first min(m, k) rows; advance a row only when its pair is popped | Seeding all m rows makes the heap O(m), which breaks O(k) when k is small. Generating all m·n pairs is far worse |
+
+### Graphs
+
+What the interviewer listens for: **what V and E are for this input**. A grid is V = m·n with E ≈ 4V; an adjacency matrix costs V² whatever the number of edges.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **994** | Rotting Oranges | O(m·n) | O(m·n) | Multi-source BFS; each cell is enqueued once | The `for _ in range(len(q))` loop marks levels; it adds no work |
+| 547 | Number of Provinces | O(n²) | O(n) | An adjacency **matrix**: every row is scanned | It is O(V + E) in disguise, with E read as n² |
+| **417** | Pacific Atlantic Water Flow | O(m·n) | O(m·n) | Two flood fills, inward from each ocean's border | Searching outward from every cell is O((m·n)²) |
+| **695** | Max Area of Island | O(m·n) | O(m·n) | Sink cells as you enter them | Stack space can hold the whole grid on a snake-shaped island |
+| **127** | Word Ladder | O(n·L²) | O(n·L) | Per word: L positions × 26 letters × an O(L) string build and hash | Most people forget the second L. See the card below |
+| **323** | Number of Connected Components | O(n + e·α(n)) | O(n) | Union-find with path compression | Without compression, a find can be O(n) |
+| **261** | Graph Valid Tree | O(n + e·α(n)) | O(n) | `len(edges) == n − 1`, plus union-find finds no cycle | The edge-count check does half the work |
+| 721 | Accounts Merge | O(s log s) | O(s) | Sorting each group's emails dominates | Union-find is the cheap part here |
+| 542 | 01 Matrix | O(m·n) | O(m·n) | Seed the BFS with **all** the 0s at once | A BFS from every 1 is O((m·n)²) |
+| 785 | Is Graph Bipartite? | O(V + E) | O(V) | Colour as you go; the outer loop handles disconnected parts | It looks like V × BFS; `color` stops any re-visit |
+| 909 | Snakes and Ladders | O(n²) | O(n²) | BFS over the n² squares, 6 moves each | The graph has n² vertices; answering O(n) is wrong |
+
+### Advanced Graphs
+
+What the interviewer listens for: **which algorithm, and why its bound fits this graph**. Choosing between Prim's with an array or with a heap depends on whether the graph is dense or sparse.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **269** | Alien Dictionary | O(c) | O(1) graph | Compare adjacent words; the graph is capped at 26 letters | O(V + E) is the wrong question: give the bound in c, the total characters |
+| **332** | Reconstruct Itinerary | O(e log e) | O(e) | Sort the tickets, then Hierholzer uses each edge once | Backtracking over ticket orders is factorial |
+| **778** | Swim in Rising Water | O(n² log n) | O(n²) | Dijkstra over n² cells; log(n²) = 2 log n | It is not (log n)² |
+| **1584** | Min Cost to Connect All Points | O(n²) | O(n) | Prim's with an array on a complete graph | The heap version is O(n² log n), which is worse on a dense graph |
+| 1631 | Path With Minimum Effort | O(m·n·log(m·n)) | O(m·n) | Dijkstra with minimax relaxation | A plain BFS with `visited` gives wrong answers |
+| 1293 | Shortest Path with Obstacles Elimination | O(m·n·k) | O(m·n·k) | State = (row, col, removals left) | Saying O(m·n) forgets the extra state dimension |
+
+### Dynamic Programming
+
+What the interviewer listens for: **states × transition cost**, then "can the table roll?". If dp[i] reads only the previous row, space drops by one dimension.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **198** | House Robber | O(n) | O(1) | Each state reads only i−1 and i−2, so two variables | Plain recursion is O(2^n) |
+| **62** | Unique Paths | O(m·n) | O(n) | One rolling row | O(min(m, n)) via the binomial C(m+n−2, m−1) |
+| **139** | Word Break | O(n²) slices | O(n + m) | `for i` × `for j`, with a set lookup | Each `s[j:i]` slice and hash is O(n), so honestly O(n³); bound j by the longest word |
+| **152** | Maximum Product Subarray | O(n) | O(1) | Track both the max and the min, because a negative swaps them | `nums[1:]` silently copies the array |
+| **91** | Decode Ways | O(n) | O(1) | Two rolling variables | Plain recursion branches two ways per index: O(2^n) |
+| **213** | House Robber II | O(n) | O(1) with indices | Run LC 198 twice, on [0, n−2] and [1, n−1] | Slicing the array makes it O(n) space |
+| **416** | Partition Equal Subset Sum | O(n·s) | O(s) | One boolean row over sums, iterated backward | Pseudo-polynomial: s is a value, not an input size |
+| **647** | Palindromic Substrings | O(n²) | O(1) | 2n−1 centres × expansion | Checking every substring is O(n³); the DP table is O(n²) space |
+| 64 | Minimum Path Sum | O(m·n) | O(1) | Write over the grid in place | Enumerating paths is exponential |
+| 10 | Regular Expression Matching | O(m·n) | O(m·n) | One cell per (i, j), O(1) each | Plain recursion is exponential |
+| **97** | Interleaving String | O(m·n) | O(n) | Rolling row | A greedy two-pointer fails on ties |
+| **309** | Stock with Cooldown | O(n) | O(1) | A three-state machine: hold, sold, rest | A table by day collapses to three scalars |
+| 312 | Burst Balloons | O(n³) | O(n²) | O(n²) intervals × n choices of the **last** balloon | Choosing the first balloon leaves non-contiguous gaps |
+| **329** | Longest Increasing Path in a Matrix | O(m·n) | O(m·n) | Memoised DFS, each cell solved once | Without the memo it is exponential |
+| 494 | Target Sum | O(n·s) | O(s) | One layer of reachable sums in −s..s | Pseudo-polynomial; brute force is O(2^n) |
+| 518 | Coin Change II | O(n·a) | O(a) | Coins outer, amounts inner | Swapping the loops counts orderings instead (LC 377) |
+| 516 | Longest Palindromic Subsequence | O(n²) | O(n²) → O(n) | Interval DP; only rows i and i+1 are read | Enumerating subsequences is O(2^n) |
+| 221 | Maximal Square | O(m·n) | O(n) | min(up, left, diagonal) + 1, rolling row | Growing a square from every corner is much worse |
+| 1235 | Maximum Profit in Job Scheduling | O(n log n) | O(n) | Sort by end time + binary search for the previous compatible job | A linear backward scan is O(n²) |
+| 96 | Unique Binary Search Trees | O(n²) | O(n) | Catalan sum over each root | Closed form C(2n, n)/(n+1) in O(n) |
+| 44 | Wildcard Matching | O(m·n) | O(m·n) | `*` handled as dp[i−1][j] or dp[i][j−1] | Looping over every length `*` could absorb makes it O(m²·n) |
+
+### Backtracking
+
+What the interviewer listens for: **leaves × cost per leaf**, with the copy into the result counted. A bound with no factor for building each answer is the most common miss.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **79** | Word Search | O(m·n·3^L) | O(L) | m·n starts × branching 3 (4 at the first step) for L levels | 4^L is accepted; 3^L is tighter because you never step back |
+| **17** | Letter Combinations of a Phone Number | O(n·4^n) | O(n) aux | Up to 4^n leaves × an O(n) `join` | O(4^n) counts the strings but not their length |
+| **131** | Palindrome Partitioning | O(n·2^n) | O(n) aux | 2^(n−1) ways to cut × an O(n) palindrome check | Precompute an O(n²) palindrome table |
+| **90** | Subsets II | O(n·2^n) | O(n) aux | 2^n subsets × copy | Deduplication does not change the worst case (all values distinct) |
+| **40** | Combination Sum II | O(n·2^n) | O(n) | In or out for each value, plus a copy per hit | `break` pruning depends on the values, not on n |
+| 47 | Permutations II | O(n·n!) | O(n) | All-distinct input is the worst case | A set of results is the same time and more space |
+| 93 | Restore IP Addresses | O(1) | O(1) | 4 parts × ≤ 3 digits caps it at 3^4 leaves | It looks exponential, but the depth and fan-out are fixed |
+| 797 | All Paths From Source to Target | O(n·2^n) | O(n) aux | A DAG can have 2^(n−2) paths, each copied | It is not O(V + E): there is no `visited` set, by design |
+
+### Tries
+
+What the interviewer listens for: bounds in **word length L**, not in the number of words. That independence is why you use a trie.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **208** | Implement Trie | O(L) per operation | O(L) per insert | One dict hop per character | No n in either bound |
+| **211** | Add and Search Words | O(26^L) worst for search | O(L) stack | Each `.` forks into every child | Plain words are O(L); only the wildcard is exponential |
+| **212** | Word Search II | O(K + m·n·3^L) | O(K + L) | Building the trie is O(K), K = total characters in the words; then one DFS per cell, shared through the trie, L = longest word | Space is the trie (O(K)) plus the DFS stack (O(L)). Running LC 79 once per word multiplies the search by w |
+
+### Intervals
+
+What the interviewer listens for: **sort once, sweep once**. Sorting dominates, so the bound is O(n log n) unless the input is already sorted.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **253** | Meeting Rooms II | O(n log n) | O(n) | Sort + a min-heap of end times | `rooms[0]` is an O(1) peek, not a scan |
+| **1851** | Minimum Interval to Include Each Query | O(n log n + q log q) | O(n + q) | Sort both; each interval is pushed and popped once | Only works offline, with all queries known up front |
+| 986 | Interval List Intersections | O(m + n) | O(1) aux | Advance whichever interval ends first | Both inputs are already sorted, so there is no log factor |
+
+### Greedy
+
+What the interviewer listens for: **one pass + an argument for why greedy is safe**. The bound is easy; the proof is what is being tested.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **55** | Jump Game | O(n) | O(1) | Track the farthest reachable index | The DP is O(n²) |
+| **45** | Jump Game II | O(n) | O(1) | Implicit BFS by levels: `end` and `farthest` | Stop at n−1 or you count one jump too many |
+| **134** | Gas Station | O(n) | O(1) | If the total gas covers the total cost, the one surviving start works | Simulating from every station is O(n²) |
+| **763** | Partition Labels | O(n) | O(1) | `last` index per letter (≤ 26 keys) | The map is bounded by the alphabet, not by n |
+| **846** | Hand of Straights | O(n log n) | O(n) | Sort the distinct cards; the inner loop totals O(n) | It reads as O(n·g) |
+| 31 | Next Permutation | O(n) | O(1) | Pivot → swap → reverse the tail | Sorting the tail is O(n log n); it is already descending |
+| **678** | Valid Parenthesis String | O(n) | O(1) | Track the [low, high] range of open counts | Trying every meaning of `*` is O(3^n) |
+| 406 | Queue Reconstruction by Height | O(n²) | O(n) | Sort, then `list.insert` at k shifts the tail | O(n log n) needs a Fenwick tree for the k-th free slot |
+| 334 | Increasing Triplet Subsequence | O(n) | O(1) | Two running minimums | It is patience sorting with length 3 |
+
+### Sorting
+
+What the interviewer listens for: **the cost of one comparison**. When a comparison builds strings, the sort costs O(n log n) × the cost of that comparison.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **242** | Valid Anagram | O(n log n) | O(n) | Two `sorted` calls | A `Counter` or a 26-slot count is O(n) |
+| 75 | Sort Colors | O(n) | O(1) | Dutch flag: each step moves `i` forward or `hi` back | `i` does not advance after a swap with `hi` |
+| 315 | Count of Smaller Numbers After Self | O(n log n) | O(n) | Rank compression + a Fenwick tree, two O(log n) walks per value | The double loop is O(n²) |
+| 179 | Largest Number | O(k·n log n) | O(n·k) | n log n comparisons, each concatenating strings of length ≤ 2k | Treating a comparison as O(1) is wrong here |
+
+### Bit Manipulation
+
+What the interviewer listens for: **fixed width means O(1)**. A loop over the bits of a 32-bit integer is constant, and calling it O(n) treats the value as the input size.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| 136 | Single Number | O(n) | O(1) | XOR cancels the pairs | A set is O(n) space |
+| **191** | Number of 1 Bits | O(1) | O(1) | `n &= n − 1` runs popcount ≤ 32 times | O(b) for a general width b |
+| **338** | Counting Bits | O(n) | O(n) output | `dp[i] = dp[i >> 1] + (i & 1)` | `bin(i).count("1")` per number is O(n log n) |
+| **268** | Missing Number | O(n) | O(1) | XOR of the indices and the values | Gauss's sum overflows in fixed-width languages |
+| **190** | Reverse Bits | O(1) | O(1) | Exactly 32 iterations | It is not log n, because the loop never exits early |
+| **7** | Reverse Integer | O(log x) | O(1) | One step per digit, ≤ 10 digits | The overflow check is the real point of the question |
+
+### Math & Geometry
+
+What the interviewer listens for: **in-place** matrix tricks and correct reasoning about magnitude: digits are log x, and exponentiation is O(log n).
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **48** | Rotate Image | O(n²) | O(1) | Transpose, then reverse each row | `zip(*matrix[::-1])` is O(n²) space |
+| **54** | Spiral Matrix | O(m·n) | O(1) aux | Four shrinking bounds; each cell is emitted once | The inner loops split the work; they do not repeat it |
+| **73** | Set Matrix Zeroes | O(m·n) | O(1) | Use row 0 and column 0 as markers, plus one flag | Two index sets are O(m + n) space |
+| **50** | Pow(x, n) | O(log n) | O(log n) | Halve the exponent each call | The iterative version is O(1) space |
+| **202** | Happy Number | O(log n) | O(log n) | The first digit-square sum shrinks n to a small value | Floyd's cycle detection drops the set |
+| 240 | Search a 2D Matrix II | O(m + n) | O(1) | Start in the top-right corner; drop a row or a column each step | One flat binary search is wrong: the rows do not chain |
+| **43** | Multiply Strings | O(m·n) | O(m + n) | Every digit meets every digit | Karatsuba is about O(n^1.585) |
+
+### Design
+
+What the interviewer listens for: **cost per operation, and whether it is amortised**. "O(1) amortised" is a complete answer only if you can say what pays for the expensive call.
+
+| LC | Problem | Time | Space | What sets the bound | Follow-up / trap |
+|---|---|---|---|---|---|
+| **155** | Min Stack | O(1) per operation | O(n) | Store `(val, min_so_far)` pairs | `min(a, b)` compares two values; it does not scan the stack |
+| **146** | LRU Cache | O(1) per operation | O(c) | Hash map + doubly linked list. See the card below | `move_to_end` relinks one node; nothing shifts |
+| **981** | Time Based Key-Value Store | O(log n) get, O(1) set | O(t) | Binary search on each key's timestamp list | O(1) set relies on timestamps arriving in increasing order |
+| **271** | Encode and Decode Strings | O(c) | O(c) | Length-prefix framing | A plain delimiter is wrong, not just slow |
+| **2013** | Detect Squares | O(n) per count | O(n) | Fix the diagonal point; the other two corners are O(1) lookups | Trying every pair of points is O(n²) |
+| 173 | BST Iterator | O(1) amortised | O(h) | Each node is pushed and popped once over all calls | A single `next` can cost O(h) |
+| 380 | Insert Delete GetRandom O(1) | O(1) | O(n) | Array + value → index map; swap with the last element, then pop | `list.remove` is O(n) |
+
+### The derivations interviewers push hardest on
+
+Most bounds in the tables follow from one sentence. These three are the exceptions: the obvious first answer is wrong, and the follow-up is built to test exactly that.
+
+#### Sliding Window Maximum — LC 239
+
+> **Key point** — the `while` inside the `for` is not O(k) per step. Each index is appended once and popped at most once, so all the pops in the whole run total at most n.
+
+**Reduces to**: [§ 3 Sliding Window](#3-sliding-window--on-over-substringssubarrays), with a monotonic deque where § 3 uses a counter. The amortised argument is § 2's LC 84 argument.
+
+```python
+# python — LC 239
+# IDEA: keep a deque of indices whose values strictly decrease; the front is the window max
+# time = O(n)  : each index enters the deque once and leaves at most once (≤ 2n deque operations)
+# space = O(k) : the deque only ever holds indices inside the current window
+from collections import deque
+
+class Solution:
+    def maxSlidingWindow(self, nums, k):
+        window = deque()          # indices; nums[window[0]] is the current max
+        result = []
+        for right, value in enumerate(nums):
+            # smaller values behind `value` can never be a max again, so drop them
+            while window and nums[window[-1]] <= value:
+                window.pop()
+            window.append(right)
+            # the front left the window
+            if window[0] <= right - k:
+                window.popleft()
+            if right >= k - 1:
+                result.append(nums[window[0]])
+        return result
+```
+
+**How to say it:** "O(n) time. The inner `while` is amortised: every index is pushed once and popped at most once, so it does at most n pops over the whole run. O(k) extra space for the deque. The alternatives are O(n·k) for a `max` per window, and a heap: O(n log k) time and O(k) space if expired entries are removed so it stays at k, but O(n log n) time and O(n) space for the usual lazy heap, which keeps expired entries on an increasing array."
+
+#### LRU Cache — LC 146
+
+> **Key point** — O(1) for both `get` and `put` needs two structures. A hash map finds a node in O(1), and a doubly linked list moves or evicts that node in O(1). Neither can do both alone.
+
+**Reduces to**: [§ 1 HashMap](#1-hashmap--o1-lookup-trades-space-for-time), with the map's values kept in recency order.
+
+```python
+# python — LC 146
+# IDEA: OrderedDict = hash map + doubly linked list; the front is least recently used
+# time = O(1) per get / put : a hash lookup plus relinking one node (move_to_end, popitem)
+# space = O(c)              : at most `capacity` entries
+from collections import OrderedDict
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)          # mark as most recently used
+        return self.cache[key]
+
+    def put(self, key, value):
+        if key in self.cache:
+            self.cache.move_to_end(key)
+        self.cache[key] = value
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)   # evict the least recently used
+```
+
+**How to say it:** "O(1) per operation. The map gives O(1) lookup and the linked list gives O(1) move and evict. O(capacity) space. A plain list would make the 'move to front' step O(n)." Interviewers often ask you to write the doubly linked list yourself, and the bound is the same.
+
+#### Word Ladder — LC 127
+
+> **Key point** — the work per dequeued word is L positions × 26 letters × **an O(L) string build and hash**. The usual answer of O(n·L) forgets that each candidate is a new string.
+
+**Reduces to**: [§ 8 Graphs](#8-graphs--ov--e). It is BFS on an implicit graph with V = n words, where the edges are generated rather than stored.
+
+```python
+# python — LC 127
+# IDEA: BFS from beginWord; neighbours are every one-letter change that is still in the word set
+# time = O(n · L²)  : n words dequeued × (L · 26 candidates) × O(L) to build and hash each one
+# space = O(n · L)  : the word set and the queue hold up to n strings of length L
+from collections import deque
+
+class Solution:
+    def ladderLength(self, beginWord, endWord, wordList):
+        words = set(wordList)
+        if endWord not in words:
+            return 0
+        queue = deque([(beginWord, 1)])
+        while queue:
+            word, steps = queue.popleft()
+            if word == endWord:
+                return steps
+            for i in range(len(word)):
+                for letter in "abcdefghijklmnopqrstuvwxyz":
+                    candidate = word[:i] + letter + word[i + 1:]   # O(L) build
+                    if candidate in words:                          # O(L) hash
+                        words.remove(candidate)                     # mark visited
+                        queue.append((candidate, steps + 1))
+        return 0
+```
+
+**How to say it:** "Treat it as BFS on an implicit graph with n vertices. Each word tries 26·L neighbours, and building and hashing each one is O(L), so O(n·L²) time and O(n·L) space. Bidirectional BFS keeps the same worst case but explores far fewer nodes in practice."
+
+---
+
+## 13) Quick Reference — "How to argue complexity in an interview"
 
 ```text
 SINGLE LOOP over n           → O(n)
