@@ -1,7 +1,7 @@
-20261115: SQL 50:  1070(again) (Advanced Select and Joins), 1789(again) | TODO:  |  neetcode 150: | blind 75:
+20261115: SQL 50:  1070(again) (Advanced Select and Joins), 1789(again), 180(again), 1164(todo) | TODO:  |  neetcode 150: | blind 75:
 
 
-20261114: SQL 50: 1633(again), 1211(again), 1174(again), 550(again) | TODO: 41, 2657 (again), 721(again) |  neetcode 150: | blind 75:
+20261114: SQL 50: 1633(again), 1211(again), 1174(again), 550(again) | TODO: 41, 2657 (again), 721(again) |  nesetcode 150: | blind 75:
 
 20261113: SQL 50: 197(again), 1661(again),577(again),1280(again) (Basic Aggregate Functions), 1251(again) | TODO: 251, 2657 | leetcode 150:   | blind 75:
 
