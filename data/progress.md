@@ -12,6 +12,7 @@
 	- Doing
 		- 滑動視窗
 			- https://yennj12.js.org/CS_basics/cheatsheets/sliding_window.zh.html
+				- 模板 6：用「至多」相減湊出「恰好 K」 — LC 992
 
 
 
@@ -126,6 +127,9 @@
 		- 計算符合條件的子陣列／子字串個數
 			- 713 !!! (sub valid arr cnt = `j-i+1`)
 			- 992
+
+		- 模板 6：用「至多」相減湊出「恰好 K」
+			— LC 992 (!!!)
 
 
 
