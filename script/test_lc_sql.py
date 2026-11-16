@@ -110,6 +110,10 @@ class Parse(unittest.TestCase):
         self.assertEqual([m for m, _ in vs], ["V0", "V1"])
         self.assertNotIn("IDEA", vs[0][1])
 
+    def test_indented_comment_naming_a_version_is_not_a_marker(self):
+        text = FILE.replace("# IDEA : LEFT JOIN", "#   V1's approach differs\n# IDEA : LEFT JOIN")
+        self.assertEqual([m for m, _ in s.versions(text)], ["V0", "V1"])
+
     def test_varchar_keeps_leading_zero(self):
         self.assertEqual(s.cell_value("051", "varchar"), "051")
         self.assertEqual(s.cell_value("51", "int"), 51)
@@ -152,6 +156,14 @@ class Dialect(unittest.TestCase):
                            "YEAR('2020-05-01'), DATE_FORMAT('2020-05-01', '%Y-%m'), "
                            "LEFT('abc', 2), CONCAT('a', 1)").fetchone()
         self.assertEqual(row, ("y", 2, 2020, "2020-05", "ab", "a1"))
+
+    def test_regexp_follows_mysql_case_rules(self):
+        conn = s.connect({}, {})
+        row = conn.execute("SELECT 'ABC DIAB1' REGEXP '(^| )diab1', "
+                           "REGEXP_LIKE('a@LEETCODE.COM', '^a@leetcode[.]com$'), "
+                           "REGEXP_LIKE('a@LEETCODE.COM', '^a@leetcode[.]com$', 'c'), "
+                           "NULL REGEXP 'x'").fetchone()
+        self.assertEqual(row, (1, 1, 0, None))
 
 
 class Link(unittest.TestCase):

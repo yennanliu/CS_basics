@@ -1,73 +1,96 @@
--- Table: Activity
+/*
 
--- +--------------+---------+
--- | Column Name  | Type    |
--- +--------------+---------+
--- | player_id    | int     |
--- | device_id    | int     |
--- | event_date   | date    |
--- | games_played | int     |
--- +--------------+---------+
--- (player_id, event_date) is the primary key of this table.
--- This table shows the activity of players of some game.
--- Each row is a record of a player who logged in and played a number of games (possibly 0) before logging out on some day using some device.
--- Write an SQL query that reports the fraction of players that logged in again on the day after the day they first logged in, rounded to 2 decimal places. In other words, you need to count the number of players that logged in for at least two consecutive days starting from their first login date, then divide that number by the total number of players.
+550. Game Play Analysis IV
+https://leetcode.com/problems/game-play-analysis-iv/
+Medium
 
--- The query result format is in the following example:
+Table: Activity
 
--- Activity table:
--- +-----------+-----------+------------+--------------+
--- | player_id | device_id | event_date | games_played |
--- +-----------+-----------+------------+--------------+
--- | 1         | 2         | 2016-03-01 | 5            |
--- | 1         | 2         | 2016-03-02 | 6            |
--- | 2         | 3         | 2017-06-25 | 1            |
--- | 3         | 1         | 2016-03-02 | 0            |
--- | 3         | 4         | 2018-07-03 | 5            |
--- +-----------+-----------+------------+--------------+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| player_id    | int     |
+| device_id    | int     |
+| event_date   | date    |
+| games_played | int     |
++--------------+---------+
+(player_id, event_date) is the primary key (combination of columns with unique values) of this table.
+This table shows the activity of players of some games.
+Each row is a record of a player who logged in and played a number of games (possibly 0) before logging out on someday using some device.
 
--- Result table:
--- +-----------+
--- | fraction  |
--- +-----------+
--- | 0.33      |
--- +-----------+
--- Only the player with id 1 logged back in after the first day he had logged in so the answer is 1/3 = 0.33
+Write a solution to report the fraction of players that logged in again on the day after the day they first logged in, rounded to 2 decimal places. In other words, you need to determine the number of players who logged in on the day immediately following their initial login, and divide it by the number of total players.
+
+The result format is in the following example.
+
+Example 1:
+
+Input:
+Activity table:
++-----------+-----------+------------+--------------+
+| player_id | device_id | event_date | games_played |
++-----------+-----------+------------+--------------+
+| 1         | 2         | 2016-03-01 | 5            |
+| 1         | 2         | 2016-03-02 | 6            |
+| 2         | 3         | 2017-06-25 | 1            |
+| 3         | 1         | 2016-03-02 | 0            |
+| 3         | 4         | 2018-07-03 | 5            |
++-----------+-----------+------------+--------------+
+Output:
++-----------+
+| fraction  |
++-----------+
+| 0.33      |
++-----------+
+Explanation:
+Only the player with id 1 logged back in after the first day he had logged in so the answer is 1/3 = 0.33
+
+*/
 
 # V0
-SELECT round(sum(CASE
-                     WHEN t1.event_date = t2.event_date + 1 THEN 1
-                     ELSE 0
-                 END)/(SELECT DISTINCT player_id
-                FROM Activity), 2) AS fraction
-FROM Activity AS t1
-INNER JOIN
-  (SELECT player_id,
-          min(event_date) AS 1st_event_date
-   FROM Activity
-   GROUP BY 1) AS t2 ON t1.player_id = t2.player_id
+# IDEA : FIRST LOGIN PER PLAYER, LEFT JOIN THE NEXT DAY, COUNT THE MATCHES
+#
+#   Step 1: MIN(event_date) per player is the first login (one row per player,
+#   so COUNT(*) over it is the total player count).
+#   Step 2: LEFT JOIN Activity on "same player, exactly one day later". The
+#   primary key (player_id, event_date) allows at most one match per player.
+#   Step 3: COUNT(a.player_id) skips the NULLs of unmatched players, so it
+#   counts only the players who came back the next day.
+#
+# time = O(n), space = O(p)    -- n = rows in Activity, p = players; one GROUP BY, one hash join
+WITH first_login AS (
+    SELECT
+        player_id,
+        MIN(event_date) AS first_date
+    FROM Activity
+    GROUP BY player_id
+)
+SELECT
+    ROUND(COUNT(a.player_id) / COUNT(*), 2) AS fraction   -- COUNT(col) skips NULL, COUNT(*) does not
+FROM first_login AS f
+LEFT JOIN Activity AS a                                    -- LEFT: players who never returned stay in the denominator
+    ON  a.player_id = f.player_id
+    AND DATEDIFF(a.event_date, f.first_date) = 1;          -- date arithmetic; first_date + 1 is integer math in MySQL
 
 # V1
-SELECT round(sum(CASE
-                     WHEN t1.event_date = t2.first_event+1 THEN 1
-                     ELSE 0
-                 END)/count(DISTINCT t1.player_id), 2) AS fraction
-FROM Activity AS t1
-INNER JOIN
-  (SELECT player_id,
-          min(event_date) AS first_event
-   FROM Activity
-   GROUP BY player_id) AS t2 ON t1.player_id = t2.player_id
-
-# V2 
-# Time:  O(n)
-# Space: O(n)
-SELECT Round(Count(NULLIF(a.event_date, NULL)) / Count(*), 2) fraction 
-FROM   activity a 
-       RIGHT JOIN (SELECT player_id, 
-                          Min(event_date) event_date 
-                   FROM   activity 
-                   GROUP  BY player_id 
-                   ORDER  BY NULL) b 
-               ON Datediff(a.event_date, b.event_date) = 1 
-                  AND a.player_id = b.player_id 
+# IDEA : WINDOW MIN ON EVERY ROW, THEN ONE PASS
+#
+#   MIN(event_date) OVER (PARTITION BY player_id) puts each player's first
+#   login on every one of their rows, so "logged in the day after" becomes a
+#   row-level test. At most one row per player can pass it (primary key),
+#   so the SUM of the test is the number of returning players.
+#
+# time = O(n log n), space = O(n)    -- n = rows in Activity; the window partitions (sorts) by player
+WITH with_first AS (
+    SELECT
+        player_id,
+        event_date,
+        MIN(event_date) OVER (PARTITION BY player_id) AS first_date
+    FROM Activity
+)
+SELECT
+    ROUND(
+        SUM(CASE WHEN DATEDIFF(event_date, first_date) = 1 THEN 1 ELSE 0 END)
+            / COUNT(DISTINCT player_id),
+        2
+    ) AS fraction
+FROM with_first;

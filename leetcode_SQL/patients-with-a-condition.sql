@@ -1,7 +1,8 @@
 /*
 
-Description
-LeetCode Problem 1527.
+1527. Patients With a Condition
+https://leetcode.com/problems/patients-with-a-condition/
+Easy
 
 Table: Patients
 
@@ -12,16 +13,20 @@ Table: Patients
 | patient_name | varchar |
 | conditions   | varchar |
 +--------------+---------+
-patient_id is the primary key for this table.
-'conditions' contains 0 or more code separated by spaces. 
+patient_id is the primary key (column with unique values) for this table.
+'conditions' contains 0 or more code separated by spaces.
 This table contains information of the patients in the hospital.
-Write an SQL query to report the patient_id, patient_name all conditions of patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix
+
+Write a solution to find the patient_id, patient_name, and conditions of the patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix.
 
 Return the result table in any order.
 
-The query result format is in the following example.
+The result format is in the following example.
 
-Patients
+Example 1:
+
+Input:
+Patients table:
 +------------+--------------+--------------+
 | patient_id | patient_name | conditions   |
 +------------+--------------+--------------+
@@ -31,33 +36,47 @@ Patients
 | 4          | George       | ACNE DIAB100 |
 | 5          | Alain        | DIAB201      |
 +------------+--------------+--------------+
-
-Result table:
+Output:
 +------------+--------------+--------------+
 | patient_id | patient_name | conditions   |
 +------------+--------------+--------------+
 | 3          | Bob          | DIAB100 MYOP |
-| 4          | George       | ACNE DIAB100 | 
+| 4          | George       | ACNE DIAB100 |
 +------------+--------------+--------------+
-Bob and George both have a condition that starts with DI
+Explanation: Bob and George both have a condition that starts with DIAB1.
 
 */
 
-
 # V0
-select patient_id, patient_name, conditions
-from Patients
-where conditions like "%DIAB1%"
+# IDEA : LIKE ON A WORD BOUNDARY -- AT THE START, OR AFTER A SPACE
+#
+#   conditions is a space-separated list of codes, and a code must START with
+#   DIAB1. So DIAB1 is either the first code ('DIAB1%') or follows a space
+#   ('% DIAB1%'). A bare '%DIAB1%' is wrong: it also matches 'SADIAB100',
+#   where DIAB1 sits in the middle of another code.
+#   A NULL conditions fails both LIKEs (NULL LIKE x is NULL, and WHERE keeps
+#   only TRUE rows), and so does '' -- right either way: no codes, no diabetes.
+#
+# time = O(n * L), space = O(n)    -- n = rows in Patients, L = length of conditions; one scan
+SELECT
+    patient_id,
+    patient_name,
+    conditions
+FROM Patients
+WHERE conditions LIKE 'DIAB1%'       -- the first code
+   OR conditions LIKE '% DIAB1%';    -- any later code, right after a space
 
 # V1
-# https://circlecoder.com/patients-with-a-condition/
-select patient_id, patient_name, conditions
-from Patients
-where conditions like "%DIAB1%"
-
-# V2
-# Time:  O(n)
-# Space: O(n)
-SELECT * 
-FROM Patients AS p
-WHERE p.conditions REGEXP '^DIAB1| DIAB1';
+# IDEA : REGEXP WITH AN ANCHOR -- START OF STRING OR A SPACE, THEN DIAB1
+#
+#   The same two cases as V0 in one pattern: (^| ) means "at the start, or
+#   after a space". REGEXP is case-insensitive under MySQL's default
+#   collation; that is harmless here, since condition codes are uppercase.
+#
+# time = O(n * L), space = O(n)    -- n = rows in Patients, L = length of conditions; one scan
+SELECT
+    patient_id,
+    patient_name,
+    conditions
+FROM Patients
+WHERE conditions REGEXP '(^| )DIAB1';

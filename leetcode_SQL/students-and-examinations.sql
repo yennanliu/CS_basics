@@ -1,5 +1,9 @@
 /*
 
+1280. Students and Examinations
+https://leetcode.com/problems/students-and-examinations/
+Easy
+
 Table: Students
 
 +---------------+---------+
@@ -8,8 +12,9 @@ Table: Students
 | student_id    | int     |
 | student_name  | varchar |
 +---------------+---------+
-student_id is the primary key for this table.
+student_id is the primary key (column with unique values) for this table.
 Each row of this table contains the ID and the name of one student in the school.
+
 Table: Subjects
 
 +--------------+---------+
@@ -17,8 +22,9 @@ Table: Subjects
 +--------------+---------+
 | subject_name | varchar |
 +--------------+---------+
-subject_name is the primary key for this table.
-Each row of this table contains a name of one subject in the school.
+subject_name is the primary key (column with unique values) for this table.
+Each row of this table contains the name of one subject in the school.
+
 Table: Examinations
 
 +--------------+---------+
@@ -27,15 +33,19 @@ Table: Examinations
 | student_id   | int     |
 | subject_name | varchar |
 +--------------+---------+
-There is no primary key for this table. It may contain duplicates.
-Each student from Students table takes every course from Subjects table.
+There is no primary key (column with unique values) for this table. It may contain duplicates.
+Each student from the Students table takes every course from the Subjects table.
 Each row of this table indicates that a student with ID student_id attended the exam of subject_name.
-Write an SQL query to find the number of times each student attended each exam.
 
-Order the result table by student_id and subject_name.
+Write a solution to find the number of times each student attended each exam.
 
-The query result format is in the following example:
+Return the result table ordered by student_id and subject_name.
 
+The result format is in the following example.
+
+Example 1:
+
+Input:
 Students table:
 +------------+--------------+
 | student_id | student_name |
@@ -69,7 +79,7 @@ Examinations table:
 | 2          | Math         |
 | 1          | Math         |
 +------------+--------------+
-Result table:
+Output:
 +------------+--------------+--------------+----------------+
 | student_id | student_name | subject_name | attended_exams |
 +------------+--------------+--------------+----------------+
@@ -86,67 +96,72 @@ Result table:
 | 13         | John         | Physics      | 1              |
 | 13         | John         | Programming  | 1              |
 +------------+--------------+--------------+----------------+
+Explanation:
 The result table should contain all students and all subjects.
-Alice attended Math exam 3 times, Physics exam 2 times and Programming exam 1 time.
-Bob attended Math exam 1 time, Programming exam 1 time and didn't attend the Physics exam.
-Alex didn't attend any exam.
-John attended Math exam 1 time, Physics exam 1 time and Programming exam 1 time.
+Alice attended the Math exam 3 times, the Physics exam 2 times, and the Programming exam 1 time.
+Bob attended the Math exam 1 time, the Programming exam 1 time, and did not attend the Physics exam.
+Alex did not attend any exams.
+John attended the Math exam 1 time, the Physics exam 1 time, and the Programming exam 1 time.
 
 */
 
 # V0
-### NOTE :  left join
-#           and NULLIF(COUNT(e.subject_name), 0)
+# IDEA : CROSS JOIN EVERY (STUDENT, SUBJECT) PAIR, LEFT JOIN THE ATTENDANCES, COUNT
+#
+#   The answer has a row for every student x every subject, even with 0 exams
+#   attended, so the pairs come from a CROSS JOIN -- Examinations cannot supply
+#   them, it only holds the attended ones.
+#   LEFT JOIN Examinations on both student and subject: an unattended pair keeps
+#   one row with e.* NULL. COUNT(e.subject_name) skips NULLs, so that pair
+#   counts 0; COUNT(*) would wrongly count it as 1.
+#
+# time = O(s*j*log(s*j) + x), space = O(s*j + x)    -- s = students, j = subjects, x = exam rows; the ORDER BY sort sets the log
 SELECT
-s1.student_id,
-s1.student_name,
-e.subject_name
-NULLIF(COUNT(e.subject_name), 0) as attended_exams
-FROM
-Student s1
-LEFT JOIN
-Examinations e
-ON
-s1.student_id = e.student_id
+    st.student_id,
+    st.student_name,
+    sub.subject_name,
+    COUNT(e.subject_name) AS attended_exams   -- skips the NULL row of an unattended pair -> 0
+FROM Students AS st
+CROSS JOIN Subjects AS sub
+LEFT JOIN Examinations AS e
+    ON st.student_id = e.student_id
+   AND sub.subject_name = e.subject_name
 GROUP BY
-s1.student_id,
-s1.student_name,
-e.subject_name
+    st.student_id,
+    st.student_name,
+    sub.subject_name
+ORDER BY
+    st.student_id,
+    sub.subject_name;
 
 # V1
-# https://code.dennyzhang.com/students-and-examinations
-select Students.student_id, 
-student_name, 
-Subjects.subject_name, 
-count(Examinations.student_id) as attended_exams
-from Students join Subjects
-left join Examinations
-on Students.student_id = Examinations.student_id 
-and 
-Subjects.subject_name = Examinations.subject_name
-group by Students.student_id, subject_name
-
-# V1'
-# https://code.dennyzhang.com/students-and-examinations
-select Students.student_id, student_name, Subjects.subject_name, sum(if(isnull(Examinations.student_id), 0, 1)) as attended_exams
-from Students join Subjects
-left join Examinations
-on Students.student_id = Examinations.student_id and Subjects.subject_name = Examinations.subject_name
-group by Students.student_id, subject_name
-
-# V2
-# Time:  O((m * n) * log(m * n))
-# Space: O(m * n)
-SELECT a.student_id, 
-       a.student_name, 
-       b.subject_name, 
-       Count(c.subject_name) AS attended_exams 
-FROM   students AS a 
-       CROSS JOIN subjects AS b 
-       LEFT JOIN examinations AS c 
-              ON a.student_id = c.student_id 
-                 AND b.subject_name = c.subject_name 
-GROUP  BY a.student_id, 
-          b.subject_name
-ORDER  BY a.student_id, 
-          b.subject_name;
+# IDEA : PRE-AGGREGATE THE ATTENDANCES, THEN LEFT JOIN ONTO THE GRID
+#
+#   Count Examinations once per (student, subject) first, so the join meets one
+#   row per pair instead of every duplicate attendance. A pair with no count
+#   comes back NULL from the LEFT JOIN, and COALESCE turns it into 0.
+#
+# time = O(s*j*log(s*j) + x), space = O(s*j + x)    -- same bounds; the join is never fanned out by duplicates
+WITH attendance AS (
+    SELECT
+        student_id,
+        subject_name,
+        COUNT(*) AS exam_count
+    FROM Examinations
+    GROUP BY
+        student_id,
+        subject_name
+)
+SELECT
+    st.student_id,
+    st.student_name,
+    sub.subject_name,
+    COALESCE(a.exam_count, 0) AS attended_exams   -- no attendance row -> NULL -> 0
+FROM Students AS st
+CROSS JOIN Subjects AS sub
+LEFT JOIN attendance AS a
+    ON st.student_id = a.student_id
+   AND sub.subject_name = a.subject_name
+ORDER BY
+    st.student_id,
+    sub.subject_name;

@@ -51,7 +51,7 @@ import sys
 
 GRID_EDGE = re.compile(r"^\s*\+[-+]+\+\s*$")
 GRID_ROW = re.compile(r"^\s*\|.*\|\s*$")
-VERSION = re.compile(r"^#\s*(V\d+(?:-\d+)?)\b", re.M)
+VERSION = re.compile(r"^# ?(V\d+(?:-\d+)?)\b", re.M)   # at most one space: "#   V1's ..." is prose
 RESULT_LABEL = re.compile(r"^(result( table)?|output|expected( output)?)\s*:?$", re.I)
 SCHEMA_LABEL = re.compile(r"^table\s*:\s*(\w+)", re.I)
 INPUT_LABEL = re.compile(r"^(?:input\s*:\s*)?(\w+)(?:\s+table)?\s*:?$", re.I)
@@ -262,6 +262,12 @@ MYSQL_FUNCS = {
     ("CONCAT", -1): lambda *a: None if any(x is None for x in a) else "".join(str(x) for x in a),
     ("POWER", 2): lambda a, b: None if a is None or b is None else a ** b,
     ("SQRT", 1): lambda a: None if a is None else a ** 0.5,
+    # `x REGEXP p` is SQLite's call regexp(p, x). MySQL 8's default collation is
+    # case-insensitive, so REGEXP is too; REGEXP_LIKE takes 'c' / 'i' flags.
+    ("REGEXP", 2): lambda p, x: None if p is None or x is None else int(bool(re.search(p, str(x), re.I))),
+    ("REGEXP_LIKE", 2): lambda x, p: None if p is None or x is None else int(bool(re.search(p, str(x), re.I))),
+    ("REGEXP_LIKE", 3): lambda x, p, f: None if p is None or x is None else int(bool(
+        re.search(p, str(x), 0 if "c" in (f or "") and "i" not in (f or "") else re.I))),
 }
 
 
