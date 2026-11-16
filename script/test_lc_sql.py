@@ -113,7 +113,26 @@ class Parse(unittest.TestCase):
         self.assertIsNone(s.cell_value("null"))
 
 
+class Compare(unittest.TestCase):
+    def test_string_null_from_a_query_is_not_sql_null(self):
+        self.assertIsNotNone(s.compare(["x"], [("null",)], ["x"], [["null"]], False))
+        self.assertIsNone(s.compare(["x"], [(None,)], ["x"], [["null"]], False))
+
+    def test_large_integers_stay_exact(self):
+        big = 12345678901234567
+        self.assertIsNotNone(s.compare(["x"], [(big + 1,)], ["x"], [[str(big)]], False))
+        self.assertIsNone(s.compare(["x"], [(0.5,)], ["x"], [["0.50"]], False))
+        self.assertIsNone(s.compare(["x"], [(1.0,)], ["x"], [["1"]], False))
+
+
 class Dialect(unittest.TestCase):
+    def test_declared_int_column_coerces_text_like_mysql(self):
+        tables = {"T": (["id", "code"], [["2", "051"]])}
+        schemas = {"t": {"id": "int", "code": "varchar"}}
+        conn = s.connect(tables, schemas)
+        self.assertEqual(conn.execute("SELECT code FROM T WHERE id = '2'").fetchall(), [("051",)])
+
+
     def test_division_is_decimal_like_mysql(self):
         self.assertEqual(s.mysql_division("a / b"), "a  * 1.0 / b")
         self.assertEqual(s.mysql_division("'2020/01'"), "'2020/01'")
@@ -191,6 +210,9 @@ class Run(unittest.TestCase):
             out = io.StringIO()
             path = os.path.join(ROOT, "leetcode_SQL", slug + ".sql")
             self.assertEqual(s.run(path, every=True, out=out), 0, slug + "\n" + out.getvalue())
+            # exit 0 also covers "every version skipped"; these must actually run
+            self.assertIn("PASS V", out.getvalue(), slug + "\n" + out.getvalue())
+            self.assertNotIn("SKIP", out.getvalue(), slug + "\n" + out.getvalue())
 
 
 class Lookup(unittest.TestCase):

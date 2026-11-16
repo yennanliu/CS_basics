@@ -243,16 +243,29 @@ MYSQL_FUNCS = {
 }
 
 
+def sqlite_type(declared):
+    """The SQLite affinity for a MySQL column type; '' when the schema is silent."""
+    if re.search(r"int|bool|bit", declared):
+        return "INTEGER"
+    if re.search(r"decimal|numeric|float|double|real", declared):
+        return "REAL"
+    if TEXT_TYPES.search(declared):
+        return "TEXT"
+    return ""
+
+
 def connect(tables, schemas):
     conn = sqlite3.connect(":memory:")
     for (name, nargs), fn in MYSQL_FUNCS.items():
         conn.create_function(name, nargs, fn)
     for name, (header, rows) in tables.items():
-        cols = ", ".join('"%s"' % h for h in header)
-        conn.execute('CREATE TABLE "%s" (%s)' % (name, cols))
-        marks = ", ".join("?" for _ in header)
         types = schemas.get(name.lower(), {})
         declared = [types.get(h.lower(), "") for h in header]
+        # declared types give SQLite the affinity MySQL's coercion implies, so
+        # `id = '2'` matches an INT column as it does on LeetCode
+        cols = ", ".join('"%s" %s' % (h, sqlite_type(t)) for h, t in zip(header, declared))
+        conn.execute('CREATE TABLE "%s" (%s)' % (name, cols))
+        marks = ", ".join("?" for _ in header)
         conn.executemany('INSERT INTO "%s" VALUES (%s)' % (name, marks),
                          [[cell_value(c, t) for c, t in zip(r, declared)] for r in rows])
     return conn
@@ -260,16 +273,25 @@ def connect(tables, schemas):
 
 # ── comparing ───────────────────────────────────────────────────────────────
 
-def norm(v):
-    """Compare numbers by value (0.5 == "0.50"), text exactly, NULL as NULL."""
+def norm(v, from_grid=False):
+    """Compare numbers by value (0.5 == "0.50"), text exactly, NULL as NULL.
+
+    Only a cell of the expected grid can spell NULL as `null`: a query that
+    returns the *string* 'null' or '' has not returned NULL, so for the actual
+    rows only SQLite's own None is NULL. Integers stay exact; only a
+    fractional value is rounded, to absorb ROUND(…, 2) printing."""
+    if from_grid:
+        v = cell_value(v)
+    elif isinstance(v, str) and re.fullmatch(r"-?\d+(\.\d+)?", v) and not re.fullmatch(r"-?0\d+", v):
+        v = cell_value(v)          # a numeric string compares by value, like the grid's
     if v is None:
         return ("null",)
-    if isinstance(v, str):
-        v = cell_value(v)
-        if v is None:
-            return ("null",)
-    if isinstance(v, (int, float)):
-        return ("num", round(float(v), 5))
+    if isinstance(v, float) and v.is_integer():
+        v = int(v)
+    if isinstance(v, int):
+        return ("num", v)
+    if isinstance(v, float):
+        return ("num", round(v, 5))
     return ("str", str(v))
 
 
@@ -277,7 +299,7 @@ def compare(got_cols, got_rows, exp_cols, exp_rows, ordered):
     if [c.lower() for c in got_cols] != [c.lower() for c in exp_cols]:
         return "columns %s, expected %s" % (got_cols, exp_cols)
     got = [tuple(norm(v) for v in r) for r in got_rows]
-    exp = [tuple(norm(v) for v in r) for r in exp_rows]
+    exp = [tuple(norm(v, from_grid=True) for v in r) for r in exp_rows]
     if not ordered:
         got, exp = sorted(got), sorted(exp)
     if got != exp:

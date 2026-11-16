@@ -447,8 +447,8 @@ clever, every good approach filed, untested is unfinished — with SQL's own fai
 - **a query nobody ran.** [`script/lc_sql.py`](script/lc_sql.py) `smoke` loads the header's
   grids into SQLite and compares each version's result with the expected one. LeetCode
   grades MySQL 8, so it bridges the common gap (`/` made decimal, `IF`, `DATEDIFF`, `YEAR`,
-  `DATE_FORMAT`, …) and reports anything else as `SKIP`, never as a pass. Of the 118
-  committed files that have an example, 105 pass as-is;
+  `DATE_FORMAT`, …) and reports anything else as `SKIP`, never as a pass. Of the 119
+  committed files that have an example, 107 pass as-is;
 - **a slug guessed from the title.** `lc_sql.py lookup <n>` reads the canonical slug, title,
   difficulty and premium flag offline from the coverage audit's SQL list
   (`doc/lc-coverage-kamyu/skipped_*.json`), and `todo` lists the 156 not filed yet.

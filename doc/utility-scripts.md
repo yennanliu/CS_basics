@@ -210,7 +210,8 @@ python3 script/lc_sql.py smoke leetcode_SQL/find-customer-referee.sql --all
   slug from the problem URL.
 - `smoke` reads the file's `/* */` header: the `Table: X` + `Column Name | Type` grids give
   the column types (a `varchar` keeps `051` as text), the `X table:` grids are loaded into an
-  in-memory SQLite database, and the first `Output:` / `Result table:` grid is the expected
+  in-memory SQLite database (each column typed from its schema, so an `int` column matches
+  `id = '2'` as MySQL does), and the first `Output:` / `Result table:` grid is the expected
   answer. It runs `V0` (every `# V..` block with `--all`) and compares column names and rows
   as a multiset, numbers by value; `--ordered` compares row order too. MySQL's decimal `/`
   is emulated by rewriting `a / b` to `a * 1.0 / b`, and `IF`, `DATEDIFF`, `YEAR`, `MONTH`,
@@ -219,7 +220,7 @@ python3 script/lc_sql.py smoke leetcode_SQL/find-customer-referee.sql --all
   Exit 0 = every version passed or skipped, 1 = one returned the wrong rows, 2 = no example
   in the header.
 
-Run over the whole tree, 105 of the 118 files with an example pass; the rest are old
+Run over the whole tree, 107 of the 119 files with an example pass; the rest are old
 queries that compare a `YEAR()` with a string, examples with unpadded dates, or genuinely
 wrong rows. `script/test_lc_sql.py` pins the parser against the real files.
 
