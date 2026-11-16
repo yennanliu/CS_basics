@@ -1,4 +1,4 @@
-20261116: SQL 50 (done): 196(again), 176(again)  | TODO: 3964, 713, 1004(todo)  |  neetcode 150: | blind 75:
+20261116: SQL 50 (done): 196(again), 176(again)  | TODO: 3964, 713, 1004(todo), 128(Ok), 271(again!!)  |  neetcode 150: | blind 75:
 
 
 20261115: SQL 50:  1070(again), 1789(again), 180(again), 1164(again), 1204(again), 1341(again), 1321(again), 585(again) | TODO: 3964, 767(ok**), 621(again), 185(again), Advanced String Functions / Regex / Clause  |  neetcode 150: | blind 75:
