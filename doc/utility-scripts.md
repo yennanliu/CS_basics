@@ -192,6 +192,41 @@ with a one-line `snippets:` message; an entry without a `url` is skipped and a d
 not `YYYY-MM-DD` is dropped, and both counts are printed. A source with no kept result is
 named (`no Glassdoor results kept`), because the doc has to say so.
 
+## lc_sql.py
+
+The helper behind [`/lc-sql`](../.claude/skills/lc-sql/SKILL.md). All three subcommands are
+offline.
+
+```bash
+python3 script/lc_sql.py lookup 584        # slug, title, difficulty, 🔒, and whether README has it
+python3 script/lc_sql.py todo --limit 20   # SQL problems README's ## SQL table lacks
+python3 script/lc_sql.py smoke leetcode_SQL/find-customer-referee.sql --all
+```
+
+- `lookup` and `todo` read the SQL problems the kamyu104 coverage audit set aside
+  (`doc/lc-coverage-kamyu/skipped_*.json`, `skip_reason` starting `SQL`) and the rows under
+  README's `## SQL` heading. For a filed problem, `lookup` names the file README links,
+  which is not always the audit's slug (LC 580). A number neither knows exits 1: take the
+  slug from the problem URL.
+- `smoke` reads the file's `/* */` header: the `Table: X` + `Column Name | Type` grids give
+  the column types (a `varchar` keeps `051` as text), the `X table:` grids are loaded into an
+  in-memory SQLite database (each column typed from its schema, so an `int` column matches
+  `id = '2'` as MySQL does), and the first `Output:` / `Result table:` grid is the expected
+  answer. It runs `V0` (every `# V..` block with `--all`) and compares column names and rows
+  as a multiset, numbers by value; `--ordered` compares row order too. MySQL's decimal `/`
+  is emulated by rewriting `a / b` to `a * 1.0 / b`, and `IF`, `DATEDIFF`, `YEAR`, `MONTH`,
+  `DAY`, `DATE_FORMAT`, `LEFT`, `RIGHT`, `CONCAT`, `POWER` and `SQRT` are registered as
+  SQLite functions. Anything SQLite still rejects is `SKIP` with the error, not a failure.
+  It also reads the header's `https://leetcode.com/problems/<slug>/` line: `link: ok` when
+  the slug is the file name, `FAIL link` when it is not, and a warning when the line is
+  missing (most files filed before `/lc-sql` have none).
+  Exit 0 = every version passed or skipped, 1 = one returned the wrong rows or the link names
+  another slug, 2 = no example in the header.
+
+Run over the whole tree, 107 of the 119 files with an example pass; the rest are old
+queries that compare a `YEAR()` with a string, examples with unpadded dates, or genuinely
+wrong rows. `script/test_lc_sql.py` pins the parser against the real files.
+
 ## find_missing_java.py
 
 Lists LeetCode problems that have a Python solution under `leetcode_python/` but no Java one. Drives the Java-backfill batches.
