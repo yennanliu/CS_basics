@@ -21,7 +21,7 @@
 	- Doing
 		- 滑動視窗
 			- https://yennj12.js.org/CS_basics/cheatsheets/sliding_window.zh.html
-				- 模板 6：用「至多」相減湊出「恰好 K」 — LC 992
+				- 模板 7：遺傳性限制 — 只檢查新進元素 — LC 4067
 
 
 
@@ -139,6 +139,13 @@
 
 		- 模板 6：用「至多」相減湊出「恰好 K」
 			— LC 992 (!!!)
+
+	- slide window
+
+		- 模板 6：用「至多」相減湊出「恰好 K」
+			- 2062
+			- 930
+			- 904
 
 
 
