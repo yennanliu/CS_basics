@@ -1,5 +1,9 @@
 /*
 
+1164. Product Price at a Given Date
+https://leetcode.com/problems/product-price-at-a-given-date/
+Medium
+
 Table: Products
 
 +---------------+---------+
@@ -9,15 +13,20 @@ Table: Products
 | new_price     | int     |
 | change_date   | date    |
 +---------------+---------+
+(product_id, change_date) is the primary key (combination of columns with unique values) of this table.
+Each row of this table indicates that the price of some product was changed to a new price at some date.
 
-(product_id, change_date) is the primary key of this table.
-Each row of this table indicates that the price of some product was
-changed to a new price at some date.
-Write an SQL query to find the prices of all products on 2019-08-16.
- Assume the price of all products before any change is 10.
+Initially, all products have price 10.
 
-The query result format is in the following example:
+Write a solution to find the prices of all products on the date 2019-08-16.
 
+Return the result table in any order.
+
+The result format is in the following example.
+
+Example 1:
+
+Input:
 Products table:
 +------------+-----------+-------------+
 | product_id | new_price | change_date |
@@ -29,8 +38,7 @@ Products table:
 | 2          | 65        | 2019-08-17  |
 | 3          | 20        | 2019-08-18  |
 +------------+-----------+-------------+
-
-Result table:
+Output:
 +------------+-------+
 | product_id | price |
 +------------+-------+
@@ -42,88 +50,98 @@ Result table:
 */
 
 # V0
-# IDEA : UNION
-#   -> CASE 1 : if the product changes price within before - 2019-08-16 => we find the latest price
-#   -> CASE 2 : if the product NOT changes price within before - 2019-08-16 => we need to return 10 (as the default init price)
-#   then we union case 1, and case 2
-WITH cte1 AS
-  (SELECT product_id,
-          price
-   FROM Products
-   WHERE ((product_id,
-           price) IN
-            (SELECT product_id,
-                    max(change_date) AS change_date
-             FROM Products
-             WHERE change_date < '2019-08-16'
-             GROUP BY product_id)) ),
-     cte2 AS (
-SELECT product_id,
-       10
-FROM Products
-WHERE (product_id NOT IN
-         (SELECT product_id
-          FROM Products
-          WHERE change_date < '2019-08-16' ))
-SELECT cte1.*
-UNION cte2.*
-ORDER BY price DESC;
+# IDEA : LATEST CHANGE ON OR BEFORE THE DATE, LEFT JOIN, DEFAULT 10
+#
+#   last_change keeps, per product, the latest change_date <= 2019-08-16
+#   (a change made ON the date counts). Every product is listed once, then
+#   LEFT JOINed to that change and to the row holding its price. A product
+#   whose changes all come after the date has no match, its new_price is
+#   NULL, and COALESCE turns that into the initial price 10.
+#
+# time = O(n), space = O(n)    -- n = rows in Products; one group pass and two hash joins
+WITH last_change AS (
+    -- the latest change on or before the date, per product
+    SELECT
+        product_id,
+        MAX(change_date) AS change_date
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+    GROUP BY product_id
+),
+all_products AS (
+    SELECT DISTINCT product_id
+    FROM Products
+)
+SELECT
+    ap.product_id,
+    COALESCE(p.new_price, 10) AS price   -- NULL = no change by the date: still the initial 10
+FROM all_products ap
+LEFT JOIN last_change lc               -- LEFT: keep products with no change by the date
+    ON lc.product_id = ap.product_id
+LEFT JOIN Products p
+    ON p.product_id = lc.product_id
+   AND p.change_date = lc.change_date;
 
 # V1
-# IDEA : UNION
-#   -> CASE 1 : if the product changes price within before - 2019-08-16 => we find the latest price
-#   -> CASE 2 : if the product NOT changes price within before - 2019-08-16 => we need to return 10 (as the default init price)
-#   then we union case 1, and case 2
-# https://blog.csdn.net/Hello_JavaScript/article/details/104611645
-SELECT * 
-FROM 
-(SELECT product_id, new_price AS price
- FROM Products
- WHERE (product_id, change_date) IN (
-                                     SELECT product_id, MAX(change_date)
-                                     FROM Products
-                                     WHERE change_date <= '2019-08-16'
-                                     GROUP BY product_id)
- UNION
- SELECT DISTINCT product_id, 10 AS price
- FROM Products
- WHERE product_id NOT IN (SELECT product_id FROM Products WHERE change_date <= '2019-08-16')
-) tmp
-ORDER BY price DESC
-
-# V1'
-# https://code.dennyzhang.com/product-price-at-a-given-date
-SELECT t1.product_id AS product_id,
-       if(isnull(t2.price), 10, t2.price) AS price
-FROM
-  (SELECT DISTINCT product_id
-   FROM Products) AS t1
-LEFT JOIN
-  (SELECT product_id,
-          new_price AS price
-   FROM Products
-   WHERE (product_id,
-          change_date) in
-       (SELECT product_id,
-               max(change_date)
-        FROM Products
-        WHERE change_date <='2019-08-16'
-        GROUP BY product_id)) AS t2 ON t1.product_id = t2.product_id
+# IDEA : UNION OF THE TWO CASES
+#
+#   Case 1: products changed by the date take the price of their latest such
+#   change. Case 2: products never changed by the date are still at 10.
+#   The two sets of products are disjoint, so UNION ALL loses nothing.
+#   product_id is never NULL, so NOT IN is safe here.
+#
+# time = O(n), space = O(n)    -- n = rows in Products
+SELECT
+    product_id,
+    new_price AS price
+FROM Products
+WHERE (product_id, change_date) IN (
+    SELECT
+        product_id,
+        MAX(change_date)
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+    GROUP BY product_id
+)
+UNION ALL
+SELECT DISTINCT
+    product_id,
+    10 AS price
+FROM Products
+WHERE product_id NOT IN (
+    SELECT product_id
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+);
 
 # V2
-# Time:  O(mlogn), m is the number of unique product id, n is the number of changed dates
-# Space: O(m)
-SELECT t1.product_id                      AS product_id, 
-       IF(Isnull(t2.price), 10, t2.price) AS price 
-FROM   (SELECT DISTINCT product_id 
-        FROM   products) AS t1 
-       left join (SELECT product_id, 
-                         new_price AS price 
-                  FROM   products 
-                  WHERE  ( product_id, change_date ) IN (SELECT product_id, 
-                                                                Max(change_date) 
-                                                         FROM   products 
-                                                         WHERE change_date <= '2019-08-16' 
-                                                         GROUP  BY product_id)) 
-                 AS t2 
-              ON t1.product_id = t2.product_id 
+# IDEA : ROW_NUMBER OVER THE CHANGES BY THE DATE, NEWEST FIRST
+#
+#   Rank each product's changes on or before the date from newest to oldest;
+#   rank 1 is the price on the date. ROW_NUMBER is safe because
+#   (product_id, change_date) is the primary key, so there are no ties.
+#   Products with no such change are added back through the LEFT JOIN.
+#
+# time = O(n log n), space = O(n)    -- n = rows in Products; the window sorts each product's dates
+WITH ranked_changes AS (
+    SELECT
+        product_id,
+        new_price,
+        ROW_NUMBER() OVER (
+            PARTITION BY product_id
+            ORDER BY change_date DESC
+        ) AS change_rank
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+),
+all_products AS (
+    SELECT DISTINCT product_id
+    FROM Products
+)
+SELECT
+    ap.product_id,
+    COALESCE(rc.new_price, 10) AS price   -- NULL = no change by the date: still the initial 10
+FROM all_products ap
+LEFT JOIN ranked_changes rc
+    ON rc.product_id = ap.product_id
+   AND rc.change_rank = 1;               -- in ON, not WHERE: a WHERE would drop the unmatched products

@@ -1,5 +1,8 @@
 /*
 
+1148. Article Views I
+https://leetcode.com/problems/article-views-i/
+Easy
 
 Table: Views
 
@@ -11,17 +14,19 @@ Table: Views
 | viewer_id     | int     |
 | view_date     | date    |
 +---------------+---------+
-
-
-There is no primary key for this table, it may have duplicate rows.
-Each row of this table indicates that some viewer viewed an article (
-written by some author) on some date. 
+There is no primary key (column with unique values) for this table, the table may have duplicate rows.
+Each row of this table indicates that some viewer viewed an article (written by some author) on some date.
 Note that equal author_id and viewer_id indicate the same person.
-Write an SQL query to find all the authors that viewed at 
-least one of their own articles, sorted in ascending order by their id.
 
-The query result format is in the following example:
+Write a solution to find all the authors that viewed at least one of their own articles.
 
+Return the result table sorted by id in ascending order.
+
+The result format is in the following example.
+
+Example 1:
+
+Input:
 Views table:
 +------------+-----------+-----------+------------+
 | article_id | author_id | viewer_id | view_date  |
@@ -34,8 +39,7 @@ Views table:
 | 3          | 4         | 4         | 2019-07-21 |
 | 3          | 4         | 4         | 2019-07-21 |
 +------------+-----------+-----------+------------+
-
-Result table:
+Output:
 +------+
 | id   |
 +------+
@@ -46,25 +50,29 @@ Result table:
 */
 
 # V0
-SELECT
-DISTINCT author_id as id
-FROM
-Views
-where author_id = viewer_id
-ORDER BY
-author_id;
+# IDEA : SELF-VIEW FILTER, DISTINCT, SORT
+#
+#   An author viewed their own article when author_id = viewer_id on the same
+#   row. The table has duplicate rows and an author may view several of their
+#   articles, so DISTINCT collapses each author to one row. The task asks for
+#   ascending id, hence ORDER BY.
+#
+# time = O(n log n), space = O(n)    -- n = rows in Views; one scan, then dedup and sort the matches
+SELECT DISTINCT author_id AS id
+FROM Views
+WHERE author_id = viewer_id
+ORDER BY id;
 
 # V1
-# https://code.dennyzhang.com/article-views-i
-select distinct author_id as id
-from Views
-where author_id = viewer_id
-order by author_id
-
-# V2
-# Time:  O(nlogn)
-# Space: O(n)
-SELECT DISTINCT author_id AS id 
-FROM   views 
-WHERE  author_id = viewer_id 
-ORDER  BY id
+# IDEA : GROUP BY INSTEAD OF DISTINCT
+#
+#   Grouping the matching rows by author gives one row per author -- the same
+#   result as DISTINCT, and the form to reach for once a count or other
+#   aggregate per author is needed.
+#
+# time = O(n log n), space = O(n)    -- n = rows in Views; one scan, then group and sort
+SELECT author_id AS id
+FROM Views
+WHERE author_id = viewer_id
+GROUP BY author_id
+ORDER BY id;

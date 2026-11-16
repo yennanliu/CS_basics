@@ -1,6 +1,9 @@
 /*
 
 1193. Monthly Transactions I
+https://leetcode.com/problems/monthly-transactions-i/
+Medium
+
 Table: Transactions
 
 +---------------+---------+
@@ -12,16 +15,19 @@ Table: Transactions
 | amount        | int     |
 | trans_date    | date    |
 +---------------+---------+
-
 id is the primary key of this table.
 The table has information about incoming transactions.
 The state column is an enum of type ["approved", "declined"].
- 
 
 Write an SQL query to find for each month and country, the number of transactions and their total amount, the number of approved transactions and their total amount.
 
-The query result format is in the following example:
+Return the result table in any order.
 
+The query result format is in the following example.
+
+Example 1:
+
+Input:
 Transactions table:
 +------+---------+----------+--------+------------+
 | id   | country | state    | amount | trans_date |
@@ -31,8 +37,7 @@ Transactions table:
 | 123  | US      | approved | 2000   | 2019-01-01 |
 | 124  | DE      | approved | 2000   | 2019-01-07 |
 +------+---------+----------+--------+------------+
-
-Result table:
+Output:
 +----------+---------+-------------+----------------+--------------------+-----------------------+
 | month    | country | trans_count | approved_count | trans_total_amount | approved_total_amount |
 +----------+---------+-------------+----------------+--------------------+-----------------------+
@@ -44,39 +49,23 @@ Result table:
 */
 
 # V0
+# IDEA : GROUP BY (MONTH, COUNTRY), CONDITIONAL AGGREGATES
+#
+#   One group per month and country; the month is DATE_FORMAT(trans_date, '%Y-%m').
+#   The all-transactions columns are plain COUNT / SUM; the approved columns
+#   are the same aggregates over a CASE that zeroes out declined rows.
+#   country may be NULL: GROUP BY keeps NULL as a group of its own, which is
+#   what LeetCode expects (it is still a bucket in the output).
+#
+# time = O(n), space = O(g)    -- n = rows in Transactions, g = (month, country) groups
 SELECT
-Date_format(trans_date, '%Y-%m') AS month,
-country AS country,
-count(id) AS trans_count,
-SUM(case WHEN state = 'approved' THEN 1 ELSE 0 END) AS approved_count,
-SUM(amount) AS trans_total_amount,
-SUM(case WHEN state = 'approved' THEN amount ELSE 0 END) AS approved_total_amount
-FROM
-transactions
-GROUP BY
-Date_format(trans_date, '%Y-%m') ,
-country;
-
-# V1
-# https://www.programmersought.com/article/92805114112/
-SELECT DATE_FORMAT(trans_date, '%Y-%m') AS month, country
-       , COUNT(1) AS trans_count
-       , COUNT(if(state = 'approved', 1, NULL)) AS approved_count
-       , SUM(amount) AS trans_total_amount
-       , SUM(if(state = 'approved', amount, 0)) AS approved_total_amount
+    DATE_FORMAT(trans_date, '%Y-%m') AS month,
+    country,
+    COUNT(*) AS trans_count,
+    SUM(CASE WHEN state = 'approved' THEN 1 ELSE 0 END) AS approved_count,
+    SUM(amount) AS trans_total_amount,
+    SUM(CASE WHEN state = 'approved' THEN amount ELSE 0 END) AS approved_total_amount
 FROM Transactions
-GROUP BY month, country;
-
-# V2
-# Time:  O(n)
-# Space: O(n)
-SELECT Date_format(trans_date, '%Y-%m')       AS month, 
-       country, 
-       Count(id)                              AS trans_count, 
-       Count(IF(state = 'approved', 1, NULL)) AS approved_count, 
-       SUM(amount)                            AS trans_total_amount, 
-       SUM(IF(state = 'approved', amount, 0)) AS approved_total_amount 
-FROM   transactions 
-GROUP  BY Date_format(trans_date, '%Y-%m'), 
-          country 
-ORDER BY NULL
+GROUP BY
+    DATE_FORMAT(trans_date, '%Y-%m'),
+    country;

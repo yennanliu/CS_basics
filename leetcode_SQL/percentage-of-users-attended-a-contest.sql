@@ -1,9 +1,8 @@
 /*
 
-Percentage Of Users Attended A Contest Problem
-
-Description
-LeetCode Problem 1633.
+1633. Percentage of Users Attended a Contest
+https://leetcode.com/problems/percentage-of-users-attended-a-contest/
+Easy
 
 Table: Users
 
@@ -13,8 +12,9 @@ Table: Users
 | user_id     | int     |
 | user_name   | varchar |
 +-------------+---------+
-user_id is the primary key for this table.
+user_id is the primary key (column with unique values) for this table.
 Each row of this table contains the name and the id of a user.
+
 Table: Register
 
 +-------------+---------+
@@ -23,14 +23,18 @@ Table: Register
 | contest_id  | int     |
 | user_id     | int     |
 +-------------+---------+
-(contest_id, user_id) is the primary key for this table.
+(contest_id, user_id) is the primary key (combination of columns with unique values) for this table.
 Each row of this table contains the id of a user and the contest they registered into.
-Write an SQL query to find the percentage of the users registered in each contest rounded to two decimals.
+
+Write a solution to find the percentage of the users registered in each contest rounded to two decimals.
 
 Return the result table ordered by percentage in descending order. In case of a tie, order it by contest_id in ascending order.
 
-The query result format is in the following example.
+The result format is in the following example.
 
+Example 1:
+
+Input:
 Users table:
 +---------+-----------+
 | user_id | user_name |
@@ -39,7 +43,6 @@ Users table:
 | 2       | Bob       |
 | 7       | Alex      |
 +---------+-----------+
-
 Register table:
 +------------+---------+
 | contest_id | user_id |
@@ -57,8 +60,7 @@ Register table:
 | 207        | 2       |
 | 210        | 7       |
 +------------+---------+
-
-Result table:
+Output:
 +------------+------------+
 | contest_id | percentage |
 +------------+------------+
@@ -68,33 +70,52 @@ Result table:
 | 215        | 66.67      |
 | 207        | 33.33      |
 +------------+------------+
+Explanation:
 All the users registered in contests 208, 209, and 210. The percentage is 100% and we sort them in the answer table by contest_id in ascending order.
 Alice and Alex registered in contest 215 and the percentage is ((2/3) * 100) = 66.67%
 Bob registered in contest 207 and the percentage is ((1/3) * 100) = 33.33%
 
 */
 
-
 # V0
-select r.contest_id as contest_id, 
-    round(100*count(distinct r.user_id)/count(distinct u.user_id), 2) as percentage
-from Register r, Users u
-group by r.contest_id
-order by percentage desc, contest_id
+# IDEA : COUNT PER CONTEST OVER A SCALAR TOTAL
+#
+#   The denominator is the same for every contest -- the number of users --
+#   so it is one scalar subquery, not a join. (contest_id, user_id) is the
+#   primary key, so COUNT(user_id) per contest already counts distinct users.
+#   Ties on percentage are broken by contest_id ascending, as the task asks.
+#
+# time = O(m + n + k log k), space = O(k)    -- m = rows in Register, n = rows in Users, k = contests (the sort)
+SELECT
+    r.contest_id,
+    ROUND(COUNT(r.user_id) * 100 / (SELECT COUNT(*) FROM Users), 2) AS percentage
+FROM Register AS r
+GROUP BY r.contest_id
+ORDER BY
+    percentage DESC,
+    r.contest_id ASC;
 
 # V1
-# https://circlecoder.com/percentage-of-users-attended-a-contest/
-select r.contest_id as contest_id, 
-    round(100*count(distinct r.user_id)/count(distinct u.user_id), 2) as percentage
-from Register r, Users u
-group by r.contest_id
-order by percentage desc, contest_id
-
-# V2
-# Time:  O(m + nlogn)
-# Space: O(n)
-SELECT contest_id,
-       ROUND(COUNT(user_id) * 100 / (SELECT COUNT(*) FROM Users), 2) AS percentage
-FROM Register
-GROUP BY contest_id
-ORDER BY 2 DESC, 1;
+# IDEA : TOTAL AS A ONE-ROW CTE, CROSS JOINED IN
+#
+#   Same arithmetic, with the denominator named: total_users is a one-row
+#   table, so CROSS JOIN attaches it to every Register row without
+#   multiplying rows. (The old V0 cross-joined the whole Users table and used
+#   COUNT(DISTINCT ...) to undo the blow-up -- correct, but O(m * n) rows.)
+#
+# time = O(m + n + k log k), space = O(k)    -- m = rows in Register, n = rows in Users, k = contests
+WITH total_users AS (
+    SELECT COUNT(*) AS user_count
+    FROM Users
+)
+SELECT
+    r.contest_id,
+    ROUND(COUNT(r.user_id) * 100 / t.user_count, 2) AS percentage
+FROM Register AS r
+CROSS JOIN total_users AS t
+GROUP BY
+    r.contest_id,
+    t.user_count
+ORDER BY
+    percentage DESC,
+    r.contest_id ASC;

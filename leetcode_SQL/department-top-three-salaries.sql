@@ -1,98 +1,141 @@
-# Time:  O(n^2)
-# Space: O(n)
-# 
-# The Employee table holds all employees. Every employee has an Id, and there is also a column for the department Id.
-# 
-# +----+-------+--------+--------------+
-# | Id | Name  | Salary | DepartmentId |
-# +----+-------+--------+--------------+
-# | 1  | Joe   | 70000  | 1            |
-# | 2  | Henry | 80000  | 2            |
-# | 3  | Sam   | 60000  | 2            |
-# | 4  | Max   | 90000  | 1            |
-# | 5  | Janet | 69000  | 1            |
-# | 6  | Randy | 85000  | 1            |
-# +----+-------+--------+--------------+
-# The Department table holds all departments of the company.
-# 
-# +----+----------+
-# | Id | Name     |
-# +----+----------+
-# | 1  | IT       |
-# | 2  | Sales    |
-# +----+----------+
-# Write a SQL query to find employees who earn the top three salaries in each of the department. For the above tables, your SQL query should return the following rows.
-# 
-# +------------+----------+--------+
-# | Department | Employee | Salary |
-# +------------+----------+--------+
-# | IT         | Max      | 90000  |
-# | IT         | Randy    | 85000  |
-# | IT         | Joe      | 70000  |
-# | Sales      | Henry    | 80000  |
-# | Sales      | Sam      | 60000  |
-# +------------+----------+--------+
+/*
 
-# V0 : IDEA : count distinct + where < n 
-SELECT d.Name AS Department,
-       e.Name AS Employee,
-       e.Salary AS Salary
+185. Department Top Three Salaries
+https://leetcode.com/problems/department-top-three-salaries/
+Hard
+
+Table: Employee
+
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| id           | int     |
+| name         | varchar |
+| salary       | int     |
+| departmentId | int     |
++--------------+---------+
+id is the primary key (column with unique values) for this table.
+departmentId is a foreign key (reference column) of the ID from the Department table.
+Each row of this table indicates the ID, name, and salary of an employee. It also contains the ID of their department.
+
+Table: Department
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
++-------------+---------+
+id is the primary key (column with unique values) for this table.
+Each row of this table indicates the ID of a department and its name.
+
+A company's executives are interested in seeing who earns the most money in each of the company's departments. A high earner in a department is an employee who has a salary in the top three unique salaries for that department.
+
+Write a solution to find the employees who are high earners in each of the departments.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+Example 1:
+
+Input:
+Employee table:
++----+-------+--------+--------------+
+| id | name  | salary | departmentId |
++----+-------+--------+--------------+
+| 1  | Joe   | 85000  | 1            |
+| 2  | Henry | 80000  | 2            |
+| 3  | Sam   | 60000  | 2            |
+| 4  | Max   | 90000  | 1            |
+| 5  | Janet | 69000  | 1            |
+| 6  | Randy | 85000  | 1            |
+| 7  | Will  | 70000  | 1            |
++----+-------+--------+--------------+
+Department table:
++----+-------+
+| id | name  |
++----+-------+
+| 1  | IT    |
+| 2  | Sales |
++----+-------+
+Output:
++------------+----------+--------+
+| Department | Employee | Salary |
++------------+----------+--------+
+| IT         | Max      | 90000  |
+| IT         | Joe      | 85000  |
+| IT         | Randy    | 85000  |
+| IT         | Will     | 70000  |
+| Sales      | Henry    | 80000  |
+| Sales      | Sam      | 60000  |
++------------+----------+--------+
+Explanation:
+In the IT department:
+- Max earns the highest unique salary
+- Both Randy and Joe earn the second-highest unique salary
+- Will earns the third-highest unique salary
+
+In the Sales department:
+- Henry earns the highest salary
+- Sam earns the second-highest salary
+- There is no third-highest salary as there are only two employees
+
+Constraints:
+
+	- There are no employees with the exact same name, salary and department.
+
+*/
+
+# V0
+# IDEA : CORRELATED COUNT OF DISTINCT HIGHER SALARIES
+#
+#   An employee is in their department's top three unique salaries exactly
+#   when fewer than 3 distinct salaries in that department are higher than
+#   theirs. COUNT(DISTINCT ...) is what makes ties share a place: two people
+#   on 85000 both see one higher salary (90000).
+#   INNER JOIN Department: an employee whose departmentId has no row is not
+#   in any department to report.
+#
+# time = O(n^2), space = O(n)    -- n = rows in Employee; the subquery rescans a department per employee
+SELECT
+    d.name   AS Department,
+    e.name   AS Employee,
+    e.salary AS Salary
 FROM Employee e
-INNER JOIN Department d ON e.DepartmentId = d.Id
-WHERE
-    (SELECT count(DISTINCT e2.Salary) AS cnt
-     FROM Employee e2
-     WHERE e2.Salary > e.Salary
-       AND e2.DepartmentId = e.DepartmentId) < 3
-
-# V0' : IDEA : DENSE_RANK
-SELECT Department,
-       Employee,
-       Salary
-FROM
-  (SELECT d.Name AS Department,
-          e.Name AS Employee,
-          e.Salary AS Salary,
-          DENSE_RANK() OVER (PARTITION BY d.Name
-                             ORDER BY e.Salary DESC) AS dept_sal_rank
-   FROM Employee e
-   INNER JOIN Department d ON e.DepartmentId = d.Id) sub
-WHERE dept_sal_rank <= 3
+JOIN Department d
+  ON d.id = e.departmentId
+WHERE (
+    -- distinct salaries in the same department above this one
+    SELECT COUNT(DISTINCT higher.salary)
+    FROM Employee higher
+    WHERE higher.departmentId = e.departmentId
+      AND higher.salary > e.salary
+) < 3;
 
 # V1
-# https://leetcode.com/problems/department-top-three-salaries/solution/
+# IDEA : DENSE_RANK PER DEPARTMENT
+#
+#   Rank salaries inside each department, highest first, and keep ranks 1-3.
+#   DENSE_RANK, not RANK: after two people tie at 2nd, the next salary must
+#   be 3rd, not 4th -- "top three unique salaries" counts values, not people.
+#   Partition by departmentId (the key), not by department name.
+#
+# time = O(n log n), space = O(n)    -- n = rows in Employee; the window sorts each department
+WITH ranked AS (
+    SELECT
+        e.name,
+        e.salary,
+        e.departmentId,
+        DENSE_RANK() OVER (PARTITION BY e.departmentId
+                           ORDER BY e.salary DESC) AS salary_rank
+    FROM Employee e
+)
 SELECT
-    d.Name AS 'Department', e1.Name AS 'Employee', e1.Salary
-FROM
-    Employee e1
-        JOIN
-    Department d ON e1.DepartmentId = d.Id
-WHERE
-    3 > (SELECT
-            COUNT(DISTINCT e2.Salary)
-        FROM
-            Employee e2
-        WHERE
-            e2.Salary > e1.Salary
-                AND e1.DepartmentId = e2.DepartmentId
-        )
-;
-
-# V1''
-# IDEA : DENSE_RANK
-SELECT a.Department, a.Employee, a.Salary FROM
-(
-Select b.Name as Department,a.Name as Employee,a.salary As Salary,
-DENSE_RANK() over (PARTITION BY b.Name ORDER BY a.Salary DESC)  as dept_sal_rank
-from Employee a
-INNER JOIN Department b ON a.DepartmentId = b.Id ) a
-
-where a.dept_sal_Rank <=3
-
-# V2
-# Write your MySQL query statement below
-SELECT D.Name AS Department, E.Name AS Employee, E.Salary AS Salary 
-FROM Employee E INNER JOIN Department D ON E.DepartmentId = D.Id 
-WHERE (SELECT COUNT(DISTINCT(Salary)) FROM Employee 
-       WHERE DepartmentId = E.DepartmentId AND Salary > E.Salary) < 3
-ORDER by E.DepartmentId, E.Salary DESC;
+    d.name   AS Department,
+    r.name   AS Employee,
+    r.salary AS Salary
+FROM ranked r
+JOIN Department d
+  ON d.id = r.departmentId
+WHERE r.salary_rank <= 3;
