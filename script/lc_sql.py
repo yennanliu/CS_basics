@@ -180,6 +180,36 @@ def mysql_division(sql):
     return "".join(out)
 
 
+def split_statements(sql):
+    """Split on `;` outside string literals, dropping `-- ` line comments.
+
+    A `;` inside 'a;b' or inside a trailing `-- note; more` is not a statement
+    break, and a fragment that is only a comment is not a statement."""
+    statements, current, quote, i = [], [], None, 0
+    while i < len(sql):
+        ch = sql[i]
+        if quote:
+            current.append(ch)
+            if ch == quote:
+                quote = None
+        elif ch in "'\"`":
+            quote = ch
+            current.append(ch)
+        elif sql.startswith("--", i):
+            # skip to the end of the line; keep the newline
+            end = sql.find("\n", i)
+            i = len(sql) if end == -1 else end
+            continue
+        elif ch == ";":
+            statements.append("".join(current))
+            current = []
+        else:
+            current.append(ch)
+        i += 1
+    statements.append("".join(current))
+    return [st.strip() for st in statements if st.strip()]
+
+
 # MySQL functions SQLite lacks, close enough for an example-sized smoke test.
 def _date(v):
     return datetime.date.fromisoformat(str(v)[:10]) if v is not None else None
@@ -281,9 +311,7 @@ def run(path, every=False, ordered=False, out=sys.stdout):
             # the last one that returns rows is the answer. A trailing
             # `-- note` after the final `;` is not a statement.
             cols, rows = [], []
-            for stmt in sql.split(";"):
-                if not re.sub(r"--[^\n]*", "", stmt).strip():
-                    continue
+            for stmt in split_statements(sql):
                 cur.execute(mysql_division(stmt))
                 if cur.description:
                     cols = [d[0] for d in cur.description]

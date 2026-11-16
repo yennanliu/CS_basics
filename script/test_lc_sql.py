@@ -126,6 +126,16 @@ class Dialect(unittest.TestCase):
         self.assertEqual(row, ("y", 2, 2020, "2020-05", "ab", "a1"))
 
 
+class Split(unittest.TestCase):
+    def test_semicolon_in_literal_or_comment_is_not_a_break(self):
+        self.assertEqual(s.split_statements("SELECT 'a;b' AS x;   -- note; more"),
+                         ["SELECT 'a;b' AS x"])
+
+    def test_several_statements_and_comment_only_fragments(self):
+        self.assertEqual(s.split_statements("UPDATE t SET a = 1;\n-- only a note\nSELECT a FROM t;"),
+                         ["UPDATE t SET a = 1", "SELECT a FROM t"])
+
+
 class Run(unittest.TestCase):
     def test_pass_and_fail_are_told_apart(self):
         path = write(FILE)
@@ -144,6 +154,15 @@ class Run(unittest.TestCase):
         try:
             out = io.StringIO()
             self.assertEqual(s.run(path, out=out), 0, out.getvalue())
+        finally:
+            os.unlink(path)
+
+    def test_semicolon_in_trailing_note_still_passes(self):
+        path = write(FILE.replace("GROUP BY s.user_id;", "GROUP BY s.user_id;   -- note; with a semicolon"))
+        try:
+            out = io.StringIO()
+            self.assertEqual(s.run(path, out=out), 0, out.getvalue())
+            self.assertIn("PASS V0", out.getvalue())
         finally:
             os.unlink(path)
 
