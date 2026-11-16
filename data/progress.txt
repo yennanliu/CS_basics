@@ -1,3 +1,6 @@
+20261116: SQL 50:  (Advanced String Functions / Regex / Clause)  | TODO: 3964  |  neetcode 150: | blind 75:
+
+
 20261115: SQL 50:  1070(again), 1789(again), 180(again), 1164(again), 1204(again), 1341(again), 1321(again), 585(again) | TODO: 3964, 767(ok**), 621(again), 185(again), Advanced String Functions / Regex / Clause  |  neetcode 150: | blind 75:
 
 
