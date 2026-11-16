@@ -434,6 +434,33 @@ page's prose. Their `.claude/skills/...` links are enforced by
 [the skills gate](#the-skills-gate) — `check_skills.py` reads them, the same way it reads
 `skills.html`.
 
+### `/lc-sql` — the database problems
+
+`.claude/skills/lc-sql/` is the third filing recipe, for `leetcode_SQL/<slug>.sql` and
+README's single `## SQL` table (the imported kamyu set has no SQL table: the audit skipped
+those problems). Same house rules as `/lc-python` — the user's idea as `V0`, readable over
+clever, every good approach filed, untested is unfinished — with SQL's own failure modes:
+
+- **a header with no example in it.** 48 of the 166 files carry no input or result grids,
+  so nothing can test them. A new header copies the schema, the example's input tables
+  and its `Output:` grid, because they are what the smoke test runs against;
+- **a query nobody ran.** [`script/lc_sql.py`](script/lc_sql.py) `smoke` loads the header's
+  grids into SQLite and compares each version's result with the expected one. LeetCode
+  grades MySQL 8, so it bridges the common gap (`/` made decimal, `IF`, `DATEDIFF`, `YEAR`,
+  `DATE_FORMAT`, …) and reports anything else as `SKIP`, never as a pass. Of the 118
+  committed files that have an example, 105 pass as-is;
+- **a slug guessed from the title.** `lc_sql.py lookup <n>` reads the canonical slug, title,
+  difficulty and premium flag offline from the coverage audit's SQL list
+  (`doc/lc-coverage-kamyu/skipped_*.json`), and `todo` lists the 156 not filed yet.
+
+```text
+/lc-sql 584                  # + paste the draft query under it
+/lc-sql todo                 # what is still missing
+```
+
+It has a card on `agent-skills.html` but no page of its own yet.
+`script/test_lc_sql.py` tests the helper.
+
 ---
 
 ## Tracking the practice — `/lc-log` and `/lc-again`
