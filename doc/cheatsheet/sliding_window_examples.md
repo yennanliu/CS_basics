@@ -302,9 +302,27 @@ public int numSubarrayProductLessThanK(int[] nums, int k) {
 }
 ```
 
+**Dry run** — each row adds the subarrays that end at `right`, one per start in `[left, right]`:
+
+```text
+nums = [10, 5, 2, 6], k = 100
+
+right  product            left  window      new subarrays (end at right)   add  count
+0      10                 0     [10]        [10]                            1    1
+1      50                 0     [10,5]      [10,5] [5]                      2    3
+2      100 >= k -> /10    1     [5,2]       [5,2] [2]                       2    5
+3      60                 1     [5,2,6]     [5,2,6] [2,6] [6]               3    8
+```
+
+The answer is 8. `[10, 5, 2]` is never counted: once `[10, 5, 2]` reached 100, no window that
+starts at index 0 and ends at `right ≥ 2` can be valid, so `left` leaves 0 for good.
+
 **Traps**
 - `k ≤ 1`: no window is ever valid, so without the guard the `while` runs `left` past `right`
   and reads past the array: `[1, 2, 3], k = 0` raises `IndexError` instead of returning 0.
 - Recording `max(len)` instead of adding `len` answers "longest", not "how many".
+- The count assumes `nums[i] ≥ 1`, which LC 713 guarantees. With a negative value a suffix of a
+  valid window can be invalid (`[-5, 3]`, k = 0: `[-5, 3]` is valid, `[3]` is not), and a 0
+  makes `product //= nums[left]` divide by zero.
 
 **Similar** — LC 992 *(exactly K distinct: this count, twice)* · LC 2302

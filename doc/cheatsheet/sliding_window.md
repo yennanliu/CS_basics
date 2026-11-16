@@ -587,6 +587,37 @@ the first.
 Exactly K = At Most K - At Most (K-1)
 ```
 
+**Why `right - left + 1` counts them.** Fix the right end and ask which starts work. After the
+shrink, `[left, right]` is valid, so the subarrays ending at `right` split into two groups:
+
+```text
+LC 713: nums = [10, 5, 2, 6], k = 100, at right = 3 (window = [5, 2, 6], product 60)
+
+index    0   1   2   3
+nums    10   5   2   6
+             ^left   ^right
+
+start 1   [5, 2, 6]    60  valid   <- the window itself
+start 2      [2, 6]    12  valid   <- window minus its first element
+start 3         [6]     6  valid   <- window minus its first two
+start 0  [10,5,2,6]   600  invalid <- left already moved past it
+
+valid starts = 1, 2, 3  ->  right - left + 1 = 3 - 1 + 1 = 3
+```
+
+- **Every start in `[left, right]` is valid.** Each one is the window with elements dropped from
+  its left end, and dropping elements never breaks an at-most condition (a product of values
+  ≥ 1 only gets smaller).
+- **Every start before `left` is invalid.** `left` moved past it because some window starting
+  there was invalid, and a window that contains an invalid one is invalid too.
+- **Every subarray is counted exactly once**, at its own right end. So summing over all `right`
+  counts each valid subarray once. When nothing is ever shrunk (`[1, 2, 3]`, k = 100), the sum is
+  1 + 2 + 3 = 6 = n(n+1)/2, which is every subarray.
+
+Both facts need the condition to be **monotone**. LC 713 guarantees `nums[i] ≥ 1`, so it is.
+With a 0 or a negative value it is not: on `[-5, 3]`, k = 0, the window `[-5, 3]` has product
+−15 < 0, but its suffix `[3]` does not.
+
 "Exactly k" is not monotone (shrinking an exactly-2 window can make it exactly-1), so it cannot
 drive the `while` directly; "at most k" is, which is why the subtraction exists.
 
