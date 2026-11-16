@@ -10,9 +10,10 @@
 - Cheatsheet review
 	
 	- Doing
-		- 二分搜尋
-			- https://yennj12.js.org/CS_basics/cheatsheets/binary_search.zh.html
-				- 變形 — 區間內計數：Upper Bound − Lower Bound (LC 2080) 
+		- 滑動視窗
+			- https://yennj12.js.org/CS_basics/cheatsheets/sliding_window.zh.html
+
+
 
 
 	- Done
@@ -20,6 +21,9 @@
 		- 雙指標
 		- 陣列
 		- 差分陣列
+		- 二分搜尋
+
+
 
 
 
@@ -112,6 +116,9 @@
 
 		- 模板 7：順著斜率找峰值 
 			— LC 162 
+
+		- LC 275 H-Index II
+		- LC 1268
 
 
 
