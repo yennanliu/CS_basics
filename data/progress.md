@@ -121,6 +121,12 @@
 		- LC 1268
 
 
+	- slide window
+
+		- 計算符合條件的子陣列／子字串個數
+			- 713 !!! (sub valid arr cnt = `j-i+1`)
+			- 992
+
 
 
 
