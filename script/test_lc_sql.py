@@ -2,6 +2,7 @@
 """Tests for script/lc_sql.py — the lookup, backlog and smoke test /lc-sql runs."""
 import io
 import os
+import sqlite3
 import sys
 import tempfile
 import unittest
@@ -126,6 +127,12 @@ class Compare(unittest.TestCase):
 
 
 class Dialect(unittest.TestCase):
+    def test_decimal_column_keeps_large_integers_exact(self):
+        big = 9007199254740993                     # 2**53 + 1: not a binary64 value
+        conn = s.connect({"T": (["amount"], [[str(big)]])}, {"t": {"amount": "decimal(20,0)"}})
+        row = conn.execute("SELECT amount, typeof(amount) FROM T").fetchone()
+        self.assertEqual(row, (big, "integer"))
+
     def test_declared_int_column_coerces_text_like_mysql(self):
         tables = {"T": (["id", "code"], [["2", "051"]])}
         schemas = {"t": {"id": "int", "code": "varchar"}}
@@ -212,7 +219,10 @@ class Run(unittest.TestCase):
             self.assertEqual(s.run(path, every=True, out=out), 0, slug + "\n" + out.getvalue())
             # exit 0 also covers "every version skipped"; these must actually run
             self.assertIn("PASS V", out.getvalue(), slug + "\n" + out.getvalue())
-            self.assertNotIn("SKIP", out.getvalue(), slug + "\n" + out.getvalue())
+            # SQLite < 3.42 cannot parse LEFT(...) as a call, and one committed
+            # file uses it, so only a current parser is held to "no SKIP"
+            if sqlite3.sqlite_version_info >= (3, 42, 0):
+                self.assertNotIn("SKIP", out.getvalue(), slug + "\n" + out.getvalue())
 
 
 class Lookup(unittest.TestCase):

@@ -247,7 +247,10 @@ def sqlite_type(declared):
     """The SQLite affinity for a MySQL column type; '' when the schema is silent."""
     if re.search(r"int|bool|bit", declared):
         return "INTEGER"
-    if re.search(r"decimal|numeric|float|double|real", declared):
+    if re.search(r"decimal|numeric", declared):
+        # NUMERIC, not REAL: decimal(20,0) holds integers past 2**53 exactly
+        return "NUMERIC"
+    if re.search(r"float|double|real", declared):
         return "REAL"
     if TEXT_TYPES.search(declared):
         return "TEXT"
