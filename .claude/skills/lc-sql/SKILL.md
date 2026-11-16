@@ -1,6 +1,6 @@
 ---
 name: lc-sql
-description: File a LeetCode **SQL** (Database) solution into this repo the way the existing ones are filed — find the problem's real slug offline, write `leetcode_SQL/<slug>.sql` in the house layout (a /* */ header holding the schema and the example's input and result tables, then V0 with an IDEA block and a time/space line; the standard, readable MySQL query with each clause on its own line, CTEs over nested subqueries, and the NULL handling commented; every other good approach filed as V1, V2, …), smoke-test it against the header's own example with script/lc_sql.py, and insert the row into README's `## SQL` table. Use when asked to "add LC <number>" for a database problem, to file a SQL query just solved, to turn a pasted MySQL draft into a committed solution, or to work through the SQL problems not filed yet. Triggers - "/lc-sql 584", "add LC 1934 sql", "file this MySQL solution", "which SQL problems are missing?".
+description: File a LeetCode **SQL** (Database) solution into this repo the way the existing ones are filed — find the problem's real slug offline, write `leetcode_SQL/<slug>.sql` in the house layout (a /* */ header holding the number and title, the LC problem link, the schema and the example's input and result tables, then V0 with an IDEA block and a time/space line; the standard, readable MySQL query with each clause on its own line, CTEs over nested subqueries, and the NULL handling commented; every other good approach filed as V1, V2, …), smoke-test it against the header's own example with script/lc_sql.py, and insert the row into README's `## SQL` table. Use when asked to "add LC <number>" for a database problem, to file a SQL query just solved, to turn a pasted MySQL draft into a committed solution, or to work through the SQL problems not filed yet. Triggers - "/lc-sql 584", "add LC 1934 sql", "file this MySQL solution", "which SQL problems are missing?".
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit
 ---
 
@@ -31,10 +31,14 @@ it to SQL.
    and LC 1988's README link reads `find-cutoff-score-for-each-schooly`. A guessed slug is a
    wrong file name and a link that 404s. `script/lc_sql.py lookup` reads the canonical one
    offline (step 1).
-2. **The header carries the example, or the file cannot be tested.** 48 of the 166 files
-   have no example tables in their `/* */` header, so nothing can check them and nobody has.
-   A new file copies the schema, the example's input tables **and** its result table as
-   ASCII grids — they are what step 5 runs the query against.
+2. **The header carries the problem's link and its example.** Of the 166 files filed before
+   this skill, one has the problem's URL in its `/* */` header (17 more bury it in a comment
+   further down), so the rest tie back to LeetCode only through a file name that may be
+   guessed; 48 have no example tables, so nothing can check them and
+   nobody has. A new file puts `https://leetcode.com/problems/<slug>/` on the line under the
+   title, then copies the schema, the example's input tables **and** its result table as
+   ASCII grids — the grids are what step 5 runs the query against, and step 5 fails a link
+   whose slug is not the file name.
 3. **The user's query is the solution.** When a draft is pasted, fix its bugs and keep its
    idea as `V0`. Keeping the *idea* does not mean keeping the *spelling*: a one-line query is
    reformatted to the readable form of directive 6, with the same logic underneath.
@@ -95,6 +99,7 @@ that is history, not the shape to copy. The layout below is.
 /*
 
 584. Find Customer Referee
+https://leetcode.com/problems/find-customer-referee/
 Easy
 
 Table: Customer
@@ -150,7 +155,9 @@ WHERE referee_id != 2
 
 Rules that are not negotiable:
 
-- The `/* */` header is **first**: `<number>. <Exact Title>`, the difficulty, every table's
+- The `/* */` header is **first**: `<number>. <Exact Title>`, then the problem's link on its
+  own line — `https://leetcode.com/problems/<slug>/`, the slug from step 1 and exactly the
+  file name, with no `/description/` suffix — then the difficulty, every table's
   `Table: <Name>` + `Column Name | Type` grid with the key sentences under it, the task, then
   `Example 1:` with `<Name> table:` grids for the inputs and an `Output:` grid. Copy the
   grids exactly — `null` stays `null`, every column the result has stays.
@@ -207,13 +214,16 @@ python3 script/lc_sql.py smoke leetcode_SQL/<slug>.sql --all --ordered   # only 
 
 It loads the header's input grids into SQLite, runs every version, and compares each result
 with the `Output:` grid — column names, and rows as a multiset (numbers by value, so `0.5`
-matches `0.50`). Every version must print `PASS` or `SKIP`:
+matches `0.50`). It prints `link: ok` when the header's link names this file's slug. A new
+file must print `link: ok`, and every version must print `PASS` or `SKIP`:
 
 - `FAIL` — the query is wrong, or the grids were copied wrong. Fix whichever it is; never edit
   the expected grid to match the query.
 - `SKIP` — SQLite cannot run it. Say *not run locally* in the report; if `V0` itself is a
   `SKIP`, see whether a portable spelling exists before accepting it.
 - `ERROR … no example to test` — the header is missing its grids (directive 2). Add them.
+- `FAIL link` — the link and the file name disagree: one of them carries a guessed slug.
+  Re-run `lookup`; fix whichever is wrong. `warn link` — the line is missing; add it.
 
 Then add a second case by hand when the example misses an edge the problem allows — an
 all-NULL column, a tie, an empty match — by copying the file to the scratchpad, editing its
@@ -258,8 +268,8 @@ not know the number, a statement written from memory of a premium problem, a ver
 ## Do not
 
 - ❌ guess the slug from the title — `lookup` it, or take it from the URL (step 1)
-- ❌ write a header without the example's input and `Output:` grids — the file becomes
-  untestable (directive 2)
+- ❌ write a header without the LC link under the title, or without the example's input
+  and `Output:` grids — the file cannot be tied back to its problem, or tested (directive 2)
 - ❌ hand back a query `smoke` has not run, or report a `SKIP` as tested (step 5)
 - ❌ edit the expected `Output:` grid to make a query pass
 - ❌ comma joins, `t1` / `t2` aliases, `SELECT *`, positional `GROUP BY 1`, `@var :=`
@@ -280,9 +290,9 @@ The result is [`leetcode_SQL/find-customer-referee.sql`](https://github.com/yenn
 | Step | What it produced |
 |---|---|
 | 1 | `lookup 584` → `find-customer-referee`, Easy, premium: yes (🔒), no README row yet |
-| 2 | matched the header of `confirmation-rate.sql`: schema grid, task, `Customer table:` and `Output:` grids |
+| 2 | matched the header of `confirmation-rate.sql`: schema grid, task, `Customer table:` and `Output:` grids; added the `https://leetcode.com/problems/find-customer-referee/` line under the title |
 | 3 | kept the draft's idea (filter on `referee_id`) as `V0`, reformatted to one clause per line, added the `OR referee_id IS NULL` branch, and commented why `!= 2` drops NULL rows |
 | 4 | added `V1`: `NOT IN (SELECT id … WHERE referee_id = 2)`, a set difference, and commented why it is NULL-safe here (`id` is the primary key) |
-| 5 | the draft alone: `FAIL V0: rows [('Zack',)], expected [['Will'], ['Jane'], ['Bill'], ['Zack']]`; after the fix `PASS V0`, `PASS V1` |
+| 5 | the draft alone: `FAIL V0: rows [('Zack',)], expected [['Will'], ['Jane'], ['Bill'], ['Zack']]`; after the fix `link: ok`, `PASS V0`, `PASS V1` |
 | 6 | inserted between the `0580` and `0595` rows; `lookup 584` now reports it filed; `check_readme.py`: `6 passed, 0 failed` |
 | 7 | flagged: the statement was written from the problem page's wording because it is premium, so the user should check it against their copy |

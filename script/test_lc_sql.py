@@ -15,6 +15,7 @@ import lc_sql as s  # noqa: E402
 FILE = """/*
 
 1934. Confirmation Rate
+https://leetcode.com/problems/confirmation-rate/
 Medium
 
 Table: Signups
@@ -83,9 +84,10 @@ SELECT user_id, 0 AS confirmation_rate FROM Signups;
 """
 
 
-def write(text):
-    fd, path = tempfile.mkstemp(suffix=".sql")
-    with os.fdopen(fd, "w") as f:
+def write(text, name="confirmation-rate.sql"):
+    """Write text to <a fresh temp dir>/<name>; the name is the slug the link checks."""
+    path = os.path.join(tempfile.mkdtemp(), name)
+    with open(path, "w") as f:
         f.write(text)
     return path
 
@@ -150,6 +152,38 @@ class Dialect(unittest.TestCase):
                            "YEAR('2020-05-01'), DATE_FORMAT('2020-05-01', '%Y-%m'), "
                            "LEFT('abc', 2), CONCAT('a', 1)").fetchone()
         self.assertEqual(row, ("y", 2, 2020, "2020-05", "ab", "a1"))
+
+
+class Link(unittest.TestCase):
+    HEADER = "584. Find Customer Referee\nhttps://leetcode.com/problems/find-customer-referee/\nEasy"
+
+    def test_link_matching_the_file_name(self):
+        self.assertEqual(s.check_link(self.HEADER, "leetcode_SQL/find-customer-referee.sql")[0], "ok")
+
+    def test_link_naming_another_slug(self):
+        self.assertEqual(s.check_link(self.HEADER, "leetcode_SQL/customer-referee.sql")[0], "mismatch")
+
+    def test_no_link(self):
+        self.assertEqual(s.check_link("584. Find Customer Referee\nEasy", "x/find-customer-referee.sql")[0],
+                         "missing")
+
+    def test_mismatched_link_fails_the_run(self):
+        path = write(FILE, name="some-other-problem.sql")
+        try:
+            out = io.StringIO()
+            self.assertEqual(s.run(path, out=out), 1)
+            self.assertIn("FAIL link", out.getvalue())
+        finally:
+            os.unlink(path)
+
+    def test_missing_link_only_warns(self):
+        path = write(FILE.replace("https://leetcode.com/problems/confirmation-rate/\n", ""))
+        try:
+            out = io.StringIO()
+            self.assertEqual(s.run(path, out=out), 0, out.getvalue())
+            self.assertIn("warn link", out.getvalue())
+        finally:
+            os.unlink(path)
 
 
 class Split(unittest.TestCase):

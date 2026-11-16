@@ -217,8 +217,11 @@ python3 script/lc_sql.py smoke leetcode_SQL/find-customer-referee.sql --all
   is emulated by rewriting `a / b` to `a * 1.0 / b`, and `IF`, `DATEDIFF`, `YEAR`, `MONTH`,
   `DAY`, `DATE_FORMAT`, `LEFT`, `RIGHT`, `CONCAT`, `POWER` and `SQRT` are registered as
   SQLite functions. Anything SQLite still rejects is `SKIP` with the error, not a failure.
-  Exit 0 = every version passed or skipped, 1 = one returned the wrong rows, 2 = no example
-  in the header.
+  It also reads the header's `https://leetcode.com/problems/<slug>/` line: `link: ok` when
+  the slug is the file name, `FAIL link` when it is not, and a warning when the line is
+  missing (most files filed before `/lc-sql` have none).
+  Exit 0 = every version passed or skipped, 1 = one returned the wrong rows or the link names
+  another slug, 2 = no example in the header.
 
 Run over the whole tree, 107 of the 119 files with an example pass; the rest are old
 queries that compare a `YEAR()` with a string, examples with unpadded dates, or genuinely

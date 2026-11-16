@@ -31,8 +31,13 @@ failure. `/` is rewritten to MySQL's decimal division (SQLite truncates
 int / int), and `@var :=` session variables, which SQLite does not have, are
 warned about.
 
+smoke also checks the header's `https://leetcode.com/problems/<slug>/` line:
+a slug that is not the file name fails; a missing line is a warning, because
+most files filed before /lc-sql have none.
+
 smoke exits 0 when every version run matched (or was skipped), 1 when one
-returned a different result, 2 when the file's example could not be read.
+returned a different result or the header's link names another slug, 2 when
+the file's example could not be read.
 lookup exits 1 on a number neither the audit nor README knows.
 """
 import argparse
@@ -132,6 +137,23 @@ def cell_value(text, declared=""):
     if re.fullmatch(r"-?\d+\.\d+", text):
         return float(text)
     return text
+
+
+LC_LINK = re.compile(r"https?://leetcode\.com/problems/([a-z0-9-]+)/?")
+
+
+def check_link(header, path):
+    """('ok' | 'missing' | 'mismatch', message) for the header's LC link.
+
+    The link line under the title is the file's tie to its problem: the slug
+    in it must be the file name, or one of them is wrong."""
+    m = LC_LINK.search(header)
+    stem = os.path.splitext(os.path.basename(path))[0]
+    if not m:
+        return "missing", "no https://leetcode.com/problems/<slug>/ line under the title"
+    if m.group(1) != stem:
+        return "mismatch", "header links %s but the file is %s.sql" % (m.group(1), stem)
+    return "ok", m.group(0)
 
 
 # ── the queries ─────────────────────────────────────────────────────────────
@@ -313,7 +335,9 @@ def compare(got_cols, got_rows, exp_cols, exp_rows, ordered):
 def run(path, every=False, ordered=False, out=sys.stdout):
     with open(path, encoding="utf-8") as f:
         text = f.read()
-    tables, expected, schemas = parse_example(header_block(text))
+    header = header_block(text)
+    link_status, link_msg = check_link(header, path)
+    tables, expected, schemas = parse_example(header)
     if not tables or expected is None:
         print("ERROR %s: no example to test — the header needs the input tables "
               "and a 'Result table:' / 'Output:' grid" % path, file=out)
@@ -326,6 +350,14 @@ def run(path, every=False, ordered=False, out=sys.stdout):
         blocks = blocks[:1]
     print("tables: %s; expected %d row(s)" % (", ".join(tables), len(expected[1])), file=out)
     status = 0
+    if link_status == "ok":
+        print("link: ok (%s)" % link_msg, file=out)
+    elif link_status == "missing":
+        # a warning, not a failure: most files filed before /lc-sql have none
+        print("  warn link: %s" % link_msg, file=out)
+    else:
+        print("FAIL link: %s" % link_msg, file=out)
+        status = 1
     for marker, sql in blocks:
         for w in warnings_for(sql):
             print("  warn %s: %s" % (marker, w), file=out)

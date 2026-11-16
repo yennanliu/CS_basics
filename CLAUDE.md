@@ -441,9 +441,12 @@ README's single `## SQL` table (the imported kamyu set has no SQL table: the aud
 those problems). Same house rules as `/lc-python` — the user's idea as `V0`, readable over
 clever, every good approach filed, untested is unfinished — with SQL's own failure modes:
 
-- **a header with no example in it.** 48 of the 166 files carry no input or result grids,
-  so nothing can test them. A new header copies the schema, the example's input tables
-  and its `Output:` grid, because they are what the smoke test runs against;
+- **a header with no link and no example in it.** Of the 166 files filed before the skill,
+  one has the problem's URL in its header and 48 carry no input or result grids, so nothing
+  can test them. A new header puts `https://leetcode.com/problems/<slug>/` under the title
+  (`smoke` fails it when the slug is not the file name), then copies the schema, the
+  example's input tables and its `Output:` grid, because they are what the smoke test runs
+  against;
 - **a query nobody ran.** [`script/lc_sql.py`](script/lc_sql.py) `smoke` loads the header's
   grids into SQLite and compares each version's result with the expected one. LeetCode
   grades MySQL 8, so it bridges the common gap (`/` made decimal, `IF`, `DATEDIFF`, `YEAR`,
