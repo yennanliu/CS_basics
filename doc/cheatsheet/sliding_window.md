@@ -606,8 +606,8 @@ valid starts = 1, 2, 3  ->  right - left + 1 = 3 - 1 + 1 = 3
 ```
 
 - **Every start in `[left, right]` is valid.** Each one is the window with elements dropped from
-  its left end, and dropping elements never breaks an at-most condition (a product of values
-  ≥ 1 only gets smaller).
+  its left end. When the condition is monotone, dropping elements keeps a valid window valid
+  (with values ≥ 1, a product only gets smaller); see the caveat below.
 - **Every start before `left` is invalid.** `left` moved past it because some window starting
   there was invalid, and a window that contains an invalid one is invalid too.
 - **Every subarray is counted exactly once**, at its own right end. So summing over all `right`

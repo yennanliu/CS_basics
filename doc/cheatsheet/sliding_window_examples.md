@@ -322,7 +322,8 @@ starts at index 0 and ends at `right ≥ 2` can be valid, so `left` leaves 0 for
   and reads past the array: `[1, 2, 3], k = 0` raises `IndexError` instead of returning 0.
 - Recording `max(len)` instead of adding `len` answers "longest", not "how many".
 - The count assumes `nums[i] ≥ 1`, which LC 713 guarantees. With a negative value a suffix of a
-  valid window can be invalid (`[-5, 3]`, k = 0: `[-5, 3]` is valid, `[3]` is not), and a 0
-  makes `product //= nums[left]` divide by zero.
+  valid window can be invalid (`[-5, 3]`, k = 0: `[-5, 3]` is valid, `[3]` is not). A 0 does the
+  same: it pins `product` at 0, so the window never shrinks, and `[0, 5, 5]`, k = 2 returns 6
+  instead of 3 (`[5]` and `[5, 5]` are counted though both are ≥ 2).
 
 **Similar** — LC 992 *(exactly K distinct: this count, twice)* · LC 2302
