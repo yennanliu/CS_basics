@@ -79,3 +79,33 @@ class Solution(object):
             else:
                 stack.append(ch)
         return ''.join(stack)
+
+
+# V0-1
+# IDEA: STACK (gpt)
+class Solution(object):
+    def makeGood(self, s):
+        if not s:
+            return ""
+
+        st = []
+
+        for x in s:
+
+            """
+            NOTE !!!
+
+
+            `st[-1].lower() == x.lower()` can cover cases:
+
+                - s[i] is a lower-case letter and s[i + 1] is the same letter 
+                  but in upper-case or vice-versa.
+
+            """
+            if st and st[-1] != x and st[-1].lower() == x.lower():
+                st.pop()
+
+            else:
+                st.append(x)
+
+        return "".join(st)
