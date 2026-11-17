@@ -45,6 +45,50 @@ At most 3 * 104 calls will be made to push, pop, top, and getMin.
 
 
 # V0
+# IDEA: 2 STACK (min stack + stack save all values) (CLAUDE)
+class MinStack(object):
+
+    def __init__(self):
+        self.stack = []
+        # min_values[i] == min(stack[0..i]) — a STATE per layer, not the elements sorted
+        self.min_values = []
+
+    def push(self, val):
+        """
+        NOTE !!!
+
+        we insert to `min_values` stack anyway.
+
+        """
+
+        self.stack.append(val)
+        if not self.min_values:
+            self.min_values.append(val)
+        else:
+            self.min_values.append(min(val, self.min_values[-1]))
+
+    def pop(self):
+        """
+        NOTE !!!
+
+        since we insert to `min_values` stack anyway.
+
+        -> need to pop from min_values anyway as well
+
+        """
+        # the popped layer's state leaves with it — no comparison needed
+        self.min_values.pop()
+        return self.stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def getMin(self):
+        # the top layer's state IS the current minimum — O(1)
+        return self.min_values[-1]
+
+
+# V0
 # IDEA: 2 STACK (min stack + stack save all values) (gpt)
 class MinStack(object):
 
