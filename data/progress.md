@@ -21,6 +21,7 @@
 	- Doing
 		- 堆疊（Stack）
 			- https://yennj12.js.org/CS_basics/cheatsheets/stack.zh.html
+				- `模板 5：顯式堆疊 —— 迭代式走訪 —— LC 144, LC 145 `
 
 
 
