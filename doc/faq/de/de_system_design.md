@@ -403,6 +403,11 @@ Lake vs warehouse vs lakehouse in depth: [`./batch_pipeline.md`](./batch_pipelin
 exactly-once with less latency and coupling; pay for transactions only where an append-only
 sink makes duplicates unfixable.**
 
+The idempotent sink only makes **re-emitting a result** safe. It cannot undo a duplicate
+**input** that was already added into a count, so an aggregate also needs one of these before
+the increment: dedupe on `event_id`, or keep the aggregate in the engine's checkpointed state,
+which a replay rolls back together with the source offsets.
+
 | | Exactly-once (transactional) | At-least-once + idempotent |
 |---|---|---|
 | Latency | output visible on checkpoint / commit | immediate |
@@ -495,7 +500,8 @@ mobile events arrive (offline phones: hours to days), PII in events, retention n
  apps (SDK: event_id, event_ts, user/device id, batching + retry)
    ─► collector API (stateless, validate against schema, enrich ip→geo, drop PII)
    ─► Kafka "events.raw" (key = user_id, 48 partitions, 7 d)
-        ├─► Flink: dedupe event_id (24 h TTL) ─► Kafka "events.clean" ─► Pinot (15-min dashboards)
+        ├─► Flink: dedupe event_id (TTL 72 h ≥ SDK retry window) ─► Kafka "events.clean" (key = event_id)
+        │        ─► Pinot (upsert on event_id; 15-min dashboards)
         └─► Kafka Connect / Flink sink ─► S3 bronze (Iceberg, dt/hour)
                  ─► Spark/dbt hourly: silver (deduped, sessionized) ─► gold (DAU, funnels, retention)
                  ─► warehouse / BI for ad-hoc; invalid events ─► quarantine table
@@ -505,18 +511,26 @@ Decisions to say out loud:
 
 1. **Client-side `event_id` and event time** — mobile retries and offline queues make
    duplicates and lateness the norm, not the exception.
-2. **Schema validation at the collector**, with a dead-letter topic, so one bad SDK release
+2. **A retry contract the dedupe can cover**: the SDK gives up on an event after 72 h and the
+   collector rejects older ones (counted, not silent), so a 72 h dedupe TTL sees every retry.
+   Pinot's upsert on `event_id` is the second guard: a duplicate that still slips through
+   overwrites its row instead of adding one, so the live numbers are right on their own and do
+   not wait for the batch path to correct them.
+3. **Schema validation at the collector**, with a dead-letter topic, so one bad SDK release
    cannot corrupt silver.
-3. **Two serving paths**: Pinot for the fixed fresh dashboards, the lake + warehouse for
+4. **Two serving paths**: Pinot for the fixed fresh dashboards, the lake + warehouse for
    ad-hoc funnels and retention over months.
-4. **Sessionization in batch** (30-minute inactivity gap) where late events can be included;
+5. **Sessionization in batch** (30-minute inactivity gap) where late events can be included;
    streaming session windows only if a product needs live sessions.
-5. **DAU from distinct users per day**: exact in batch, HyperLogLog sketches for fast rollups
+6. **DAU from distinct users per day**: exact in batch, HyperLogLog sketches for fast rollups
    across arbitrary date ranges (§6-4).
 
 Follow-ups: *events arrive 3 days late* → event-date partitions with a reprocess window,
-dashboards labelled provisional for the last N days; *GDPR delete* → row-level deletes in the
-table format keyed by user, plus Kafka retention short enough to age out.
+dashboards labelled provisional for the last N days; *GDPR delete* → delete by user everywhere the
+data landed: row-level deletes in the lake tables, then **expire the old snapshots** so time
+travel no longer holds the rows; the same delete in derived warehouse tables and Pinot; Kafka
+retention short enough to age out; backups whose retention ends inside the legal deadline; and
+a deletion log that proves each step ran.
 
 ### 6-2) Ad click aggregation for billing
 
@@ -578,9 +592,12 @@ Decisions to say out loud:
    only the candidates — never send every event to one node.
 2. **Sliding window as 60 one-minute buckets**: add the newest bucket and subtract the oldest,
    instead of recounting an hour every minute.
-3. **Memory**: with millions of items, exact counts may be too large; a **Count-Min Sketch**
-   gives approximate counts in fixed memory (it only over-counts), plus a heap of the current
-   top candidates.
+3. **Memory**: with millions of items, exact counts may be too large. Keep a **Count-Min
+   Sketch per one-minute bucket** — approximate counts in fixed memory, only ever over-counting.
+   A sketch cannot list the items in it, so each bucket also keeps its own **top-N candidate
+   list**. Every minute, the hour's candidates are the union of the 60 lists, each re-scored
+   against the 60 live sketches; when a bucket expires its sketch and its list leave together,
+   so a leader with no new events falls out instead of staying stuck in a heap.
 4. **"Trending" is not "most popular"**: rank by velocity against a baseline (this hour vs
    the same hour last week), or the top list never changes.
 

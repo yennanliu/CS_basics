@@ -339,11 +339,15 @@ Schema 規則的深入解析：[`./schema_design.md`](./schema_design.md)。
 
 Lake vs warehouse vs lakehouse 的深入解析：[`./batch_pipeline.md`](./batch_pipeline.md#1-3-data-lake-vs-warehouse-vs-lakehouse)。
 
-<!-- 19ff1a3f7d8f -->
+<!-- 19873f6baef2 -->
 ### 5-4) Exactly-once vs at-least-once 加冪等 sink
 
 **優先選 at-least-once 傳遞進冪等的 sink：最終結果與 exactly-once 相同，延遲與耦合更少；
 只有在附加型 sink 讓重複無法修正的地方，才付交易的代價。**
+
+冪等 sink 只讓**重新輸出同一個結果**變得安全。它無法撤銷一筆已經被加進計數的重複**輸入**，
+所以彙總在累加之前還需要其中一項：依 `event_id` 去重，或把彙總值放在引擎的 checkpoint 狀態裡
+—— 重播時它會和來源 offset 一起回滾。
 
 | | Exactly-once（交易式） | At-least-once + 冪等 |
 |---|---|---|
@@ -417,7 +421,7 @@ Lake vs warehouse vs lakehouse 的深入解析：[`./batch_pipeline.md`](./batch
 - *「各城市即時的行程數與營收」* ——
   [`./stream_pipeline.md`](./stream_pipeline.md#13-worked-design-real-time-rides-per-city-)
 
-<!-- 9d9ab657ef00 -->
+<!-- 96050ad9d6e7 -->
 ### 6-1) 點擊流與產品分析
 
 **題目**：「從我們的網頁與手機 app 收集事件，提供產品團隊 DAU、漏斗與留存，dashboard 要在 15 分鐘內更新。」
@@ -430,13 +434,18 @@ Lake vs warehouse vs lakehouse 的深入解析：[`./batch_pipeline.md`](./batch
 要說出口的決定：
 
 1. **客戶端產生的 `event_id` 與事件時間** —— 手機重試與離線佇列讓重複和遲到成為常態，而不是例外。
-2. **在 collector 做 schema 驗證**，搭配 dead-letter topic，讓一次壞掉的 SDK 發布不會污染 silver。
-3. **兩條服務路徑**：Pinot 負責固定的新鮮 dashboard，資料湖 + 資料倉儲負責跨數月的臨時漏斗與留存分析。
-4. **在批次裡做 sessionization**（30 分鐘無活動就切斷），這樣遲到事件也能被納入；只有產品需要即時 session 時才用串流 session window。
-5. **DAU 是每天的相異使用者數**：批次裡算精確值，任意日期範圍的快速 rollup 用 HyperLogLog sketch（§6-4）。
+2. **去重涵蓋得到的重試契約**：SDK 在 72 小時後放棄重送事件，collector 也拒收更舊的事件（會計數，不會默默丟掉），
+   所以 72 小時的去重 TTL 看得到每一次重試。Pinot 以 `event_id` 做 upsert 是第二道防線：
+   仍然漏過來的重複會覆寫自己那一列，而不是新增一列，所以即時數字本身就是對的，不必等批次路徑來修正。
+3. **在 collector 做 schema 驗證**，搭配 dead-letter topic，讓一次壞掉的 SDK 發布不會污染 silver。
+4. **兩條服務路徑**：Pinot 負責固定的新鮮 dashboard，資料湖 + 資料倉儲負責跨數月的臨時漏斗與留存分析。
+5. **在批次裡做 sessionization**（30 分鐘無活動就切斷），這樣遲到事件也能被納入；只有產品需要即時 session 時才用串流 session window。
+6. **DAU 是每天的相異使用者數**：批次裡算精確值，任意日期範圍的快速 rollup 用 HyperLogLog sketch（§6-4）。
 
 追問：*事件晚 3 天才到* → 以事件日期分區並設重新處理視窗，最近 N 天的 dashboard 標示為暫定；
-*GDPR 刪除* → 表格格式中依使用者做列刪除，加上 Kafka 保留期短到讓資料自然過期。
+*GDPR 刪除* → 在資料落地的每一處依使用者刪除：資料湖表做列刪除，再**讓舊 snapshot 過期**，
+time travel 才不會還留著那些列；衍生的資料倉儲表與 Pinot 也做同樣的刪除；Kafka 保留期短到讓資料自然過期；
+備份的保留期要在法定期限內結束；並留下刪除紀錄，證明每一步都執行了。
 
 <!-- ec58f86c1751 -->
 ### 6-2) 計費用的廣告點擊彙總
@@ -460,7 +469,7 @@ Lake vs warehouse vs lakehouse 的深入解析：[`./batch_pipeline.md`](./batch
 追問：*對帳發現 0.5% 的差異* → 計費以批次數字為準，發告警並調查（通常原因是超過允許遲到時間的點擊）；
 *Flink 作業停了一小時* → 從 checkpoint 還原並從 Kafka offset 重播；dashboard 會過時，帳單不受影響。
 
-<!-- 34680d75f5ec -->
+<!-- 44e63c3b6a5e -->
 ### 6-3) Top-K 熱門排行
 
 **題目**：「顯示過去一小時最熱門的前 100 個 hashtag（或歌曲、商品），每分鐘更新。」
@@ -474,8 +483,10 @@ Lake vs warehouse vs lakehouse 的深入解析：[`./batch_pipeline.md`](./batch
 
 1. **兩階段彙總**：先依 key 平行計數，再由一個小的運算子只合併候選者 —— 絕不把每個事件都送到同一個節點。
 2. **把滑動視窗拆成 60 個一分鐘的桶**：加上最新的桶、減掉最舊的桶，而不是每分鐘重算一整個小時。
-3. **記憶體**：項目數百萬時，精確計數可能放不下；**Count-Min Sketch** 用固定記憶體給出近似計數（只會高估），
-   再搭配一個保存目前前幾名候選者的 heap。
+3. **記憶體**：項目數百萬時，精確計數可能放不下。**每個一分鐘的桶各保留一個 Count-Min Sketch** ——
+   用固定記憶體給出近似計數，只會高估。Sketch 無法列出裡面有哪些項目，所以每個桶也保留自己的
+   **前 N 名候選清單**。每分鐘把 60 份清單取聯集作為這一小時的候選，再用 60 個仍有效的 sketch 重新評分；
+   桶過期時，它的 sketch 和清單一起離開，所以沒有新事件的前段班會掉出排行，而不是一直卡在 heap 裡。
 4. **「熱門趨勢」不等於「最受歡迎」**：要用相對基準的成長速度排名（這小時 vs 上週同一小時），否則排行永遠不會變。
 
 一個 Count-Min Sketch，面試官會想看的那個結構：
