@@ -75,6 +75,48 @@ class Solution(object):
 
 
 # V0-0-1
+# IDEA: SMALLEST, BIGGEST IDX (GPT)
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        # Edge case
+        if not prices or len(prices) <= 1:
+            return 0
+
+        smallest_idx = 0
+        biggest_idx = 0
+
+        max_profit = 0
+
+        n = len(prices)
+
+        for i in range(1, n):
+            val = prices[i]
+
+            # Found a lower buying price
+            if val < prices[smallest_idx]:
+                smallest_idx = i
+                # NOTE !!!
+                # reset biggest_idx
+                biggest_idx = i
+
+            else:
+                # Found a higher selling price
+                if val > prices[biggest_idx]:
+                    biggest_idx = i
+
+            # Calculate profit
+            if biggest_idx > smallest_idx:
+                profit = prices[biggest_idx] - prices[smallest_idx]
+                max_profit = max(max_profit, profit)
+
+        return max_profit
+
+
+# V0-0-2
 # IDEA: 2 VAR MAINTAIN + ARR OP (gpt)
 class Solution(object):
     def maxProfit(self, prices):

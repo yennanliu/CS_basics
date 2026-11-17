@@ -9,10 +9,10 @@
 		- https://github.com/yennanliu/CS_basics/issues/352
 
 		- doing:
-			- 2 pointers
 
 		- done:
 			- array & hash
+			- 2 pointers
 
 
 
