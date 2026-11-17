@@ -19,10 +19,8 @@
 - Cheatsheet review
 	
 	- Doing
-		- 滑動視窗
-			- https://yennj12.js.org/CS_basics/cheatsheets/sliding_window.zh.html
-				- 模板 7：遺傳性限制 — 只檢查新進元素 — LC 4067
-
+		- 堆疊（Stack）
+			- https://yennj12.js.org/CS_basics/cheatsheets/stack.zh.html
 
 
 
@@ -32,13 +30,15 @@
 		- 陣列
 		- 差分陣列
 		- 二分搜尋
+		- 滑動視窗
 
 
 
 
 
 
-- TO practive
+
+- TO practice
 
 	- Hash map
 
@@ -140,12 +140,13 @@
 		- 模板 6：用「至多」相減湊出「恰好 K」
 			— LC 992 (!!!)
 
-	- slide window
-
 		- 模板 6：用「至多」相減湊出「恰好 K」
 			- 2062
 			- 930
 			- 904
+
+		- 模板 7：遺傳性限制 — 只檢查新進元素 
+			— LC 4067 
 
 
 
