@@ -10,6 +10,9 @@
 
 		- doing:
 			- binary search
+				- 33 (todo)
+				
+			- linked list
 
 		- done:
 			- array & hash
