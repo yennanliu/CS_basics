@@ -171,12 +171,19 @@ for placement (Scope line, numbered sections, a new file only when no Scope line
 area, the `See also` line both ways), and lead each section with the sentence you would say out
 loud. Then the 繁體中文 overlay in the same change:
 
+`<doc-id>` is the file chosen in step 1, as its path under `doc/faq/` minus `.md` — e.g.
+`de/de_system_design` or `backend/api_design`. Never a different file's id: `todo` only
+prints keys for the document it is given.
+
 ```bash
-node script/zh.js todo faq/de/de_system_design     # the sections still needing a translation
+node script/zh.js sync faq/<doc-id>
+node script/zh.js todo faq/<doc-id>          # the new sections, each with its key
+#   write each section into i18n/zh/faq/<doc-id>.md under the key todo printed
+node script/zh.js sync faq/<doc-id>
+node script/zh.js status --write
 ```
 
-`sync` first, write each section under the key `todo` printed (every `<!--CODE-->` marker kept,
-in order; link targets and API names stay English), `sync` again, then `status --write` — the
+Keep every `<!--CODE-->` marker, in order; link targets and API names stay English. The
 full loop is in
 [`/lc-zh-translate`](https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-zh-translate/SKILL.md).
 
