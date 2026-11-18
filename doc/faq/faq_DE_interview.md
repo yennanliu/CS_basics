@@ -1,7 +1,7 @@
 # Data Engineering Interview FAQ
 
 > **Scope** — the high-level map of a data engineer interview and the last-minute checklist: for each topic, the handful of points you must be able to say out loud, and a link to the deep dive under `de/` that holds the mechanism, the code and the follow-up questions.
-> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md), [`de/aws_data.md`](./de/aws_data.md), [`de/aws_service_selection.md`](./de/aws_service_selection.md), [`de/data_performance.md`](./de/data_performance.md) and [`de/analytics.md`](./de/analytics.md) — one deep dive per topic; [`de/sql_interview_questions.md`](./de/sql_interview_questions.md) — the senior SQL question bank, every question answered.
+> **See also**: [`de/spark.md`](./de/spark.md), [`de/kafka.md`](./de/kafka.md), [`de/hadoop.md`](./de/hadoop.md), [`de/data_modeling.md`](./de/data_modeling.md), [`de/sql_for_data.md`](./de/sql_for_data.md), [`de/batch_pipeline.md`](./de/batch_pipeline.md), [`de/schema_design.md`](./de/schema_design.md), [`de/stream_pipeline.md`](./de/stream_pipeline.md), [`de/flink.md`](./de/flink.md), [`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md), [`de/aws_data.md`](./de/aws_data.md), [`de/aws_service_selection.md`](./de/aws_service_selection.md), [`de/data_performance.md`](./de/data_performance.md) and [`de/analytics.md`](./de/analytics.md) — one deep dive per topic; [`de/sql_interview_questions.md`](./de/sql_interview_questions.md) — the senior SQL question bank, every question answered; [`de/de_system_design.md`](./de/de_system_design.md) — the system-design round in full, with eight classic problems.
 
 Read this file the night before. If any line below is something you cannot explain in two
 minutes, open that topic's deep dive.
@@ -162,6 +162,9 @@ Most DE loops include one "design a pipeline" question. The same six steps work 
 4. **Model the data** — the grain, the fact and dimension tables, the partitioning.
 5. **Make it reliable** — idempotency, backfills, late data, exactly-once or at-least-once with dedupe.
 6. **Operate it** — data quality checks, monitoring, alerting, cost.
+
+The long form — sizing, building blocks, trade-offs and eight worked classics — is
+[`de/de_system_design.md`](./de/de_system_design.md).
 
 ---
 
