@@ -52,6 +52,135 @@ class Solution(object):
         pass
 
 
+
+# V0-0-1
+# IDEA: LINKED LIST + helper func + LC 206 (gpt) 
+"""
+NOTE !!!
+
+
+left and right are `index`, NOT node val.
+"""
+class Solution(object):
+    def reverseBetween(self, head, left, right):
+        """
+        :type head: Optional[ListNode]
+        :type left: int
+        :type right: int
+        :rtype: Optional[ListNode]
+        """
+        if not head or left == right:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+
+        # 1. Find the node before left
+        prev = dummy
+
+        for _ in range(left - 1):
+            prev = prev.next
+
+        # 2. Reverse the sublist
+        curr = prev.next
+        new_head, new_tail, new_next = self.reverse_helper(
+            curr, right - left + 1
+        )
+
+        # 3. Reconnect the linked list
+        prev.next = new_head
+        new_tail.next = new_next
+
+        return dummy.next
+
+    def reverse_helper(self, head, length):
+        if not head:
+            return None, None, None
+
+        prev = None
+        curr = head
+
+        # Reverse exactly `length` nodes
+        for _ in range(length):
+            _next = curr.next
+            curr.next = prev
+            prev = curr
+            curr = _next
+
+        new_head = prev
+        new_tail = head
+        new_next = curr
+
+        return new_head, new_tail, new_next
+    
+
+
+# V0-0-2
+# IDEA: LINKED LIST + helper func + LC 206 (gemini) 
+"""
+NOTE !!!
+
+
+left and right are `index`, NOT node val.
+"""
+class Solution(object):
+    def reverseBetween(self, head, left, right):
+        """
+        :type head: Optional[ListNode]
+        :type left: int
+        :type right: int
+        :rtype: Optional[ListNode]
+        """
+        if not head or left == right:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+        pre = dummy
+
+        # 1. 將 pre 移動到反轉區間的「前一個節點」 (left - 1 的位置)
+        for _ in range(left - 1):
+            pre = pre.next
+
+        # 2. 計算需要反轉的節點數量
+        n = right - left + 1
+        
+        # 3. 呼叫 helper 函式來反轉從 pre.next 開始的 n 個節點
+        sub_head = pre.next
+        new_head, tail, next_node = self.reverse_n(sub_head, n)
+
+        # 4. 將反轉後的子串列兩端接回原本的鏈結串列
+        pre.next = new_head
+        tail.next = next_node
+
+        return dummy.next
+
+    def reverse_n(self, head, n):
+        """
+        Helper 函式：反轉從 head 開始的前 n 個節點
+        回傳三個值：
+        1. new_head: 反轉後的新頭部
+        2. tail: 原本的頭部（反轉後會變成新尾巴）
+        3. next_node: 第 n+1 個節點（即反轉區間後方的剩餘節點）
+        """
+        prev = None
+        curr = head
+        tail = head  # 原本的頭，反轉後會變成尾巴
+
+        for _ in range(n):
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+
+        # 此時：
+        # - prev 是新子串列的頭部
+        # - tail 是新子串列的尾巴
+        # - curr 剛好停在第 n+1 個節點 (即未被反轉的下一段起點)
+        return prev, tail, curr
+
+
+
 # V0-1
 # IDEA: LINKED LIST + helper func (gpt)
 """
@@ -116,6 +245,7 @@ class Solution(object):
         # head = new tail of reversed part
         # curr = first node after reversed part
         return prev, head, curr
+
 
 
 # V1
