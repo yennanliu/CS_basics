@@ -716,7 +716,7 @@ return 3             return 4  (the second middle)
 **Traps**
 - `while fast.next and fast` dereferences `None` on an even-length list; test `fast` first.
 - To split a list for merge sort (LC 148) or reorder (LC 143) you need the **first** middle, so
-  the left half is never longer: loop on `while fast.next and fast.next.next`. With the
+  the left half is never shorter: loop on `while fast.next and fast.next.next`. With the
   second-middle form, `[1,2]` never splits and merge sort recurses forever.
 
 **Not this if** — "does the list have a cycle / where does it start" (LC 141, LC 142) uses the
@@ -779,6 +779,10 @@ ListNode[] splitHalves(ListNode head) {
 [1,2,3,4,5]  slow stops on 3    first = 1 -> 2 -> 3   second = 4 -> 5
 [1,2]        slow stops on 1    first = 1             second = 2
 ```
+
+**Complexity**
+- **Time O(n)**: the `while` runs about n / 2 times; the cut itself is one assignment.
+- **Space O(1)**: no new nodes; `first` and `second` are pointers into the original list.
 
 **Traps**
 - Forgetting `slow.next = None`: the front half still runs into the back half, so reversing
