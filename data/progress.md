@@ -13,6 +13,9 @@
 				- 33 (todo)
 				
 			- Trees
+				- 124 (todo)
+
+			- backtrack
 
 		- done:
 			- array & hash
@@ -20,6 +23,8 @@
 			- slide window
 			- linked list
 			- stack
+			- Tries (pass)
+
 
 
 - Cheatsheet review
