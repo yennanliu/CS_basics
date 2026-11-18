@@ -44,6 +44,110 @@ LC 021 Merge Two Sorted Lists.
 """
 
 # V0
+# IDEA 1) SLOW-FAST POINTER + REVERSE LINKED LIST + MERGE (gemini)
+class Solution(object):
+    def reorderList(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: None Do not return anything, modify head in-place instead.
+        """
+        if not head or not head.next:
+            return
+
+        # 步驟 1：使用快慢指標尋找鏈結串列的中點
+        slow = head
+        fast = head
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # 步驟 2：將串列切成兩半
+        # slow.next 是後半段的起點
+        second = slow.next
+        slow.next = None  # 斷開前半段與後半段的連結
+        first = head
+
+        # 步驟 3：反轉後半段串列
+        second = self.reverse_helper(second)
+
+        # 步驟 4：交錯合併兩條串列 (Merge two lists in-place)
+        while first and second:
+            # 暫存下一個節點
+            nxt1 = first.next
+            nxt2 = second.next
+
+            # 進行交錯接線
+            first.next = second
+            second.next = nxt1
+
+            # 指標往後移動
+            first = nxt1
+            second = nxt2
+
+    def reverse_helper(self, node):
+        """標準的反轉鏈結串列 Helper"""
+        prev = None
+        curr = node
+        while curr:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+        return prev
+
+
+# V0-0-1
+# IDEA 1) SLOW-FAST POINTER + REVERSE LINKED LIST + MERGE (GPT)
+class Solution(object):
+    def reorderList(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: None
+        """
+        if not head or not head.next:
+            return
+
+        # Step 1: Find the middle
+        slow = fast = head
+
+        while fast.next and fast.next.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Step 2: Split into two lists
+        second = slow.next
+        slow.next = None
+
+        # Step 3: Reverse the second half
+        second_reverse = self.reverse_helper(second)
+
+        # Step 4: Merge two lists alternately
+        first = head
+
+        while second_reverse:
+            first_next = first.next
+            second_next = second_reverse.next
+
+            first.next = second_reverse
+            second_reverse.next = first_next
+
+            first = first_next
+            second_reverse = second_next
+
+    def reverse_helper(self, node):
+        prev = None
+
+        while node:
+            _next = node.next
+            node.next = prev
+            prev = node
+            node = _next
+
+        return prev
+
+
+
+# V0-2
 # IDEA:  MIDDLE OF LINLED LIST,  Reverse the second half, Merge the two halves
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReorderList.java#L61
 # time = O(n)
