@@ -59,6 +59,17 @@ class Solution(object):
 
         # 2. Dummy node
         dummy = ListNode(0)
+        """
+        NOTE !!!
+
+
+        1. connect dummy node to head
+
+        2. assign it to as new var (node)
+
+
+            -> node is the ONLY var (node) we oprate below
+        """
         dummy.next = head
         node = dummy
 
@@ -120,6 +131,12 @@ class Solution(object):
         # 3. Move to the node BEFORE the target
         # target index from the front = length - n
         moves = length - n
+
+        """
+        NOTE !!!
+    
+        -> node is the ONLY var (node) we oprate below
+        """
 
         for _ in range(moves):
             node = node.next
