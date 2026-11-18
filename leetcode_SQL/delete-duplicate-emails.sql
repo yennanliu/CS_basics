@@ -47,6 +47,60 @@ Explanation: john@example.com is repeated two times. We keep the row with the sm
 
 */
 
+
+/* 
+
+NOTE !!!
+
+below is WRONG !!!
+
+
+
+```
+delete
+from
+person
+where id
+in
+
+(select
+p1.id from person p1
+join
+person p2
+on p1.eamil = p2.email
+where p1.id > 1
+)
+```
+
+
+->
+
+問題 1：p1.id > 1 不代表重複資料
+
+    例如：
+    id  email
+    1   a@gmail.com
+    2   b@gmail.com
+    3   a@gmail.com
+    4   c@gmail.com
+
+    p1.id > 1 會選到：
+    - id = 2（不重複）
+    - id = 3（重複）
+    - id = 4（不重複）
+    這樣可能誤刪正常資料。
+
+
+問題 2：JOIN 條件不夠完整
+    
+    ON p1.email = p2.email
+
+    這會讓相同 email 的資料互相 JOIN，包括自己 JOIN 自己。
+
+*/
+
+
+
 # V0
 # IDEA : SELF JOIN DELETE -- DROP EVERY ROW THAT HAS A SAME-EMAIL ROW WITH A SMALLER ID
 #
@@ -70,6 +124,42 @@ SELECT
     id,
     email
 FROM Person;
+
+
+# V0-1
+# IDEA: ROW_NUMBER (window func) (gpt)
+DELETE FROM Person
+WHERE id IN (
+    SELECT id
+    FROM (
+        SELECT
+            id,
+            email,
+            ROW_NUMBER() OVER (
+                PARTITION BY email
+                ORDER BY id
+            ) AS rn
+        FROM Person
+    ) AS ranked
+    WHERE rn > 1
+);
+
+
+
+
+# V0-2
+# IDEA: self join (gpt)
+DELETE FROM Person
+WHERE id IN (
+    SELECT p1.id
+    FROM Person p1
+    JOIN Person p2
+        ON p1.email = p2.email
+        AND p1.id > p2.id
+);
+
+
+
 
 # V1
 # IDEA : KEEP THE MIN(id) OF EACH EMAIL, DELETE THE REST
