@@ -46,7 +46,7 @@
 <!-- 10a7ffbaa211 -->
 ## 迭代反轉題目
 
-<!-- ba6fc12cb7a6 -->
+<!-- b1983104259d -->
 ### Reorder List — LC 143
 
 > **關鍵** — 答案是前半段與*反轉後*的後半段交錯。在**第一個**中點之後切開，
@@ -54,7 +54,7 @@
 > 所以迴圈跑到後半段用完為止。
 
 **歸約到**：[linked_list § Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-)
-— 只對後半段跑，後半段用 [Template 5](./linked_list.md#template-5-fastslow-middle--lc-876-) 的第一個中點迴圈找出，最後再一趟交錯走訪。
+— 只對後半段跑，後半段用 [Template 5](./linked_list.md#template-5-fastslow-middle--lc-876-) 的第一個中點迴圈找出，再用它的[切半寫法](./linked_list.md#split-form--two-halves-from-the-same-two-pointers)切開（`second = slow.next`，接著 `slow.next = None`、`first = head`），最後再一趟交錯走訪。
 
 <!--CODE-->
 

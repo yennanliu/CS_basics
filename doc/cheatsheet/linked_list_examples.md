@@ -53,7 +53,8 @@ step it adds; a problem worked in another sheet is a pointer row, not a second c
 
 **Reduces to**: [linked_list § Template 1](./linked_list.md#template-1-iterative-reversal--lc-206-)
 — run on the back half only, found with [Template 5](./linked_list.md#template-5-fastslow-middle--lc-876-)'s
-first-middle loop, then an interleave walk.
+first-middle loop and cut off with its [split form](./linked_list.md#split-form--two-halves-from-the-same-two-pointers)
+(`second = slow.next`, then `slow.next = None`, `first = head`), then an interleave walk.
 
 ```python
 # python

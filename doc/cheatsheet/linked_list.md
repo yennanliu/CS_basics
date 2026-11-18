@@ -716,7 +716,7 @@ return 3             return 4  (the second middle)
 **Traps**
 - `while fast.next and fast` dereferences `None` on an even-length list; test `fast` first.
 - To split a list for merge sort (LC 148) or reorder (LC 143) you need the **first** middle, so
-  the left half is never longer: loop on `while fast.next and fast.next.next`. With the
+  the left half is never shorter: loop on `while fast.next and fast.next.next`. With the
   second-middle form, `[1,2]` never splits and merge sort recurses forever.
 
 **Not this if** — "does the list have a cycle / where does it start" (LC 141, LC 142) uses the
@@ -724,6 +724,73 @@ same two speeds but a different stopping rule → [2_pointers_linkedlist.md](./2
 "n-th from the end" uses equal speeds with a gap of n → [the LC 19 card](./linked_list_examples.md#remove-nth-node-from-end-of-list--lc-19).
 
 **Drill** — LC 876 · LC 141 ⭐ *(cycle: same speeds, stop when they meet)* · LC 234 *(middle + reverse)* · LC 143 ⭐ *(first middle, reverse, interleave)* · LC 148 *(first middle, merge sort)*
+
+#### Split form — two halves from the same two pointers
+
+LC 143, LC 148 and LC 234 all need the list as **two separate lists**. You do not build them
+from scratch, and you do not need a dummy or a length count: once the first-middle loop stops,
+the pointers already hold both handles. `head` is the front half, `slow.next` is the back half,
+and one assignment, `slow.next = None`, cuts the link between them.
+
+```python
+# python
+# Split a linked list into two halves (the step inside LC 143 / LC 148 / LC 234)
+# IDEA: stop slow on the FIRST middle; the back half starts at slow.next, and cutting
+#       slow.next turns the front half into its own list that still starts at head
+# time = O(n), space = O(1)
+def split_halves(head):
+    if head is None or head.next is None:
+        return head, None             # 0 or 1 node: nothing to split
+    slow = head
+    fast = head
+    while fast.next and fast.next.next:   # first middle: the front half is never shorter
+        slow = slow.next
+        fast = fast.next.next
+    second = slow.next                # back half starts right after the middle
+    slow.next = None                  # cut: the front half now ends at slow
+    first = head                      # front half starts where the list did
+    return first, second
+```
+
+```java
+// java
+// Split a linked list into two halves (the step inside LC 143 / LC 148 / LC 234)
+// IDEA: stop slow on the FIRST middle; the back half starts at slow.next, and cutting
+//       slow.next turns the front half into its own list that still starts at head
+// time = O(n), space = O(1)
+ListNode[] splitHalves(ListNode head) {
+    if (head == null || head.next == null) {
+        return new ListNode[] {head, null};
+    }
+    ListNode slow = head;
+    ListNode fast = head;
+    while (fast.next != null && fast.next.next != null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+    ListNode second = slow.next;   // back half starts right after the middle
+    slow.next = null;              // cut: the front half now ends at slow
+    return new ListNode[] {head, second};
+}
+```
+
+```text
+[1,2,3,4]    slow stops on 2    first = 1 -> 2        second = 3 -> 4
+[1,2,3,4,5]  slow stops on 3    first = 1 -> 2 -> 3   second = 4 -> 5
+[1,2]        slow stops on 1    first = 1             second = 2
+```
+
+**Complexity**
+- **Time O(n)**: the `while` runs about n / 2 times; the cut itself is one assignment.
+- **Space O(1)**: no new nodes; `first` and `second` are pointers into the original list.
+
+**Traps**
+- Forgetting `slow.next = None`: the front half still runs into the back half, so reversing
+  the back half and interleaving (LC 143) closes a cycle, and merge sort (LC 148) never ends.
+- Reading `second = slow.next` *after* the cut: `second` is `None` and the back half is lost.
+  Take the handle first, then cut.
+- Splitting with the second-middle loop (`while fast and fast.next`): on `[1,2]` slow stops on
+  2, `second` is `None`, and the front half is the whole list.
 
 ### Template 6: Carry Loop over a Dummy — LC 2 ⭐⭐⭐
 
