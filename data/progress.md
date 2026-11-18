@@ -12,12 +12,14 @@
 			- binary search
 				- 33 (todo)
 				
-			- linked list
+			- Trees
 
 		- done:
 			- array & hash
 			- 2 pointers
 			- slide window
+			- linked list
+			- stack
 
 
 - Cheatsheet review
