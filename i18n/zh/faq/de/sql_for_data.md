@@ -265,7 +265,7 @@
 具名 window 可以避免重複定義：`… OVER w … WINDOW w AS (PARTITION BY user_id
 ORDER BY order_date)`（PostgreSQL、BigQuery、Spark、DuckDB）。
 
-<!-- 5ef56a100172 -->
+<!-- 996030043bdb -->
 ### 5-2) 排名：`ROW_NUMBER` vs `RANK` vs `DENSE_RANK`
 
 **它們只在同分時不同：`ROW_NUMBER` 任意打破平手，`RANK` 讓同分同名次並跳過下一個，
@@ -273,7 +273,19 @@ ORDER BY order_date)`（PostgreSQL、BigQuery、Spark、DuckDB）。
 
 <!--CODE-->
 
+<!--CODE-->
+
+| 函式 | 遇到同分 | 記憶方式 |
+|---|---|---|
+| `ROW_NUMBER()` | 每一列仍拿到唯一的號碼 | 每筆資料一個號碼 |
+| `RANK()` | 同名次，接著**跳號**（1, 2, 2, 4） | 競賽排名，有並列就跳號 |
+| `DENSE_RANK()` | 同名次，**不**跳號（1, 2, 2, 3） | 競賽排名，有並列但不跳號 |
+
+- **同分的列誰拿到較小的 `ROW_NUMBER` 是不確定的**，除非 `ORDER BY` 能決定 ——
+  下次執行 Bob 可能變成 3。`RANK` 與 `DENSE_RANK` 對同分本來就是確定的。
 - 「每個部門薪水前 3 名，同分都算」→ `DENSE_RANK() <= 3`。
+- 「每個部門恰好 3 個人」→ `ROW_NUMBER() <= 3` 加上 tie-breaker
+  （`ORDER BY salary DESC, emp_id`）—— 見 [7-1](#7-1-top-n-per-group)。
 - 「每個 key 恰好一列」（去重）→ `ROW_NUMBER() = 1`，**並在 `ORDER BY` 加上 tie-breaker**
   （`ORDER BY updated_at DESC, ingest_id DESC`），否則每次執行選到的列可能不同。
 - `NTILE(4)` 把列分成四個大小幾乎相等的桶（依筆數分的四分位，不是依數值）。
@@ -395,22 +407,38 @@ Window 的寫法只掃描一次表，被問到「能不能不用子查詢？」�
 <!-- 20a9ee8213fc -->
 ## 7) 面試題型 ⭐⭐⭐⭐⭐
 
-<!-- 172f4ad9588f -->
+<!-- 6a7e110edd92 -->
 ### 7-1) 每組 Top-N
 
 **用 window 在每個群組內排名，再保留你要的名次；依同分該怎麼處理來選排名函式。**
 
 <!--CODE-->
 
+題目說**每組恰好 N 列**時，改用 `ROW_NUMBER` 並給它一個 tie-breaker；兩組同分時，
+`DENSE_RANK() <= 3` 可能回傳五個人：
+
+<!--CODE-->
+
+| 「Top 3」指的是 | 函式 | 9000, 8000, 8000, 7000 會留下 |
+|---|---|---|
+| 恰好 3 列 | `ROW_NUMBER() <= 3` + tie-breaker | 3 列 |
+| 前 3 名次，同分後跳號 | `RANK() <= 3` | 3 列（7000 是第 4 名） |
+| 前 3 個不同的值 | `DENSE_RANK() <= 3` | 全部 4 列 |
+
 經典的「第二高薪水」是同一個題型、只是沒有 partition —— 而且沒有第二個值時，
 必須回傳 `NULL`，不是空結果：
 
 <!--CODE-->
 
-<!-- 377626ab0010 -->
+<!-- faca2c3599e9 -->
 ### 7-2) 去重：每個 key 保留最新的一列
 
 **把每個 key 的列由新到舊編號，保留第 1 號 —— 這是 CDC 與事件表收到同一筆紀錄不只一次時的標準清理方式。**
+
+<!--CODE-->
+
+同樣的編號反過來讀，就找出要**移除**的列：所有 `rn > 1` 的都是落選者。這就是 LC 196
+（*Delete Duplicate Emails*，保留最小的 `id`）：
 
 <!--CODE-->
 
