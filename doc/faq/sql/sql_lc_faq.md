@@ -143,7 +143,7 @@ WHERE  salary_rank <= 3;
 ```
 
 ```sql
--- exactly three people per department: ROW_NUMBER with a unique tie-breaker
+-- at most three people per department: ROW_NUMBER with a unique tie-breaker
 WITH ranked AS (
   SELECT *,
          ROW_NUMBER() OVER (PARTITION BY departmentId
@@ -157,9 +157,13 @@ WHERE  rn <= 3;
 
 | "Top 3" means | Filter | On 9000, 8000, 8000, 7000 it keeps |
 |---|---|---|
-| exactly 3 rows | `ROW_NUMBER() <= 3` + tie-breaker | 3 rows |
+| at most 3 rows | `ROW_NUMBER() <= 3` + tie-breaker | 3 rows |
 | the first 3 places, ties included | `RANK() <= 3` | 3 rows (7000 is in 4th place) |
 | the top 3 distinct values (LC 185) | `DENSE_RANK() <= 3` | all 4 rows |
+
+Every filter is an upper bound: a department with two people returns two rows under all three.
+If only full groups should appear, also compute `COUNT(*) OVER (PARTITION BY departmentId) AS
+group_size` in the CTE and keep `group_size >= 3`.
 
 LC 184 (*Department Highest Salary*) is the same query with `salary_rank = 1`, or without a
 window:
@@ -195,9 +199,11 @@ FROM   ranked
 WHERE  rn = 1;
 ```
 
-When the sort column is not unique — several orders on the same `created_at` — add a column
-that is: `ORDER BY created_at DESC, order_id DESC`. Without it the "latest" row can change
-between runs.
+When the sort column is not unique — two orders on the same `order_date` — add a unique column:
+`ORDER BY order_date DESC, order_id DESC`. Without it the chosen row can change between runs.
+That makes the pick **deterministic**, not necessarily the latest: the larger `order_id` is the
+later order only if ids are assigned in creation order. When it must be the latest, sort by a
+finer timestamp (`created_at`) first.
 
 LC 1070 is the case where `ROW_NUMBER` is **wrong**: it asks for every sale in each product's
 first year, and a product can have several.
@@ -272,6 +278,7 @@ WITH numbered AS (
   SELECT id, email,
          ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) AS rn
   FROM   Person
+  WHERE  email IS NOT NULL
 )
 SELECT id, email
 FROM   numbered
@@ -282,10 +289,15 @@ DELETE FROM Person
 WHERE  id IN (SELECT id
               FROM  (SELECT id,
                             ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) AS rn
-                     FROM   Person) AS numbered
+                     FROM   Person
+                     WHERE  email IS NOT NULL) AS numbered
               WHERE  rn > 1);
 ```
 
+- **Filter out `NULL` emails before numbering.** `PARTITION BY email` puts every `NULL` in one
+  partition, so without `email IS NOT NULL` two people with no email would count as duplicates
+  and one would be deleted. The self-join above skips them already, because `NULL = NULL` is
+  not true; a `GROUP BY email` version, like the window, needs the filter.
 - **MySQL error 1093** — *"You can't specify target table 'Person' for update in FROM
   clause"* — is what `DELETE FROM Person WHERE id NOT IN (SELECT MIN(id) FROM Person GROUP BY
   email)` raises. Wrapping the subquery in one more derived table

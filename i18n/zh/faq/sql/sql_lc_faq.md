@@ -72,7 +72,7 @@ LC：[178](https://leetcode.com/problems/rank-scores/)
 LC：[176](https://leetcode.com/problems/second-highest-salary/)、
 [177](https://leetcode.com/problems/nth-highest-salary/)
 
-<!-- 2cc970a293eb -->
+<!-- d9338cbedce2 -->
 ### 1-3) 每組 Top-N
 
 **用 `PARTITION BY` 在每組內排名，再保留你要的名次。用哪個排名函式，取決於題目對同分怎麼說。**
@@ -83,9 +83,12 @@ LC：[176](https://leetcode.com/problems/second-highest-salary/)、
 
 | 「Top 3」指的是 | 過濾條件 | 在 9000, 8000, 8000, 7000 上會留下 |
 |---|---|---|
-| 恰好 3 列 | `ROW_NUMBER() <= 3` + tie-breaker | 3 列 |
+| 最多 3 列 | `ROW_NUMBER() <= 3` + tie-breaker | 3 列 |
 | 前 3 個名次，同分都算 | `RANK() <= 3` | 3 列（7000 是第 4 名） |
 | 前 3 個不同的值（LC 185） | `DENSE_RANK() <= 3` | 全部 4 列 |
+
+每一種過濾都只是上限：只有兩個人的部門，三種寫法都回傳兩列。若只想留下人數足夠的組，在 CTE 裡再算
+`COUNT(*) OVER (PARTITION BY departmentId) AS group_size`，並保留 `group_size >= 3`。
 
 LC 184（*Department Highest Salary*）就是同一個查詢改成 `salary_rank = 1`，或是不用 window：
 
@@ -94,7 +97,7 @@ LC 184（*Department Highest Salary*）就是同一個查詢改成 `salary_rank 
 LC：[184](https://leetcode.com/problems/department-highest-salary/)、
 [185](https://leetcode.com/problems/department-top-three-salaries/)
 
-<!-- 2822e67d4f73 -->
+<!-- 3a8d10986e15 -->
 ### 1-4) 每組的第一列或最新一列
 
 **把每組的列由新到舊（或由舊到新）編號，保留第 1 號。答案是每組一列時用 `ROW_NUMBER`；並列第一的
@@ -102,8 +105,10 @@ LC：[184](https://leetcode.com/problems/department-highest-salary/)、
 
 <!--CODE-->
 
-排序欄位不唯一時 —— 好幾筆訂單有相同的 `created_at` —— 就再加一個唯一的欄位：
-`ORDER BY created_at DESC, order_id DESC`。少了它，「最新」那一列每次執行都可能不同。
+排序欄位不唯一時 —— 兩筆訂單的 `order_date` 相同 —— 就再加一個唯一的欄位：
+`ORDER BY order_date DESC, order_id DESC`。少了它，選到的那一列每次執行都可能不同。
+這讓選擇變得**確定**，但不一定是最新的：只有 id 依建立順序配發時，較大的 `order_id` 才是較晚的訂單。
+必須是最新的那筆時，先依更細的時間戳（`created_at`）排序。
 
 LC 1070 正是 `ROW_NUMBER` **錯**的情況：它要每個產品第一年的所有銷售，而一個產品在那一年
 可能有好幾筆。
@@ -134,7 +139,7 @@ LC：[511](https://leetcode.com/problems/game-play-analysis-i/)、
 
 LC：[182](https://leetcode.com/problems/duplicate-emails/)
 
-<!-- 27485d49a729 -->
+<!-- 6c58533bf0f1 -->
 ### 2-2) 刪除重複，保留一筆
 
 **把表依重複的值和自己 join，刪掉 id 較大的那列，於是每個值留下最小的 id。**
@@ -145,6 +150,9 @@ window function 的版本把同一套編號反過來讀：編號大於 1 的每�
 
 <!--CODE-->
 
+- **編號之前先濾掉 `NULL` 的 email。** `PARTITION BY email` 會把所有 `NULL` 放進同一個 partition，
+  少了 `email IS NOT NULL`，兩個沒有 email 的人會被當成重複，其中一人會被刪掉。上面的 self-join
+  本來就會跳過他們，因為 `NULL = NULL` 不為真；`GROUP BY email` 的寫法和 window 一樣需要這個過濾。
 - **MySQL error 1093** —— *"You can't specify target table 'Person' for update in FROM
   clause"* —— 就是 `DELETE FROM Person WHERE id NOT IN (SELECT MIN(id) FROM Person GROUP BY
   email)` 會丟出的錯。把子查詢再包一層衍生表
