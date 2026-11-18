@@ -24,10 +24,8 @@
 - Cheatsheet review
 	
 	- Doing
-		- 堆疊（Stack）
-			- https://yennj12.js.org/CS_basics/cheatsheets/stack.zh.html
-				- `模板 5：顯式堆疊 —— 迭代式走訪 —— LC 144, LC 145 `
-
+		- Linked List（鏈結串列）
+			- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html
 
 
 	- Done
@@ -37,6 +35,7 @@
 		- 差分陣列
 		- 二分搜尋
 		- 滑動視窗
+		- 堆疊（Stack）
 
 
 
@@ -167,8 +166,10 @@
 			- 155
 
 		- 作用域／上下文帳本
+			- 巢狀上下文（縮排、start/end 事件）
 			- 388 (!!!)
-			- 636
+			- 636 (todo!!!)
+			- 591
 
 		- 放 (char, count) 配對的堆疊
 			- 1544
