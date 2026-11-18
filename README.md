@@ -1606,7 +1606,7 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 |  #  | Title | Solution | Time | Space | Difficulty | Note | Status |
 |-----|-------|----------|------|-------|------------|------|--------|
 | 0175 | [Combine Two Tables](https://leetcode.com/problems/combine-two-tables/) | [MySQL](./leetcode_SQL/combine-two-tables.sql) | _O(m + n)_ | _O(m + n)_ | Easy | **sql**, left join on two tables, `good basic`, `google`, `amazon`, `fb`, `apple` | OK (4) |
-| 0176 | [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](./leetcode_SQL/second-highest-salary.sql) | _O(n)_ | _O(1)_ | Easy | **sql**, `amazon`, `fb`, `google`, `apple`, `microsoft`, `sql 50` | OK  (4) |
+| 0176 | [Second Highest Salary](https://leetcode.com/problems/second-highest-salary/) | [MySQL](./leetcode_SQL/second-highest-salary.sql) | _O(n)_ | _O(1)_ | Easy | **sql**, dense_rank vs rank, `amazon`, `fb`, `google`, `apple`, `microsoft`, `sql 50` | OK  (4) |
 | 0177 | [Nth Highest Salary](https://leetcode.com/problems/nth-highest-salary/) | [MySQL](./leetcode_SQL/Nth_Highest_Salary.sql) | _O(n^2)_ | _O(n)_ | Medium | **sql**, `MySQL PROCEDURE`, `SQL FAQ`, `google`, `amazon`, `fb`, `apple`, `uber` | AGAIN*** (3) |
 | 0178 | [Rank Scores](https://leetcode.com/problems/rank-scores/) | [MySQL](./leetcode_SQL/rank-scores.sql) | _O(n^2)_ | _O(n)_ | Medium | **sql**, `trick`, `SQL var`, ank, select same table, rank, `amazon`, `fb`, `apple` | AGAIN****** (7) |
 | 0180 | [Consecutive Numbers](https://leetcode.com/problems/consecutive-numbers/) | [MySQL](./leetcode_SQL/consecutive-numbers.sql) | _O(n)_ | _O(n)_ | Medium | **sql**, `SQL var`, join same table multi times, `amazon`, `sql 50` | OK* (3) |
