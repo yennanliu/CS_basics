@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 1887 / 1887 sections (100%)
+## Status — 1922 / 1922 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -117,4 +117,5 @@ half-translated document renders with English gaps rather than failing.
 | [spark/faq_spark_hadoop](./faq/spark/faq_spark_hadoop.md) | 86 | [✅](../i18n/zh/faq/spark/faq_spark_hadoop.md) |
 | [sql/faq_mysql](./faq/sql/faq_mysql.md) | 5 | [✅](../i18n/zh/faq/sql/faq_mysql.md) |
 | [sql/faq_sql](./faq/sql/faq_sql.md) | 37 | [✅](../i18n/zh/faq/sql/faq_sql.md) |
+| [sql/sql_lc_faq](./faq/sql/sql_lc_faq.md) | 35 | [✅](../i18n/zh/faq/sql/sql_lc_faq.md) |
 | [stream/faq_stream](./faq/stream/faq_stream.md) | 3 | [✅](../i18n/zh/faq/stream/faq_stream.md) |
