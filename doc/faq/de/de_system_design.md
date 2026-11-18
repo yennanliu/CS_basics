@@ -404,9 +404,15 @@ exactly-once with less latency and coupling; pay for transactions only where an 
 sink makes duplicates unfixable.**
 
 The idempotent sink only makes **re-emitting a result** safe. It cannot undo a duplicate
-**input** that was already added into a count, so an aggregate also needs one of these before
-the increment: dedupe on `event_id`, or keep the aggregate in the engine's checkpointed state,
-which a replay rolls back together with the source offsets.
+**input** that was already added into a count, and duplicate inputs come from two places:
+
+- **The job's own recovery** replays the *same offsets*. Keeping the aggregate in the
+  engine's checkpointed state covers this, because a restore rolls state and offsets back
+  together.
+- **Producer retries** write the same `event_id` at *different offsets*. A checkpoint sees
+  two records and counts both, so these need **`event_id` dedupe** before the increment.
+
+Most pipelines face both, so an aggregate needs both: checkpointed state *and* dedupe.
 
 | | Exactly-once (transactional) | At-least-once + idempotent |
 |---|---|---|
@@ -530,7 +536,11 @@ dashboards labelled provisional for the last N days; *GDPR delete* → delete by
 data landed: row-level deletes in the lake tables, then **expire the old snapshots** so time
 travel no longer holds the rows; the same delete in derived warehouse tables and Pinot; Kafka
 retention short enough to age out; backups whose retention ends inside the legal deadline; and
-a deletion log that proves each step ran.
+a deletion log that proves each step ran. The log only records the deletes; it does not stop a
+**replay** — a job restored from an older checkpoint, or a backfill from Kafka or bronze — from
+writing the user back. So the deleted IDs also go into a durable **deletion filter**
+(a suppression table) that ingestion, every replay and every backfill check before they
+write to the lake or Pinot.
 
 ### 6-2) Ad click aggregation for billing
 
@@ -593,11 +603,18 @@ Decisions to say out loud:
 2. **Sliding window as 60 one-minute buckets**: add the newest bucket and subtract the oldest,
    instead of recounting an hour every minute.
 3. **Memory**: with millions of items, exact counts may be too large. Keep a **Count-Min
-   Sketch per one-minute bucket** — approximate counts in fixed memory, only ever over-counting.
-   A sketch cannot list the items in it, so each bucket also keeps its own **top-N candidate
-   list**. Every minute, the hour's candidates are the union of the 60 lists, each re-scored
-   against the 60 live sketches; when a bucket expires its sketch and its list leave together,
-   so a leader with no new events falls out instead of staying stuck in a heap.
+   Sketch per one-minute bucket** for approximate counts in fixed memory (it only ever
+   over-counts). A sketch cannot list its items, so candidates need their own structure, and
+   **each minute's top-N is the wrong one**: a tag with 20 events in every minute can lose
+   every minute to a different 21-event tag and still win the hour, without ever appearing in
+   a minute's list. Use a summary with a coverage guarantee instead: a **Misra-Gries summary
+   of k counters per minute**. These summaries are mergeable, and the merge of the 60 that are
+   live keeps the guarantee — every item with more than W / (k + 1) of the hour's W events
+   is in it. Re-score those candidates against the live sketches and take the top 100. An item
+   below that share can still be missed, so choose k for it (k = 10,000 covers anything over
+   0.01% of the hour); the official ranking comes from an exact hourly batch recount. When a
+   bucket expires, its sketch and its summary leave together, so a leader with no new events
+   falls out instead of staying stuck in a heap.
 4. **"Trending" is not "most popular"**: rank by velocity against a baseline (this hour vs
    the same hour last week), or the top list never changes.
 
