@@ -63,6 +63,19 @@ class Solution(object):
 
         # 步驟 2：將串列切成兩半
         # slow.next 是後半段的起點
+        """
+        NOTE !!! below trick
+
+        1. we DON'T really need to setup first, second linked list from scratch
+        
+        2. -> we can leverage the fast, flow linked list
+
+        3. 
+           -> `second` is the next node of slow
+
+           -> `first` is the head, (but `cut off` the later node first)
+             e.g.  slow.next = None  # 斷開前半段與後半段的連結
+        """
         second = slow.next
         slow.next = None  # 斷開前半段與後半段的連結
         first = head
