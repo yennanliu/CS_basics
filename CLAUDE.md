@@ -745,6 +745,47 @@ update its page's prose.
 
 ---
 
+## Consulting on system design — `/system-design-master`
+
+`.claude/skills/system-design-master/` is a senior data-engineering and backend design
+consultant with six modes. **The steps live in its `SKILL.md`, not here.**
+
+| Mode | Does | Writes |
+|---|---|---|
+| `consult` *(default)* / `review` / `mock` | answers, scores or interviews, in chat | nothing |
+| `case` | a full worked case | `system_design/<case>/README.md` |
+| `doc` | a guide or section, by `/lc-faq-add`'s placement rules | `doc/faq/…` + `i18n/zh/faq/…` |
+| `gaps` | the stub cases and the classics with no case | nothing |
+
+Three things it is built around:
+
+- **`system_design/` is mostly stubs.** 9 of its 11 case directories hold 0–12 lines, so a
+  `case` **fills the existing stub** (keeping its `Ref` links) rather than adding a
+  `design_x_v2/`. That tree is not built into the site — it is the landing page's *off path*
+  material — so a case's gate is its own links and runnable code, while `doc` mode runs the
+  site's gates and the zh check like `/lc-faq-add`.
+- **The crux, named first.** `references/crux_catalog.md` lists what each backend and DE
+  classic is really testing and where the repo already works it, so a classic solved in
+  `doc/faq/de/` is linked rather than re-solved.
+- **The correctness traps reviewers caught.** PR #353's two review rounds found three wrong
+  claims in `doc/faq/de/de_system_design.md` — checkpointed state is not `event_id` dedupe, a
+  union of per-window top-N lists can miss the overall winner, and a delete needs a filter
+  every replay checks. `references/review_rubric.md` keeps them as a table, and `review` /
+  `mock` flag each one a design makes.
+
+```text
+/system-design-master consult ad click aggregation
+/system-design-master mock design a URL shortener
+/system-design-master case design_uber            # fills the stub
+/system-design-master doc de lakehouse governance
+/system-design-master gaps
+```
+
+It overlaps the older generic `system-architecture` skill, which knows nothing about this
+repo's trees. It has a card on `agent-skills.html` but no page of its own yet.
+
+---
+
 ## Cheatsheet Style Guide
 
 Cheatsheets live in `doc/cheatsheet/`. [`doc/cheatsheet/00_template.md`](doc/cheatsheet/00_template.md) is the authoritative structure — read it before creating or restructuring a cheatsheet.
