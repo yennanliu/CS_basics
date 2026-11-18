@@ -97,7 +97,7 @@ LC 184（*Department Highest Salary*）就是同一個查詢改成 `salary_rank 
 LC：[184](https://leetcode.com/problems/department-highest-salary/)、
 [185](https://leetcode.com/problems/department-top-three-salaries/)
 
-<!-- 3a8d10986e15 -->
+<!-- 345b2174d03e -->
 ### 1-4) 每組的第一列或最新一列
 
 **把每組的列由新到舊（或由舊到新）編號，保留第 1 號。答案是每組一列時用 `ROW_NUMBER`；並列第一的
@@ -121,6 +121,9 @@ LC 1070 正是 `ROW_NUMBER` **錯**的情況：它要每個產品第一年的所
   product_id)` —— 它同樣保留同分。
 - **用 `MAX(date)` 再依日期 join 回去**：同分全部都要回傳時沒問題；題目只要恰好一列時就錯了 ——
   共用最新日期的兩列都會配對到。
+- **只需要日期時，不必用 window。** LC 511 要每位玩家的首次登入：
+  `SELECT player_id, MIN(event_date) AS first_login FROM Activity GROUP BY player_id`。只有連同那一列的
+  其他欄位（例如它的 `device_id`）也需要時，才替列編號。
 
 LC：[511](https://leetcode.com/problems/game-play-analysis-i/)、
 [1070](https://leetcode.com/problems/product-sales-analysis-iii/)
@@ -250,7 +253,7 @@ LC：[1251](https://leetcode.com/problems/average-selling-price/)、
 
 LC：[1193](https://leetcode.com/problems/monthly-transactions-i/)
 
-<!-- c17a2f21ea94 -->
+<!-- 4a4ea581d0a3 -->
 ### 4-2) 比率與百分比
 
 **比率就是 0/1 條件的平均：`AVG(condition)` 就是條件成立的列所佔的比例。最後只四捨五入一次。**
@@ -262,6 +265,10 @@ LC：[1193](https://leetcode.com/problems/monthly-transactions-i/)
 - **MySQL 的 `/` 是小數除法**（`7 / 2` 是 `3.5000`）；`DIV` 才是整數除法。同一個查詢在
   SQL Server 或 PostgreSQL 會遇到的整數除法 bug，在這裡不會發生。
 - **四捨五入最終的值，絕不是各個部分。** `ROUND(a, 2) / ROUND(b, 2)` 會在最後一位和預期答案有出入。
+- **`AVG` 會跳過 `NULL`。** 只有條件永遠不是 `NULL` 時，`AVG(condition)` 才是列的比例：一列 `TRUE`、
+  一列 `NULL` 的平均是 1，不是 0.5。每一列都該算進分母時，先把 `NULL` 對應成 0 ——
+  `AVG(IFNULL(condition, 0))`。在 LC 1934 裡，`NULL` 只來自完全沒有訊息的使用者，他整個平均就是
+  `NULL`，由外層的 `IFNULL(…, 0)` 處理。
 - **檢查分母的粒度。** 「玩家的比例」要除以 `COUNT(DISTINCT player_id)`，而不是列數
   （見 [5-4](#5-4-retention-the-day-after-the-first-login)）。
 
@@ -353,7 +360,7 @@ LC：[197](https://leetcode.com/problems/rising-temperature/)
 
 LC：[180](https://leetcode.com/problems/consecutive-numbers/)
 
-<!-- e6ccc2c499b1 -->
+<!-- 65dc7285fb7f -->
 ### 5-3) Gaps and islands
 
 **依序替符合條件的列編號，再用 id（或日期）減掉這個編號：同一段不中斷的連續列會得到相同的差值，
@@ -364,10 +371,9 @@ LC：[180](https://leetcode.com/problems/consecutive-numbers/)
 <!--CODE-->
 
 - 若是日期，key 是 `DATE_SUB(visit_date, INTERVAL rn DAY)` —— 連續的日子減掉連續的數字，得到同一個日期。
-- **在 MySQL 裡 `ROW_NUMBER()` 是 `BIGINT UNSIGNED`**，所以只要結果會是負數，`x - ROW_NUMBER()`
-  就會丟出 *"BIGINT UNSIGNED value is out of range"*。上面的 `id - rn` 不可能為負（第 n 個保留下來的
-  id 至少是 n）；左邊可能比較小時，要寫成
-  `CAST(x AS SIGNED) - CAST(ROW_NUMBER() OVER (…) AS SIGNED)`。
+- **為什麼要 `CAST`：在 MySQL 裡 `ROW_NUMBER()` 是 `BIGINT UNSIGNED`**，所以單純寫
+  `id - ROW_NUMBER()`，只要結果會是負數就會丟出 *"BIGINT UNSIGNED value is out of range"* ——
+  id 從 0 開始時，第一列就是 `0 - 1`。兩邊都轉成 `SIGNED`，分組不變，而且任何 id 都能用。
 - 依 `grp` 分組取 `MIN(id)` 與 `MAX(id)` 就是這一段的起點與終點 —— LC 1285 問的正是這個。
 
 LC：[601](https://leetcode.com/problems/human-traffic-of-stadium/)、
@@ -402,7 +408,7 @@ LC：[550](https://leetcode.com/problems/game-play-analysis-iv/)
 
 LC：[1204](https://leetcode.com/problems/last-person-to-fit-in-the-bus/)
 
-<!-- 0e00626d14d7 -->
+<!-- d2627942e086 -->
 ### 6-2) N 天的移動總和與平均
 
 **先收斂成每天一列，再用 frame。對日期用 `RANGE` frame 是以日曆天計算，缺少的日子不會把視窗拉長。**
@@ -411,7 +417,9 @@ LC：[1204](https://leetcode.com/problems/last-person-to-fit-in-the-bus/)
 
 <!--CODE-->
 
-- **先依天分組。** 表裡 1 月 10 日有兩次造訪；對原始列開 frame 會把它們算成七「天」中的兩天。
+- **先依天分組。** 表裡 1 月 10 日有兩次造訪。對原始列開 frame 時，`ROWS` frame 會把它們算成七「天」
+  中的兩天；`RANGE` frame 仍會加總正確的七個日曆天，但每次造訪各輸出一次，所以 1 月 10 日會在結果裡
+  出現兩次。先分組才會每天一列。
 - `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW` 指的是最後七**列**，只有在沒有缺少任何一天時才等於七天。
   `RANGE … INTERVAL 6 DAY` 兩種情況都正確。
 - 對 `first_day` 的 `WHERE` 會丟掉前六天，那幾天的視窗還沒滿。
@@ -433,7 +441,7 @@ LC：[1321](https://leetcode.com/problems/restaurant-growth/)
 
 LC：[627](https://leetcode.com/problems/swap-salary/)
 
-<!-- 3ea7e22d4937 -->
+<!-- 395fb8d3909c -->
 ### 7-2) 交換相鄰的列
 
 **奇數 id 取下一列的值，偶數 id 取上一列的值；最後一個奇數 id 沒有搭檔，保留自己的值。**
@@ -442,7 +450,9 @@ LC：[627](https://leetcode.com/problems/swap-salary/)
 
 <!--CODE-->
 
-- 第二種寫法依賴 id 恰好是 1..n，這是 LC 626 保證的；第一種只依賴 id 的順序。
+- 兩種寫法都依賴 id 恰好是 1..n，這是 LC 626 保證的：第二種改寫 id，第一種用 `id % 2` 決定每一列的
+  搭檔。id 是 1, 3, 4 時，第一種會配錯列。若 id 任意，先在 CTE 裡算 `ROW_NUMBER() OVER (ORDER BY id)`，
+  並在奇偶判斷裡用它取代 `id`。
 
 LC：[626](https://leetcode.com/problems/exchange-seats/)
 

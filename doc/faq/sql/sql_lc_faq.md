@@ -231,6 +231,9 @@ product_id   first_year   quantity   price
   product_id)` — it keeps the ties too.
 - **`MAX(date)` joined back on the date** is fine when ties should all come back, and wrong
   when the question wants exactly one row: two rows sharing the latest date both match.
+- **When only the date is needed, skip the window.** LC 511 asks for each player's first login:
+  `SELECT player_id, MIN(event_date) AS first_login FROM Activity GROUP BY player_id`. Number
+  the rows only when other columns of that row are needed too, such as its `device_id`.
 
 LC: [511](https://leetcode.com/problems/game-play-analysis-i/),
 [1070](https://leetcode.com/problems/product-sales-analysis-iii/)
@@ -490,6 +493,7 @@ SELECT query_name,
        ROUND(AVG(rating / position), 2)  AS quality,
        ROUND(AVG(rating < 3) * 100, 2)   AS poor_query_percentage
 FROM   Queries
+WHERE  query_name IS NOT NULL      -- LeetCode's tests include rows with no query name
 GROUP  BY query_name;
 ```
 
@@ -498,6 +502,11 @@ GROUP  BY query_name;
   here.
 - **Round the final value, never the parts.** `ROUND(a, 2) / ROUND(b, 2)` drifts from the
   expected answer in the last digit.
+- **`AVG` skips `NULL`.** `AVG(condition)` is the share of rows only when the condition is
+  never `NULL`: one `TRUE` row and one `NULL` row average to 1, not 0.5. When every row belongs
+  in the denominator, map `NULL` to 0 first — `AVG(IFNULL(condition, 0))`. In LC 1934 the
+  `NULL` comes only from a user with no messages at all, whose whole average is `NULL`; the
+  outer `IFNULL(…, 0)` handles that.
 - **Check the denominator's grain.** "Fraction of players" divides by
   `COUNT(DISTINCT player_id)`, not by the number of rows (see [5-4](#5-4-retention-the-day-after-the-first-login)).
 
@@ -527,20 +536,29 @@ LC: [1045](https://leetcode.com/problems/customers-who-bought-all-products/)
 into rows with one `SELECT` per column joined by `UNION ALL`.**
 
 ```sql
--- LC 1179: one revenue column per month (the real answer has one line per month, Jan to Dec)
+-- LC 1179: one row per department, one revenue column per month (Jan to Dec)
 SELECT id,
        SUM(CASE WHEN month = 'Jan' THEN revenue END) AS Jan_Revenue,
        SUM(CASE WHEN month = 'Feb' THEN revenue END) AS Feb_Revenue,
-       SUM(CASE WHEN month = 'Mar' THEN revenue END) AS Mar_Revenue
+       SUM(CASE WHEN month = 'Mar' THEN revenue END) AS Mar_Revenue,
+       SUM(CASE WHEN month = 'Apr' THEN revenue END) AS Apr_Revenue,
+       SUM(CASE WHEN month = 'May' THEN revenue END) AS May_Revenue,
+       SUM(CASE WHEN month = 'Jun' THEN revenue END) AS Jun_Revenue,
+       SUM(CASE WHEN month = 'Jul' THEN revenue END) AS Jul_Revenue,
+       SUM(CASE WHEN month = 'Aug' THEN revenue END) AS Aug_Revenue,
+       SUM(CASE WHEN month = 'Sep' THEN revenue END) AS Sep_Revenue,
+       SUM(CASE WHEN month = 'Oct' THEN revenue END) AS Oct_Revenue,
+       SUM(CASE WHEN month = 'Nov' THEN revenue END) AS Nov_Revenue,
+       SUM(CASE WHEN month = 'Dec' THEN revenue END) AS Dec_Revenue
 FROM   Department
 GROUP  BY id;
 ```
 
 ```text
-id   Jan_Revenue   Feb_Revenue   Mar_Revenue
-1    8000          7000          6000
-2    9000          NULL          NULL
-3    NULL          10000         NULL
+id   Jan_Revenue   Feb_Revenue   Mar_Revenue   Apr_Revenue … Dec_Revenue
+1    8000          7000          6000          NULL … NULL
+2    9000          NULL          NULL          NULL … NULL
+3    NULL          10000         NULL          NULL … NULL
 ```
 
 ```sql
@@ -665,7 +683,7 @@ one unbroken run share the same difference, so the difference is the run's group
 -- LC 601: rows in a run of 3+ consecutive ids where people >= 100
 WITH busy AS (
   SELECT *,
-         id - ROW_NUMBER() OVER (ORDER BY id) AS grp
+         CAST(id AS SIGNED) - CAST(ROW_NUMBER() OVER (ORDER BY id) AS SIGNED) AS grp
   FROM   Stadium
   WHERE  people >= 100
 ), runs AS (
@@ -691,10 +709,10 @@ id   people   rn   id - rn
 
 - For dates, the key is `DATE_SUB(visit_date, INTERVAL rn DAY)` — consecutive days minus
   consecutive numbers give the same date.
-- **In MySQL `ROW_NUMBER()` is `BIGINT UNSIGNED`**, so `x - ROW_NUMBER()` raises *"BIGINT
-  UNSIGNED value is out of range"* the moment the result would be negative. `id - rn` above
-  cannot go negative (the n-th kept id is at least n); when the left side could be smaller,
-  write `CAST(x AS SIGNED) - CAST(ROW_NUMBER() OVER (…) AS SIGNED)`.
+- **Why the `CAST`s: in MySQL `ROW_NUMBER()` is `BIGINT UNSIGNED`**, so a bare
+  `id - ROW_NUMBER()` raises *"BIGINT UNSIGNED value is out of range"* the moment the result
+  would be negative — for ids that start at 0, the very first row computes `0 - 1`. Casting
+  both sides to `SIGNED` keeps the grouping and allows any id.
 - The run's start and end are `MIN(id)` and `MAX(id)` grouped by `grp` — LC 1285 asks for
   exactly that.
 
@@ -791,8 +809,10 @@ visited_on   amount   average_amount
 2019-01-10   1000     142.86
 ```
 
-- **Group by day first.** The table has two visits on Jan 10; a frame over raw rows would
-  count them as two of the seven "days".
+- **Group by day first.** The table has two visits on Jan 10. Over raw rows, a `ROWS` frame
+  would count them as two of the seven "days"; the `RANGE` frame would still sum the right
+  seven calendar days, but once per visit, so Jan 10 would appear twice in the output. Grouping
+  first gives one row per day.
 - `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW` means the last seven **rows**, which equals seven
   days only when no day is missing. `RANGE … INTERVAL 6 DAY` is correct either way.
 - The `WHERE` on `first_day` drops the first six days, whose windows are not full yet.
@@ -846,8 +866,10 @@ FROM   Seat
 ORDER  BY id;
 ```
 
-- The second form relies on ids being exactly 1..n, which LC 626 guarantees; the first only
-  relies on their order.
+- Both forms rely on the ids being exactly 1..n, which LC 626 guarantees: the second rewrites
+  them, and the first picks each row's partner from `id % 2`. With ids 1, 3, 4 the first form
+  pairs the wrong rows. For arbitrary ids, compute `ROW_NUMBER() OVER (ORDER BY id)` in a CTE and
+  use it in place of `id` in the parity test.
 
 LC: [626](https://leetcode.com/problems/exchange-seats/)
 
