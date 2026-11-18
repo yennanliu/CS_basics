@@ -78,10 +78,15 @@ class Solution(object):
         # 1. Find the node before left
         prev = dummy
 
+        # NOTE !!!
+        # ONLY loop `left - 1` step
         for _ in range(left - 1):
             prev = prev.next
 
         # 2. Reverse the sublist
+        # NOTE !!!
+        #  1. use `curr` as param in helpr func
+        #  2. curr = prev.next
         curr = prev.next
         new_head, new_tail, new_next = self.reverse_helper(
             curr, right - left + 1
@@ -109,6 +114,7 @@ class Solution(object):
 
         new_head = prev
         new_tail = head
+        # NOTE !!!
         new_next = curr
 
         return new_head, new_tail, new_next
