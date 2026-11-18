@@ -1,7 +1,7 @@
 # SQL for Data Engineering
 
 > **Scope** — analytical SQL as a data engineering interview tests it: how a query is evaluated, joins and their algorithms, NULL semantics, aggregation, window functions, CTEs and recursion, the classic interview query patterns, MERGE and upserts, dates and time zones, query performance, and the dialect differences between PostgreSQL, BigQuery, Snowflake and Spark SQL. Table design is [schema_design.md](./schema_design.md)'s; choosing a database is [sql_vs_nosql.md](./sql_vs_nosql.md)'s.
-> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./data_modeling.md`](./data_modeling.md) — the star schemas these queries run on; [`./spark.md`](./spark.md) — how Spark SQL executes them; [`./sql_explain.md`](./sql_explain.md) — reading query plans in depth; [`./data_performance.md`](./data_performance.md) — SQL rewrites, OOM and storage layout across engines; [`./analytics.md`](./analytics.md) — the metrics these queries compute; [`./sql_interview_questions.md`](./sql_interview_questions.md) — the senior interview questions, answered with their follow-ups; [`../sql/faq_sql.md`](../sql/faq_sql.md) — the older, longer SQL notes.
+> **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./data_modeling.md`](./data_modeling.md) — the star schemas these queries run on; [`./spark.md`](./spark.md) — how Spark SQL executes them; [`./sql_explain.md`](./sql_explain.md) — reading query plans in depth; [`./data_performance.md`](./data_performance.md) — SQL rewrites, OOM and storage layout across engines; [`./analytics.md`](./analytics.md) — the metrics these queries compute; [`./sql_interview_questions.md`](./sql_interview_questions.md) — the senior interview questions, answered with their follow-ups; [`../sql/sql_lc_faq.md`](../sql/sql_lc_faq.md) — the LeetCode SQL problems in MySQL 8 and the tricks each one turns on; [`../sql/faq_sql.md`](../sql/faq_sql.md) — the older, longer SQL notes.
 
 Every query is **PostgreSQL** unless the first line of its fence names another dialect. Each
 section leads with the sentence you would say out loud, then the mechanism, then the trade-off
@@ -404,35 +404,15 @@ ORDER BY order_date)` (PostgreSQL, BigQuery, Spark, DuckDB).
 **They differ only on ties: `ROW_NUMBER` breaks them arbitrarily, `RANK` gives ties the same
 rank and skips the next, `DENSE_RANK` gives ties the same rank and does not skip.**
 
-```sql
--- PostgreSQL: Bob and Charlie tie on 8000
-SELECT name, salary,
-       ROW_NUMBER() OVER (ORDER BY salary DESC) AS rn,
-       RANK()       OVER (ORDER BY salary DESC) AS rnk,
-       DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rnk
-FROM   (VALUES ('Amy', 9000), ('Bob', 8000), ('Charlie', 8000), ('David', 7000))
-       AS e (name, salary);
-```
-
 ```text
-name      salary   rn   rnk   dense_rnk
-Amy        9000     1    1        1
-Bob        8000     2    2        2
-Charlie    8000     3    2        2      <- Bob / Charlie order (2 vs 3) is not guaranteed
-David      7000     4    4        3
+salary   ROW_NUMBER   RANK   DENSE_RANK
+ 900         1          1        1
+ 800         2          2        2
+ 800         3          2        2
+ 700         4          4        3
 ```
 
-| Function | On a tie | Remember it as |
-|---|---|---|
-| `ROW_NUMBER()` | every row still gets a unique number | one number per row |
-| `RANK()` | same rank, then **skips** (1, 2, 2, 4) | competition ranking, gaps after a tie |
-| `DENSE_RANK()` | same rank, **no** skip (1, 2, 2, 3) | competition ranking, no gaps |
-
-- **Which tied row gets the lower `ROW_NUMBER` is undefined** unless `ORDER BY` decides it —
-  Bob could be 3 on the next run. `RANK` and `DENSE_RANK` are deterministic on ties by design.
 - "Top 3 salaries per department, ties included" → `DENSE_RANK() <= 3`.
-- "Exactly 3 people per department" → `ROW_NUMBER() <= 3` with a tie-breaker
-  (`ORDER BY salary DESC, emp_id`) — see [7-1](#7-1-top-n-per-group).
 - "Exactly one row per key" (dedupe) → `ROW_NUMBER() = 1`, **with a tie-breaker in `ORDER BY`**
   (`ORDER BY updated_at DESC, ingest_id DESC`), or the chosen row changes between runs.
 - `NTILE(4)` splits rows into four buckets of near-equal size (quartiles by count, not by value).
@@ -633,27 +613,6 @@ WHERE  rnk <= 2
 ORDER  BY country, rnk;
 ```
 
-When the question says **exactly N rows per group**, switch to `ROW_NUMBER` and give it a
-tie-breaker; `DENSE_RANK() <= 3` can return five people if two pairs tie:
-
-```sql
--- PostgreSQL: exactly 3 highest-paid employees per department; ties broken by emp_id
-WITH ranked AS (
-  SELECT *, ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC, emp_id) AS rn
-  FROM   employees
-)
-SELECT dept, emp_id, name, salary, rn
-FROM   ranked
-WHERE  rn <= 3
-ORDER  BY dept, rn;
-```
-
-| "Top 3" means | Function | 9000, 8000, 8000, 7000 keeps |
-|---|---|---|
-| exactly 3 rows | `ROW_NUMBER() <= 3` + tie-breaker | 3 rows |
-| top 3 ranks, gaps after ties | `RANK() <= 3` | 3 rows (7000 is rank 4) |
-| top 3 distinct values | `DENSE_RANK() <= 3` | all 4 rows |
-
 The "second highest salary" classic is the same pattern with no partition — and it must return
 `NULL`, not an empty result, when there is no second value:
 
@@ -687,35 +646,6 @@ SELECT order_id, status, updated_at FROM ranked WHERE rn = 1;
 
 -- just find the duplicated keys
 SELECT order_id, COUNT(*) FROM order_changes GROUP BY order_id HAVING COUNT(*) > 1;
-
--- latest order per user from the orders table; order_id breaks a same-day tie
-WITH ranked AS (
-  SELECT *, ROW_NUMBER() OVER (PARTITION BY user_id
-                               ORDER BY order_date DESC, order_id DESC) AS rn
-  FROM   orders
-)
-SELECT * FROM ranked WHERE rn = 1;
-```
-
-The same numbering, read the other way round, finds the rows to **remove**: everything with
-`rn > 1` is a loser. This is LC 196 (*Delete Duplicate Emails*, keep the smallest `id`):
-
-```sql
--- PostgreSQL: list the extra rows, then delete them
-CREATE TEMP TABLE person (id INT PRIMARY KEY, email TEXT);
-INSERT INTO person VALUES (1, 'a@x.com'), (2, 'b@x.com'), (3, 'a@x.com');
-
-WITH numbered AS (
-  SELECT id, ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) AS rn
-  FROM   person
-)
-SELECT id FROM numbered WHERE rn > 1;          -- 3
-
-DELETE FROM person
-WHERE  id IN (SELECT id
-              FROM  (SELECT id, ROW_NUMBER() OVER (PARTITION BY email ORDER BY id) AS rn
-                     FROM   person) AS numbered
-              WHERE  rn > 1);
 ```
 
 - `SELECT DISTINCT` only removes rows identical in **every** column; it is not a dedupe by key.
