@@ -418,12 +418,12 @@
           <kbd aria-hidden="true">/</kbd>
         </label>
         <div class="chips" role="group" aria-label="Filter by family">
-          <button class="chip" type="button" data-group="all" aria-pressed="true">all<span class="n">13</span></button>
+          <button class="chip" type="button" data-group="all" aria-pressed="true">all<span class="n">14</span></button>
           <button class="chip" type="button" data-group="file" aria-pressed="false">file<span class="n">4</span></button>
           <button class="chip" type="button" data-group="track" aria-pressed="false">track<span class="n">5</span></button>
-          <button class="chip" type="button" data-group="site" aria-pressed="false">site<span class="n">4</span></button>
+          <button class="chip" type="button" data-group="site" aria-pressed="false">site<span class="n">5</span></button>
         </div>
-        <span class="count" id="count" aria-live="polite">13 skills</span>
+        <span class="count" id="count" aria-live="polite">14 skills</span>
       </div>
 
       <h3 class="group-h" data-for="file">File what you solved</h3>
@@ -540,6 +540,14 @@
           <div class="touches"><span>doc/faq/</span><span>i18n/zh/faq/</span></div>
           <div class="card-links"><a class="go" href="lc-faq-add.html">Open page →</a><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/lc-faq-add/SKILL.md">SKILL.md ↗</a></div>
         </article>
+        <article class="card" data-group="site" data-keys="system design architecture consult review mock interview case doc data engineering pipeline backend trade-off crux">
+          <div class="card-top"><span class="cmd">system-design-master</span><span class="tag">site</span></div>
+          <h3>System design consultant</h3>
+          <p>Consults, reviews or mock-interviews a data-engineering or backend design &mdash; requirements first, numbers that turn into decisions, the crux, trade-offs with what flips them &mdash; and writes a full case into <code>system_design/</code> or a guide into the FAQs with its 中文 half.</p>
+          <div class="eg"><code>/system-design-master consult ad click aggregation</code><button class="copy" type="button">copy</button></div>
+          <div class="touches"><span>system_design/</span><span>doc/faq/</span><span>i18n/zh/faq/</span></div>
+          <div class="card-links"><a href="https://github.com/yennanliu/CS_basics/blob/master/.claude/skills/system-design-master/SKILL.md">SKILL.md ↗</a></div>
+        </article>
       </div>
 
       <p class="empty" id="empty">No skill matches that. Try <code>readme</code>, <code>log</code> or <code>translate</code>.</p>
@@ -569,7 +577,7 @@
 
       <div class="builder">
         <div class="picker" id="picker" role="group" aria-label="Skills to install">
-          <label class="all"><input type="checkbox" id="pick-all"> all thirteen</label>
+          <label class="all"><input type="checkbox" id="pick-all"> all fourteen</label>
           <label><input type="checkbox" value="lc-python" checked> lc-python</label>
           <label><input type="checkbox" value="lc-java"> lc-java</label>
           <label><input type="checkbox" value="lc-sql"> lc-sql</label>
@@ -583,6 +591,7 @@
           <label><input type="checkbox" value="lc-site-data"> lc-site-data</label>
           <label><input type="checkbox" value="lc-zh-translate"> lc-zh-translate</label>
           <label><input type="checkbox" value="lc-faq-add"> lc-faq-add</label>
+          <label><input type="checkbox" value="system-design-master"> system-design-master</label>
         </div>
         <div class="out">
           <div class="tabs" role="tablist" aria-label="Agent">
