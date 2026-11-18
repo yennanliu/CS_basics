@@ -78,6 +78,24 @@ SELECT
 FROM ranked_sales
 WHERE year_rank = 1;
 
+
+# V0-1
+# IDEA: （Tuple IN 子查詢） (gpt)
+SELECT 
+    product_id,
+    year AS first_year,
+    quantity,
+    price
+FROM sales
+WHERE (product_id, year) IN (
+    SELECT 
+        product_id, 
+        MIN(year) AS year
+    FROM sales
+    GROUP BY product_id
+);
+
+
 # V1
 # IDEA : FIRST YEAR PER PRODUCT IN A CTE, JOIN BACK TO SALES
 #
