@@ -20,7 +20,6 @@
 			- slide window
 
 
-
 - Cheatsheet review
 	
 	- Doing
@@ -40,6 +39,9 @@
 
 
 
+- Sys design
+	- https://yennj12.js.org/CS_basics/faqs/de_de_system_design.zh.html
+		- 5) 取捨 
 
 
 
