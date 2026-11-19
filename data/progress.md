@@ -33,6 +33,8 @@
 		- Linked List（鏈結串列）
 			- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html
 
+				- `Template 6: Carry Loop over a Dummy — LC 2 `
+
 
 	- Done
 		- Hash Map Cheatsheet（雜湊表速查）
