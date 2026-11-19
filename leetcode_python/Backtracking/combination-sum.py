@@ -102,6 +102,74 @@ class Solution(object):
             cur.pop()
 
 
+# V0-0-1
+# IDEA: DFS + BACKTRACK (GPT)
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        # Edge case
+        if not candidates:
+            return []
+
+        self.res = []
+
+        self.helper(candidates, target, [], 0, 0)
+
+        return self.res
+
+    def helper(self, candidates, target, cur, start_idx, cur_sum):
+
+        # Base case: found a valid combination
+        if cur_sum == target:
+
+            """
+            Q: why don't need to `de-duplicate` ??
+
+            ->
+
+            
+                關鍵在於：LC 39 的 `start_idx` 已經幫我們避免 duplicated combinations，
+                         所以不需要額外使用 set 或 cache。
+
+
+            ->
+
+                下一層只能從目前的 index i 或之後開始選擇。
+
+                因此：
+                - 可以選 [2, 3]
+                - 不會再選 [3, 2]
+                因為選了 3 之後，下一層不可能回頭選 2。
+
+            """
+            self.res.append(cur[:])
+            return
+
+        # Base case: exceed target
+        if cur_sum > target:
+            return
+
+        for i in range(start_idx, len(candidates)):
+            val = candidates[i]
+
+            if cur_sum + val <= target:
+                cur.append(val)
+
+                self.helper(
+                    candidates,
+                    target,
+                    cur,
+                    i,
+                    cur_sum + val
+                )
+
+                cur.pop()
+
+
 # V0-1
 # IDEA : DFS + BACKTRACK
 # time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
