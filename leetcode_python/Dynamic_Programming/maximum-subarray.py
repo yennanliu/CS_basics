@@ -247,7 +247,38 @@ class Solution(object):
             max_ = max(max_, cumsum)
         return max_ 
 
-# V0-4
+
+# V0-5
+# IDEA: GREEDY (gpt)
+class Solution(object):
+    def maxSubArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # edge
+        if len(nums) == 1:
+            return nums[0]
+
+        max_sum = nums[0]
+        cur_sum = nums[0]
+
+        n = len(nums)
+
+        for r in range(1, n):
+            val = nums[r]
+
+            if cur_sum + val < val:
+                cur_sum = val
+            else:
+                cur_sum += val
+
+            max_sum = max(max_sum, cur_sum)
+
+        return max_sum
+
+
+# V0-5
 # IDEA : BRUTE FORCE (TLE)
 """
 
@@ -289,6 +320,7 @@ class Solution(object):
                 tmp.append(nums[j])
                 res = max(res, sum(tmp))
         return res
+
 
 # V1
 # https://blog.csdn.net/qqxx6661/article/details/78167981
