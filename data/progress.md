@@ -37,7 +37,7 @@
 	- Doing
 		- 二元樹
 			- https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.zh.html
-
+				- `模板 1：遞迴的前序 / 中序 / 後序走訪 — LC 94`
 
 	- Done
 		- Hash Map Cheatsheet（雜湊表速查）
@@ -205,6 +205,11 @@
 
 		- Template 2: DummyTemplate 3: Two Dummies, Split then Join 
 			— LC 86 (!!)
+
+	- binary tree
+
+		- 0-4) 三種形狀共通的坑 — 是重置，不是停止
+			- 298 (!!!)
 
 
 
