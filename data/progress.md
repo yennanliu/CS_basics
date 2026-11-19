@@ -15,7 +15,11 @@
 			- Trees
 				- 124 (todo)
 
-			- backtrack
+			- PQ
+				- 295(todo)
+
+			- graphs
+
 
 		- done:
 			- array & hash
@@ -24,6 +28,7 @@
 			- linked list
 			- stack
 			- Tries (pass)
+			- backtrack
 
 
 
