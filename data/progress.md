@@ -35,10 +35,8 @@
 - Cheatsheet review
 	
 	- Doing
-		- Linked List（鏈結串列）
-			- https://yennj12.js.org/CS_basics/cheatsheets/linked_list.zh.html
-
-				- `Template 6: Carry Loop over a Dummy — LC 2 `
+		- 二元樹
+			- https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.zh.html
 
 
 	- Done
@@ -49,6 +47,7 @@
 		- 二分搜尋
 		- 滑動視窗
 		- 堆疊（Stack）
+		- Linked List（鏈結串列）
 
 
 
