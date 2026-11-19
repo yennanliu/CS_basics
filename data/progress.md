@@ -18,9 +18,11 @@
 			- PQ
 				- 295(todo)
 
-			- graphs
-				- 417 (todo)
+			- advanced graphs
+			- 1D DP (pass)
+			- 2D DP (pass)
 
+			- greedy (ing)
 
 		- done:
 			- array & hash
@@ -30,6 +32,7 @@
 			- stack
 			- Tries (pass)
 			- backtrack
+			- graphs
 
 
 
