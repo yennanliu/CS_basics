@@ -192,6 +192,14 @@
 		- 模板 3：單調堆疊 —— Next Greater／Smaller (!!!)
 			- — LC 739 ⭐ · LC 496 · LC 503 （環狀：走 2n） · LC 901 （線上 span） · LC 907 （貢獻計數） · LC 84 （兩側的 next smaller）
 
+	- Linked list
+
+		- Template 2: Dummy Head Deletion
+		 	— LC 203
+
+		- Template 2: DummyTemplate 3: Two Dummies, Split then Join 
+			— LC 86 (!!)
+
 
 
 
