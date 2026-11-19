@@ -49,7 +49,45 @@ Output:
 
 */
 
+
+/* 
+
+->
+
+找出每個 Product 在指定日期 2019-08-16 的價格。
+如果該 Product 在指定日期之前沒有任何價格異動紀錄，預設價格為 10。
+
+*/
+
+
 # V0
+# IDEA : LATEST CHANGE ON OR BEFORE THE DATE, LEFT JOIN, DEFAULT 10 (GPT)
+WITH ranked AS (
+    SELECT
+        product_id,
+        new_price,
+        ROW_NUMBER() OVER (
+            PARTITION BY product_id
+            ORDER BY change_date DESC
+        ) AS rn
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+),
+all_products AS (
+    SELECT DISTINCT product_id
+    FROM Products
+)
+SELECT
+    p.product_id,
+    COALESCE(r.new_price, 10) AS price
+FROM all_products p
+LEFT JOIN ranked r
+    ON p.product_id = r.product_id
+    AND r.rn = 1;
+
+
+
+# V0-0-1
 # IDEA : LATEST CHANGE ON OR BEFORE THE DATE, LEFT JOIN, DEFAULT 10
 #
 #   last_change keeps, per product, the latest change_date <= 2019-08-16

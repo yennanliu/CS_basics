@@ -1,4 +1,4 @@
-20261119: SQL 50 (done): 1789(again!!),180(OK) | TODO: 3964, 713, 1004(todo), 155(todo), 388(todo), 636(todo), 203(todo) |  neetcode 150: | blind 75 (ing):  39(again!!),79(ok**),200(OK),133(ok*),207(ok),261(ok),323(ok),53(ok*),57(OK),56(OK)
+20261119: SQL 50 (done): 1789(again!!),180(OK), 1164(again!!!) | TODO: 3964, 713, 1004(todo), 155(todo), 388(todo), 636(todo), 203(todo),  |  neetcode 150: | blind 75 (ing):  39(again!!),79(ok**),200(OK),133(ok*),207(ok),261(ok),323(ok),53(ok*),57(OK),56(OK)
 
 
 
