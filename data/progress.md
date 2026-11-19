@@ -21,8 +21,7 @@
 			- advanced graphs
 			- 1D DP (pass)
 			- 2D DP (pass)
-
-			- greedy (ing)
+			- intervals
 
 		- done:
 			- array & hash
@@ -33,6 +32,9 @@
 			- Tries (pass)
 			- backtrack
 			- graphs
+			- greedy (ing)
+				- 55 (todo)
+
 
 
 
