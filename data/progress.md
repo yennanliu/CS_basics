@@ -57,8 +57,9 @@
 
 
 - Sys design
-	- https://yennj12.js.org/CS_basics/faqs/de_de_system_design.zh.html
-		- 5) 取捨 
+	- 資料工程系統設計 - done (to do: review)
+	- 資深資料工程師 SQL 面試題 (ing)
+		- https://yennj12.js.org/CS_basics/faqs/de_sql_interview_questions.zh.html
 
 
 
