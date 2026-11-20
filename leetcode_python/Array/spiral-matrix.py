@@ -152,6 +152,52 @@ class Solution(object):
 
 
 # V0-0-1
+# IDEA : 4 cases : right, down, left, up + boundary condition (gemini)
+class Solution(object):
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+        # 邊界條件：空矩陣回傳空串列
+        if not matrix or not matrix[0]:
+            return []
+
+        l = len(matrix)
+        w = len(matrix[0])
+        total = l * w
+        res = []
+
+        x_min, x_max = 0, w - 1
+        y_min, y_max = 0, l - 1
+
+        while len(res) < total and x_min <= x_max and y_min <= y_max:
+            # 1. right：沿著最上方 y_min 列由左往右
+            for x in range(x_min, x_max + 1):
+                res.append(matrix[y_min][x])
+            y_min += 1
+
+            # 2. down：沿著最右方 x_max 行由上往下
+            for y in range(y_min, y_max + 1):
+                res.append(matrix[y][x_max])
+            x_max -= 1
+
+            # 3. left：沿著最下方 y_max 列由右往左（需確保仍有有效列）
+            if y_min <= y_max:
+                for x in range(x_max, x_min - 1, -1):
+                    res.append(matrix[y_max][x])
+                y_max -= 1
+
+            # 4. up：沿著最左方 x_min 行由下往上（需確保仍有有效行）
+            if x_min <= x_max:
+                for y in range(y_max, y_min - 1, -1):
+                    res.append(matrix[y][x_min])
+                x_min += 1
+
+        return res
+
+
+# V0-0-2
 # IDEA : 4 cases : right, down, left, up + boundary condition
 # PATTERN:
 # while condition:

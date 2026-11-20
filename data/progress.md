@@ -18,8 +18,7 @@
 			- advanced graphs
 			- 1D DP (pass)
 			- 2D DP (pass)
-			- math & geometry
-
+	
 		- done:
 			- array & hash
 			- 2 pointers
@@ -34,6 +33,7 @@
 			- intervals
 			- bit op
 			- binary search
+			- math & geometry
 
 
 
