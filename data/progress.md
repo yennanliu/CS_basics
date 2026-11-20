@@ -5,6 +5,18 @@
 - TODO:
 	- todo in progress.txt
 
+	- needcode 150 review
+		- https://neetcode.io/practice/practice/neetcode150
+
+		- doing:
+			- array & hash
+
+
+
+
+
+
+
 	- blind 75 review
 		- https://github.com/yennanliu/CS_basics/issues/352
 
@@ -18,7 +30,7 @@
 			- advanced graphs
 			- 1D DP (pass)
 			- 2D DP (pass)
-	
+
 		- done:
 			- array & hash
 			- 2 pointers
