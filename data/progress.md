@@ -10,6 +10,10 @@
 
 		- doing:
 			- array & hash
+				- 36 (todo)
+				
+			- 2 pointers
+				- 42 (todo)
 
 
 
