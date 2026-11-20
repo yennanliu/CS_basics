@@ -21,7 +21,7 @@
 			- advanced graphs
 			- 1D DP (pass)
 			- 2D DP (pass)
-			- intervals
+			- math & geometry
 
 		- done:
 			- array & hash
@@ -34,6 +34,8 @@
 			- graphs
 			- greedy (ing)
 				- 55 (todo)
+			- intervals
+			- bit op
 
 
 

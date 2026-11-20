@@ -85,6 +85,36 @@ class Solution:
         return True
 
 
+# V0-0-2
+# IDEA: SCAN LINE + LC 253 (gemini)
+class Solution:
+    def canAttendMeetings(self, intervals):
+        # 邊界條件：沒有會議或只有一場會議，必定可以參加
+        if not intervals or len(intervals) <= 1:
+            return True
+
+        events = []
+        for s, e in intervals:
+            events.append([s, 1])   # 會議開始：同時進行數 +1
+            events.append([e, -1])  # 會議結束：同時進行數 -1
+
+        # 依時間點排序；若時間相同，讓 -1（結束）排在 +1（開始）前面，
+        # 確保 [a, b] 與 [b, c] 接續時不會被誤判為同時重疊
+        events.sort(key=lambda x: (x[0], x[1]))
+
+        concurrent = 0
+
+        for _, delta in events:
+            concurrent += delta
+
+            # 只要同一時間超過 1 場會議進行，代表有衝突
+            if concurrent > 1:
+                return False
+
+        # 所有事件都順利走完且無衝突，回傳 True
+        return True
+
+
 # V0-1
 # IDEA : SORT
 # time = O(n log n)
