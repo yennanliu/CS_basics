@@ -45,7 +45,7 @@
 	- Doing
 		- 二元樹
 			- https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.zh.html
-				- `模板 1：遞迴的前序 / 中序 / 後序走訪 — LC 94`
+				- `模板 12：兩棵樹同步走 — LC 100`
 
 	- Done
 		- Hash Map Cheatsheet（雜湊表速查）
@@ -219,6 +219,8 @@
 
 		- LC 652 - Find Duplicate Subtrees
 
+		- LC 958（Check Completeness of a Binary Tree） (!!)
+
 		- 0-4) 三種形狀共通的坑 — 是重置，不是停止
 			- 298 (!!!)
 
@@ -234,6 +236,13 @@
 		- 模板 8：O(1) 空間串接同層節點 
 			— LC 117 
 			- LC 116
+
+		- 模板 10：後序的結構性修改 
+			— LC 1110
+
+			- LC 814（Binary Tree Pruning）
+
+
 
 
 
