@@ -95,7 +95,58 @@ class Solution(object):
         return matrix
 
 
-# V0-0-1
+# VO-0-1
+# IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE 
+class Solution(object):
+    def rotate(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: None Do not return anything, modify matrix in-place instead.
+        """
+        # edge
+        if not matrix or len(matrix) <= 1:
+          return
+
+        l = len(matrix)
+        w = len(matrix[0])
+
+        # step 1) TRANSPOSE
+        """
+
+        NOTE !!! 
+
+        -> dry run the `transpose` op, so make it more clear
+
+
+        y = 0
+
+            (0, 1)
+            (0, 2)
+
+        y = 1
+
+            (1, 2)
+
+
+        y = 2
+
+        """
+        for y in range(l):
+          # ??
+          for x in range(y+1, w):
+            matrix[y][x], matrix[x][y] = matrix[x][y], matrix[y][x]
+
+        # step 2) REVERSE
+        for y in range(l):
+          matrix[y] = matrix[y][::-1]
+
+        # NO need to return val
+        # do op in-place
+        #return matrix
+
+
+
+# V0-0-2
 # IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE  (gpt)
 # time = O(n^2)
 # space = O(1)
