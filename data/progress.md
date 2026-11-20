@@ -9,9 +9,6 @@
 		- https://github.com/yennanliu/CS_basics/issues/352
 
 		- doing:
-			- binary search
-				- 33 (todo)
-				
 			- Trees
 				- 124 (todo)
 
@@ -36,6 +33,7 @@
 				- 55 (todo)
 			- intervals
 			- bit op
+			- binary search
 
 
 
