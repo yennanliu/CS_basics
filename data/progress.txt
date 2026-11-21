@@ -1,4 +1,4 @@
-20261121: SQL 50 (done):  1204(again!!) | TODO: 3964, 713, 1004(todo), 155(todo), 388(todo), 636(todo), 203(todo), 1110(todo)  |  neetcode 150(ing): 167(ok),567(again),74(ok),875(OK*),138(again) | blind 75: 143(again),92(ok****)
+20261121: SQL 50 (done):  1204(again!!), 1341(again) | TODO: 3964, 713, 1004(todo), 155(todo), 388(todo), 636(todo), 203(todo), 1110(todo)  |  neetcode 150(ing): 167(ok),567(again),74(ok),875(OK*),138(again) | blind 75: 143(again),92(ok****)
 
 
 20261120: SQL 50 (done):  | TODO: 3964, 713, 1004(todo), 155(todo), 388(todo), 636(todo), 203(todo), 1110(todo)  |  neetcode 150: | blind 75 (ing): 435(ok*),252(ok),253(ok),48(ok),33(ok**),73(OK),54(ok**),300(again!!),572(again),19(again!!)
