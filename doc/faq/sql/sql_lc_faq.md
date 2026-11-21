@@ -73,6 +73,10 @@ ORDER  BY score DESC;
   need none: tied rows get the same value by design.
 - **A window function cannot appear in `WHERE`** — it is computed after `WHERE` runs — and
   MySQL has no `QUALIFY`. Compute the rank in a CTE or derived table, then filter it outside.
+- **`RANK() = 2` can return nothing.** On 9000, 9000, 8000 the ranks are 1, 1, 3: no row is
+  ranked 2. "The second-highest salary" means the second **distinct** value, so it is
+  `DENSE_RANK() = 2`, which returns the 8000 row. `RANK` is right only when the question counts
+  places the way a race does, where a tie for first leaves no second place.
 
 LC: [178](https://leetcode.com/problems/rank-scores/)
 
@@ -205,6 +209,40 @@ That makes the pick **deterministic**, not necessarily the latest: the larger `o
 later order only if ids are assigned in creation order. When it must be the latest, sort by a
 finer timestamp (`created_at`) first.
 
+LC 1164 adds two twists: the latest row **on or before a date**, and a default for a group that
+has no such row. Filter the date inside the CTE, then `LEFT JOIN` every product back and
+`COALESCE` the gap.
+
+```sql
+-- LC 1164: each product's price on 2019-08-16; a product not changed by then is still 10
+WITH ranked AS (
+  SELECT product_id, new_price,
+         ROW_NUMBER() OVER (PARTITION BY product_id
+                            ORDER BY change_date DESC) AS rn
+  FROM   Products
+  WHERE  change_date <= '2019-08-16'
+)
+SELECT p.product_id,
+       COALESCE(r.new_price, 10) AS price
+FROM   (SELECT DISTINCT product_id FROM Products) AS p
+LEFT   JOIN ranked AS r
+       ON  r.product_id = p.product_id
+       AND r.rn = 1;
+```
+
+```text
+product_id   price
+1            35       <- the change made on 2019-08-16 counts: <=, not <
+2            50       <- its 65 arrives on 08-17, after the date
+3            10       <- every change is after the date: no match, so the default
+```
+
+- **`r.rn = 1` belongs in `ON`, not `WHERE`.** In `WHERE` it drops product 3, whose `rn` is
+  `NULL` after the `LEFT JOIN`.
+- **Filter the date before numbering, not after.** Numbered over every row, product 2's
+  `rn = 1` is its 08-17 price of 65.
+- `(product_id, change_date)` is the key, so `ROW_NUMBER` needs no tie-breaker here.
+
 LC 1070 is the case where `ROW_NUMBER` is **wrong**: it asks for every sale in each product's
 first year, and a product can have several.
 
@@ -236,7 +274,8 @@ product_id   first_year   quantity   price
   the rows only when other columns of that row are needed too, such as its `device_id`.
 
 LC: [511](https://leetcode.com/problems/game-play-analysis-i/),
-[1070](https://leetcode.com/problems/product-sales-analysis-iii/)
+[1070](https://leetcode.com/problems/product-sales-analysis-iii/),
+[1164](https://leetcode.com/problems/product-price-at-a-given-date/)
 
 ---
 
@@ -940,7 +979,7 @@ decimal_div   integer_div   rounded   days_between   next_day     month_bucket
 |---|---|---|
 | `DENSE_RANK`, N-th distinct value | 176, 177, 178, 185 | [1-1](#1-1-row_number-vs-rank-vs-dense_rank), [1-2](#1-2-the-n-th-highest-value-null-when-there-is-none) |
 | Top-N / highest per group | 184, 185 | [1-3](#1-3-top-n-per-group) |
-| First or latest row per group | 511, 1070 | [1-4](#1-4-first-or-latest-row-per-group) |
+| First or latest row per group | 511, 1070, 1164 | [1-4](#1-4-first-or-latest-row-per-group) |
 | Find / delete duplicates | 182, 196 | [2-1](#2-1-find-the-duplicated-values), [2-2](#2-2-delete-duplicates-keep-one) |
 | `HAVING COUNT(*) = 1`, `MAX` for `NULL` | 619 | [2-3](#2-3-values-that-appear-exactly-once) |
 | `NULL` in `WHERE`, `<=>` | 584 | [3-1](#3-1--and--drop-null-rows) |

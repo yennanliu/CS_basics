@@ -24,7 +24,7 @@
 <!-- 00a716f4374e -->
 ## 1) 排名與 Top-N ⭐⭐⭐⭐⭐
 
-<!-- b7894be38705 -->
+<!-- 2afba010ce9f -->
 ### 1-1) `ROW_NUMBER` vs `RANK` vs `DENSE_RANK`
 
 **三者只在同分時不同。`ROW_NUMBER` 給每一列各自的號碼；`RANK` 讓同分的列同名次，並跳過其後的
@@ -49,6 +49,9 @@ LC 178（*Rank Scores*）顧名思義就是 `DENSE_RANK` —— 而且它會卡�
   `RANK` 與 `DENSE_RANK` 不需要：同分的列本來就拿到相同的值。
 - **window function 不能出現在 `WHERE`** —— 它在 `WHERE` 執行之後才計算 —— 而 MySQL 沒有
   `QUALIFY`。先在 CTE 或衍生表（derived table）裡算出名次，再到外層過濾。
+- **`RANK() = 2` 可能什麼都不回傳。** 在 9000, 9000, 8000 上名次是 1, 1, 3：沒有任何一列是第 2 名。
+  「第二高的薪水」指的是第二個**不同**的值，所以要用 `DENSE_RANK() = 2`，它回傳 8000 那一列。
+  只有題目像賽跑那樣計算名次時 `RANK` 才對 —— 兩人並列第一，就沒有第二名。
 
 LC：[178](https://leetcode.com/problems/rank-scores/)
 
@@ -97,7 +100,7 @@ LC 184（*Department Highest Salary*）就是同一個查詢改成 `salary_rank 
 LC：[184](https://leetcode.com/problems/department-highest-salary/)、
 [185](https://leetcode.com/problems/department-top-three-salaries/)
 
-<!-- 345b2174d03e -->
+<!-- 68d610a5e6d5 -->
 ### 1-4) 每組的第一列或最新一列
 
 **把每組的列由新到舊（或由舊到新）編號，保留第 1 號。答案是每組一列時用 `ROW_NUMBER`；並列第一的
@@ -109,6 +112,18 @@ LC：[184](https://leetcode.com/problems/department-highest-salary/)、
 `ORDER BY order_date DESC, order_id DESC`。少了它，選到的那一列每次執行都可能不同。
 這讓選擇變得**確定**，但不一定是最新的：只有 id 依建立順序配發時，較大的 `order_id` 才是較晚的訂單。
 必須是最新的那筆時，先依更細的時間戳（`created_at`）排序。
+
+LC 1164 多了兩個變化：要的是**指定日期當天或之前**的最新一列，而且沒有這種列的組要給預設值。
+先在 CTE 裡過濾日期，再把每個產品 `LEFT JOIN` 回來，用 `COALESCE` 補上空缺。
+
+<!--CODE-->
+
+<!--CODE-->
+
+- **`r.rn = 1` 要放在 `ON`，不是 `WHERE`。** 放在 `WHERE` 會把產品 3 丟掉 —— 經過 `LEFT JOIN`
+  之後它的 `rn` 是 `NULL`。
+- **先過濾日期，再編號，不能反過來。** 若對所有列編號，產品 2 的 `rn = 1` 會是它 08-17 的價格 65。
+- `(product_id, change_date)` 是主鍵，所以這裡的 `ROW_NUMBER` 不需要 tie-breaker。
 
 LC 1070 正是 `ROW_NUMBER` **錯**的情況：它要每個產品第一年的所有銷售，而一個產品在那一年
 可能有好幾筆。
@@ -126,7 +141,8 @@ LC 1070 正是 `ROW_NUMBER` **錯**的情況：它要每個產品第一年的所
   其他欄位（例如它的 `device_id`）也需要時，才替列編號。
 
 LC：[511](https://leetcode.com/problems/game-play-analysis-i/)、
-[1070](https://leetcode.com/problems/product-sales-analysis-iii/)
+[1070](https://leetcode.com/problems/product-sales-analysis-iii/)、
+[1164](https://leetcode.com/problems/product-price-at-a-given-date/)
 
 <!-- 6ad5f27c57cb -->
 ## 2) 重複資料 ⭐⭐⭐⭐
@@ -491,14 +507,14 @@ LC：[602](https://leetcode.com/problems/friend-requests-ii-who-has-the-most-fri
 | `ROW_NUMBER()` 的運算 | 回傳 `BIGINT UNSIGNED`，差值為負就報錯 | `CAST(… AS SIGNED)`（[5-3](#5-3-gaps-and-islands)） |
 | `NULL` 比較 | `= NULL`、`<> 2` 與 `NOT IN (…, NULL)` 會丟掉列 | `IS NULL`、`<=>`、`NOT EXISTS`（[3](#3-nulls-and-missing-rows-)） |
 
-<!-- c8f15ca9d4f8 -->
+<!-- 917490219751 -->
 ## 9) 技巧 → 題目索引 ⭐⭐⭐
 
 | 技巧 | 題目 | 章節 |
 |---|---|---|
 | `DENSE_RANK`、第 N 個不同的值 | 176, 177, 178, 185 | [1-1](#1-1-row_number-vs-rank-vs-dense_rank)、[1-2](#1-2-the-n-th-highest-value-null-when-there-is-none) |
 | 每組 Top-N / 最高 | 184, 185 | [1-3](#1-3-top-n-per-group) |
-| 每組第一列或最新一列 | 511, 1070 | [1-4](#1-4-first-or-latest-row-per-group) |
+| 每組第一列或最新一列 | 511, 1070, 1164 | [1-4](#1-4-first-or-latest-row-per-group) |
 | 找出 / 刪除重複 | 182, 196 | [2-1](#2-1-find-the-duplicated-values)、[2-2](#2-2-delete-duplicates-keep-one) |
 | `HAVING COUNT(*) = 1`，用 `MAX` 得到 `NULL` | 619 | [2-3](#2-3-values-that-appear-exactly-once) |
 | `WHERE` 裡的 `NULL`、`<=>` | 584 | [3-1](#3-1--and--drop-null-rows) |
