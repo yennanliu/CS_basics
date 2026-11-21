@@ -163,7 +163,7 @@ Most DE loops include one "design a pipeline" question. The same six steps work 
 5. **Make it reliable** — idempotency, backfills, late data, exactly-once or at-least-once with dedupe.
 6. **Operate it** — data quality checks, monitoring, alerting, cost.
 
-The long form — sizing, building blocks, trade-offs and eight worked classics — is
+The long form — sizing, building blocks, trade-offs and nine worked classics — is
 [`de/de_system_design.md`](./de/de_system_design.md).
 
 ---

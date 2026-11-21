@@ -846,9 +846,9 @@ pipeline's own retries from adding a third kind.
 
 | Column | Means | Used for |
 |---|---|---|
-| `event_id` | one business event, assigned at the source | event-level dedupe |
+| `source_id` + `event_id` | one business event; `event_id` is unique only **within** its source | event-level dedupe |
 | `order_id` | the business key | entity-level dedupe, `MERGE` key |
-| `updated_at` (or CDC `lsn`) | when the source changed the row | picks the latest version |
+| `updated_at`, then `lsn` | when the source changed the row, then its change sequence (CDC log position; `0` for a source without one, set at ingestion so it is never NULL) | picks the latest version |
 | `ingest_ts` | when the row reached us | tie-breaker only, never "latest" |
 | `batch_id` / `run_id` | one run of the pipeline | making a rerun idempotent |
 
@@ -873,42 +873,56 @@ send the same business event.
 ```text
  orders API / CDC / partner files
    ─► ingestion: stamp source_id, ingest_ts, batch_id; keep or derive event_id
+        (unique within its source); default lsn to 0 so the version order has no NULL
    ─► S3 bronze (immutable, partitioned by ingest date) + batch manifest
    ─► Spark, daily, over bronze rows ingested in the last N days:
         1. validate schema; NULL or malformed keys → quarantine (never into a dedupe group)
         2. normalise keys, timestamps, decimals, string case
-        3. event-level:  ROW_NUMBER() OVER (PARTITION BY event_id ORDER BY ingest_ts)        = 1
+        3. event-level:  ROW_NUMBER() OVER (PARTITION BY source_id, event_id
+                                            ORDER BY ingest_ts)                            = 1
         4. entity-level: ROW_NUMBER() OVER (PARTITION BY order_id
                                             ORDER BY updated_at DESC, lsn DESC, event_id DESC) = 1
    ─► silver.order_events  (one row per event; event_date partitions rewritten)
    ─► silver.orders        (one row per order; MERGE, newer version wins)
-   ─► Redshift gold: load staging table, then DELETE + INSERT by key in one transaction
+   ─► Redshift gold: stage the touched orders' current rows from silver.orders,
+        validate the staging table, then DELETE + INSERT by key in one transaction
    ─► checks before publish: key uniqueness, input vs output counts, duplicate rate
 ```
 
 Decisions to say out loud:
 
-1. **Event-level dedupe on `event_id`, partitioned by event date.** Every copy of an event
+1. **Event-level dedupe on `(source_id, event_id)`, partitioned by event date.** An `event_id`
+   is only promised unique within its source, so two sources can both send `event_id = 1` for
+   unrelated events; keying on `event_id` alone would drop one of them. Copies of one business
+   event sent by *different* sources are a different problem, matched on content (decision 5).
+   Every copy of an event
    carries the same event time, so all of them fall into the **same** `event_date` partition.
    That makes "rewrite every event date this run touched, deduped" complete for this layer, as
    long as the copies arrive within the lookback: union the existing partition with the new
-   arrivals, keep one row per `event_id`, overwrite the partition. Partition by ingest date
+   arrivals, keep one row per key, overwrite the partition. Partition by ingest date
    instead and two copies of one event land in two partitions that never meet.
 
    ```sql
-   -- Iceberg / Delta (Spark SQL), dynamic partition overwrite: rewrites only the
-   -- event_date partitions this run's arrivals touch. A table format is what lets the
-   -- statement read the partitions it overwrites; plain Parquet on S3 refuses.
+   -- Iceberg / Delta (Spark SQL). A table format is what lets the statement read the
+   -- partitions it overwrites; plain Parquet on S3 refuses.
+   -- Without this setting Spark's default (static) mode replaces EVERY partition of the
+   -- table, not just the dates the query returns.
+   SET spark.sql.sources.partitionOverwriteMode = dynamic;
+
    INSERT OVERWRITE TABLE silver.order_events PARTITION (event_date)
-   SELECT event_id, order_id, amount, status, updated_at, ingest_ts, event_date
+   SELECT source_id, event_id, order_id, amount, status, updated_at, lsn, ingest_ts, event_date
    FROM (
      SELECT *,
-            ROW_NUMBER() OVER (PARTITION BY event_id ORDER BY ingest_ts) AS rn
+            ROW_NUMBER() OVER (PARTITION BY source_id, event_id ORDER BY ingest_ts) AS rn
      FROM (
-       SELECT * FROM silver.order_events
+       -- explicit, identical column lists: SELECT * on both sides breaks the moment
+       -- one table gains a column
+       SELECT source_id, event_id, order_id, amount, status, updated_at, lsn, ingest_ts, event_date
+       FROM silver.order_events
        WHERE event_date IN (SELECT DISTINCT event_date FROM staged_arrivals)
        UNION ALL
-       SELECT * FROM staged_arrivals
+       SELECT source_id, event_id, order_id, amount, status, updated_at, lsn, ingest_ts, event_date
+       FROM staged_arrivals
      ) AS candidates
    ) AS ranked
    WHERE rn = 1;
@@ -917,7 +931,9 @@ Decisions to say out loud:
 2. **Entity-level dedupe on `order_id` is a `MERGE`, never a partition overwrite.** Versions
    of one order have different `updated_at` values, so they land in different partitions, and
    the partition key is not the dedupe key. Keep one row per order in the batch first, then
-   let the newer version win:
+   let the newer version win — by the **same** total order in the ranking and in the guard,
+   `(updated_at, lsn, event_id)`, with `event_id` stored on the target so a later batch can
+   compare against it:
 
    ```sql
    -- Delta Lake / Iceberg (Spark SQL)
@@ -933,23 +949,30 @@ Decisions to say out loud:
      WHERE rn = 1
    ) AS s
    ON t.order_id = s.order_id
+   -- lsn is never NULL (defaulted at ingestion), so none of these comparisons is UNKNOWN
    WHEN MATCHED AND (s.updated_at > t.updated_at
-                     OR (s.updated_at = t.updated_at AND s.lsn > t.lsn)) THEN UPDATE SET
+                     OR (s.updated_at = t.updated_at AND s.lsn > t.lsn)
+                     OR (s.updated_at = t.updated_at AND s.lsn = t.lsn
+                         AND s.event_id > t.event_id)) THEN UPDATE SET
      t.amount     = s.amount,
      t.status     = s.status,
      t.updated_at = s.updated_at,
-     t.lsn        = s.lsn
-   WHEN NOT MATCHED THEN INSERT (order_id, amount, status, updated_at, lsn)
-     VALUES (s.order_id, s.amount, s.status, s.updated_at, s.lsn);
+     t.lsn        = s.lsn,
+     t.event_id   = s.event_id
+   WHEN NOT MATCHED THEN INSERT (order_id, amount, status, updated_at, lsn, event_id)
+     VALUES (s.order_id, s.amount, s.status, s.updated_at, s.lsn, s.event_id);
    ```
 
    The guard on `WHEN MATCHED` is what makes the `MERGE` safe to rerun **and** safe against a
    late, older version: replaying the batch changes nothing, and a version that arrives after a
-   newer one is ignored instead of rolling the order back.
+   newer one is ignored instead of rolling the order back. If the guard compared fewer columns
+   than the ranking, two versions tied on `(updated_at, lsn)` would keep whichever was merged
+   first, and a rebuild in a different batch order would store a different row.
 
 3. **A deterministic order.** `ORDER BY updated_at DESC` alone leaves ties to chance, so a rerun
    can pick a different row and the output stops being reproducible. Break ties with a source
-   sequence (`lsn`), then a stable ID. `ingest_ts` is a tie-breaker of last resort, never the
+   sequence (`lsn`), then a stable ID — and make none of them nullable, because `NULL > x` is
+   UNKNOWN, so a guard comparing it never fires. `ingest_ts` is a tie-breaker of last resort, never the
    meaning of "latest": a retry arrives later than the original without being newer.
 
 4. **NULL keys are quarantined, not deduped.** `PARTITION BY order_id` puts every NULL into one
@@ -970,18 +993,25 @@ Decisions to say out loud:
 
 7. **A rerun must not be a fourth source of duplicates.** Make every write replace rather than
    append: partition overwrite for events, `MERGE` for entities, and for Redshift a staging
-   load followed by `DELETE` + `INSERT` keyed on the batch or the business key **inside one
-   transaction**, so a retried load replaces its first attempt instead of doubling it. A
+   load followed by `DELETE` + `INSERT` keyed on the business key **inside one transaction**, so
+   a retried load replaces its first attempt instead of doubling it. Stage the orders' **current
+   rows from `silver.orders`**, not the raw batch: the guarded `MERGE` has already decided which
+   version wins, so rerunning an old batch re-copies today's state instead of overwriting a
+   newer order with an older one. A
    `processed_batches` table is only useful when its row is written in the same transaction as
    the data; "check the table, then write" races with a concurrent run.
 
    ```sql
-   -- Redshift: a retried run of batch 2026-11-21 replaces itself
+   -- Redshift: a retried run of batch 2026-11-21 replaces itself.
+   -- staging.orders_20261121 = current silver.orders rows for the orders this batch touched.
+   -- Gate first, outside the transaction: this must return no rows, or the run stops here.
+   SELECT order_id FROM staging.orders_20261121 GROUP BY order_id HAVING COUNT(*) > 1;
+
    BEGIN;
    DELETE FROM gold.orders
    USING staging.orders_20261121 AS s
    WHERE gold.orders.order_id = s.order_id;
-   INSERT INTO gold.orders SELECT * FROM staging.orders_20261121;  -- staging: one row per order
+   INSERT INTO gold.orders SELECT * FROM staging.orders_20261121;
    DELETE FROM ops.processed_batches WHERE batch_id = '2026-11-21';
    INSERT INTO ops.processed_batches (batch_id, processed_at)
    VALUES ('2026-11-21', GETDATE());
@@ -992,28 +1022,36 @@ Decisions to say out loud:
    hint to the planner — so uniqueness has to come from the load pattern, and a check proves it.
 
 8. **Publish only after the checks pass.** Write gold through a staging table or a table-format
-   commit, then gate on: zero duplicate keys in the output, input count = output count +
-   duplicates removed + quarantined, and a duplicate rate within its normal band. A rate that
-   jumps from 0.3% to 30% is an upstream retry storm or a broken key, and the dedupe hiding it
-   would be the bug.
+   commit, then gate on: zero duplicate keys in the output, the event layer's
+   input = events written + duplicates removed + quarantined, and an **event-level** duplicate
+   rate within its normal band. A rate that jumps from 0.3% to 30% is an upstream retry storm or
+   a broken key, and the dedupe hiding it would be the bug. The entity layer collapsing versions
+   is not duplication — an order that changed five times is five legitimate events — so its rate
+   is a trend to watch, not a gate.
 
 | Metric | Why |
 |---|---|
-| Input / output row count | the reconciliation identity above |
-| Duplicates removed, per layer | event-level and entity-level move for different reasons |
-| Duplicate rate = (input − output) ÷ input | the trend that catches a retry storm |
+| Input / output row count, per layer | the reconciliation identity above |
+| Event duplicate rate = duplicates removed ÷ event input | the gate: catches a retry storm or a broken key |
+| Versions collapsed ÷ events, entity layer | informational: how often orders change, not an error |
 | Arrivals older than the lookback | whether N is still long enough |
 | Quarantined rows | NULL keys, malformed records |
 
 Follow-ups:
 
 - *The dataset grows to 10 TB/day* → keep the dedupe incremental (only touched partitions),
-  bucket or cluster silver by `order_id` so the `MERGE` rewrites fewer files, prune the target
-  with a partition predicate in the `ON` clause, and consider merge-on-read for the
+  bucket or cluster silver by `order_id` so the `MERGE` rewrites fewer files, add a partition
+  predicate to the `ON` clause **only** if it is guaranteed to include every partition a
+  matching order can sit in (otherwise an existing order looks new and is inserted twice), and
+  consider merge-on-read for the
   high-update table (cheaper writes, compaction later) against copy-on-write (cheaper reads).
 - *One key has millions of rows* (a test account, a default value) → it is usually a bad key,
-  not a real entity: quarantine it. If it is real, pre-aggregate per partition or salt the key
-  for the event-level step, and let AQE split the skewed partition.
+  not a real entity: quarantine it. If it is real, reduce in two steps: rank within
+  `(key, salt)` to get one winner per salt, then rank those few winners per key. Or, for the
+  entity layer, replace the window with an aggregate that keeps the max by the version order
+  (`max_by` / `max(struct(updated_at, lsn, event_id, …))`), which Spark partially aggregates
+  before the shuffle. AQE's skew handling splits skewed **join** partitions; it does not split
+  one `ROW_NUMBER()` group.
 - *Two jobs process the same key at once* → serialise writers per table in the orchestrator;
   Delta and Iceberg reject the second of two conflicting commits, which the job then retries
   against the new snapshot.
