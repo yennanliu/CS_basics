@@ -85,6 +85,23 @@ WHERE total_weight <= 1000
 ORDER BY turn DESC
 LIMIT 1;
 
+
+# V0-0-1
+WITH sub AS (
+    SELECT
+        person_name,
+        SUM(weight) OVER (ORDER BY turn ASC) AS cum_sum
+    FROM Queue
+)
+SELECT
+    person_name
+FROM sub
+WHERE cum_sum <= 1000
+ORDER BY cum_sum DESC
+LIMIT 1;
+
+
+
 # V1
 # IDEA : CORRELATED SUBQUERY FOR THE RUNNING TOTAL
 #
