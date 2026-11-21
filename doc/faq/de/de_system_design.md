@@ -1,6 +1,6 @@
 # Data Engineering System Design
 
-> **Scope** — the system-design round of a data engineering interview: how the round is run and scored, back-of-the-envelope sizing for data volumes, the building blocks of a data platform, the concepts every design leans on, the trade-offs to argue out loud, and eight classic design problems worked from requirements to failure modes. The mechanism behind each building block lives in its deep dive, linked from the section that uses it.
+> **Scope** — the system-design round of a data engineering interview: how the round is run and scored, back-of-the-envelope sizing for data volumes, the building blocks of a data platform, the concepts every design leans on, the trade-offs to argue out loud, and nine classic design problems worked from requirements to failure modes. The mechanism behind each building block lives in its deep dive, linked from the section that uses it.
 > **See also**: [`../faq_DE_interview.md`](../faq_DE_interview.md) — the overview and last-minute checklist; [`./batch_pipeline.md`](./batch_pipeline.md) and [`./stream_pipeline.md`](./stream_pipeline.md) — the two pipeline deep dives, each with its own worked design; [`./kafka.md`](./kafka.md), [`./spark.md`](./spark.md), [`./flink.md`](./flink.md) — the engines; [`./data_modeling.md`](./data_modeling.md) and [`./schema_design.md`](./schema_design.md) — the model and the tables; [`./sql_vs_nosql.md`](./sql_vs_nosql.md) — picking the serving store; [`./aws_service_selection.md`](./aws_service_selection.md) — the same designs on AWS.
 
 Every answer leads with the sentence you would say out loud, then the mechanism, then the
@@ -816,6 +816,218 @@ Follow-ups: *HDFS small files* → compact during the copy; *Hive `INSERT OVERWR
 on object storage* → a table format makes the overwrite atomic, which plain S3 directories are
 not. The Hadoop side in depth: [`./hadoop.md`](./hadoop.md).
 
+### 6-9) Deduplication in a batch pipeline
+
+**Prompt**: "We land ~1 TB/day of order data from several sources — an orders API, database
+CDC and partner files — into S3, and load it into Redshift. Design how duplicates are handled."
+
+**Clarify**: what counts as a duplicate (the same event delivered twice, or two versions of the
+same order?), which column means "latest" (`updated_at` from the source, a CDC sequence number,
+or arrival time), how late a record can arrive, whether the sources share an ID for the same
+business event, and whether consumers want every change or only the current state.
+
+**Numbers**: 1 TB/day at ~1 KB/row is ~1 B rows/day, ~12 MB/s on average. A `ROW_NUMBER()`
+over one day is one shuffle of ~1 TB — fine on a mid-size Spark cluster. A dedupe that rescans
+the whole history every day is not: a year of it is 365 TB per run.
+
+**The answer to lead with**: **a duplicate is not one thing.** The same order can show up twice
+because one event was delivered twice, or because the order really changed twice. Those are two
+problems with two keys, so the design dedupes in **two layers**, and it also stops the
+pipeline's own retries from adding a third kind.
+
+```text
+ order 1001 as it arrives
+ event_id  order_id  amount  updated_at  ingest_ts
+ e1        1001      100     10:00       10:01     ┐ same event delivered twice
+ e1        1001      100     10:00       10:07     ┘   → event-level dedupe keeps one
+ e2        1001      150     10:05       10:06     ┐ a real update to the same order
+ e3        1001      180     10:10       10:11     ┘   → entity-level dedupe keeps e3 as current
+```
+
+| Column | Means | Used for |
+|---|---|---|
+| `event_id` | one business event, assigned at the source | event-level dedupe |
+| `order_id` | the business key | entity-level dedupe, `MERGE` key |
+| `updated_at` (or CDC `lsn`) | when the source changed the row | picks the latest version |
+| `ingest_ts` | when the row reached us | tie-breaker only, never "latest" |
+| `batch_id` / `run_id` | one run of the pipeline | making a rerun idempotent |
+
+**Where duplicates come from**: source systems that emit twice, at-least-once delivery
+retries, a job that wrote half its output and was retried, overlapping incremental pulls
+(a lookback by design), late data that repeats rows already loaded, and two sources that both
+send the same business event.
+
+**The toolkit** — each method answers one of these, and none answers all of them:
+
+| Method | Removes | Cost | Trap |
+|---|---|---|---|
+| `DISTINCT` / `dropDuplicates()` | rows identical in every column | one shuffle | `dropDuplicates(["order_id"])` keeps an **arbitrary** row, not the latest |
+| `ROW_NUMBER()` over a key | all but one row per key, by a rule | shuffle + sort | no tie-breaker → a rerun can keep a different row |
+| Hash of the columns | same content under different IDs | CPU per row | `concat_ws` skips NULLs, so `('a', NULL, 'b')` and `('a', 'b', NULL)` hash the same |
+| Lookback window | duplicates and updates arriving up to N days late | rereads N days | anything later than N is missed silently |
+| `MERGE` / upsert | a key already in the target | rewrites the files it touches | several source rows per key → error or a random winner |
+| Batch ID + atomic write | a retried run's second copy | metadata, a transaction | check-then-write races with a concurrent run |
+| Primary key / unique constraint | a second row per key, at write time | index maintenance | Redshift, Snowflake and BigQuery **accept** a primary key but **do not enforce** it |
+| Partition-level dedupe | duplicates inside one partition | reads one partition | misses duplicates whose copies sit in different partitions |
+
+```text
+ orders API / CDC / partner files
+   ─► ingestion: stamp source_id, ingest_ts, batch_id; keep or derive event_id
+   ─► S3 bronze (immutable, partitioned by ingest date) + batch manifest
+   ─► Spark, daily, over bronze rows ingested in the last N days:
+        1. validate schema; NULL or malformed keys → quarantine (never into a dedupe group)
+        2. normalise keys, timestamps, decimals, string case
+        3. event-level:  ROW_NUMBER() OVER (PARTITION BY event_id ORDER BY ingest_ts)        = 1
+        4. entity-level: ROW_NUMBER() OVER (PARTITION BY order_id
+                                            ORDER BY updated_at DESC, lsn DESC, event_id DESC) = 1
+   ─► silver.order_events  (one row per event; event_date partitions rewritten)
+   ─► silver.orders        (one row per order; MERGE, newer version wins)
+   ─► Redshift gold: load staging table, then DELETE + INSERT by key in one transaction
+   ─► checks before publish: key uniqueness, input vs output counts, duplicate rate
+```
+
+Decisions to say out loud:
+
+1. **Event-level dedupe on `event_id`, partitioned by event date.** Every copy of an event
+   carries the same event time, so all of them fall into the **same** `event_date` partition.
+   That makes "rewrite every event date this run touched, deduped" complete for this layer, as
+   long as the copies arrive within the lookback: union the existing partition with the new
+   arrivals, keep one row per `event_id`, overwrite the partition. Partition by ingest date
+   instead and two copies of one event land in two partitions that never meet.
+
+   ```sql
+   -- Iceberg / Delta (Spark SQL), dynamic partition overwrite: rewrites only the
+   -- event_date partitions this run's arrivals touch. A table format is what lets the
+   -- statement read the partitions it overwrites; plain Parquet on S3 refuses.
+   INSERT OVERWRITE TABLE silver.order_events PARTITION (event_date)
+   SELECT event_id, order_id, amount, status, updated_at, ingest_ts, event_date
+   FROM (
+     SELECT *,
+            ROW_NUMBER() OVER (PARTITION BY event_id ORDER BY ingest_ts) AS rn
+     FROM (
+       SELECT * FROM silver.order_events
+       WHERE event_date IN (SELECT DISTINCT event_date FROM staged_arrivals)
+       UNION ALL
+       SELECT * FROM staged_arrivals
+     ) AS candidates
+   ) AS ranked
+   WHERE rn = 1;
+   ```
+
+2. **Entity-level dedupe on `order_id` is a `MERGE`, never a partition overwrite.** Versions
+   of one order have different `updated_at` values, so they land in different partitions, and
+   the partition key is not the dedupe key. Keep one row per order in the batch first, then
+   let the newer version win:
+
+   ```sql
+   -- Delta Lake / Iceberg (Spark SQL)
+   MERGE INTO silver.orders AS t
+   USING (
+     SELECT *
+     FROM (
+       SELECT *,
+              ROW_NUMBER() OVER (PARTITION BY order_id
+                                 ORDER BY updated_at DESC, lsn DESC, event_id DESC) AS rn
+       FROM staged_arrivals
+     ) AS ranked
+     WHERE rn = 1
+   ) AS s
+   ON t.order_id = s.order_id
+   WHEN MATCHED AND (s.updated_at > t.updated_at
+                     OR (s.updated_at = t.updated_at AND s.lsn > t.lsn)) THEN UPDATE SET
+     t.amount     = s.amount,
+     t.status     = s.status,
+     t.updated_at = s.updated_at,
+     t.lsn        = s.lsn
+   WHEN NOT MATCHED THEN INSERT (order_id, amount, status, updated_at, lsn)
+     VALUES (s.order_id, s.amount, s.status, s.updated_at, s.lsn);
+   ```
+
+   The guard on `WHEN MATCHED` is what makes the `MERGE` safe to rerun **and** safe against a
+   late, older version: replaying the batch changes nothing, and a version that arrives after a
+   newer one is ignored instead of rolling the order back.
+
+3. **A deterministic order.** `ORDER BY updated_at DESC` alone leaves ties to chance, so a rerun
+   can pick a different row and the output stops being reproducible. Break ties with a source
+   sequence (`lsn`), then a stable ID. `ingest_ts` is a tie-breaker of last resort, never the
+   meaning of "latest": a retry arrives later than the original without being newer.
+
+4. **NULL keys are quarantined, not deduped.** `PARTITION BY order_id` puts every NULL into one
+   group, so a million unrelated rows collapse into one — a silent data loss, and the same group
+   is the skewed task that runs for an hour. Route them out at validation, with a count.
+
+5. **The hash is for content, not identity.** When two sources send the same business event
+   under different IDs, hash the normalised business columns and dedupe on that. Normalise
+   first (trim, case, timezone, decimal scale), and make NULL explicit
+   (`coalesce(col, '\u0000')`), or equal records hash differently and different records hash
+   the same. SHA-256 makes an accidental collision negligible; the normalisation is what
+   actually goes wrong.
+
+6. **The lookback is a contract with the sources.** Rereading the last 3 days catches anything
+   up to 3 days late — and nothing older. Measure the real lateness distribution, set N above
+   its tail, **count** the arrivals older than N instead of dropping them, and send those through
+   a targeted reprocess of the partitions they belong to.
+
+7. **A rerun must not be a fourth source of duplicates.** Make every write replace rather than
+   append: partition overwrite for events, `MERGE` for entities, and for Redshift a staging
+   load followed by `DELETE` + `INSERT` keyed on the batch or the business key **inside one
+   transaction**, so a retried load replaces its first attempt instead of doubling it. A
+   `processed_batches` table is only useful when its row is written in the same transaction as
+   the data; "check the table, then write" races with a concurrent run.
+
+   ```sql
+   -- Redshift: a retried run of batch 2026-11-21 replaces itself
+   BEGIN;
+   DELETE FROM gold.orders
+   USING staging.orders_20261121 AS s
+   WHERE gold.orders.order_id = s.order_id;
+   INSERT INTO gold.orders SELECT * FROM staging.orders_20261121;  -- staging: one row per order
+   DELETE FROM ops.processed_batches WHERE batch_id = '2026-11-21';
+   INSERT INTO ops.processed_batches (batch_id, processed_at)
+   VALUES ('2026-11-21', GETDATE());
+   END;
+   ```
+
+   Redshift will not reject a second row with the same primary key — the constraint is only a
+   hint to the planner — so uniqueness has to come from the load pattern, and a check proves it.
+
+8. **Publish only after the checks pass.** Write gold through a staging table or a table-format
+   commit, then gate on: zero duplicate keys in the output, input count = output count +
+   duplicates removed + quarantined, and a duplicate rate within its normal band. A rate that
+   jumps from 0.3% to 30% is an upstream retry storm or a broken key, and the dedupe hiding it
+   would be the bug.
+
+| Metric | Why |
+|---|---|
+| Input / output row count | the reconciliation identity above |
+| Duplicates removed, per layer | event-level and entity-level move for different reasons |
+| Duplicate rate = (input − output) ÷ input | the trend that catches a retry storm |
+| Arrivals older than the lookback | whether N is still long enough |
+| Quarantined rows | NULL keys, malformed records |
+
+Follow-ups:
+
+- *The dataset grows to 10 TB/day* → keep the dedupe incremental (only touched partitions),
+  bucket or cluster silver by `order_id` so the `MERGE` rewrites fewer files, prune the target
+  with a partition predicate in the `ON` clause, and consider merge-on-read for the
+  high-update table (cheaper writes, compaction later) against copy-on-write (cheaper reads).
+- *One key has millions of rows* (a test account, a default value) → it is usually a bad key,
+  not a real entity: quarantine it. If it is real, pre-aggregate per partition or salt the key
+  for the event-level step, and let AQE split the skewed partition.
+- *Two jobs process the same key at once* → serialise writers per table in the orchestrator;
+  Delta and Iceberg reject the second of two conflicting commits, which the job then retries
+  against the new snapshot.
+- *How do you prove it is correct?* → a uniqueness test on the output key, a count
+  reconciliation per run, and a periodic full-history uniqueness scan to catch what the lookback
+  missed.
+- *Records are updates, not duplicates* → that is the entity layer: keep every version in
+  `silver.order_events` (history, SCD2 if needed) and only the latest in `silver.orders`.
+
+The building blocks in depth: incremental pulls and their overlap window in
+[`./batch_pipeline.md`](./batch_pipeline.md#2-2-incremental-loads-done-right), `MERGE` in
+[`./batch_pipeline.md`](./batch_pipeline.md#3-5-merge--upsert-patterns), and the streaming
+counterpart — dedupe with state and a TTL — in §6-1.
+
 ---
 
 ## 7) Failure Modes and Operations ⭐⭐⭐⭐
@@ -898,5 +1110,5 @@ One line per idea — if you can say each of these out loud, the round is covere
 - **Backfill** — deterministic jobs on a fixed interval, overwrite by logical date, replay from raw
 - **Consistency** — CDC or outbox, never dual write
 - **Trade-offs** — batch vs stream, Lambda vs Kappa, ELT + lakehouse, precompute vs query time, CDC vs query pull, freshness / correctness / cost
-- **Classics** — clickstream, ad clicks for billing (stream provisional + batch reconciled), top-K (two-stage + Count-Min), distinct counts (HLL merge), feature store (point-in-time), fraud (sync score + async features), platform, migration (dual-run)
+- **Classics** — clickstream, ad clicks for billing (stream provisional + batch reconciled), top-K (two-stage + Count-Min), distinct counts (HLL merge), feature store (point-in-time), fraud (sync score + async features), platform, migration (dual-run), batch dedupe (`event_id` then business key, guarded `MERGE`)
 - **Operations** — data-side SLAs, lag / watermark / checkpoint / freshness / volume alerts, quarantine, cost per team

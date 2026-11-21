@@ -1,8 +1,8 @@
-<!-- a6dd425c3f7b -->
+<!-- 29a58c199468 -->
 # 資料工程面試 FAQ
 
 > **範圍** — 資料工程師面試的高層次地圖與考前檢查清單：每個主題各列出你必須能說出口的幾個重點，並連到 `de/` 底下的深入解析，那裡才有機制、程式碼與追問題。
-> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md)、[`de/aws_data.md`](./de/aws_data.md)、[`de/aws_service_selection.md`](./de/aws_service_selection.md)、[`de/data_performance.md`](./de/data_performance.md) 與 [`de/analytics.md`](./de/analytics.md) —— 每個主題一份深入解析；[`de/sql_interview_questions.md`](./de/sql_interview_questions.md) —— 資深 SQL 題庫，每一題都附上解答；[`de/de_system_design.md`](./de/de_system_design.md) —— 完整的系統設計面試，附八道經典題。
+> **另見**：[`de/spark.md`](./de/spark.md)、[`de/kafka.md`](./de/kafka.md)、[`de/hadoop.md`](./de/hadoop.md)、[`de/data_modeling.md`](./de/data_modeling.md)、[`de/sql_for_data.md`](./de/sql_for_data.md)、[`de/batch_pipeline.md`](./de/batch_pipeline.md)、[`de/schema_design.md`](./de/schema_design.md)、[`de/stream_pipeline.md`](./de/stream_pipeline.md)、[`de/flink.md`](./de/flink.md)、[`de/sql_vs_nosql.md`](./de/sql_vs_nosql.md)、[`de/aws_data.md`](./de/aws_data.md)、[`de/aws_service_selection.md`](./de/aws_service_selection.md)、[`de/data_performance.md`](./de/data_performance.md) 與 [`de/analytics.md`](./de/analytics.md) —— 每個主題一份深入解析；[`de/sql_interview_questions.md`](./de/sql_interview_questions.md) —— 資深 SQL 題庫，每一題都附上解答；[`de/de_system_design.md`](./de/de_system_design.md) —— 完整的系統設計面試，附九道經典題。
 
 面試前一晚讀這份。底下任何一行如果你沒辦法在兩分鐘內講清楚，就打開那個主題的深入解析。
 
