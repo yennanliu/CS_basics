@@ -87,6 +87,20 @@ LIMIT 1;
 
 
 # V0-0-1
+# IDEA: SUM(weight)
+/*
+
+NOTE !!
+
+
+1. 標準 SQL 中計算累計加總使用的是 SUM(weight)，而不是 cumsum()，
+   而且必須指定要累加的是 weight（體重），不是 person_name。
+
+2.  不應該加上 PARTITION BY persond_id（且有拼字錯誤）：
+    巴士排隊是整條隊伍依上車順序（turn）累計體重，
+    不是每個乘客各自獨立算一組，因此不需要 PARTITION BY（且 persond_id 也有拼字錯誤）。
+
+ */
 WITH sub AS (
     SELECT
         person_name,
