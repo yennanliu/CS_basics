@@ -41,6 +41,13 @@ left and right are `index`, NOT node val.
 
 
 # V0
+# IDEA: LINKED LIST + helper func + LC 206 (gpt) 
+"""
+NOTE !!!
+
+
+left and right are `index`, NOT node val.
+"""
 class Solution(object):
     def reverseBetween(self, head, left, right):
         """
@@ -49,7 +56,100 @@ class Solution(object):
         :type right: int
         :rtype: Optional[ListNode]
         """
-        pass
+
+        # Edge case
+        if not head or left == right:
+            return head
+
+        # Dummy node
+        dummy = ListNode(0)
+        dummy.next = head
+
+        # Find node before left
+        prev = dummy
+
+        """
+        NOTE !!!
+
+        1.  the step is Straightforward
+
+        ->
+
+
+        step 1) move `left - 1` step
+
+        step 2) reverse nodes in [left, right] idx
+
+        step 3) re-connect
+
+
+
+        2. below code structure is WRONG !!!
+
+
+        ```
+
+        while head:
+
+          if idx == left - 1:
+
+            new_head, new_tail, next_node = self.reverse_helper(head.next, length)
+
+            # ??
+            head.next = new_head
+            new_tail.next = next_node
+            head = next_node
+
+          else:
+
+            head = head.next
+
+          idx += 1
+
+          ...
+
+        ```
+
+        """
+
+        for _ in range(left - 1):
+            prev = prev.next
+
+
+        # Reverse sublist
+        new_head, new_tail, next_node = self.reverse_helper(
+            prev.next,
+            right - left + 1
+        )
+
+        # NOTE !!! how we re-connect nodes
+        # Reconnect linked list
+        prev.next = new_head
+        new_tail.next = next_node
+
+        return dummy.next
+
+    def reverse_helper(self, node, length):
+
+        # NOTE !!! cache original head, for `new_tail` 
+        # Save original head (will become new tail)
+        original_head = node
+
+        prev = None
+
+        for _ in range(length):
+            nxt = node.next
+
+            node.next = prev
+
+            prev = node
+            node = nxt
+
+        new_head = prev
+        new_tail = original_head
+        next_node = node
+
+        return new_head, new_tail, next_node
 
 
 
