@@ -90,6 +90,84 @@ WHERE DATEDIFF(cur.visited_on, (SELECT MIN(visited_on) FROM daily)) >= 6   -- a 
 GROUP BY cur.visited_on
 ORDER BY cur.visited_on;
 
+
+
+# V0-1
+# IDEA: WINDOW FUNC (gpt)
+WITH daily AS (
+    SELECT
+        visited_on,
+        SUM(amount) AS daily_amount
+    FROM Customer
+    GROUP BY visited_on
+),
+
+sub AS (
+    SELECT
+        visited_on,
+        SUM(daily_amount) OVER (
+            ORDER BY visited_on
+            ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+        ) AS amount,
+        ROUND(
+            AVG(daily_amount) OVER (
+                ORDER BY visited_on
+                ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+            ),
+            2
+        ) AS average_amount,
+        COUNT(*) OVER (
+            ORDER BY visited_on
+            ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+        ) AS day_count
+    FROM daily
+)
+
+SELECT
+    visited_on,
+    amount,
+    average_amount
+FROM sub
+WHERE day_count = 7
+ORDER BY visited_on;
+
+
+# V0-2
+# IDEA: WINDOW FUNC (gemini)
+WITH DailyCustomer AS (
+    SELECT
+        visited_on,
+        SUM(amount) AS daily_amount
+    FROM Customer
+    GROUP BY visited_on
+),
+RollingStats AS (
+    SELECT
+        visited_on,
+        SUM(daily_amount) OVER (
+            ORDER BY visited_on ASC
+            ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+        ) AS amount,
+        ROUND(
+            AVG(daily_amount) OVER (
+                ORDER BY visited_on ASC
+                ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+            ),
+            2
+        ) AS average_amount,
+        ROW_NUMBER() OVER (ORDER BY visited_on ASC) AS day_num
+    FROM DailyCustomer
+)
+SELECT
+    visited_on,
+    amount,
+    average_amount
+FROM RollingStats
+WHERE day_num >= 7
+ORDER BY visited_on ASC;
+
+
+
 # V1
 # IDEA : WINDOW SUM OVER THE LAST 7 ROWS
 #
