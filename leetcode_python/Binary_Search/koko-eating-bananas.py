@@ -129,6 +129,56 @@ class Solution(object):
         return hr
 
 
+# V0-0-1
+# IDEA : BINARY SEARCH
+# time = O(n log m), n = len(piles), m = max(piles)
+# space = O(1)
+class Solution(object):
+    def minEatingSpeed(self, piles, h):
+        """
+        :type piles: List[int]
+        :type h: int
+        :rtype: int
+        """
+
+        # Edge case
+        if not piles:
+            return -1
+
+        # Binary Search range
+        l = 1
+        r = max(piles)
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            time_cost = self.eat_time(piles, mid)
+
+            if time_cost <= h:
+                # Valid speed, try smaller speed
+                r = mid - 1
+
+            else:
+                # Too slow, need higher speed
+                l = mid + 1
+
+        return l
+
+    def eat_time(self, piles, speed):
+        hr = 0
+
+        for p in piles:
+            a = p // speed
+            b = p % speed
+
+            hr += a
+
+            if b > 0:
+                hr += 1
+
+        return hr
+
+
 # V0-1
 # IDEA : BINARY SEARCH
 # time = O(n log m), n = len(piles), m = max(piles)
