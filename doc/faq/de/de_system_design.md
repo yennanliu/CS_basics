@@ -847,7 +847,7 @@ pipeline's own retries from adding a third kind.
 | Column | Means | Used for |
 |---|---|---|
 | `source_id` + `event_id` | one delivery's ID in its source; `event_id` is unique only **within** its source | the default `event_key` |
-| `event_key` | the identity of one business event, set at ingestion by an explicit **identity contract**: `source_id:event_id` by default, or a shared upstream ID when two sources are known to carry the same events | event-level dedupe, final tie-breaker |
+| `event_key` | the identity of one business event, set at ingestion by an explicit **identity contract**: `src:<len(source_id)>:<source_id>:<event_id>` by default, or `up:<system>:<id>` for a shared upstream ID when two sources are known to carry the same events | event-level dedupe, final tie-breaker |
 | `order_id` | the business key | entity-level dedupe, `MERGE` key |
 | `updated_at`, then `lsn` | when the source changed the row, then its change sequence (CDC log position; `0` for a source without one, set at ingestion so it is never NULL) | picks the latest version |
 | `ingest_ts` | when the row reached us | never "latest": a retry arrives later without being newer |
@@ -882,6 +882,7 @@ send the same business event.
         1. validate schema; NULL or malformed keys → quarantine (never into a dedupe group)
         2. normalise keys, timestamps, decimals, string case
         3. event-level, over arrivals + the touched event_date partitions:
+             event_keys whose copies disagree on version or payload → quarantine
              ROW_NUMBER() OVER (PARTITION BY event_key
                                 ORDER BY source_id, event_id, ingest_ts)             = 1
         4. entity-level, over the canonical events of the touched orders:
@@ -890,7 +891,8 @@ send the same business event.
    ─► silver.order_events  (one row per event_key; event_date partitions rewritten)
    ─► silver.orders        (one row per order; MERGE, newer version wins)
    ─► gates, all before gold is touched: nothing lost, staging key uniqueness,
-        duplicate rate of this batch's own deliveries — stored under batch_id
+        duplicate rate of this batch's own deliveries — stored under batch_id;
+        a failed gate rolls both silver tables back to the batch-start snapshot
    ─► Redshift gold: stage the touched orders' current rows from silver.orders,
         then DELETE + INSERT by key in one transaction
 ```
@@ -898,11 +900,21 @@ send the same business event.
 Decisions to say out loud:
 
 1. **Event-level dedupe on `event_key`, partitioned by event date.** The key comes from an
-   identity contract, never from content. By default it is `source_id:event_id`, because an
-   `event_id` is only promised unique within its source — two sources can both send
-   `event_id = 1` for unrelated events. When two sources really carry the same events (the
-   partner file quotes the order system's own change ID), the contract maps both to that
-   shared ID at ingestion, and only then do their copies collapse. Every copy of one
+   identity contract, never from content. By default it is
+   `src:<len(source_id)>:<source_id>:<event_id>`, because an `event_id` is only promised unique
+   within its source — two sources can both send `event_id = 1` for unrelated events. The
+   length prefix keeps the encoding unambiguous: a plain `source_id:event_id` turns both
+   `("a:b", "c")` and `("a", "b:c")` into `a:b:c`, and the window drops one of two unrelated
+   events. When two sources really carry the same events (the partner file quotes the order
+   system's own change ID), the contract maps both to `up:<system>:<id>` at ingestion — a
+   separate namespace, so a shared ID can never equal a source-scoped one — and only then do
+   their copies collapse.
+
+   The contract also fixes **what copies of one key share**: the same `updated_at`, `lsn`,
+   `amount` and `status`, so it does not matter which copy represents the event. A source
+   that cannot supply the upstream version (no `lsn`) cannot share a key. A key whose copies
+   disagree is not a set of copies: it is quarantined at this step, before the overwrite, and
+   reconciled by hand, never resolved by whichever copy the window picks. Every copy of one
    `event_key` carries the same event time, so all of them fall into the **same** `event_date`
    partition. That makes "rewrite every event date this run touched, deduped" complete for
    this layer, as long as the copies arrive within the lookback: union the existing partition
@@ -990,7 +1002,10 @@ Decisions to say out loud:
    and the guard keeps it. The tie-breaker is `event_key`, not `(source_id, event_id)`, because
    the key never changes, while the copy that represents it can (a lower `source_id` arriving
    later takes over); comparing a field that can change would make the stored row depend on
-   batch order.
+   batch order. The guard and a rebuild agree **because** of the copy rule in decision 1: a
+   change of representative changes no column the `MERGE` reads, so there is nothing for the
+   guard to reject. Without that rule, the guard would keep the old copy's `lsn` while a rebuild
+   used the new one.
 
 3. **A deterministic order.** `ORDER BY updated_at DESC` alone leaves ties to chance, so a rerun
    can pick a different row and the output stops being reproducible. Break ties with a source
@@ -1009,7 +1024,13 @@ Decisions to say out loud:
    `content_hash` never drops a row. A daily audit lists hash groups that span more than one
    source **and** more than one `event_key`: suspected copies the contract does not cover yet.
    Each confirmed one becomes a mapping rule at ingestion, which is the only place copies are
-   declared equal. The hash is only as good as its normalisation: trim, case, timezone, decimal
+   declared equal. A new rule only reaches rows ingested after it, so adding one is a
+   **backfill**, not a config change: re-derive `event_key` from the stored `source_id` and
+   `event_id` under the new rule, rerun the event dedupe over every partition holding an
+   affected key, then **recompute** the affected orders from `silver.order_events` with a plain
+   replace rather than the guarded `MERGE` (the winning `event_key` can sort lower than the one
+   stored), and publish them through the same gates. Version the rules, so a rebuild applies the
+   ones that were live. The hash is only as good as its normalisation: trim, case, timezone, decimal
    scale, and NULL made explicit (`coalesce(col, '\u0000')`), or equal records hash differently
    and different records hash the same. SHA-256 makes an accidental collision negligible.
 
@@ -1052,13 +1073,20 @@ Decisions to say out loud:
 
 8. **Publish only after the checks pass.** Silver is internal; gold is what consumers read. So
    every gate runs after silver is written and **before** the gold transaction in decision 7,
-   and a failed gate leaves consumers on yesterday's gold. Each gate is measured directly,
+   and a failed gate leaves consumers on yesterday's gold. A failed gate also **rolls
+   `silver.order_events` and `silver.orders` back** to the snapshots recorded at batch start
+   (Iceberg `rollback_to_snapshot`, Delta `RESTORE`), and the orchestrator holds the next batch
+   until it is resolved. Otherwise the rejected changes stay in silver, and the next batch that
+   touches the same order would stage them from `silver.orders` and publish them under its own
+   green gates. Each gate is measured directly,
    never inferred from a count identity — in `A + E − O`, one lost event and one extra
    duplicate cancel out, so the identity holds while data is missing:
 
-   - **Nothing lost.** Every `event_key` in this run's arrivals, and every row the rewritten
-     partitions held before the run, must be in the output: two anti-joins that must return
-     zero rows.
+   - **Nothing lost.** Every `event_key` in this run's arrivals, and every `event_key` the
+     rewritten partitions held before the run, must be in the output: two anti-joins on
+     `event_key` that must return zero rows. On the key, not the full row: a new copy can
+     replace a key's representative, which changes `source_id`, `event_id` and `ingest_ts`
+     without losing anything. Quarantined keys are counted on their own and excluded here.
    - **Duplicate rate of this batch's own deliveries.** The lookback rereads bronze rows that
      earlier runs already loaded; those rereads are not duplicates. So the rate counts only the
      rows ingested under this `batch_id`: a row is a duplicate when its `event_key` was already
@@ -1091,7 +1119,8 @@ Decisions to say out loud:
 
 | Metric | Why |
 |---|---|
-| Arrival keys and prior rows missing from the output | the "nothing lost" gate: must be 0 |
+| Arrival and prior `event_key`s missing from the output | the "nothing lost" gate: must be 0 |
+| `event_key`s whose copies disagree | quarantined; a spike means a broken identity rule |
 | Duplicate rate = duplicates ÷ rows ingested in this batch | the gate: catches a retry storm or a broken key |
 | Versions collapsed ÷ events, entity layer | informational: how often orders change, not an error |
 | Hash groups spanning sources with different `event_key`s | audit: copies the identity contract misses |
