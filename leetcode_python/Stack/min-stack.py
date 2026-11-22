@@ -88,7 +88,7 @@ class MinStack(object):
         return self.min_values[-1]
 
 
-# V0
+# V0-0-1
 # IDEA: 2 STACK (min stack + stack save all values) (gpt)
 class MinStack(object):
 
@@ -148,6 +148,52 @@ class MinStack(object):
         """
         return self.min_st[-1]
 
+
+# V0-0-2
+# IDEA: 2 STACK (gpt)
+class MinStack(object):
+
+    def __init__(self):
+        self.st = []
+        self.min_st = []
+
+    def push(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        if not self.min_st or val <= self.min_st[-1]:
+            self.min_st.append(val)
+        else:
+            self.min_st.append(self.min_st[-1])
+
+        self.st.append(val)
+
+    def pop(self):
+        """
+        :rtype: None
+        """
+        if self.st:
+            self.st.pop()
+            self.min_st.pop()
+
+    def top(self):
+        """
+        :rtype: int
+        """
+        if not self.st:
+            return None
+
+        return self.st[-1]
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+        if not self.min_st:
+            return None
+
+        return self.min_st[-1]
 
 
 # V0

@@ -22,7 +22,9 @@
 				- 981 (todo)
 				- 4 (todo)
 
-		    - linked list
+		    - linked list (pass)
+
+		    - stack
 
 
 
