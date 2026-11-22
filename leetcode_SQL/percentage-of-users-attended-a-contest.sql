@@ -95,6 +95,26 @@ ORDER BY
     percentage DESC,
     r.contest_id ASC;
 
+
+# V0-1
+# IDEA: CTE + ROUND (gpt)
+WITH user_cnt AS (
+    SELECT COUNT(*) AS cnt
+    FROM Users
+)
+
+SELECT
+    contest_id,
+    ROUND(
+        COUNT(*) * 100.0 / (SELECT cnt FROM user_cnt),
+        2
+    ) AS percentage
+FROM Register
+GROUP BY contest_id
+ORDER BY percentage DESC, contest_id ASC;
+
+
+
 # V1
 # IDEA : TOTAL AS A ONE-ROW CTE, CROSS JOINED IN
 #
