@@ -25,6 +25,9 @@
 		    - linked list (pass)
 
 		    - stack
+		    	- 84 (todo)
+
+		   	- trees
 
 
 
