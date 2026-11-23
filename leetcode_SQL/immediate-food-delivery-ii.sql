@@ -83,6 +83,34 @@ JOIN first_order AS f
     ON  f.customer_id = d.customer_id
     AND f.first_date = d.order_date;
 
+
+# V0-1
+# IDEA: CTE + CASE (gpt)
+WITH sub AS (
+    SELECT
+        customer_id,
+        MIN(order_date) AS order_date
+    FROM Delivery
+    GROUP BY customer_id
+)
+
+SELECT
+    ROUND(
+        SUM(
+            CASE
+                WHEN d.order_date = d.customer_pref_delivery_date
+                THEN 1
+                ELSE 0
+            END
+        ) * 100.0 / COUNT(*),
+        2
+    ) AS immediate_percentage
+FROM sub s
+JOIN Delivery d
+    ON s.customer_id = d.customer_id
+    AND s.order_date = d.order_date;
+
+
 # V1
 # IDEA : NUMBER EACH CUSTOMER'S ORDERS WITH ROW_NUMBER, KEEP NUMBER 1
 #
