@@ -114,6 +114,10 @@ class Solution(object):
             # 1. Move tasks whose cooldown has finished
             #    back to the heap
             # ------------------------------------------------
+            #
+            #
+            #  -> NOTE !!! deque top element: `cooldown[0]`
+            #      -> e.g. 應該先處理`最早`可以重新執行的 Task。
             while cooldown and cooldown[0][0] <= time:
                 ready_time, neg_count = cooldown.popleft()
                 heapq.heappush(pq, neg_count)
