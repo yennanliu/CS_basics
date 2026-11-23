@@ -73,6 +73,144 @@ class Solution(object):
                  self.helper(grid, x, y+1) ) + 1
 
 
+# V0-0-1
+# IDEA: DFS + class level var (self.cur_area) (gpt)
+class Solution(object):
+    def maxAreaOfIsland(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not grid or not grid[0]:
+            return 0
+
+        l = len(grid)
+        w = len(grid[0])
+
+        max_area = 0
+
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] == 1:
+
+                    """
+                    NOTE !!!
+
+                    we need to set `cur_area` as `self.cur_area`
+                    if want to use below dfs approach.
+
+                    -> so its value can be accumulated; NOT being
+                       reset in every dfs call
+                    """
+                    # Reset area for each new island
+                    self.cur_area = 0
+
+                    self.dfs(grid, x, y)
+
+                    max_area = max(max_area, self.cur_area)
+
+        return max_area
+
+    def dfs(self, grid, x, y):
+        l = len(grid)
+        w = len(grid[0])
+
+        # Boundary check
+        if x < 0 or x >= w or y < 0 or y >= l:
+            return
+
+        # Water or visited
+        if grid[y][x] != 1:
+            return
+
+        # Mark visited
+        grid[y][x] = -1
+
+        # Update shared instance variable
+        self.cur_area += 1
+
+        # DFS in 4 directions
+        self.dfs(grid, x - 1, y)
+        self.dfs(grid, x + 1, y)
+        self.dfs(grid, x, y - 1)
+        self.dfs(grid, x, y + 1)
+
+
+"""
+NOTE !!! below is WRONG !!!
+
+
+-> Reason:
+
+四個方向的 self.dfs(...) 呼叫沒有把面積加總回來（int 不可變傳值陷阱）：
+
+在目前這段寫法裡，假設 (x, y) 自己是第 1 格，往左走找到了 2 格、往右走找到了 3 格：
+
+往左呼叫 self.dfs(grid, x-1, y, cur_area) 算出來的結果沒有接住、也沒有加進 cur_area；
+
+往右呼叫也是如此；
+
+最後 return cur_area 只會回傳在當前這層加了 1 之後的值，無法把各個分支探索到的面積彙總成整座島嶼的總面積。
+
+解決方式是讓 dfs(grid, x, y) 不靠外部傳入累加器 cur_area，而是直接回傳「從 (x, y) 往下探索到的總面積」，並把四個方向的回傳值全部加起來。
+
+
+
+```
+class Solution(object):
+    def maxAreaOfIsland(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        # edge
+        if not grid or len(grid) == 0:
+          return 0
+
+        l = len(grid)
+        w = len(grid[0])
+
+        max_area = 0
+
+        for y in range(l):
+          for x in range(w):
+            if grid[y][x] == 1:
+
+              cur_area = self.dfs(grid, x, y, 0)
+              max_area = max(max_area, cur_area)
+
+
+        return max_area
+
+
+    def dfs(self, grid, x, y, cur_area):
+        # edge
+
+        l = len(grid)
+        w = len(grid[0])
+
+        if x < 0 or x >= w or y < 0 or y >= l:
+          return
+
+        if grid[y][x] != 1:
+          return
+
+        # NOTE !!!
+        # below is wrong !!!
+        cur_area += 1
+
+        grid[y][x] = -1
+
+        self.dfs(grid, x-1, y, cur_area)
+        self.dfs(grid, x+1, y, cur_area)
+        self.dfs(grid, x, y+1, cur_area)
+        self.dfs(grid, x, y-1, cur_area)
+
+        return cur_area
+```
+
+"""
+
 
 # V0-1
 # IDEA: DFS + VISITED
@@ -271,4 +409,5 @@ class Solution(object):
                 area = [0]
                 if dfs(i, j, grid, area):
                     result = max(result, area[0])
+
         return result
