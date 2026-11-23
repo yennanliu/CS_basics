@@ -1,3 +1,7 @@
+20261123: SQL 50 (done):  | TODO: 3964, 713, 1004(todo), 155(todo), 388(todo), 636(todo), 203(todo), 1110(todo)  |  neetcode 150 (ing):  | blind 75: 
+
+
+
 20261122: SQL 50 (done): 585(again), 1633(ok*) | TODO: 3964, 713, 1004(todo), 155(todo), 388(todo), 636(todo), 203(todo), 1110(todo)  |  neetcode 150 (ing): 155(ok**),150(ok**),739(OK),853(again)  | blind 75: 
 
 
