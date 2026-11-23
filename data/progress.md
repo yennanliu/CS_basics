@@ -27,7 +27,14 @@
 		    - stack
 		    	- 84 (todo)
 
-		   	- trees
+		    - backtrack (todo !!!)
+
+		    - heap / PQ
+
+
+		 - done:
+		 	- trees
+		 	- tries (pass)
 
 
 
@@ -93,7 +100,7 @@
 		- https://yennj12.js.org/yennj12_blog_V4/posts/de-system-design-interview-part7-adtech-click-billing-attribution-zh/
 
 
-		
+
 	- 資深資料工程師 SQL 面試題 (ing)
 		- https://yennj12.js.org/CS_basics/faqs/de_sql_interview_questions.zh.html
 
