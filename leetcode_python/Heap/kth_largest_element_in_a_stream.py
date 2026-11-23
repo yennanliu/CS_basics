@@ -63,7 +63,45 @@ class KthLargest:
         else:
             heapq.heappushpop(self.heap, val)
 
+        # NOTE !!
+        # top element in PQ is `pq[0]`
         return self.heap[0]
+
+
+# V0-0-1
+# IDEA: SMALL PQ
+import heapq
+
+class KthLargest(object):
+
+    def __init__(self, k, nums):
+        """
+        :type k: int
+        :type nums: List[int]
+        """
+        self.pq = []
+        self.k = k
+        for x in nums:
+          heapq.heappush(self.pq, x)
+
+          if len(self.pq) > k:
+            heapq.heappop(self.pq)
+        
+
+    def add(self, val):
+        """
+        :type val: int
+        :rtype: int
+        """
+        heapq.heappush(self.pq, val)
+
+        if len(self.pq) > self.k:
+          heapq.heappop(self.pq)
+
+        # NOTE !!
+        # top element in PQ is `pq[0]`
+        return self.pq[0]
+
 
 # V0-1
 # IDEA : HEAP
