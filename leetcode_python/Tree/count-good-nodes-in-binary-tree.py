@@ -54,6 +54,15 @@ class Solution(object):
             return 0
 
         self.cnt = 0
+        """
+        NOTE !!!
+
+
+        -> use `float('-inf')` as init `max_so_far` val
+
+            -> 1. more simpler
+               2. can cover `root node` case
+        """
         self.helper(root, float('-inf'))
 
         return self.cnt
@@ -72,6 +81,7 @@ class Solution(object):
         if not root:
             return
 
+        # NOTE !! `>=`
         if root.val >= max_so_far:
             self.cnt += 1
 
