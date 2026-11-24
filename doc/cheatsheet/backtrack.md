@@ -751,8 +751,12 @@ number may only be used **once**", and the input may hold duplicates.
 
 **Key point** — after `sort()`, two prunings are safe: `break` once a candidate overshoots (every
 later one is bigger), and skip a value equal to its left neighbour at the same level (it would
-repeat that neighbour's subtree). LC 39 passes `i`; LC 40 passes `i + 1` — the code for LC 39 is
-[Template 2](#template-2-start_idx--i-vs-i--1--lc-39-); the one below is LC 40.
+repeat that neighbour's subtree). `start` is where this level's loop begins, so the guard
+`i > start` reads as a direction: `i == start` is the first pick at this level, reached by going
+**deeper**, and may take the next copy of a value (that is how `[1, 1, 6]` survives); `i > start`
+is a **sibling** at the same level, and if it equals `candidates[i - 1]` that neighbour has already
+grown the whole "this value in this slot" subtree. LC 39 passes `i`; LC 40 passes `i + 1` — the
+code for LC 39 is [Template 2](#template-2-start_idx--i-vs-i--1--lc-39-); the one below is LC 40.
 
 ```python
 # python
@@ -816,6 +820,23 @@ private void backtrack(int[] candidates, int start, int remain, List<Integer> pa
 - **Time O(2^n · n)** for LC 40: with `i + 1` each candidate is in or out, so at most 2^n paths,
   each copied in O(n). LC 39's reuse makes it O(n^(T/M + 1)) instead (Template 2).
 - **Space O(n)**: recursion depth and `path` (LC 39: O(T/M)).
+
+**Dry run** — `candidates = [1, 1, 2, 3]` (already sorted), `target = 4`:
+
+```text
+level start  i  path       remain  what happens
+0     0      0  [1]        3       i == start: first pick at level 0, go deeper
+1     1      1  [1,1]      2       i == start: deeper, so the second 1 is allowed
+2     2      2  [1,1,2]    0       record [1,1,2]
+2     2      3  -          -       3 > 2: break
+1     1      2  [1,2]      1       sibling, new value; below it 3 > 1: break
+1     1      3  [1,3]      0       record [1,3]
+0     0      1  -          -       i > start and 1 == candidates[0]: skip
+                                   (its subtree would record [1,3] a second time)
+0     0      2  [2]        2       below it 3 > 2: break
+0     0      3  [3]        1       nothing left at index 4
+result: [[1,1,2], [1,3]]
+```
 
 **Traps**
 - `break` without the `sort()`: `[10, 1, 2, 7, 6, 1, 5], 8` stops at `10` and returns `[]`.
