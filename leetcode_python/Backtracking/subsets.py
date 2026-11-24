@@ -101,6 +101,73 @@ class Solution:
             self.backtracking(nums, i + 1, path, result) # NOTE here
             path.pop(-1) # NOTE here
 
+
+# V0-0-1
+# IDEA: BACKTRACK (GPT)
+class Solution(object):
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        self.res = []
+
+        cur = []
+
+        self.helper(nums, 0, cur)
+
+        return self.res
+
+    def helper(self, nums, start_idx, cur):
+
+        # Add current subset
+        self.res.append(cur[:])
+
+        for i in range(start_idx, len(nums)):
+            val = nums[i]
+
+            # Choose
+            cur.append(val)
+
+            # Explore
+            self.helper(nums, i + 1, cur)
+
+            # Backtrack
+            cur.pop()
+
+
+# V0-0-2
+# IDEA: BACKTRACK (GEMINI)
+class Solution(object):
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        # 邊界條件：空陣列回傳空串列
+        if not nums:
+            return []
+
+        self.res = []
+        # 從索引 0 開始回溯，初始路徑 cur 為空串列 []（也會被記錄為空子集）
+        self.helper(nums, 0, [])
+        return self.res
+
+    def helper(self, nums, start_idx, cur):
+        # 每個遞迴節點都代表一個合法子集，存入 cur 的淺拷貝避免後續 pop 影響已存結果
+        self.res.append(cur[:])
+
+        for i in range(start_idx, len(nums)):
+            # 選擇 nums[i]
+            cur.append(nums[i])
+
+            # 往後繼續挑選元素，避免重複組合
+            self.helper(nums, i + 1, cur)
+
+            # 撤銷選擇（Backtrack），回到上一層狀態
+            cur.pop()
+
+
 # V0-1
 # IDEA : DFS
 # plz also refer backtrack cheatsheet
