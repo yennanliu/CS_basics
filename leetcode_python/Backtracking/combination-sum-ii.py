@@ -70,6 +70,25 @@ class Solution(object):
             val = candidates[i]
 
             # Skip duplicates at the same recursion level
+            """
+            NOTE !!! why `去重條件是 i > start_idx and candidates[i] == candidates[i - 1]` ?
+
+            ->
+
+            為什麼去重條件是 i > start_idx and candidates[i] == candidates[i - 1]？
+
+            start_idx 代表這一層迴圈的起點。
+
+            當 i == start_idx 時，
+                -> 是這一層第一次選這個數字（允許向下深挖）；
+            
+            當 i > start_idx 時
+                -> ，代表在同一層已經用過 candidates[i - 1] 展開過子樹了，
+                    若 candidates[i] == candidates[i - 1] 就會長出完全相同的分支，
+                    直接 continue 跳過即可。
+
+
+            """
             if i > start_idx and candidates[i] == candidates[i - 1]:
                 continue
 
