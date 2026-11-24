@@ -88,6 +88,26 @@ class Solution(object):
                     直接 continue 跳過即可。
 
 
+            --- 
+
+            NOTE !!!
+
+
+
+            i == start_idx：
+
+                代表往更深一層走（允許拿陣列裡下一個相同的元素，例如挑完第一個 1 後，
+                下一層可以挑第二個 1，所以 [1, 1, 6] 沒問題）。
+
+            
+
+            i > start_idx：
+
+                代表在同一層橫向換下一個候選人（
+                若跟前一個候選人數值一樣，代表「這個位置用這個數字」
+                的整棵子樹已經探索過了，直接 continue 跳過即可）。
+
+
             """
             if i > start_idx and candidates[i] == candidates[i - 1]:
                 continue
