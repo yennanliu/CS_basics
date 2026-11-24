@@ -105,6 +105,56 @@ John attended the Math exam 1 time, the Physics exam 1 time, and the Programming
 
 */
 
+
+/* 
+
+NOTE !!!
+
+`CROSS JOIN ` is needed for this LC.
+
+-> 
+
+題目要求列出每個學生 × 每個科目的組合，即使該學生沒有參加該科目的考試，也必須顯示，考試次數為 0。
+
+因此不能直接使用 INNER JOIN。
+
+
+->
+
+必須用 CROSS JOIN 產生「所有學生 × 所有科目」的完整組合，而不是 INNER JOIN：
+這題要列出每一位學生參加每一門科目的考試次數——即使某位學生從未參加過某科考試，
+也必須顯示 0 次。INNER JOIN 只會留下有考試紀錄的組合，沒考過的科目會整列消失。
+
+
+---
+
+
+Summary:
+
+
+3. Senior Data Engineer 面試重點
+這題值得記住三個 SQL Pattern：
+Pattern 使用情境
+CROSS JOIN  建立所有可能組合
+LEFT JOIN   保留沒有匹配資料的左表紀錄
+COUNT(column)   忽略 NULL，計算實際匹配筆數
+
+常見應用場景：
+- 每個學生 × 每個科目的考試次數
+- 每個商品 × 每個月份的銷售量
+- 每個使用者 × 每天的活動次數
+- 每個門市 × 每種商品的庫存紀錄
+核心思路：
+
+Generate all combinations → LEFT JOIN facts → COUNT(non-null column) → GROUP BY
+
+這是 Data Warehouse 報表中非常常見的資料建模與 SQL 查詢模式。
+
+
+
+*/
+
+
 # V0
 # IDEA : CROSS JOIN EVERY (STUDENT, SUBJECT) PAIR, LEFT JOIN THE ATTENDANCES, COUNT
 #
@@ -133,6 +183,29 @@ GROUP BY
 ORDER BY
     st.student_id,
     sub.subject_name;
+
+
+# V0-1
+# IDEA: CROSS JOIN (GPT)
+SELECT
+    s.student_id,
+    s.student_name,
+    sub.subject_name,
+    COUNT(e.subject_name) AS attended_exams
+FROM Students s
+CROSS JOIN Subjects sub
+LEFT JOIN Examinations e
+    ON s.student_id = e.student_id
+    AND sub.subject_name = e.subject_name
+GROUP BY
+    s.student_id,
+    s.student_name,
+    sub.subject_name
+ORDER BY
+    s.student_id,
+    sub.subject_name;
+
+
 
 # V1
 # IDEA : PRE-AGGREGATE THE ATTENDANCES, THEN LEFT JOIN ONTO THE GRID
