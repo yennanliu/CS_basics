@@ -43,6 +43,8 @@
 			- 2D DP (pass)
 
 			- greedy
+				- 45 (todo)
+				- 134 (todo)
 
 
 			

@@ -95,6 +95,83 @@ class Solution(object):
         return True
 
 
+# V0-1
+# IDEA: GREEDY (GEMINI)
+from collections import Counter
+
+
+class Solution(object):
+    def isNStraightHand(self, hand, groupSize):
+        """
+        :type hand: List[int]
+        :type groupSize: int
+        :rtype: bool
+        """
+        # 邊界條件：空手牌或無法整除 groupSize 必定無法分組
+        if not hand or groupSize <= 0 or len(hand) % groupSize != 0:
+            return False
+
+        if groupSize == 1:
+            return True
+
+        cnt = Counter(hand)
+
+        while cnt:
+            # 每次都從目前剩餘牌中最小的數字開始組順子
+            start = min(cnt.keys())
+
+            # 檢查並扣除連續 groupSize 張牌
+            for offset in range(groupSize):
+                card = start + offset
+                if card not in cnt:
+                    return False
+
+                cnt[card] -= 1
+                if cnt[card] == 0:
+                    del cnt[card]
+
+        return True
+
+# V0-2
+# IDEA: GREEDY (GPT)
+from collections import Counter
+
+class Solution(object):
+    def isNStraightHand(self, hand, groupSize):
+        """
+        :type hand: List[int]
+        :type groupSize: int
+        :rtype: bool
+        """
+        # Edge cases
+        if not hand or groupSize <= 0:
+            return False
+
+        n = len(hand)
+
+        if n % groupSize != 0:
+            return False
+
+        cnt = Counter(hand)
+
+        # Process numbers in ascending order
+        for val in sorted(cnt.keys()):
+
+            if cnt[val] > 0:
+                freq = cnt[val]
+
+                # Build consecutive groups starting from val
+                for i in range(groupSize):
+                    curr = val + i
+
+                    if cnt[curr] < freq:
+                        return False
+
+                    cnt[curr] -= freq
+
+        return True
+
+
 # V1
 # IDEA : GREEDY + MIN-HEAP OF DISTINCT VALUES
 #
