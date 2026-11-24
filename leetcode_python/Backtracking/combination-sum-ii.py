@@ -40,6 +40,95 @@ Constraints:
 """
 
 # V0
+# IDEA: BACKTRACK + SAME LAYER NEGLECT (gpt)
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        self.res = []
+
+        # Important: sort to handle duplicates and enable pruning
+        candidates.sort()
+
+        self.helper(candidates, target, [], 0)
+
+        return self.res
+
+    def helper(self, candidates, target, cur, start_idx):
+
+        # Found a valid combination
+        if target == 0:
+            self.res.append(cur[:])
+            return
+
+        n = len(candidates)
+
+        for i in range(start_idx, n):
+            val = candidates[i]
+
+            # Skip duplicates at the same recursion level
+            if i > start_idx and candidates[i] == candidates[i - 1]:
+                continue
+
+            # Since candidates are sorted, no need to explore larger values
+            if val > target:
+                break
+
+            # Choose
+            cur.append(val)
+
+            # Explore: i + 1 means each element can only be used once
+            self.helper(candidates, target - val, cur, i + 1)
+
+            # Backtrack
+            cur.pop()
+
+
+# V0-1
+# IDEA: BACKTRACK + SAME LAYER NEGLECT (GEMINI)
+class Solution(object):
+    def combinationSum2(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        self.res = []
+        if not candidates:
+            return self.res
+
+        # 1. 排序讓相同元素相鄰，方便同層去重與提前中斷
+        candidates.sort()
+        self.helper(candidates, target, 0, [])
+        return self.res
+
+    def helper(self, candidates, remain, start_idx, cur):
+        # 恰好湊齊目標總和，記錄結果後即可返回
+        if remain == 0:
+            self.res.append(cur[:])
+            return
+
+        for i in range(start_idx, len(candidates)):
+            # 2. 同層去重：同一層決策中，相同數字只挑第一個，避免產生重複組合
+            if i > start_idx and candidates[i] == candidates[i - 1]:
+                continue
+
+            val = candidates[i]
+
+            # 3. 排序後剪枝：若當前數字已大於剩餘目標，後續數字更大皆不可能湊出，直接 break
+            if val > remain:
+                break
+
+            cur.append(val)
+            # 每個元素只能使用一次，下一層從 i + 1 開始
+            self.helper(candidates, remain - val, i + 1, cur)
+            cur.pop()
+
+
+# V0-2
 # time = O(2^n * n), n = len(candidates)
 # space = O(n)
 class Solution(object):
