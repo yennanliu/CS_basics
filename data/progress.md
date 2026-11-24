@@ -36,11 +36,21 @@
 		    - graph
 		    	- 994 (todo)
 		    	- 417 (todo)
+		    	- 127 (todo)
 
+		    - advanced graph (pass)
+			- 1D DP (pass)
+			- 2D DP (pass)
+
+			- greedy
+
+
+			
 
 		 - done:
 		 	- trees
 		 	- tries (pass)
+
 
 
 
