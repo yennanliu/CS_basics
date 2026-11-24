@@ -38,6 +38,18 @@ class Solution(object):
 
     def helper(self, left_remain, right_remain, cur):
 
+        """
+        NOTE !!!
+
+        we DON'T need `is_valid` func,
+        since we make sure that every update still make the string a well-formed parentheses
+
+        ->
+
+        因為每一步都在合法條件下展開，走到終點時一定天然合法且不重複，
+        不需要額外寫 is_valid 或做 not in self.res 檢查。
+
+        """
         # Base case
         if left_remain == 0 and right_remain == 0:
             self.res.append("".join(cur))
@@ -79,6 +91,19 @@ class Solution(object):
         return self.res
 
     def helper(self, left_remain, right_remain, cur):
+
+        """
+        NOTE !!!
+
+        we DON'T need `is_valid` func,
+        since we make sure that every update still make the string a well-formed parentheses
+
+        ->
+
+        因為每一步都在合法條件下展開，走到終點時一定天然合法且不重複，
+        不需要額外寫 is_valid 或做 not in self.res 檢查。
+
+        """
         # 左右括號都用完時，代表已組成一組合法括號字串
         if left_remain == 0 and right_remain == 0:
             self.res.append("".join(cur))
