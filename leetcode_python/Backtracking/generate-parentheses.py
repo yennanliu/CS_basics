@@ -25,6 +25,79 @@ Constraints:
 
 
 # V0
+# IDEA: BACKTRACK (gpt)
+class Solution(object):
+    def generateParenthesis(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        self.res = []
+        self.helper(n, n, [])
+        return self.res
+
+    def helper(self, left_remain, right_remain, cur):
+
+        # Base case
+        if left_remain == 0 and right_remain == 0:
+            self.res.append("".join(cur))
+            return
+
+        # Case 1: Add "("
+        if left_remain > 0:
+            cur.append("(")
+            self.helper(left_remain - 1, right_remain, cur)
+            cur.pop()
+
+        # Case 2: Add ")"
+        # Only add ")" when there are more unmatched "("
+        """
+        NOTE !!! 
+
+        below condition
+        """
+        if right_remain > left_remain:
+            cur.append(")")
+            self.helper(left_remain, right_remain - 1, cur)
+            cur.pop()
+
+
+# V0-1
+# IDEA: BACKTRACK (gemini)
+class Solution(object):
+    def generateParenthesis(self, n):
+        """
+        :type n: int
+        :rtype: List[str]
+        """
+        if n <= 0:
+            return []
+
+        self.res = []
+        # left_remain：還剩幾個 '(' 可放；right_remain：還剩幾個 ')' 可放
+        self.helper(n, n, [])
+        return self.res
+
+    def helper(self, left_remain, right_remain, cur):
+        # 左右括號都用完時，代表已組成一組合法括號字串
+        if left_remain == 0 and right_remain == 0:
+            self.res.append("".join(cur))
+            return
+
+        # 只要還有剩餘的 '('，就可以放入 '('
+        if left_remain > 0:
+            cur.append("(")
+            self.helper(left_remain - 1, right_remain, cur)
+            cur.pop()
+
+        # 只有當剩餘的 ')' 多於剩餘的 '('（代表目前已使用的 '(' 多於已使用的 ')'）時，才能放入 ')'
+        if right_remain > left_remain:
+            cur.append(")")
+            self.helper(left_remain, right_remain - 1, cur)
+            cur.pop()
+
+
+# V0-2
 # IDEA : bracktrack + LEFT, RIGHT COUNT (LC 020)
 # time = O(4^n / sqrt(n))
 # space = O(4^n / sqrt(n))

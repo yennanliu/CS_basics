@@ -28,6 +28,8 @@
 		    	- 84 (todo)
 
 		    - backtrack (todo !!!)
+		    	- 46(todo)
+		    	- 90 (todo)
 
 		    - heap / PQ
 		    	- 355 (todo)
