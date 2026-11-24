@@ -27,9 +27,12 @@
 		    - stack
 		    	- 84 (todo)
 
-		    - backtrack (todo !!!)
+		    - backtrack
 		    	- 46(todo)
 		    	- 90 (todo)
+		    	- 131 (todo)
+		    	- 17 (todo)
+		    	- 51 (todo)
 
 		    - heap / PQ
 		    	- 355 (todo)
