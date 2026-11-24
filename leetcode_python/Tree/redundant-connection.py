@@ -213,6 +213,55 @@ class Solution(object):
     return []
 
 
+# V0-0-2
+# IDEA: UF (gpt)
+class UF(object):
+
+    def __init__(self, n):
+        self.parents = [i for i in range(n + 1)]
+        self.cluster_cnt = n
+
+    def get_parent(self, x):
+        # Path compression
+        if self.parents[x] != x:
+            self.parents[x] = self.get_parent(self.parents[x])
+
+        return self.parents[x]
+
+    def union(self, x, y):
+        px = self.get_parent(x)
+        py = self.get_parent(y)
+
+        # Already connected -> redundant edge
+        if px == py:
+            return False
+
+        self.parents[px] = py
+        self.cluster_cnt -= 1
+
+        return True
+
+    def is_same_parent(self, x, y):
+        return self.get_parent(x) == self.get_parent(y)
+
+
+class Solution(object):
+    def findRedundantConnection(self, edges):
+        """
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+        n = len(edges)
+
+        uf = UF(n)
+
+        for x, y in edges:
+            if not uf.union(x, y):
+                return [x, y]
+
+        return []
+
+
 # V0-1
 # IDEA: union find
 class UF(object):
