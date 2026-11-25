@@ -85,6 +85,15 @@ class Solution(object):
         # Create copied node
         copied = Node(head.val)
 
+        """
+        NOTE !!!
+
+        need to add node to visited right away,
+        to avoid infite looping.
+
+        -> update to visited here, but NOT wait after `copied.next `,  `copied.random `...
+
+        """
         # Save it before processing next/random
         visited[head] = copied
 
