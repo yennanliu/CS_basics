@@ -30,7 +30,6 @@
 		    	- 84 (todo)
 
 		    - backtrack
-		    	- 46 (todo)
 		    	- 90 (todo)
 		    	- 131 (todo)
 		    	- 17 (todo)
@@ -63,9 +62,6 @@
 
 
 
-
-
-
 	- blind 75 review
 		- https://github.com/yennanliu/CS_basics/issues/352
 
@@ -77,7 +73,9 @@
 				- 295(todo)
 
 			- advanced graphs
-			- 1D DP (pass)
+			- 1D DP (ing)
+				- 198
+
 			- 2D DP (pass)
 
 		- done:
