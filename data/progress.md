@@ -34,7 +34,6 @@
 		    	- 51 (todo)
 
 		    - heap / PQ
-		    	- 355 (todo)
 		    	- 295 (todo)
 
 		    - graph
