@@ -21,7 +21,10 @@
 			- binary search
 				- 4 (todo)
 
-		    - linked list (pass)
+		    - linked list
+		    	- 146 (todo)
+		    	- 23 (todo)
+		    	- 25 (todo)
 
 		    - stack
 		    	- 84 (todo)
