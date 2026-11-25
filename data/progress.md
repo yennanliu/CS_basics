@@ -19,7 +19,6 @@
 				- 239 (todo)
 
 			- binary search
-				- 981 (todo)
 				- 4 (todo)
 
 		    - linked list (pass)
