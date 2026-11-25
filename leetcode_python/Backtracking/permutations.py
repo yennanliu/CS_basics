@@ -23,6 +23,81 @@ Output: [[1]]
 """
 
 # V0
+# IDEA: BACKTRACK (GPT)
+class Solution(object):
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if not nums:
+            return []
+
+        self.res = []
+        self.helper(nums, [])
+
+        return self.res
+
+    def helper(self, nums, tmp):
+        # Base case
+        if len(tmp) == len(nums):
+            self.res.append(tmp[:])
+            return
+
+        for i in range(len(nums)):
+            val = nums[i]
+
+            # Skip elements that have already been used
+            if val in tmp:
+                continue
+
+            # Choose
+            tmp.append(val)
+
+            # Explore
+            self.helper(nums, tmp)
+
+            # Backtrack
+            tmp.pop()
+
+# V0-1
+# IDEA: BACKTRACK (GEMINI)
+class Solution(object):
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if not nums:
+            return []
+
+        self.res = []
+        used = [False] * len(nums)
+        self._backtrack(nums, used, [])
+        return self.res
+
+    def _backtrack(self, nums, used, path):
+        # 排列長度已達陣列長度，存入一份快照並返回
+        if len(path) == len(nums):
+            self.res.append(path[:])
+            return
+
+        # 全排列每一層都可從索引 0 嘗試挑選尚未使用的元素
+        for i in range(len(nums)):
+            if used[i]:
+                continue
+
+            used[i] = True
+            path.append(nums[i])
+
+            self._backtrack(nums, used, path)
+
+            # 撤銷選擇，還原狀態
+            path.pop()
+            used[i] = False
+
+
+# V0-3
 # IDEA : BACKTRACK, 
 # similar idea as LC 77 -> difference : contains VS start
 # time = O(n * n!)
