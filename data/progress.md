@@ -37,9 +37,7 @@
 		    	- 295 (todo)
 
 		    - graph
-		    	- 994 (todo)
 		    	- 417 (todo)
-		    	- 127 (todo)
 
 		    - advanced graph (pass)
 			- 1D DP (pass)
