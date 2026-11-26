@@ -211,7 +211,7 @@ LC：[584](https://leetcode.com/problems/find-customer-referee/)
 
 LC：[183](https://leetcode.com/problems/customers-who-never-order/)
 
-<!-- 320df778b09c -->
+<!-- ba6bbbf03e23 -->
 ### 3-3) 保留配對數為零的列
 
 **先建出答案必須包含的每一列 —— 常用 `CROSS JOIN` —— 再 `LEFT JOIN` 事實資料，並計數右表的某個
@@ -233,6 +233,55 @@ LC：[183](https://leetcode.com/problems/customers-who-never-order/)
 - `BETWEEN` 兩端都包含，這正是價格期間的 `start_date` 與 `end_date` 在這裡的意思。
 
 LC：[1251](https://leetcode.com/problems/average-selling-price/)、
+[1280](https://leetcode.com/problems/students-and-examinations/)
+
+<!-- 9524e2e3f2cb -->
+### 3-4) `LEFT JOIN` 之後的 `COUNT(*)` vs `COUNT(column)`
+
+**`COUNT(*)` 計算傳到它手上的每一列，包含有 `NULL` 的列；`COUNT(column)` 只計算該欄位不為
+`NULL` 的列。兩者都只計算通過 `WHERE` 的列，因為 `WHERE` 在任何彙總之前執行 —— 所以在
+`LEFT JOIN` 的右表上加會排除 `NULL` 的 `WHERE`（`a.col = …`、`a.col IS NOT NULL`），會把
+`COUNT(*)` 本來要計算的那些沒配對到的列刪掉。**
+
+<!--CODE-->
+
+| 寫法 | 計算什麼 | `LEFT JOIN` 沒配對到的一列 |
+|---|---|---|
+| `COUNT(*)`（與 `COUNT(1)` 相同） | 每一列 | 算 1 |
+| `COUNT(a.col)` | `a.col` 不為 `NULL` 的列 | 算 0 |
+| `COUNT(DISTINCT a.col)` | `a.col` 不同的非 `NULL` 值 | 算 0 |
+
+LC 550 就是拿其中一個除以另一個。在題目自己的範例上，`LEFT JOIN` 交給 `COUNT` 三列，每位玩家
+一列，只有玩家 1 找到隔天那一列：
+
+<!--CODE-->
+
+<!--CODE-->
+
+`COUNT(a.player_id)` 是 1（隔天回來的玩家），`COUNT(*)` 是 3（所有玩家），`ROUND(1 / 3, 2)`
+就是預期的 `0.33`。
+
+把隔天的條件從 `ON` 移到 `WHERE`，分母就垮了：
+
+<!--CODE-->
+
+- **`COUNT(*)` 會計算含有 `NULL` 的列，但只在 `WHERE` 之後。** 它不會因為某列有 `NULL` 就跳過，
+  但它只看得到 `WHERE` 放行的列。在正確的 join 之後加 `WHERE a.player_id IS NOT NULL`，會得到
+  同樣錯誤的 `1.00`：那只是繞了一圈的 inner join。
+- **只有會排除 `NULL` 的條件才會這樣。** `NULL` 能通過的右表條件，例如
+  `WHERE a.player_id IS NULL`，留下的正好是沒配對到的列 —— 那就是
+  [3-2](#3-2-never-did-x-the-anti-join) 的 anti-join。
+- **沒有任何人回來時，錯誤的查詢回傳 `NULL`，不是 `1.00`。** `WHERE` 之後沒有任何列，兩個計數
+  都是 0，而 MySQL 的 `0 / 0` 是 `NULL`。只要至少有一位玩家回來，就會出現 `1.00`。
+- **對彙總結果的篩選要放在 `HAVING`**，它在 `COUNT` 之後執行；`WHERE COUNT(*) > 1` 是語法錯誤。
+- **只要一位玩家可能出現在不只一列 join 結果裡，就需要 `DISTINCT`** —— 左表一列配對到右表
+  多列，或左表本身就有同一位玩家的多列。LC 550 兩者都不會發生：`first_login` 每位玩家一列，
+  而 `(player_id, event_date)` 是 primary key，所以每位玩家隔天最多一列，`COUNT(a.player_id)`
+  本來就是玩家數。若是一天有多列的原始登入 log，或左表有重複的玩家，兩個計數都會膨脹，要寫成
+  `COUNT(DISTINCT a.player_id) / COUNT(DISTINCT f.player_id)`。
+- LC 1280 的 0 也由同一條規則決定 —— 見 [3-3](#3-3-keep-the-rows-with-zero-matches)。
+
+LC：[550](https://leetcode.com/problems/game-play-analysis-iv/)、
 [1280](https://leetcode.com/problems/students-and-examinations/)
 
 <!-- d510d6cfb043 -->
@@ -379,7 +428,7 @@ LC：[180](https://leetcode.com/problems/consecutive-numbers/)
 LC：[601](https://leetcode.com/problems/human-traffic-of-stadium/)、
 [1285](https://leetcode.com/problems/find-the-start-and-end-number-of-continuous-ranges/)
 
-<!-- 7ecf6276155f -->
+<!-- 67d93711b9be -->
 ### 5-4) 留存率：首次登入的隔天
 
 **找出每位玩家的第一天，再找第一天隔天的那一列，最後除以玩家人數。**
@@ -388,6 +437,10 @@ LC：[601](https://leetcode.com/problems/human-traffic-of-stadium/)、
 
 - `first_login` 每位玩家一列，所以 `COUNT(*)` 就是玩家人數，而 `COUNT(a.player_id)` 只計算找到
   隔天那一列的玩家。
+- 隔天的條件要留在 `ON`。放到 `WHERE` 會把沒有回來的玩家從分母移除，答案變成 `1.00`（沒有人回來時則是 `NULL`）——
+  見
+  [3-4](#3-4-count-vs-countcolumn-after-a-left-join)。
+- `DATEDIFF(a.event_date, f.first_day) = 1` 是同一個條件；答案是比例（`0.33`），不是百分比。
 - 「在**任何一次**登入的隔天又登入」是另一個、更簡單的問題；這一題只以第一天為基準。
 
 LC：[550](https://leetcode.com/problems/game-play-analysis-iv/)
@@ -491,7 +544,7 @@ LC：[602](https://leetcode.com/problems/friend-requests-ii-who-has-the-most-fri
 | `ROW_NUMBER()` 的運算 | 回傳 `BIGINT UNSIGNED`，差值為負就報錯 | `CAST(… AS SIGNED)`（[5-3](#5-3-gaps-and-islands)） |
 | `NULL` 比較 | `= NULL`、`<> 2` 與 `NOT IN (…, NULL)` 會丟掉列 | `IS NULL`、`<=>`、`NOT EXISTS`（[3](#3-nulls-and-missing-rows-)） |
 
-<!-- c8f15ca9d4f8 -->
+<!-- b28addbbc000 -->
 ## 9) 技巧 → 題目索引 ⭐⭐⭐
 
 | 技巧 | 題目 | 章節 |
@@ -504,6 +557,7 @@ LC：[602](https://leetcode.com/problems/friend-requests-ii-who-has-the-most-fri
 | `WHERE` 裡的 `NULL`、`<=>` | 584 | [3-1](#3-1--and--drop-null-rows) |
 | Anti-join | 183 | [3-2](#3-2-never-did-x-the-anti-join) |
 | `CROSS JOIN` + `LEFT JOIN` + `COUNT(col)`、`IFNULL` | 1251, 1280 | [3-3](#3-3-keep-the-rows-with-zero-matches) |
+| `COUNT(*)` vs `COUNT(col)`、`WHERE` 在 `COUNT` 之前執行 | 550, 1280 | [3-4](#3-4-count-vs-countcolumn-after-a-left-join) |
 | 條件彙總 | 1193 | [4-1](#4-1-conditional-aggregation) |
 | `AVG(condition)` 比率 | 1211, 1934 | [4-2](#4-2-rates-and-percentages) |
 | Relational division | 1045 | [4-3](#4-3-has-all-of-them-relational-division) |
