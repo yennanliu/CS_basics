@@ -30,7 +30,6 @@
 		    	- 84 (todo)
 
 		    - backtrack
-		    	- 131 (todo)
 		    	- 17 (todo)
 		    	- 51 (todo)
 

@@ -106,6 +106,101 @@ class Solution(object):
                 tmp.pop()
 
 
+# V0-0-1
+# IDEA: BACKTRACK (GPT)
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        if not s:
+            return []
+
+        self.res = []
+        self.helper(s, 0, [])
+
+        return self.res
+
+    def helper(self, s, start_idx, tmp):
+        n = len(s)
+
+        # Base case: all characters are partitioned
+        if start_idx == n:
+            self.res.append(tmp[:])
+            return
+
+        for i in range(start_idx, n):
+            # Current substring
+            val = s[start_idx:i + 1]
+
+            # Only choose palindrome substring
+            if not self.is_pali(val):
+                continue
+
+            # Choose
+            tmp.append(val)
+
+            # Explore next partition
+            self.helper(s, i + 1, tmp)
+
+            # Backtrack
+            tmp.pop()
+
+    def is_pali(self, s):
+        l = 0
+        r = len(s) - 1
+
+        while l < r:
+            if s[l] != s[r]:
+                return False
+
+            l += 1
+            r -= 1
+
+        return True
+
+
+# V0-0-2
+# IDEA: BACKTRACK (GEMINI)
+class Solution(object):
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        if not s:
+            return []
+
+        self.res = []
+        self._backtrack(s, 0, [])
+        return self.res
+
+    def _backtrack(self, s, start_idx, path):
+        # 已成功將整個字串 s 切分完畢
+        if start_idx == len(s):
+            self.res.append(path[:])
+            return
+
+        # 嘗試從 start_idx 切出子字串 s[start_idx : end + 1]
+        for end in range(start_idx, len(s)):
+            sub = s[start_idx : end + 1]
+            if self._is_palindrome(sub):
+                path.append(sub)
+                # 從 end + 1 開始繼續切分剩餘字串
+                self._backtrack(s, end + 1, path)
+                path.pop()
+
+    def _is_palindrome(self, sub):
+        left = 0
+        right = len(sub) - 1
+        while left < right:
+            if sub[left] != sub[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+
 
 # V0-1
 # IDEA : BACKTRCK
