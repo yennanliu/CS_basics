@@ -103,9 +103,9 @@
 - Cheatsheet review
 	
 	- Doing
-		- 二元樹
-			- https://yennj12.js.org/CS_basics/cheatsheets/binary_tree.zh.html
-				- `模板 12：兩棵樹同步走 — LC 100`
+		- BFS（廣度優先搜尋）
+			- https://yennj12.js.org/CS_basics/cheatsheets/bfs.zh.html
+
 
 	- Done
 		- Hash Map Cheatsheet（雜湊表速查）
@@ -116,6 +116,7 @@
 		- 滑動視窗
 		- 堆疊（Stack）
 		- Linked List（鏈結串列）
+		- 二元樹
 
 
 
