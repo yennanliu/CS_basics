@@ -79,6 +79,11 @@ WITH with_previous AS (
         id,
         recordDate,
         temperature,
+        /* NOTE !!!
+
+        -> NO need to do `parition by id`
+            -> the weather data does not need to be split by id
+        */
         LAG(recordDate) OVER (ORDER BY recordDate) AS prev_date,
         LAG(temperature) OVER (ORDER BY recordDate) AS prev_temperature
     FROM Weather
