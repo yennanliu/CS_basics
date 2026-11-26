@@ -28,6 +28,96 @@ Constraints:
 
 """
 
+
+# V0
+# IDEA: BACKTRACK + SAME LEVEL NEGLECT + LC 46. Permutations (GPT)
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if not nums:
+            return []
+
+        nums.sort()
+
+        self.res = []
+        self.helper(nums, 0, [])
+
+        return self.res
+
+    def helper(self, nums, start_idx, tmp):
+
+        # Every current path is a valid subset
+        self.res.append(tmp[:])
+
+        n = len(nums)
+
+        for i in range(start_idx, n):
+
+            """
+            NOTE !!!  how we de-duplicate in same level
+
+
+            ->  同層去重：同一層迴圈中，相同數值只挑第一個
+
+            -> if i > start_idx and nums[i] == nums[i - 1]:
+
+            """
+            # Skip duplicates at the same recursion level
+            if i > start_idx and nums[i] == nums[i - 1]:
+                continue
+
+            val = nums[i]
+
+            tmp.append(val)
+
+            self.helper(nums, i + 1, tmp)
+
+            tmp.pop()
+
+
+# V0-0-1
+# IDEA: BACKTRACK + SAME LEVEL NEGLECT + LC 46. Permutations (GEMINI)
+class Solution(object):
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if not nums:
+            return []
+
+        # 1. 排序讓相同元素相鄰，方便同層去重
+        nums.sort()
+        self.res = []
+        self._backtrack(nums, 0, [])
+        return self.res
+
+    def _backtrack(self, nums, start_idx, path):
+        # 每個遞迴節點都是一個合法子集，直接存入快照（不 return，繼續往下展開更長子集）
+        self.res.append(path[:])
+
+        for i in range(start_idx, len(nums)):
+            """
+            NOTE !!!  how we de-duplicate in same level
+
+
+            ->  同層去重：同一層迴圈中，相同數值只挑第一個
+
+            -> if i > start_idx and nums[i] == nums[i - 1]:
+
+            """
+            # 2. 同層去重：同一層迴圈中，相同數值只挑第一個
+            if i > start_idx and nums[i] == nums[i - 1]:
+                continue
+
+            path.append(nums[i])
+            # 3. 下一層從 i + 1 開始，避免重複使用同一個元素
+            self._backtrack(nums, i + 1, path)
+            path.pop()
+
 # V0
 # IDEA : BACKTRACK + LC 078 Subsets + dict
 # time = O(n * 2^n)
