@@ -83,6 +83,16 @@ LC 4045 VS LC 853
 
 """
 
+"""
+NOTE !!!
+
+for this LC, we can either 
+    
+    - 按照 position 由`大到小` 排序：
+    or
+    - 按照 position 由`小到大` 排序：
+"""
+
 
 # V0
 # IDEA : STACK
@@ -175,6 +185,60 @@ class Solution(object):
 
     # 堆疊中剩下的元素個數就是總車隊數
     return len(st)
+
+
+# V0-0-2
+# IDEA: STACK (gpt)
+class Solution(object):
+    def carFleet(self, target, position, speed):
+        """
+        :type target: int
+        :type position: List[int]
+        :type speed: List[int]
+        :rtype: int
+        """
+        # Edge case
+        if not position:
+            return 0
+
+        # [speed, position, time]
+        speed_pos = []
+
+        for i in range(len(position)):
+            time = float(target - position[i]) / speed[i]
+
+            speed_pos.append([
+                speed[i],
+                position[i],
+                time
+            ])
+
+        # Sort by position descending (closest to target first)
+        speed_pos.sort(key=lambda x: -x[1])
+
+        st = []
+
+        for s, pos, curr_time in speed_pos:
+
+            # A car catches up with the fleet ahead
+            # if its arrival time is <= the fleet's arrival time
+
+            """
+            NOTE !!!
+
+            因為我們已經按照 position 由`大到小` 排序：
+
+
+            - Stack 裡面最後一台車，是目前前方的 Fleet。
+            - 如果後方車輛抵達時間小於或等於前方 Fleet，代表它會追上前方 Fleet。
+            - 因此，後方車輛不需要新增一個 Fleet。
+            """
+            if st and curr_time <= st[-1][2]:
+                continue
+
+            st.append([s, pos, curr_time])
+
+        return len(st)
 
 
 # V1
