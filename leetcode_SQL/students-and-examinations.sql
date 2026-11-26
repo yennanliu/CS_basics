@@ -155,6 +155,18 @@ Generate all combinations → LEFT JOIN facts → COUNT(non-null column) → GRO
 */
 
 
+/* 
+
+NOTE !!!
+
+
+`CROSS JOIN 不需要 ON`
+
+
+    -> CROSS JOIN 是產生兩張表的所有組合，不需要 ON 條件。
+*/
+
+
 # V0
 # IDEA : CROSS JOIN EVERY (STUDENT, SUBJECT) PAIR, LEFT JOIN THE ATTENDANCES, COUNT
 #
@@ -170,6 +182,8 @@ SELECT
     st.student_id,
     st.student_name,
     sub.subject_name,
+    # NOTE !! use `COUNT(e.subject_name)` instead of `COUNT(*)`
+    # -> or `null` will still be count
     COUNT(e.subject_name) AS attended_exams   -- skips the NULL row of an unattended pair -> 0
 FROM Students AS st
 CROSS JOIN Subjects AS sub
