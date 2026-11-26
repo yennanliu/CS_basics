@@ -38,9 +38,6 @@
 		    - heap / PQ
 		    	- 295 (todo)
 
-		    - graph
-		    	- 417 (todo)
-
 		    - advanced graph (pass)
 			- 1D DP (pass)
 			- 2D DP (pass)
@@ -57,6 +54,7 @@
 		 - done:
 		 	- trees
 		 	- tries (pass)
+		 	- graph
 
 
 
