@@ -448,8 +448,9 @@ LC: [1251](https://leetcode.com/problems/average-selling-price/),
 
 **`COUNT(*)` counts every row that reaches it, `NULL`s included; `COUNT(column)` counts only
 the rows where that column is not `NULL`. Both count only the rows that survive `WHERE`,
-because `WHERE` runs before any aggregate — so a `WHERE` on the right table of a `LEFT JOIN`
-deletes the unmatched rows that `COUNT(*)` was supposed to count.**
+because `WHERE` runs before any aggregate — so a null-rejecting `WHERE` on the right table of
+a `LEFT JOIN` (`a.col = …`, `a.col IS NOT NULL`) deletes the unmatched rows that `COUNT(*)` was
+supposed to count.**
 
 ```text
 FROM / JOIN … ON    build the joined rows; a LEFT JOIN keeps unmatched left rows, NULL on the right
@@ -508,15 +509,23 @@ LEFT   JOIN Activity a ON a.player_id = f.player_id
 WHERE  a.event_date = f.first_day + INTERVAL 1 DAY;
 ```
 
-- **`COUNT(*)` ignores `NULL`s but not `WHERE`.** It never skips a row for holding `NULL`, but
-  it only sees the rows `WHERE` let through. `WHERE a.player_id IS NOT NULL` after the correct
-  join gives the same wrong `1.00`: it is an inner join with extra steps.
+- **`COUNT(*)` counts rows containing `NULL`, but only after `WHERE`.** It never skips a row for
+  holding `NULL`, but it only sees the rows `WHERE` let through. `WHERE a.player_id IS NOT NULL`
+  after the correct join gives the same wrong `1.00`: it is an inner join with extra steps.
+- **Only a null-rejecting condition does this.** A right-table condition that `NULL` can pass,
+  such as `WHERE a.player_id IS NULL`, keeps exactly the unmatched rows — that is the anti-join
+  of [3-2](#3-2-never-did-x-the-anti-join).
+- **When nobody comes back, the wrong query returns `NULL`, not `1.00`.** `WHERE` leaves no rows,
+  both counts are 0, and MySQL's `0 / 0` is `NULL`. The `1.00` appears whenever at least one
+  player returned.
 - **A filter on the aggregate goes in `HAVING`**, which runs after `COUNT`; `WHERE COUNT(*) > 1`
   is a syntax error.
-- **`DISTINCT` in the numerator is needed only when one left row can match several right
-  rows.** In LC 550 `(player_id, event_date)` is the primary key, so a player has at most one
-  next-day row and `COUNT(a.player_id)` is already a player count. In a raw login log with
-  several rows per day, both counts inflate: write
+- **`DISTINCT` is needed whenever a player can land on more than one joined row** — one left
+  row matching several right rows, or the left side itself holding several rows per player.
+  In LC 550 neither happens: `first_login` has one row per player, and `(player_id,
+  event_date)` is the primary key, so a player has at most one next-day row and
+  `COUNT(a.player_id)` is already a player count. In a raw login log with several rows per day,
+  or a left side with repeated players, both counts inflate: write
   `COUNT(DISTINCT a.player_id) / COUNT(DISTINCT f.player_id)`.
 - The same rule decides LC 1280's zeros — see [3-3](#3-3-keep-the-rows-with-zero-matches).
 
@@ -820,7 +829,8 @@ LEFT   JOIN Activity a
 - `first_login` has one row per player, so `COUNT(*)` is the number of players, and
   `COUNT(a.player_id)` counts only the players whose next-day row was found.
 - Keep the next-day test in `ON`. In `WHERE` it removes the players who never came back from
-  the denominator and the answer becomes `1.00` — see [3-4](#3-4-count-vs-countcolumn-after-a-left-join).
+  the denominator, and the answer becomes `1.00` (or `NULL` when nobody returned) — see
+  [3-4](#3-4-count-vs-countcolumn-after-a-left-join).
 - `DATEDIFF(a.event_date, f.first_day) = 1` is the same test; the answer is a fraction
   (`0.33`), not a percentage.
 - "Logged in the day after **any** login" is a different, easier question; this one anchors
