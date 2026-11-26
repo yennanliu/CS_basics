@@ -57,6 +57,30 @@ Only the player with id 1 logged back in after the first day he had logged in so
 #   counts only the players who came back the next day.
 #
 # time = O(n), space = O(p)    -- n = rows in Activity, p = players; one GROUP BY, one hash join
+
+/* 
+
+NOTE !!!
+
+
+1. `COUNT(*)` will be AFFECTED by `where !!!
+
+2. but since we use `left join`,
+   so whether the player played again after first login or not,
+   they will still be count,
+   and `count(*)` will still count null (e.g. the player NOT login again after first login date),
+   so it works.
+
+   ->
+
+    寫法  對 LEFT JOIN 的影響
+
+    
+    COUNT(*)    計算所有保留的 rows
+    COUNT(a.player_id)  忽略沒有匹配的 NULL
+
+
+*/
 WITH first_login AS (
     SELECT
         player_id,
