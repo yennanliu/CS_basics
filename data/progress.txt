@@ -1,4 +1,4 @@
-20261127: SQL 50 (done):  | TODO:  |  neetcode 150 (ing):  | blind 75: 
+20261127: SQL 50 (done):  | TODO:  |  neetcode 150 (ing):  | blind 75:  124(ok*)
 
 
 

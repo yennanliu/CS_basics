@@ -44,10 +44,9 @@
 				- 45 (todo)
 				- 134 (todo)
 
-			- intervals (ing)
+			- intervals
+				- 1851 (todo)
 
-
-			
 
 		 - done:
 		 	- trees
@@ -62,9 +61,6 @@
 		- https://github.com/yennanliu/CS_basics/issues/352
 
 		- doing:
-			- Trees
-				- 124 (todo)
-
 			- PQ
 				- 295(todo)
 
@@ -96,6 +92,7 @@
 			- bit op
 			- binary search
 			- math & geometry
+			- Trees
 
 
 
