@@ -66,8 +66,6 @@
 
 			- advanced graphs
 			- 1D DP (ing)
-				- 213
-				- 5
 				- 647
 				- 91 (!!)
 				- 322
