@@ -45,7 +45,7 @@ half-translated document renders with English gaps rather than failing.
   usually the text already there.
 
 
-## Status — 1924 / 1924 sections (100%)
+## Status — 1927 / 1927 sections (100%)
 
 | FAQ | Sections | 繁體中文 |
 |---|---:|:---:|
@@ -68,7 +68,7 @@ half-translated document renders with English gaps rather than failing.
 | [de/analytics](./faq/de/analytics.md) | 28 | [✅](../i18n/zh/faq/de/analytics.md) |
 | [de/aws_data](./faq/de/aws_data.md) | 61 | [✅](../i18n/zh/faq/de/aws_data.md) |
 | [de/aws_service_selection](./faq/de/aws_service_selection.md) | 43 | [✅](../i18n/zh/faq/de/aws_service_selection.md) |
-| [de/batch_pipeline](./faq/de/batch_pipeline.md) | 50 | [✅](../i18n/zh/faq/de/batch_pipeline.md) |
+| [de/batch_pipeline](./faq/de/batch_pipeline.md) | 53 | [✅](../i18n/zh/faq/de/batch_pipeline.md) |
 | [de/data_modeling](./faq/de/data_modeling.md) | 49 | [✅](../i18n/zh/faq/de/data_modeling.md) |
 | [de/data_performance](./faq/de/data_performance.md) | 41 | [✅](../i18n/zh/faq/de/data_performance.md) |
 | [de/de_system_design](./faq/de/de_system_design.md) | 48 | [✅](../i18n/zh/faq/de/de_system_design.md) |
