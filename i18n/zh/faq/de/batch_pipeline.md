@@ -84,7 +84,7 @@ lake 仍是更好的選擇見 [§1-6](#1-6-lakehouse-or-plain-lake-when-to-choos
 同一個概念、比較舊的名字：staging → integration → presentation。名字不重要，
 重要的是約定：**每一層都能從下一層重建**。
 
-<!-- 8116c224e7b1 -->
+<!-- 80372d0b8c4a -->
 ### 1-5) Lakehouse 由哪些元件組成
 
 **Lakehouse 是四層、四種各自獨立的工作：物件儲存保存位元組，開放檔案格式安排它們的
@@ -103,12 +103,13 @@ lake 仍是更好的選擇見 [§1-6](#1-6-lakehouse-or-plain-lake-when-to-choos
 | **物件儲存** | 耐久、便宜的位元組 | S3、GCS、ADLS | 一張表：它沒有交易，也沒有 schema |
 | **檔案格式** | 安排單一檔案的排列，附欄位統計 | Parquet、ORC、Avro | 有交易的：一個 Parquet 檔案對其他檔案一無所知 |
 | **表格格式** | 記錄每個表版本由哪些檔案組成；原子提交 | Iceberg、Delta Lake、Hudi | 查詢引擎：它是中介資料，不是運算 |
-| **Catalog** | 為表命名，並保存每張表「目前快照」的指標 | Glue Data Catalog、Unity Catalog、Polaris / REST catalog、Nessie、Hive Metastore | 可有可無：少了它，寫入者無法對「目前」是哪個版本達成共識 |
+| **Catalog** | 為表命名，讓引擎能用名稱找到表；對 Iceberg 來說，也保存每張表「目前中介資料」的指標 | Glue Data Catalog、Unity Catalog、Polaris / REST catalog、Nessie、Hive Metastore | 不一定必要：以路徑讀取的 Delta 表透過自己的 `_delta_log` 提交，而 Iceberg 表需要 catalog（或檔案系統 catalog）來切換指標 |
 | **查詢引擎** | 透過表格格式規劃、讀取與寫入 | Spark、Flink、Trino、Athena、Snowflake、DuckDB | 儲存本身：好幾個引擎共用同一批表 |
 
 <!--CODE-->
 
-為什麼表格格式才是關鍵 —— 更新 `orders` 表裡的一筆資料：
+為什麼表格格式才是關鍵 —— 一次 `MERGE` 要更新的資料列分散在 `orders` 表的
+兩個檔案裡：
 
 <!--CODE-->
 
@@ -118,8 +119,8 @@ lake 仍是更好的選擇見 [§1-6](#1-6-lakehouse-or-plain-lake-when-to-choos
 
 - **Parquet 支援 ACID 嗎？** 不支援。Parquet 是檔案格式；原子提交來自表格格式的
   中介資料，它一步就把整組檔案換掉。
-- **S3 是 lakehouse 嗎？** 不是。S3 是儲存層；沒有表格格式和 catalog，它就只是單純的
-  lake。
+- **S3 是 lakehouse 嗎？** 不是。S3 是儲存層；上面沒有表格格式，它就只是單純的 lake。
+  Catalog 讓引擎能用名稱找到表，Iceberg 需要它才能提交；以路徑存取的 Delta 表則不需要。
 - **Lakehouse 和 medallion 有什麼不同？** 兩者是不同的維度。Lakehouse 是平台；medallion
   （[§1-4](#1-4-the-medallion-layers-and-what-each-owns)）是平台上的表怎麼分層。
   大多數 lakehouse 兩者並用。
@@ -581,7 +582,7 @@ DAG run，並在上游 task 成功時執行每個 task。**
   `rewrite_data_files` procedure、Hudi clustering / compaction。
 - 讓舊快照過期（`VACUUM`、`expire_snapshots`），儲存與中介資料才不會無限成長。
 
-<!-- 95ef46361505 -->
+<!-- 9f4a3b0283a7 -->
 ### 7-5) 在 lakehouse 上用 ACID 的代價
 
 **表格格式買到原子提交、快照讀取、列層級變更與 time travel，付出的是中介資料、
@@ -591,6 +592,12 @@ DAG run，並在上游 task 成功時執行每個 task。**
 （Iceberg：在 catalog 裡做 compare-and-swap；Delta：建立 `_delta_log` 裡下一個編號的
 檔案，若另一個寫入者已先建立就失敗）。這就是**樂觀併發控制（optimistic concurrency
 control）** —— 寫入者不上鎖，而是在提交時偵測衝突並重試。
+
+「若另一個寫入者已先建立就失敗」需要儲存層讓建立檔案這件事互斥。在 S3 上使用 Delta
+預設的 `LogStore` 時，這個保證只對**同一個 Spark driver** 內的寫入者成立：來自兩個
+driver 或兩個叢集的併發寫入者可能寫出同一個 log 檔，衝突沒被偵測到，資料就可能遺失。
+多叢集寫入 S3 需要 DynamoDB 支撐的 `LogStore`（`S3DynamoDBLogStore`），而且每個寫入者都要
+設定成同一個 `LogStore`、同一張 DynamoDB 表、同一個 region。
 
 | | 得到什麼 | 代價是什麼 |
 |---|---|---|

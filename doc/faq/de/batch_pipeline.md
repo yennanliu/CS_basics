@@ -109,7 +109,7 @@ Interview answer, out loud:
 | **Object storage** | durable, cheap bytes | S3, GCS, ADLS | a table: it has no transactions and no schema |
 | **File format** | lays out one file, with column statistics | Parquet, ORC, Avro | transactional: a Parquet file knows nothing about other files |
 | **Table format** | records which files make up each table version; commits atomically | Iceberg, Delta Lake, Hudi | a query engine: it is metadata, not compute |
-| **Catalog** | names tables and holds each one's current-snapshot pointer | Glue Data Catalog, Unity Catalog, Polaris / REST catalog, Nessie, Hive Metastore | optional: without it, writers cannot agree what "current" is |
+| **Catalog** | names tables so engines find them by name; for Iceberg, also holds each table's current-metadata pointer | Glue Data Catalog, Unity Catalog, Polaris / REST catalog, Nessie, Hive Metastore | always required: a Delta table read by path commits through its own `_delta_log`, while an Iceberg table needs a catalog (or a filesystem catalog) to swap its pointer |
 | **Query engines** | plan, read and write through the table format | Spark, Flink, Trino, Athena, Snowflake, DuckDB | the storage: several engines share the same tables |
 
 ```text
@@ -122,14 +122,18 @@ Interview answer, out loud:
                                          └──────────────────────────┘
 ```
 
-Why the table format is the part that matters — update one row of an `orders` table:
+Why the table format is the part that matters — one `MERGE` that updates rows spread across
+two files of an `orders` table:
 
 ```text
 plain lake:   s3://lake/orders/part-001.parquet  part-002.parquet  part-003.parquet
-              → rewrite part-002 in place? Readers mid-scan see a half-written file,
-                two jobs doing it at once overwrite each other, and the old version is gone.
+              → overwrite part-001, then part-002. Each S3 PUT is atomic on its own, but
+                the pair is not: a reader between the two PUTs sees new 001 with old 002,
+                a job that dies between them leaves the table half-updated, two jobs doing
+                it at once interleave, and the old version is gone.
 
-lakehouse:    write part-002-v2.parquet, then commit snapshot v43 = {001, 002-v2, 003}
+lakehouse:    write part-001-v2 and part-002-v2, then commit one snapshot
+              v43 = {001-v2, 002-v2, 003}: both files switch in a single step
               → readers on v42 finish undisturbed, a concurrent writer's commit fails and
                 retries, and v42 stays queryable for time travel until it is expired.
 ```
@@ -150,8 +154,9 @@ Follow-ups the interviewer asks next:
 
 - **Does Parquet support ACID?** No. Parquet is a file format; atomic commits come from the
   table format's metadata, which swaps the whole set of files in one step.
-- **Is S3 a lakehouse?** No. S3 is the storage layer; without a table format and a catalog it
-  is a plain lake.
+- **Is S3 a lakehouse?** No. S3 is the storage layer; without a table format on top it is a
+  plain lake. A catalog is what lets engines find tables by name, and Iceberg needs one to
+  commit; a path-based Delta table does not.
 - **Lakehouse vs medallion?** Different axes. A lakehouse is the platform; medallion
   ([§1-4](#1-4-the-medallion-layers-and-what-each-owns)) is how tables on it are layered.
   Most lakehouses use both.
@@ -789,6 +794,13 @@ the next numbered file in `_delta_log`, which fails if another writer created it
 is **optimistic concurrency control** — writers do not lock, they detect a conflict at commit
 and retry.
 
+That "fails if another writer created it first" needs the storage to make file creation
+mutually exclusive. On S3 with Delta's default `LogStore` the guarantee only holds for writers
+in **one Spark driver**: concurrent writers from two drivers or clusters can both write the
+same log file, the conflict goes unseen, and data can be lost. Multi-cluster writes to S3 need
+the DynamoDB-backed `LogStore` (`S3DynamoDBLogStore`), with every writer configured for the same
+`LogStore`, DynamoDB table and region.
+
 | | What you get | What it costs |
 |---|---|---|
 | **Atomicity** | a killed or failed job leaves no half-written files visible | uncommitted files stay behind as orphans until a cleanup removes them |
@@ -811,7 +823,10 @@ The maintenance a lakehouse table needs on a schedule — it is not "write and f
 ```sql
 -- Iceberg on Spark: compact small files, expire old snapshots, delete orphan files
 CALL catalog.system.rewrite_data_files(table => 'db.orders');
-CALL catalog.system.expire_snapshots(table => 'db.orders', older_than => TIMESTAMP '2026-11-20 00:00:00');
+-- set the retention once; with no older_than, each run expires what is older than
+-- now minus this age, so the cutoff advances with every scheduled run
+ALTER TABLE db.orders SET TBLPROPERTIES ('history.expire.max-snapshot-age-ms' = '604800000');  -- 7 days
+CALL catalog.system.expire_snapshots(table => 'db.orders', retain_last => 10);
 CALL catalog.system.remove_orphan_files(table => 'db.orders');
 
 -- Delta Lake: compact and cluster, then delete files no retained version needs
