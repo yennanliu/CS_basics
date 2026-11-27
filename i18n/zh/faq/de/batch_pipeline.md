@@ -47,7 +47,7 @@
 大多數真實的技術棧是混合的：大部分分析用 ELT，資料必須轉換後才准落地的地方
 （PII、超大的非結構化輸入）才用 ETL。
 
-<!-- 91398e3349fa -->
+<!-- 0db37f779e59 -->
 ### 1-3) Data lake vs warehouse vs lakehouse
 
 **Warehouse 是受管理、schema-on-write 的 SQL 儲存；lake 是物件儲存裡便宜的檔案，
@@ -66,7 +66,10 @@ schema 強制與快速 SQL。**
 單純資料湖的失敗模式是 **data swamp（資料沼澤）**：沒有交易，所以寫到一半的 job
 會被讀取者看到；沒有 schema，所以沒人信任那些檔案。
 
-<!-- d1fb748edb77 -->
+lakehouse 各個元件負責什麼見 [§1-5](#1-5-what-a-lakehouse-is-made-of)；什麼時候單純的
+lake 仍是更好的選擇見 [§1-6](#1-6-lakehouse-or-plain-lake-when-to-choose-which)。
+
+<!-- 43aec7a7c97e -->
 ### 1-4) Medallion 分層，以及各層負責什麼
 
 **Bronze 是原始副本，silver 是清理並一致化後的事實，gold 為某一種用途而塑形 ——
@@ -80,6 +83,72 @@ schema 強制與快速 SQL。**
 
 同一個概念、比較舊的名字：staging → integration → presentation。名字不重要，
 重要的是約定：**每一層都能從下一層重建**。
+
+<!-- 8116c224e7b1 -->
+### 1-5) Lakehouse 由哪些元件組成
+
+**Lakehouse 是四層、四種各自獨立的工作：物件儲存保存位元組，開放檔案格式安排它們的
+排列，表格格式連同它的 catalog 決定「現在這張表由哪些檔案組成」，查詢引擎則透過表格
+格式讀寫。**
+
+面試時說出口的答案：
+
+> Lakehouse 把資料放在 S3 這類物件儲存裡、用 Parquet 這類開放檔案保存，再在上面加一層
+> 表格格式 —— Iceberg、Delta Lake 或 Hudi。表格格式帶來 ACID 提交、schema 演進、
+> time travel 與列層級的 `MERGE`，讓批次 job、串流 job、BI 與 ML 都在同一份資料上工作，
+> 而不是維護一個 lake 加一個 warehouse，再靠 ETL 保持兩邊同步。
+
+| 層 | 工作 | 例子 | 它**不是** |
+|---|---|---|---|
+| **物件儲存** | 耐久、便宜的位元組 | S3、GCS、ADLS | 一張表：它沒有交易，也沒有 schema |
+| **檔案格式** | 安排單一檔案的排列，附欄位統計 | Parquet、ORC、Avro | 有交易的：一個 Parquet 檔案對其他檔案一無所知 |
+| **表格格式** | 記錄每個表版本由哪些檔案組成；原子提交 | Iceberg、Delta Lake、Hudi | 查詢引擎：它是中介資料，不是運算 |
+| **Catalog** | 為表命名，並保存每張表「目前快照」的指標 | Glue Data Catalog、Unity Catalog、Polaris / REST catalog、Nessie、Hive Metastore | 可有可無：少了它，寫入者無法對「目前」是哪個版本達成共識 |
+| **查詢引擎** | 透過表格格式規劃、讀取與寫入 | Spark、Flink、Trino、Athena、Snowflake、DuckDB | 儲存本身：好幾個引擎共用同一批表 |
+
+<!--CODE-->
+
+為什麼表格格式才是關鍵 —— 更新 `orders` 表裡的一筆資料：
+
+<!--CODE-->
+
+<!--CODE-->
+
+面試官接著會追問：
+
+- **Parquet 支援 ACID 嗎？** 不支援。Parquet 是檔案格式；原子提交來自表格格式的
+  中介資料，它一步就把整組檔案換掉。
+- **S3 是 lakehouse 嗎？** 不是。S3 是儲存層；沒有表格格式和 catalog，它就只是單純的
+  lake。
+- **Lakehouse 和 medallion 有什麼不同？** 兩者是不同的維度。Lakehouse 是平台；medallion
+  （[§1-4](#1-4-the-medallion-layers-and-what-each-owns)）是平台上的表怎麼分層。
+  大多數 lakehouse 兩者並用。
+- **Iceberg 還是 Delta？** 見 [§7-3](#7-3-table-formats-iceberg-delta-lake-hudi)：多引擎
+  用 Iceberg，Spark / Databricks 為主的團隊用 Delta，大量 upsert 的 CDC 用 Hudi。
+
+<!-- 66d3be5755ce -->
+### 1-6) Lakehouse 還是單純的 lake：什麼時候選哪個
+
+**資料落地後還會變動、被不只一個引擎讀取，或必須能稽核與回滾時，選 lakehouse 表；
+只附加的原始資料，以及根本不是表的檔案，留在單純的 lake。**
+
+| 訊號 | Lakehouse 表 | 單純的 lake（物件儲存裡的檔案） |
+|---|---|---|
+| 資料落地後會變動 | **會** —— CDC、訂單狀態、會員資料更新、GDPR 刪除都需要 `MERGE` / `DELETE` | 不會 —— 日誌、點擊流、IoT 讀數寫入一次就不再改 |
+| 寫入時有人在讀 | 批次與串流 job 提交的同時 BI 在讀；讀取者需要一致的快照 | 讀取者只讀已關閉的分區（昨天的資料夾） |
+| 引擎 | Spark 寫、Trino / Snowflake 查詢、Python 訓練 —— 全在同一張表上 | 一個 job 寫、一個 job 讀 |
+| 稽核與復原 | time travel、回滾壞掉的批次、免重寫的 schema 演進 | 從原始副本重跑就夠了 |
+| 資料形狀 | 表 | 圖片、音訊、影片、PDF、二進位檔 —— 根本不是表格資料 |
+| 生命週期 | 熱資料，每天被查詢 | 為合規保存的冷歸檔；sandbox 暫存資料 |
+| 維運預算 | 要有人負責 compaction 與快照過期（[§7-5](#7-5-what-acid-costs-on-a-lakehouse)） | 除了生命週期規則，沒有東西要維護 |
+
+常見的答案是**兩者都用，依層而定**：bronze 維持只附加的檔案（或只附加的表），因為
+沒有東西會去更新它；silver 和 gold 變成 lakehouse 表，因為 `MERGE`、刪除和多個讀取者
+正是從那裡開始。非結構化檔案留在 lake，如果需要搜尋，再建一張索引它們的表（路徑、
+類型、擁有者）。
+
+陷阱是「因為 ACID」就什麼都用 lakehouse：一份由單一 job 寫入、隔天才被讀取的只附加
+日誌，從交易中得不到任何好處，卻照樣要付中介資料與維護的成本。
 
 ---
 
@@ -490,7 +559,7 @@ DAG run，並在上游 task 成功時執行每個 task。**
 （讀快、寫慢）；merge-on-read 寫入小的 delete / log 檔，在讀取時合併
 （寫快，在 compaction 之前讀會變慢）。
 
-<!-- a07b2a17413a -->
+<!-- 2a3e5f33e694 -->
 ### 7-4) 小檔案問題與 compaction
 
 **大量小檔案會拖慢每一個讀取者 —— 每個檔案都要一次開檔、一次中介資料查詢，常常還要
@@ -511,6 +580,41 @@ DAG run，並在上游 task 成功時執行每個 task。**
 - 表格維護：Delta `OPTIMIZE`（搭配 `ZORDER BY` 或 liquid clustering）、Iceberg
   `rewrite_data_files` procedure、Hudi clustering / compaction。
 - 讓舊快照過期（`VACUUM`、`expire_snapshots`），儲存與中介資料才不會無限成長。
+
+<!-- 95ef46361505 -->
+### 7-5) 在 lakehouse 上用 ACID 的代價
+
+**表格格式買到原子提交、快照讀取、列層級變更與 time travel，付出的是中介資料、
+維護工作與寫入放大 —— 所以效能問題全都在於把提交、檔案與快照控制住。**
+
+這些保證是怎麼做出來的：每次提交先寫新的資料檔，再原子地移動表的「目前快照」指標
+（Iceberg：在 catalog 裡做 compare-and-swap；Delta：建立 `_delta_log` 裡下一個編號的
+檔案，若另一個寫入者已先建立就失敗）。這就是**樂觀併發控制（optimistic concurrency
+control）** —— 寫入者不上鎖，而是在提交時偵測衝突並重試。
+
+| | 得到什麼 | 代價是什麼 |
+|---|---|---|
+| **原子性** | 被 kill 或失敗的 job 不會留下看得見的半寫檔案 | 未提交的檔案會以孤兒檔案留下，直到清理把它們刪掉 |
+| **隔離性** | 批次或串流寫入者提交時，讀取者看到的是同一個快照 | 讀取者還在用的舊快照必須保留，所以儲存量會成長 |
+| **列層級變更** | `MERGE`、`UPDATE`、`DELETE`；CDC upsert；GDPR 刪除 | 每次變更都要重寫檔案（copy-on-write），或加上讀取時才合併的 delete 檔案 |
+| **Time travel** | 查詢或回滾到任何仍保留的版本 | 每個保留的版本都留著它的檔案；被刪除的列在快照過期前仍在磁碟上 |
+| **併發** | 多個寫入者，不需要鎖服務 | 衝突的提交會失敗並重試，白做它們已做的工作 |
+
+四個效能問題，以及各自的解法：
+
+| 問題 | 成因 | 症狀 | 解法 |
+|---|---|---|---|
+| **小檔案** | 串流每幾秒就提交一次；分區切得太細 | 規劃時要讀上千筆 manifest 項目；task 數量暴增 | 拉長提交 / checkpoint 間隔、寫入時設定目標檔案大小、排程 compaction（[§7-4](#7-4-the-small-files-problem-and-compaction)） |
+| **Copy-on-write vs merge-on-read** | CoW 為了少數幾筆變更重寫整個檔案；MoR 留下待合併的 delete / log 檔案 | CoW：頻繁更新時寫入又慢又貴；MoR：compaction 前讀取越來越慢 | 讀多、少更新的表用 CoW；頻繁 upsert 用 MoR，並定期 compaction |
+| **提交衝突** | 併發的 job 寫入重疊的分區或檔案 | OCC 重試、浪費算力、端到端延遲拉長 | 依分區拆開寫入者、把更新集中給單一寫入者、錯開 job 排程、調整重試設定 |
+| **中介資料膨脹、data skipping 失效** | 快照從不過期；高基數分區；檔案沒有依過濾欄位排序 | 規劃變慢；min / max 統計無法跳過檔案 | 讓快照過期、刪除孤兒檔案、分區切粗一點，並依過濾欄位 cluster / 排序 |
+
+Lakehouse 表需要定期排程的維護 —— 它不是「寫完就不用管」：
+
+<!--CODE-->
+
+`expire_snapshots` 和 `VACUUM` 就是 time travel 的終點：快照的檔案一旦刪除，那個版本
+就再也查不到 —— 所以保留期是業務決策，不是可以放著不管的預設值。
 
 ---
 

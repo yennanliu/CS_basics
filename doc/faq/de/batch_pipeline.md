@@ -73,6 +73,9 @@ ACID transactions, schema enforcement and fast SQL.**
 The failure mode of a plain lake is the **data swamp**: no transactions, so a half-written
 job is visible to readers, and no schema, so nobody trusts the files.
 
+What each lakehouse component does is [§1-5](#1-5-what-a-lakehouse-is-made-of); when a plain
+lake is still the better choice is [§1-6](#1-6-lakehouse-or-plain-lake-when-to-choose-which).
+
 ### 1-4) The medallion layers and what each owns
 
 **Bronze is the raw copy, silver is the cleaned and conformed truth, gold is shaped for one
@@ -86,6 +89,99 @@ use — and each layer has a different owner and a different rule about what may
 
 Same idea, older names: staging → integration → presentation. The names matter less than
 the contract: **each layer is rebuildable from the one below**.
+
+### 1-5) What a lakehouse is made of
+
+**A lakehouse is four layers with four separate jobs: object storage holds the bytes, an open
+file format lays them out, a table format with its catalog decides which files are the table
+right now, and query engines read and write through that table format.**
+
+Interview answer, out loud:
+
+> A lakehouse keeps data in object storage such as S3, in open files such as Parquet, and puts
+> a table format — Iceberg, Delta Lake or Hudi — on top. The table format adds ACID commits,
+> schema evolution, time travel and row-level `MERGE`, so batch jobs, streaming jobs, BI and
+> ML can all work on one copy of the data instead of a lake plus a warehouse kept in sync by
+> ETL.
+
+| Layer | Job | Examples | It is **not** |
+|---|---|---|---|
+| **Object storage** | durable, cheap bytes | S3, GCS, ADLS | a table: it has no transactions and no schema |
+| **File format** | lays out one file, with column statistics | Parquet, ORC, Avro | transactional: a Parquet file knows nothing about other files |
+| **Table format** | records which files make up each table version; commits atomically | Iceberg, Delta Lake, Hudi | a query engine: it is metadata, not compute |
+| **Catalog** | names tables and holds each one's current-snapshot pointer | Glue Data Catalog, Unity Catalog, Polaris / REST catalog, Nessie, Hive Metastore | optional: without it, writers cannot agree what "current" is |
+| **Query engines** | plan, read and write through the table format | Spark, Flink, Trino, Athena, Snowflake, DuckDB | the storage: several engines share the same tables |
+
+```text
+ Sources              Engines                 The table                    Consumers
+┌────────────┐     ┌───────────────┐     ┌──────────────────────────┐     ┌─────────────┐
+│ OLTP / CDC │──┐  │ Spark   Flink │     │ catalog: orders → v42    │     │ BI / SQL    │
+│ Kafka      │──┼─►│ Trino  Athena │◄───►│ table format metadata    │────►│ ML training │
+│ files, APIs│──┘  │ Snowflake     │     │  (snapshots, manifests)  │     │ reverse ETL │
+└────────────┘     └───────────────┘     │ Parquet files on S3      │     └─────────────┘
+                                         └──────────────────────────┘
+```
+
+Why the table format is the part that matters — update one row of an `orders` table:
+
+```text
+plain lake:   s3://lake/orders/part-001.parquet  part-002.parquet  part-003.parquet
+              → rewrite part-002 in place? Readers mid-scan see a half-written file,
+                two jobs doing it at once overwrite each other, and the old version is gone.
+
+lakehouse:    write part-002-v2.parquet, then commit snapshot v43 = {001, 002-v2, 003}
+              → readers on v42 finish undisturbed, a concurrent writer's commit fails and
+                retries, and v42 stays queryable for time travel until it is expired.
+```
+
+```sql
+-- Delta Lake / Iceberg on Spark SQL: the upsert a plain lake cannot do safely
+MERGE INTO orders AS t
+USING order_updates AS s
+  ON t.order_id = s.order_id
+WHEN MATCHED THEN
+  UPDATE SET t.amount = s.amount, t.status = s.status
+WHEN NOT MATCHED THEN
+  INSERT (order_id, customer_id, amount, status)
+  VALUES (s.order_id, s.customer_id, s.amount, s.status);
+```
+
+Follow-ups the interviewer asks next:
+
+- **Does Parquet support ACID?** No. Parquet is a file format; atomic commits come from the
+  table format's metadata, which swaps the whole set of files in one step.
+- **Is S3 a lakehouse?** No. S3 is the storage layer; without a table format and a catalog it
+  is a plain lake.
+- **Lakehouse vs medallion?** Different axes. A lakehouse is the platform; medallion
+  ([§1-4](#1-4-the-medallion-layers-and-what-each-owns)) is how tables on it are layered.
+  Most lakehouses use both.
+- **Iceberg or Delta?** See [§7-3](#7-3-table-formats-iceberg-delta-lake-hudi): Iceberg for
+  many engines, Delta for a Spark / Databricks shop, Hudi for upsert-heavy CDC.
+
+### 1-6) Lakehouse or plain lake: when to choose which
+
+**Choose a lakehouse table when the data changes after it lands, is read by more than one
+engine, or must be audited and rolled back; keep a plain lake for append-only raw data and
+for files that are not tables at all.**
+
+| Signal | Lakehouse table | Plain lake (files in object storage) |
+|---|---|---|
+| Rows change after landing | **yes** — CDC, order status, profile updates, GDPR deletes need `MERGE` / `DELETE` | no — logs, clickstream, IoT readings are written once |
+| Readers while writing | batch and streaming jobs commit while BI reads; readers need a consistent snapshot | readers only read closed partitions (yesterday's folder) |
+| Engines | Spark writes, Trino / Snowflake query, Python trains — all on one table | one job writes, one job reads |
+| Audit and recovery | time travel, roll back a bad batch, schema evolution without rewrites | rerun from the raw copy is enough |
+| Data shape | tables | images, audio, video, PDFs, binary blobs — not tabular at all |
+| Lifetime | hot, queried daily | cold archive kept for compliance; sandbox scratch data |
+| Operational budget | someone owns compaction and snapshot expiry ([§7-5](#7-5-what-acid-costs-on-a-lakehouse)) | nothing to maintain beyond lifecycle rules |
+
+The usual answer is **both, by layer**: bronze stays append-only files (or an append-only
+table) because nothing ever updates it; silver and gold become lakehouse tables because that
+is where `MERGE`, deletes and many readers start. Unstructured files stay in the lake, with a
+table that indexes them (path, type, owner) if they need to be searched.
+
+The trap is to pick a lakehouse for everything "because ACID": an append-only log written by
+one job and read the next day gains nothing from transactions and still pays the metadata and
+maintenance cost.
 
 ---
 
@@ -680,6 +776,52 @@ Fixes:
 - Table maintenance: Delta `OPTIMIZE` (with `ZORDER BY` or liquid clustering), Iceberg
   `rewrite_data_files` procedure, Hudi clustering / compaction.
 - Expire old snapshots (`VACUUM`, `expire_snapshots`) so storage and metadata do not grow forever.
+
+### 7-5) What ACID costs on a lakehouse
+
+**A table format buys atomic commits, snapshot reads, row-level changes and time travel, and
+pays for them in metadata, maintenance and write amplification — so the performance questions
+are all about keeping commits, files and snapshots under control.**
+
+How the guarantees are built: every commit writes new data files, then atomically moves the
+table's current-snapshot pointer (Iceberg: a compare-and-swap in the catalog; Delta: creating
+the next numbered file in `_delta_log`, which fails if another writer created it first). That
+is **optimistic concurrency control** — writers do not lock, they detect a conflict at commit
+and retry.
+
+| | What you get | What it costs |
+|---|---|---|
+| **Atomicity** | a killed or failed job leaves no half-written files visible | uncommitted files stay behind as orphans until a cleanup removes them |
+| **Isolation** | readers see one snapshot while batch or streaming writers commit | old snapshots must be kept while readers use them, so storage grows |
+| **Row-level changes** | `MERGE`, `UPDATE`, `DELETE`; CDC upserts; GDPR deletes | each change rewrites files (copy-on-write) or adds delete files to merge at read time |
+| **Time travel** | query or roll back to any retained version | every retained version keeps its files; deleted rows stay on disk until snapshots expire |
+| **Concurrency** | many writers without a lock service | conflicting commits fail and retry, wasting the work they did |
+
+The four performance problems, and the fix for each:
+
+| Problem | Cause | Symptom | Fix |
+|---|---|---|---|
+| **Small files** | streaming commits every few seconds; over-fine partitions | planning reads thousands of manifest entries; task count explodes | longer commit / checkpoint intervals, target file size on write, scheduled compaction ([§7-4](#7-4-the-small-files-problem-and-compaction)) |
+| **Copy-on-write vs merge-on-read** | CoW rewrites whole files for a few changed rows; MoR leaves delete / log files to merge | CoW: slow, expensive writes under frequent updates; MoR: reads slow down until compacted | CoW for read-heavy, rarely updated tables; MoR for frequent upserts, plus regular compaction |
+| **Commit conflicts** | concurrent jobs write overlapping partitions or files | OCC retries, wasted compute, longer end-to-end latency | split writers by partition, funnel updates through one writer, schedule jobs apart, tune retry settings |
+| **Metadata bloat, weak data skipping** | snapshots never expired; high-cardinality partitions; files not sorted by the filter column | slow planning; min / max statistics cannot skip files | expire snapshots, remove orphan files, partition coarsely and cluster / sort by the filter columns |
+
+The maintenance a lakehouse table needs on a schedule — it is not "write and forget":
+
+```sql
+-- Iceberg on Spark: compact small files, expire old snapshots, delete orphan files
+CALL catalog.system.rewrite_data_files(table => 'db.orders');
+CALL catalog.system.expire_snapshots(table => 'db.orders', older_than => TIMESTAMP '2026-11-20 00:00:00');
+CALL catalog.system.remove_orphan_files(table => 'db.orders');
+
+-- Delta Lake: compact and cluster, then delete files no retained version needs
+OPTIMIZE orders ZORDER BY (customer_id);
+VACUUM orders RETAIN 168 HOURS;
+```
+
+`expire_snapshots` and `VACUUM` are where time travel ends: once a snapshot's files are gone,
+that version can no longer be queried — so the retention window is a business decision, not
+a default to leave alone.
 
 ---
 
