@@ -97,8 +97,8 @@
 - Cheatsheet review
 	
 	- Doing
-		- 堆積與優先佇列
-			- https://yennj12.js.org/CS_basics/cheatsheets/heap.zh.html
+		- 字串演算法與操作
+			- https://yennj12.js.org/CS_basics/cheatsheets/string.zh.html
 
 
 
@@ -114,6 +114,7 @@
 		- 二元樹
 		- BFS（廣度優先搜尋）
 		- DFS（深度優先搜尋）
+		- 堆積與優先佇列
 
 
 
