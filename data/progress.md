@@ -66,7 +66,6 @@
 
 			- advanced graphs
 			- 1D DP (ing)
-				- 647
 				- 91 (!!)
 				- 322
 				- 152
@@ -98,8 +97,9 @@
 - Cheatsheet review
 	
 	- Doing
-		- BFS（廣度優先搜尋）
-			- https://yennj12.js.org/CS_basics/cheatsheets/bfs.zh.html
+		- DFS（深度優先搜尋）
+			- https://yennj12.js.org/CS_basics/cheatsheets/dfs.zh.html
+
 
 
 	- Done
@@ -112,6 +112,7 @@
 		- 堆疊（Stack）
 		- Linked List（鏈結串列）
 		- 二元樹
+		- BFS（廣度優先搜尋）
 
 
 
