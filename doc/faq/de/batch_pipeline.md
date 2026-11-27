@@ -825,7 +825,7 @@ The maintenance a lakehouse table needs on a schedule — it is not "write and f
 CALL catalog.system.rewrite_data_files(table => 'db.orders');
 -- set the retention once; with no older_than, each run expires what is older than
 -- now minus this age, so the cutoff advances with every scheduled run
-ALTER TABLE db.orders SET TBLPROPERTIES ('history.expire.max-snapshot-age-ms' = '604800000');  -- 7 days
+ALTER TABLE catalog.db.orders SET TBLPROPERTIES ('history.expire.max-snapshot-age-ms' = '604800000');  -- 7 days
 CALL catalog.system.expire_snapshots(table => 'db.orders', retain_last => 10);
 CALL catalog.system.remove_orphan_files(table => 'db.orders');
 
