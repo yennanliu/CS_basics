@@ -97,8 +97,8 @@
 - Cheatsheet review
 	
 	- Doing
-		- 圖論演算法
-			- https://yennj12.js.org/CS_basics/cheatsheets/graph.zh.html
+		- 樹狀資料結構 — 概念與模式
+			- https://yennj12.js.org/CS_basics/cheatsheets/tree.zh.html
 
 
 	- Done
@@ -116,6 +116,7 @@
 		- 堆積與優先佇列
 		- 字串演算法與操作
 		- 樹的 LCA、距離與路徑問題
+		- 圖論演算法
 
 
 
