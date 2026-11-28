@@ -37,16 +37,18 @@ const OUT = '_site/data/progress.json';
 // `emphasis` counts the trailing bangs: `again!!!` is a problem that has fought
 // back three times and deserves to sort above a bare `again`.
 const STATUSES = ['again', 'todo', 'ok'];
+// Compiled once: classify() runs on every one of the log's ~4,500 attempts.
+const STATUS_RES = STATUSES.map(status => [status, new RegExp('\\b' + status + '\\b')]);
 
 function classify(note) {
   if (!note) return { status: 'none', emphasis: 0 };
   const text = note.toLowerCase();
   let status = 'other';
-  for (const candidate of STATUSES) {
+  for (const [candidate, re] of STATUS_RES) {
     // Whole words, as script/suggest_review.py's _classify reads them: "took
     // 40min" and "look at editorial" are not an `ok`. `ok*` and `again!!!`
     // still match — `*` and `!` are not word characters.
-    if (new RegExp('\\b' + candidate + '\\b').test(text)) { status = candidate; break; }
+    if (re.test(text)) { status = candidate; break; }
   }
   // Bangs anywhere in the note, not just at the end: "(again!!, 3 get_dist)".
   const bangs = (note.match(/!/g) || []).length;

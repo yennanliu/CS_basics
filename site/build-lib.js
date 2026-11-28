@@ -964,7 +964,41 @@
     );
   }
 
+  // ── Head metadata ──────────────────────────────────────────────────────────
+  // Shared by htmlTemplate (generated pages) and finalize-pages.js (copied
+  // pages), so both write the same <meta> tags the same way.
+
+  const SITE_ORIGIN = 'https://yennanliu.github.io/CS_basics/';
+
+  function escAttr(value) {
+    return String(value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // Text lifted out of rendered markdown or a finished page is already
+  // entity-escaped; a literal a caller passed is not. Decoding first makes
+  // escAttr idempotent over both, which is what stops og:title shipping
+  // "Hashing &amp;amp; Counting". Null-safe: a missing description becomes "",
+  // not the string "undefined".
+  function unescAttr(value) {
+    if (value === null || value === undefined) return '';
+    return String(value)
+      .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'")
+      .replace(/&amp;/g, '&');
+  }
+
+  /** A description capped at 300 characters, cut back to a word boundary. */
+  function trimDescription(text) {
+    return text.length > 300 ? text.slice(0, 297).replace(/\s+\S*$/, '') + '…' : text;
+  }
+
   return {
+    SITE_ORIGIN,
+    escAttr,
+    unescAttr,
+    trimDescription,
     markCardSlots,
     READING_CLASS,
     stampDrillVerdicts,

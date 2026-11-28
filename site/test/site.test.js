@@ -225,7 +225,7 @@ function indexPage(cards) {
       ).join('') +
       '</div></section>';
   }).join('');
-  return '<section class="tier-key">key</section><section class="start-here">ladder</section>' +
+  return '<nav class="cat-jump">jump</nav>' +
     '<div class="index-filter" data-sheet-filter>' +
     '<input class="filter-input" type="search">' +
     '<div class="filter-tiers">' +
@@ -330,22 +330,20 @@ test('initSheetFilter combines the text query with the priority chip', () => {
   assert.deepEqual(shown(), ['Array']);
 });
 
-test('initSheetFilter tucks away the ladder and the key while a filter is active', () => {
+test('initSheetFilter tucks away the category jump bar while a filter is active', () => {
   setupDOM(indexPage(FILTER_CARDS));
   CSSite.initSheetFilter(document);
-  const key = document.querySelector('.tier-key');
-  const ladder = document.querySelector('.start-here');
-  assert.equal(key.hidden, false);
+  const jump = document.querySelector('.cat-jump');
+  assert.equal(jump.hidden, false);
 
   const input = document.querySelector('.filter-input');
   input.value = 'heap';
   input.dispatchEvent(new window.Event('input'));
-  assert.equal(key.hidden, true);
-  assert.equal(ladder.hidden, true);
+  assert.equal(jump.hidden, true);
 
   input.value = '';
   input.dispatchEvent(new window.Event('input'));
-  assert.equal(key.hidden, false, 'clearing the query brings the ladder back');
+  assert.equal(jump.hidden, false, 'clearing the query brings the jump bar back');
 });
 
 test('initSheetFilter explains an empty result instead of showing a blank page', () => {
