@@ -32,6 +32,12 @@
 from collections import deque
 
 
+# What shortest_path records as "came from" for the START vertex, which
+# came from nowhere. A private object rather than None, so that it can
+# never be mistaken for a real vertex -- None is a legal vertex name.
+_NO_PREVIOUS = object()
+
+
 class Graph:
     """Adjacency-list graph: undirected by default, directed on request.
 
@@ -120,37 +126,39 @@ class Graph:
         """
         if start not in self.adjacent or end not in self.adjacent:
             return None
-        if start == end:
-            return [start]
 
         # previous[v] = the vertex we reached v FROM. It doubles as the
         # visited set: a vertex with an entry has already been queued.
-        previous = {start: None}
+        #
+        # "Have we reached `end`?" is asked as `end in previous` -- a
+        # dictionary lookup, the same test the adjacency dict itself uses.
+        previous = {start: _NO_PREVIOUS}
         queue = deque([start])
-        while queue:
+        while queue and end not in previous:
             node = queue.popleft()
             for neighbour in self.adjacent[node]:
-                if neighbour in previous:
-                    continue
-                previous[neighbour] = node
-                if neighbour == end:
-                    return self._rebuild_path(previous, start, end)
-                queue.append(neighbour)
-        return None
+                if neighbour not in previous:
+                    previous[neighbour] = node
+                    queue.append(neighbour)
+
+        if end not in previous:              # ran out of vertices first
+            return None
+        return self._rebuild_path(previous, end)
 
     @staticmethod
-    def _rebuild_path(previous, start, end):
+    def _rebuild_path(previous, end):
         """Follow the `previous` links from the end back to the start.
 
-        The loop stops on reaching `start` itself, not on a None link:
-        None is a legal vertex name, so it cannot double as "no more".
+        The walk ends at the _NO_PREVIOUS marker stored for the start.
+        Testing for that marker (rather than `node == start`) never
+        compares two vertices, so it is right for every vertex name --
+        including None, and float("nan"), which is not equal to itself.
         """
         path = []
         node = end
-        while node != start:
+        while node is not _NO_PREVIOUS:
             path.append(node)
             node = previous[node]
-        path.append(start)
         path.reverse()                       # collected end -> start
         return path
 
@@ -185,6 +193,14 @@ if __name__ == "__main__":
     assert odd.shortest_path("a", None) == ["a", None]
     assert odd.shortest_path("a", "b") == ["a", None, "b"]
     assert odd.shortest_path(None, "b") == [None, "b"]
+
+    # ... or NaN, which is not even equal to itself
+    nan = float("nan")
+    odd.add_edge(nan, "b")
+    assert odd.shortest_path(nan, "b") == [nan, "b"]
+    assert odd.shortest_path(nan, "a")[1:] == ["b", None, "a"]
+    assert odd.shortest_path("a", nan) == ["a", None, "b", nan]   # as a destination
+    assert odd.shortest_path(nan, nan) == [nan]
 
     # in a DIRECTED graph the edge goes one way only
     d = Graph(directed=True)
