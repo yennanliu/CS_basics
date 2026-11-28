@@ -300,6 +300,32 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @param {number} n
+     * @return {ListNode}
+     */
+    removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
+        const nodes: ListNode[] = [];
+        let cur = head;
+        while (cur) {
+            nodes.push(cur);
+            cur = cur.next;
+        }
+
+        const removeIndex = nodes.length - n;
+        if (removeIndex === 0) {
+            return head!.next;
+        }
+
+        nodes[removeIndex - 1].next = nodes[removeIndex].next;
+        return head;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -660,6 +686,39 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @param {number} n
+     * @return {ListNode}
+     */
+    removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
+        let N = 0;
+        let cur = head;
+        while (cur) {
+            N++;
+            cur = cur.next;
+        }
+
+        const removeIndex = N - n;
+        if (removeIndex === 0) {
+            return head!.next;
+        }
+
+        cur = head;
+        for (let i = 0; i < N - 1; i++) {
+            if (i + 1 === removeIndex) {
+                cur!.next = cur!.next!.next;
+                break;
+            }
+            cur = cur!.next;
+        }
+        return head;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -966,6 +1025,37 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @param {number[]} n
+     * @return {ListNode}
+     */
+    rec(head: ListNode | null, n: number[]): ListNode | null {
+        if (!head) {
+            return null;
+        }
+
+        head.next = this.rec(head.next, n);
+        n[0]--;
+        if (n[0] === 0) {
+            return head.next;
+        }
+        return head;
+    }
+
+    /**
+     * @param {ListNode} head
+     * @param {number} n
+     * @return {ListNode}
+     */
+    removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
+        return this.rec(head, [n]);
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -1073,8 +1163,8 @@ class Solution {
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode* dummy = new ListNode(0, head);
-        ListNode* left = dummy;
+        ListNode dummy(0, head);
+        ListNode* left = &dummy;
         ListNode* right = head;
 
         while (n > 0) {
@@ -1088,7 +1178,7 @@ public:
         }
 
         left->next = left->next->next;
-        return dummy->next;
+        return dummy.next;
     }
 };
 ```
@@ -1287,6 +1377,34 @@ impl Solution {
         let next = cur.next.as_mut().unwrap().next.take();
         cur.next = next;
         dummy.next
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {ListNode} head
+     * @param {number} n
+     * @return {ListNode}
+     */
+    removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
+        const dummy = new ListNode(0, head);
+        let left: ListNode = dummy;
+        let right = head;
+
+        while (n > 0) {
+            right = right!.next;
+            n--;
+        }
+
+        while (right !== null) {
+            left = left.next!;
+            right = right.next;
+        }
+
+        left.next = left.next!.next;
+        return dummy.next;
     }
 }
 ```

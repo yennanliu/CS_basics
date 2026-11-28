@@ -242,6 +242,61 @@ class Solution {
 }
 ```
 
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    public IList<TreeNode> FindDuplicateSubtrees(TreeNode root) {
+        List<TreeNode> res = new List<TreeNode>();
+        HashSet<TreeNode> seen = new HashSet<TreeNode>();
+        List<TreeNode> subTree = new List<TreeNode>();
+        Dfs(root, subTree);
+
+        for (int i = 0; i < subTree.Count; i++) {
+            if (seen.Contains(subTree[i])) continue;
+            for (int j = i + 1; j < subTree.Count; j++) {
+                if (seen.Contains(subTree[j])) continue;
+
+                if (Same(subTree[i], subTree[j])) {
+                    if (!seen.Contains(subTree[i])) {
+                        res.Add(subTree[i]);
+                        seen.Add(subTree[i]);
+                    }
+                    seen.Add(subTree[j]);
+                }
+            }
+        }
+        return res;
+    }
+
+    private bool Same(TreeNode node1, TreeNode node2) {
+        if (node1 == null && node2 == null) return true;
+        if (node1 == null || node2 == null) return false;
+        return node1.val == node2.val &&
+               Same(node1.left, node2.left) &&
+               Same(node1.right, node2.right);
+    }
+
+    private void Dfs(TreeNode root, List<TreeNode> subTree) {
+        if (root == null) return;
+        subTree.Add(root);
+        Dfs(root.left, subTree);
+        Dfs(root.right, subTree);
+    }
+}
+```
+
 ```go
 /**
  * Definition for a binary tree node.
@@ -478,6 +533,55 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {TreeNode[]}
+     */
+    findDuplicateSubtrees(root: TreeNode | null): Array<TreeNode | null> {
+        const res: TreeNode[] = [];
+        const seen = new Set<TreeNode>();
+
+        const subTree: TreeNode[] = [];
+        const dfs = (root: TreeNode | null): void => {
+            if (!root) return;
+            subTree.push(root);
+            dfs(root.left);
+            dfs(root.right);
+        };
+        dfs(root);
+
+        const same = (node1: TreeNode | null, node2: TreeNode | null): boolean => {
+            if (!node1 && !node2) return true;
+            if (!node1 || !node2) return false;
+            return (
+                node1.val === node2.val &&
+                same(node1.left, node2.left) &&
+                same(node1.right, node2.right)
+            );
+        };
+
+        for (let i = 0; i < subTree.length; i++) {
+            if (seen.has(subTree[i])) continue;
+            for (let j = i + 1; j < subTree.length; j++) {
+                if (seen.has(subTree[j])) continue;
+
+                if (same(subTree[i], subTree[j])) {
+                    if (!seen.has(subTree[i])) {
+                        res.push(subTree[i]);
+                        seen.add(subTree[i]);
+                    }
+                    seen.add(subTree[j]);
+                }
+            }
+        }
+
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -642,6 +746,46 @@ class Solution {
 }
 ```
 
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    private Dictionary<string, List<TreeNode>> subtrees;
+    private List<TreeNode> res;
+
+    public IList<TreeNode> FindDuplicateSubtrees(TreeNode root) {
+        subtrees = new Dictionary<string, List<TreeNode>>();
+        res = new List<TreeNode>();
+        Dfs(root);
+        return res;
+    }
+
+    private string Dfs(TreeNode node) {
+        if (node == null) return "null";
+        string s = node.val + "," + Dfs(node.left) + "," + Dfs(node.right);
+        if (!subtrees.ContainsKey(s)) {
+            subtrees[s] = new List<TreeNode>();
+        }
+        if (subtrees[s].Count == 1) {
+            res.Add(node);
+        }
+        subtrees[s].Add(node);
+        return s;
+    }
+}
+```
+
 ```go
 /**
  * Definition for a binary tree node.
@@ -780,6 +924,35 @@ impl Solution {
                 s
             }
         }
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {TreeNode[]}
+     */
+    findDuplicateSubtrees(root: TreeNode | null): Array<TreeNode | null> {
+        const subtrees = new Map<string, TreeNode[]>();
+        const res: TreeNode[] = [];
+
+        const dfs = (node: TreeNode | null): string => {
+            if (!node) return 'null';
+            const s = `${node.val},${dfs(node.left)},${dfs(node.right)}`;
+            if (!subtrees.has(s)) {
+                subtrees.set(s, []);
+            }
+            if (subtrees.get(s)!.length === 1) {
+                res.push(node);
+            }
+            subtrees.get(s)!.push(node);
+            return s;
+        };
+
+        dfs(root);
+        return res;
     }
 }
 ```
@@ -970,6 +1143,50 @@ class Solution {
 }
 ```
 
+```csharp
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left;
+ *     public TreeNode right;
+ *     public TreeNode(int val=0, TreeNode left=null, TreeNode right=null) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+public class Solution {
+    private Dictionary<string, int> idMap;
+    private Dictionary<int, int> count;
+    private List<TreeNode> res;
+
+    public IList<TreeNode> FindDuplicateSubtrees(TreeNode root) {
+        idMap = new Dictionary<string, int>();
+        count = new Dictionary<int, int>();
+        res = new List<TreeNode>();
+
+        Dfs(root);
+        return res;
+    }
+
+    private int Dfs(TreeNode node) {
+        if (node == null) return -1;
+        string cur = Dfs(node.left) + "," + node.val + "," + Dfs(node.right);
+        if (!idMap.ContainsKey(cur)) {
+            idMap[cur] = idMap.Count;
+        }
+        int curId = idMap[cur];
+        count[curId] = count.GetValueOrDefault(curId, 0) + 1;
+        if (count[curId] == 2) {
+            res.Add(node);
+        }
+        return curId;
+    }
+}
+```
+
 ```go
 /**
  * Definition for a binary tree node.
@@ -1118,6 +1335,40 @@ impl Solution {
                 cur_id as i32
             }
         }
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {TreeNode} root
+     * @return {TreeNode[]}
+     */
+    findDuplicateSubtrees(root: TreeNode | null): Array<TreeNode | null> {
+        const idMap = new Map<string, number>();
+        const count = new Map<number, number>();
+        const res: Array<TreeNode | null> = [];
+
+        const dfs = (node: TreeNode | null): number => {
+            if (!node) return -1;
+
+            const cur = `${dfs(node.left)},${node.val},${dfs(node.right)}`;
+            if (!idMap.has(cur)) {
+                idMap.set(cur, idMap.size + 1);
+            }
+
+            const curId = idMap.get(cur)!;
+            count.set(curId, (count.get(curId) || 0) + 1);
+            if (count.get(curId) === 2) {
+                res.push(node);
+            }
+
+            return curId;
+        };
+
+        dfs(root);
+        return res;
     }
 }
 ```

@@ -101,12 +101,13 @@ class Solution {
 ```csharp
 public class Solution {
     public bool IsPalindrome(string s) {
-        string newStr = "";
+        StringBuilder builder = new StringBuilder();
         foreach (char c in s) {
             if (char.IsLetterOrDigit(c)) {
-                newStr += char.ToLower(c);
+                builder.Append(char.ToLower(c));
             }
         }
+        string newStr = builder.ToString();
         return newStr == new string(newStr.Reverse().ToArray());
     }
 }
@@ -176,6 +177,37 @@ impl Solution {
             .map(|b| b.to_ascii_lowercase())
             .collect();
         new_str == new_str.iter().copied().rev().collect::<Vec<u8>>()
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * Check if a character is alphanumeric
+     * @param {char} char
+     * @return {boolean}
+     */
+    isAlphanumeric(char: string): boolean {
+        return (
+            (char >= 'a' && char <= 'z') ||
+            (char >= 'A' && char <= 'Z') ||
+            (char >= '0' && char <= '9')
+        );
+    }
+
+    /**
+     * @param {string} s
+     * @return {boolean}
+     */
+    isPalindrome(s: string): boolean {
+        let newStr = '';
+        for (let c of s) {
+            if (this.isAlphanumeric(c)) {
+                newStr += c.toLowerCase();
+            }
+        }
+        return newStr === newStr.split('').reverse().join('');
     }
 }
 ```
@@ -458,6 +490,46 @@ impl Solution {
             r -= 1;
         }
         true
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {boolean}
+     */
+    isPalindrome(s: string): boolean {
+        let l = 0,
+            r = s.length - 1;
+
+        while (l < r) {
+            while (l < r && !this.alphaNum(s[l])) {
+                l++;
+            }
+            while (r > l && !this.alphaNum(s[r])) {
+                r--;
+            }
+            if (s[l].toLowerCase() !== s[r].toLowerCase()) {
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+    /**
+     * @param {char} c
+     * @return {boolean}
+     */
+    alphaNum(c: string): boolean {
+        return (
+            (c >= 'A' && c <= 'Z') ||
+            (c >= 'a' && c <= 'z') ||
+            (c >= '0' && c <= '9')
+        );
     }
 }
 ```

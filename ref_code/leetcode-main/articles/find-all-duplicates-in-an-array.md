@@ -38,7 +38,7 @@ class Solution:
 
 ```java
 public class Solution {
-    public List<Integer> findDuplicates(int[] nums) {
+    public int[] findDuplicates(int[] nums) {
         int n = nums.length;
         List<Integer> res = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class Solution {
             }
         }
 
-        return res;
+        return res.stream().mapToInt(Integer::intValue).toArray();
     }
 }
 ```
@@ -103,7 +103,7 @@ class Solution {
 
 ```csharp
 public class Solution {
-    public IList<int> FindDuplicates(int[] nums) {
+    public int[] FindDuplicates(int[] nums) {
         int n = nums.Length;
         List<int> res = new List<int>();
 
@@ -116,7 +116,7 @@ public class Solution {
             }
         }
 
-        return res;
+        return res.ToArray();
     }
 }
 ```
@@ -141,7 +141,7 @@ func findDuplicates(nums []int) []int {
 
 ```kotlin
 class Solution {
-    fun findDuplicates(nums: IntArray): List<Int> {
+    fun findDuplicates(nums: IntArray): IntArray {
         val n = nums.size
         val res = mutableListOf<Int>()
 
@@ -154,7 +154,7 @@ class Solution {
             }
         }
 
-        return res
+        return res.toIntArray()
     }
 }
 ```
@@ -200,6 +200,26 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    findDuplicates(nums: number[]): number[] {
+        const n = nums.length;
+        const res: number[] = [];
+
+        for (let i = 0; i < n; i++) {
+            for (let j = i + 1; j < n; j++) {
+                if (nums[i] === nums[j]) {
+                    res.push(nums[i]);
+                    break;
+                }
+            }
+        }
+
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -239,7 +259,7 @@ class Solution:
 
 ```java
 public class Solution {
-    public List<Integer> findDuplicates(int[] nums) {
+    public int[] findDuplicates(int[] nums) {
         Arrays.sort(nums);
         List<Integer> res = new ArrayList<>();
 
@@ -249,7 +269,7 @@ public class Solution {
             }
         }
 
-        return res;
+        return res.stream().mapToInt(Integer::intValue).toArray();
     }
 }
 ```
@@ -295,7 +315,7 @@ class Solution {
 
 ```csharp
 public class Solution {
-    public IList<int> FindDuplicates(int[] nums) {
+    public int[] FindDuplicates(int[] nums) {
         Array.Sort(nums);
         List<int> res = new List<int>();
 
@@ -305,7 +325,7 @@ public class Solution {
             }
         }
 
-        return res;
+        return res.ToArray();
     }
 }
 ```
@@ -327,7 +347,7 @@ func findDuplicates(nums []int) []int {
 
 ```kotlin
 class Solution {
-    fun findDuplicates(nums: IntArray): List<Int> {
+    fun findDuplicates(nums: IntArray): IntArray {
         nums.sort()
         val res = mutableListOf<Int>()
 
@@ -337,7 +357,7 @@ class Solution {
             }
         }
 
-        return res
+        return res.toIntArray()
     }
 }
 ```
@@ -373,6 +393,23 @@ impl Solution {
         }
 
         res
+    }
+}
+```
+
+```typescript
+class Solution {
+    findDuplicates(nums: number[]): number[] {
+        nums.sort((a, b) => a - b);
+        const res: number[] = [];
+
+        for (let i = 0; i < nums.length - 1; i++) {
+            if (nums[i] === nums[i + 1]) {
+                res.push(nums[i]);
+            }
+        }
+
+        return res;
     }
 }
 ```
@@ -417,7 +454,7 @@ class Solution:
 
 ```java
 public class Solution {
-    public List<Integer> findDuplicates(int[] nums) {
+    public int[] findDuplicates(int[] nums) {
         Set<Integer> seen = new HashSet<>();
         List<Integer> res = new ArrayList<>();
 
@@ -429,7 +466,7 @@ public class Solution {
             }
         }
 
-        return res;
+        return res.stream().mapToInt(Integer::intValue).toArray();
     }
 }
 ```
@@ -479,7 +516,7 @@ class Solution {
 
 ```csharp
 public class Solution {
-    public IList<int> FindDuplicates(int[] nums) {
+    public int[] FindDuplicates(int[] nums) {
         HashSet<int> seen = new HashSet<int>();
         List<int> res = new List<int>();
 
@@ -491,7 +528,7 @@ public class Solution {
             }
         }
 
-        return res;
+        return res.ToArray();
     }
 }
 ```
@@ -515,7 +552,7 @@ func findDuplicates(nums []int) []int {
 
 ```kotlin
 class Solution {
-    fun findDuplicates(nums: IntArray): List<Int> {
+    fun findDuplicates(nums: IntArray): IntArray {
         val seen = HashSet<Int>()
         val res = mutableListOf<Int>()
 
@@ -527,7 +564,7 @@ class Solution {
             }
         }
 
-        return res
+        return res.toIntArray()
     }
 }
 ```
@@ -571,6 +608,25 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    findDuplicates(nums: number[]): number[] {
+        const seen = new Set<number>();
+        const res: number[] = [];
+
+        for (const num of nums) {
+            if (seen.has(num)) {
+                res.push(num);
+            } else {
+                seen.add(num);
+            }
+        }
+
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -610,7 +666,7 @@ class Solution:
 
 ```java
 public class Solution {
-    public List<Integer> findDuplicates(int[] nums) {
+    public int[] findDuplicates(int[] nums) {
         Map<Integer, Integer> count = new HashMap<>();
         List<Integer> res = new ArrayList<>();
 
@@ -624,7 +680,7 @@ public class Solution {
             }
         }
 
-        return res;
+        return res.stream().mapToInt(Integer::intValue).toArray();
     }
 }
 ```
@@ -678,7 +734,7 @@ class Solution {
 
 ```csharp
 public class Solution {
-    public IList<int> FindDuplicates(int[] nums) {
+    public int[] FindDuplicates(int[] nums) {
         Dictionary<int, int> count = new Dictionary<int, int>();
         List<int> res = new List<int>();
 
@@ -696,7 +752,7 @@ public class Solution {
             }
         }
 
-        return res;
+        return res.ToArray();
     }
 }
 ```
@@ -722,7 +778,7 @@ func findDuplicates(nums []int) []int {
 
 ```kotlin
 class Solution {
-    fun findDuplicates(nums: IntArray): List<Int> {
+    fun findDuplicates(nums: IntArray): IntArray {
         val count = HashMap<Int, Int>()
         val res = mutableListOf<Int>()
 
@@ -736,7 +792,7 @@ class Solution {
             }
         }
 
-        return res
+        return res.toIntArray()
     }
 }
 ```
@@ -784,6 +840,27 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    findDuplicates(nums: number[]): number[] {
+        const count = new Map<number, number>();
+        const res: number[] = [];
+
+        for (const num of nums) {
+            count.set(num, (count.get(num) || 0) + 1);
+        }
+
+        for (const [num, freq] of count.entries()) {
+            if (freq === 2) {
+                res.push(num);
+            }
+        }
+
+        return res;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -825,7 +902,7 @@ class Solution:
 
 ```java
 public class Solution {
-    public List<Integer> findDuplicates(int[] nums) {
+    public int[] findDuplicates(int[] nums) {
         List<Integer> res = new ArrayList<>();
 
         for (int num : nums) {
@@ -836,7 +913,7 @@ public class Solution {
             nums[idx] = -nums[idx];
         }
 
-        return res;
+        return res.stream().mapToInt(Integer::intValue).toArray();
     }
 }
 ```
@@ -884,7 +961,7 @@ class Solution {
 
 ```csharp
 public class Solution {
-    public IList<int> FindDuplicates(int[] nums) {
+    public int[] FindDuplicates(int[] nums) {
         List<int> res = new List<int>();
 
         foreach (int num in nums) {
@@ -895,7 +972,7 @@ public class Solution {
             nums[idx] = -nums[idx];
         }
 
-        return res;
+        return res.ToArray();
     }
 }
 ```
@@ -925,7 +1002,7 @@ func abs(x int) int {
 
 ```kotlin
 class Solution {
-    fun findDuplicates(nums: IntArray): List<Int> {
+    fun findDuplicates(nums: IntArray): IntArray {
         val res = mutableListOf<Int>()
 
         for (num in nums) {
@@ -936,7 +1013,7 @@ class Solution {
             nums[idx] = -nums[idx]
         }
 
-        return res
+        return res.toIntArray()
     }
 }
 ```
@@ -975,6 +1052,24 @@ impl Solution {
         }
 
         res
+    }
+}
+```
+
+```typescript
+class Solution {
+    findDuplicates(nums: number[]): number[] {
+        const res: number[] = [];
+
+        for (const num of nums) {
+            const idx = Math.abs(num) - 1;
+            if (nums[idx] < 0) {
+                res.push(Math.abs(num));
+            }
+            nums[idx] = -nums[idx];
+        }
+
+        return res;
     }
 }
 ```

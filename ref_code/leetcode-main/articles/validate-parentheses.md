@@ -111,12 +111,12 @@ public class Solution {
 
 ```go
 func isValid(s string) bool {
-	for strings.Contains(s, "()") || strings.Contains(s, "{}") || strings.Contains(s, "[]") {
-		s = strings.ReplaceAll(s, "()", "")
-		s = strings.ReplaceAll(s, "{}", "")
-		s = strings.ReplaceAll(s, "[]", "")
-	}
-	return s == ""
+    for strings.Contains(s, "()") || strings.Contains(s, "{}") || strings.Contains(s, "[]") {
+        s = strings.ReplaceAll(s, "()", "")
+        s = strings.ReplaceAll(s, "{}", "")
+        s = strings.ReplaceAll(s, "[]", "")
+    }
+    return s == ""
 }
 ```
 
@@ -162,6 +162,23 @@ impl Solution {
             }
         }
         s.is_empty()
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {boolean}
+     */
+    isValid(s: string): boolean {
+        while (s.includes('()') || s.includes('{}') || s.includes('[]')) {
+            s = s.replace('()', '');
+            s = s.replace('{}', '');
+            s = s.replace('[]', '');
+        }
+        return s === '';
     }
 }
 ```
@@ -427,6 +444,39 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {string} s
+     * @return {boolean}
+     */
+    isValid(s: string): boolean {
+        const stack: string[] = [];
+        const closeToOpen: { [key: string]: string } = {
+            ')': '(',
+            ']': '[',
+            '}': '{',
+        };
+
+        for (let c of s) {
+            if (closeToOpen[c]) {
+                if (
+                    stack.length > 0 &&
+                    stack[stack.length - 1] === closeToOpen[c]
+                ) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+            } else {
+                stack.push(c);
+            }
+        }
+        return stack.length === 0;
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -455,12 +505,14 @@ After processing all characters, some opening brackets might remain unmatched. T
 
 ### Mixing Up Opening and Closing Brackets
 
-When building the bracket mapping, ensure closing brackets map to their corresponding opening brackets, not the other way around. The lookup should happen when you encounter a closing bracket.
+In the stack implementation above, the stack stores opening brackets, so the mapping goes from closing brackets to their corresponding opening brackets. Look up the mapping when you encounter a closing bracket.
 
 ```python
-# Correct mapping: closing -> opening
+# Mapping used above: closing -> opening
 closeToOpen = {")": "(", "]": "[", "}": "{"}
 ```
+
+An opening-to-closing mapping is also valid if you instead push the expected closing bracket for each opening bracket. When a closing bracket arrives, reject an empty stack or a mismatch with the stack's top, then pop on a match. The stack must still be empty at the end.
 
 ### Using Wrong Data Structure
 

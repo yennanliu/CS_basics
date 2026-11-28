@@ -189,6 +189,29 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums1
+     * @param {number[]} nums2
+     * @return {number}
+     */
+    findMedianSortedArrays(nums1: number[], nums2: number[]): number {
+        const len1 = nums1.length;
+        const len2 = nums2.length;
+        const merged = nums1.concat(nums2);
+        merged.sort((a, b) => a - b);
+
+        const totalLen = merged.length;
+        if (totalLen % 2 === 0) {
+            return (merged[totalLen / 2 - 1] + merged[totalLen / 2]) / 2.0;
+        } else {
+            return merged[Math.floor(totalLen / 2)];
+        }
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -479,7 +502,7 @@ class Solution {
 }
 ```
 
-```kotlin
+```swift
 class Solution {
     func findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
         let len1 = nums1.count, len2 = nums2.count
@@ -549,6 +572,53 @@ impl Solution {
 }
 ```
 
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums1
+     * @param {number[]} nums2
+     * @return {number}
+     */
+    findMedianSortedArrays(nums1: number[], nums2: number[]): number {
+        let len1 = nums1.length,
+            len2 = nums2.length;
+        let i = 0,
+            j = 0;
+        let median1 = 0,
+            median2 = 0;
+
+        for (
+            let count = 0;
+            count < Math.floor((len1 + len2) / 2) + 1;
+            count++
+        ) {
+            median2 = median1;
+            if (i < len1 && j < len2) {
+                if (nums1[i] > nums2[j]) {
+                    median1 = nums2[j];
+                    j++;
+                } else {
+                    median1 = nums1[i];
+                    i++;
+                }
+            } else if (i < len1) {
+                median1 = nums1[i];
+                i++;
+            } else {
+                median1 = nums2[j];
+                j++;
+            }
+        }
+
+        if ((len1 + len2) % 2 === 1) {
+            return median1;
+        } else {
+            return (median1 + median2) / 2.0;
+        }
+    }
+}
+```
+
 ::tabs-end
 
 ### Time & Space Complexity
@@ -572,15 +642,17 @@ If we can find the k-th smallest element efficiently, then:
 
 - The median is just the middle element (or the average of the two middle elements).
 
-To find the k-th smallest:
+To find the k-th smallest, treat `k` as a **1-based rank** in the remaining arrays `A` and `B`. Handle an empty array or `k == 1` directly. Otherwise:
 
-- We compare the **k/2-th element** of each array.
-- The smaller one (and everything before it in that array) **cannot** be the k-th element,
-  because there are at least `k/2` elements smaller than or equal to it.
-- So we discard that many elements from one array and **reduce k** accordingly.
-- We repeat this process, shrinking the problem each time.
+- Let `i = min(len(A), k // 2)` and `j = min(len(B), k // 2)`, then compare `A[i-1]` and `B[j-1]`.
+- Suppose `A[i-1] <= B[j-1]`. For equal values, imagine merging elements from `A` before those from `B`, while preserving the order within each array.
+- At most `i` elements from `A` and `j - 1` from `B` can appear at or before `A[i-1]`. Its merged position is therefore at most `i + j - 1 <= 2 * (k // 2) - 1 < k`.
+- The first `i` elements of `A` all come before rank `k`, so discard them and search for rank `k - i` in the remaining arrays.
+- If `A[i-1] > B[j-1]`, the same argument lets us discard the first `j` elements of `B` and search for rank `k - j`.
 
-This is like a binary search on k: every step cuts off about half of the remaining elements, giving an `O(log(k))` (or `O(log(m + n))`) solution.
+This reasoning also handles duplicates: discarded occurrences may equal the answer, but the occurrence at rank `k` remains and moves to the reduced rank.
+
+Each step either reduces `k` by `k // 2` or empties one array, after which the answer can be read directly. This gives an `O(log(k))` (or `O(log(m + n))`) solution.
 
 ### Algorithm
 
@@ -588,11 +660,11 @@ This is like a binary search on k: every step cuts off about half of the remaini
     1. Always make sure `A` is the shorter array (swap if needed).
     2. If `A` is empty, the k-th element is simply `B[k-1]`.
     3. If `k == 1`, return `min(A[0], B[0])`.
-    4. Let `i = min(len(A), k/2)` and `j = min(len(B), k/2)`.
+    4. Let `i = min(len(A), k // 2)` and `j = min(len(B), k // 2)`.
     5. Compare `A[i-1]` and `B[j-1]`:
-        - If `A[i-1] <= B[j-1]`, then the first `i` elements of `A` can't contain the k-th smallest.
+        - If `A[i-1] <= B[j-1]`, discard the first `i` elements of `A`, which lie before rank `k` in the merged ordering described above.
           Call `getKth(A[i:], B, k - i)`.
-        - Else, the first `j` elements of `B` can't contain the k-th smallest.
+        - Else, discard the first `j` elements of `B`, which lie before rank `k` in that ordering.
           Call `getKth(A, B[j:], k - j)`.
 
 2. To find the median:
@@ -921,6 +993,67 @@ impl Solution {
         (get_kth(&nums1, m, &nums2, n, left, 0, 0) as f64
             + get_kth(&nums1, m, &nums2, n, right, 0, 0) as f64)
             / 2.0
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums1
+     * @param {number[]} nums2
+     * @return {number}
+     */
+    findMedianSortedArrays(nums1: number[], nums2: number[]): number {
+        const m = nums1.length;
+        const n = nums2.length;
+        const left = Math.floor((m + n + 1) / 2);
+        const right = Math.floor((m + n + 2) / 2);
+
+        return (
+            (this.getKth(nums1, m, nums2, n, left) +
+                this.getKth(nums1, m, nums2, n, right)) /
+            2.0
+        );
+    }
+
+    /**
+     * @param {number[]} a
+     * @param {number} m
+     * @param {number[]} b
+     * @param {number} n
+     * @param {number} k
+     * @param {number} aStart
+     * @param {number} bStart
+     * @return {number}
+     */
+    getKth(
+        a: number[],
+        m: number,
+        b: number[],
+        n: number,
+        k: number,
+        aStart: number = 0,
+        bStart: number = 0,
+    ): number {
+        if (m > n) {
+            return this.getKth(b, n, a, m, k, bStart, aStart);
+        }
+        if (m === 0) {
+            return b[bStart + k - 1];
+        }
+        if (k === 1) {
+            return Math.min(a[aStart], b[bStart]);
+        }
+
+        const i = Math.min(m, Math.floor(k / 2));
+        const j = Math.min(n, Math.floor(k / 2));
+
+        if (a[aStart + i - 1] > b[bStart + j - 1]) {
+            return this.getKth(a, m, b, n - j, k - j, aStart, bStart + j);
+        } else {
+            return this.getKth(a, m - i, b, n, k - i, aStart + i, bStart);
+        }
     }
 }
 ```
@@ -1374,6 +1507,50 @@ impl Solution {
                 l = i + 1;
             }
         }
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} nums1
+     * @param {number[]} nums2
+     * @return {number}
+     */
+    findMedianSortedArrays(nums1: number[], nums2: number[]): number {
+        let A = nums1;
+        let B = nums2;
+        const total = A.length + B.length;
+        const half = Math.floor((total + 1) / 2);
+
+        if (B.length < A.length) {
+            [A, B] = [B, A];
+        }
+
+        let l = 0;
+        let r = A.length;
+        while (l <= r) {
+            const i = Math.floor((l + r) / 2);
+            const j = half - i;
+
+            const Aleft = i > 0 ? A[i - 1] : Number.MIN_SAFE_INTEGER;
+            const Aright = i < A.length ? A[i] : Number.MAX_SAFE_INTEGER;
+            const Bleft = j > 0 ? B[j - 1] : Number.MIN_SAFE_INTEGER;
+            const Bright = j < B.length ? B[j] : Number.MAX_SAFE_INTEGER;
+
+            if (Aleft <= Bright && Bleft <= Aright) {
+                if (total % 2 !== 0) {
+                    return Math.max(Aleft, Bleft);
+                }
+                return (Math.max(Aleft, Bleft) + Math.min(Aright, Bright)) / 2;
+            } else if (Aleft > Bright) {
+                r = i - 1;
+            } else {
+                l = i + 1;
+            }
+        }
+        return -1;
     }
 }
 ```

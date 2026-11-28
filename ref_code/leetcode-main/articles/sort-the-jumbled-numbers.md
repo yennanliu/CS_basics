@@ -138,7 +138,7 @@ public class Solution {
             pairs[i] = new int[] { mapped_n, i };
         }
 
-        Array.Sort(pairs, (a, b) => a[0].CompareTo(b[0]));
+        Array.Sort(pairs, (a, b) => a[0] != b[0] ? a[0].CompareTo(b[0]) : a[1].CompareTo(b[1]));
 
         int[] res = new int[n];
         for (int i = 0; i < n; i++) {
@@ -164,7 +164,7 @@ func sortJumbled(mapping []int, nums []int) []int {
         pairs[i] = [2]int{mapped_n, i}
     }
 
-    sort.Slice(pairs, func(i, j int) bool {
+    sort.SliceStable(pairs, func(i, j int) bool {
         return pairs[i][0] < pairs[j][0]
     })
 
@@ -238,6 +238,32 @@ impl Solution {
 
         pairs.sort_by_key(|p| p.0);
         pairs.iter().map(|p| nums[p.1]).collect()
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} mapping
+     * @param {number[]} nums
+     * @return {number[]}
+     */
+    sortJumbled(mapping: number[], nums: number[]): number[] {
+        const pairs: [number, number][] = [];
+
+        for (let i = 0; i < nums.length; i++) {
+            const numStr = nums[i].toString();
+            let mapped_n = 0;
+            for (const c of numStr) {
+                mapped_n = mapped_n * 10 + mapping[parseInt(c)];
+            }
+            pairs.push([mapped_n, i]);
+        }
+
+        pairs.sort((a, b) => a[0] - b[0]);
+
+        return pairs.map(p => nums[p[1]]);
     }
 }
 ```
@@ -375,11 +401,21 @@ class Solution {
         let pairs = [];
 
         for (let i = 0; i < nums.length; i++) {
-            let numStr = nums[i].toString();
             let mapped_n = 0;
-            for (let c of numStr) {
-                mapped_n = mapped_n * 10 + mapping[parseInt(c)];
+            let base = 1;
+            let num = nums[i];
+
+            if (num === 0) {
+                mapped_n = mapping[0];
+            } else {
+                while (num > 0) {
+                    let digit = num % 10;
+                    num = Math.floor(num / 10);
+                    mapped_n += base * mapping[digit];
+                    base *= 10;
+                }
             }
+
             pairs.push([mapped_n, i]);
         }
 
@@ -414,7 +450,7 @@ public class Solution {
             pairs[i] = new int[] { mapped_n, i };
         }
 
-        Array.Sort(pairs, (a, b) => a[0].CompareTo(b[0]));
+        Array.Sort(pairs, (a, b) => a[0] != b[0] ? a[0].CompareTo(b[0]) : a[1].CompareTo(b[1]));
 
         int[] res = new int[n];
         for (int i = 0; i < n; i++) {
@@ -448,7 +484,7 @@ func sortJumbled(mapping []int, nums []int) []int {
         pairs[i] = [2]int{mapped_n, i}
     }
 
-    sort.Slice(pairs, func(i, j int) bool {
+    sort.SliceStable(pairs, func(i, j int) bool {
         return pairs[i][0] < pairs[j][0]
     })
 
@@ -552,6 +588,42 @@ impl Solution {
 
         pairs.sort_by_key(|p| p.0);
         pairs.iter().map(|p| nums[p.1]).collect()
+    }
+}
+```
+
+```typescript
+class Solution {
+    /**
+     * @param {number[]} mapping
+     * @param {number[]} nums
+     * @return {number[]}
+     */
+    sortJumbled(mapping: number[], nums: number[]): number[] {
+        const pairs: [number, number][] = [];
+
+        for (let i = 0; i < nums.length; i++) {
+            let mapped_n = 0;
+            let base = 1;
+            let num = nums[i];
+
+            if (num === 0) {
+                mapped_n = mapping[0];
+            } else {
+                while (num > 0) {
+                    const digit = num % 10;
+                    num = Math.floor(num / 10);
+                    mapped_n += base * mapping[digit];
+                    base *= 10;
+                }
+            }
+
+            pairs.push([mapped_n, i]);
+        }
+
+        pairs.sort((a, b) => a[0] - b[0]);
+
+        return pairs.map(p => nums[p[1]]);
     }
 }
 ```
