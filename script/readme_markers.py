@@ -16,7 +16,7 @@ other script reads README:
 
 - only problem rows of the main tables (`check_readme.parse_rows`), never the
   imported kamyu104 index;
-- `again` — the status cell's word is AGAIN (`suggest_review.STATUS_WORD`);
+- `again` — the status cell's word is AGAIN, in any casing (`suggest_review.status_word`);
 - `must` — `suggest_review.is_must`, the rule the planner and the roadmap use.
 
 The output keeps the old shape — a `#` header, then each README row verbatim —
@@ -37,8 +37,7 @@ import suggest_review as sr  # noqa: E402  — the status word and the MUST rule
 
 
 def is_again(row):
-    word = sr.STATUS_WORD.search(row["status"])
-    return bool(word) and word.group(1) == "AGAIN"
+    return sr.status_word(row["status"]) == "AGAIN"
 
 
 def is_must(row):

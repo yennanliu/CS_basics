@@ -339,6 +339,7 @@ def normalise_cell(cell):
     are known tags, which is what keeps the prose spans intact.
     """
     out, changed = [], False
+    seen = set()          # companies already written: `m$` next to `microsoft` is one tag
     for part in split_tags(cell):
         lead = re.match(r"^(\s*)", part).group(1)
         body = part.strip()
@@ -349,11 +350,19 @@ def normalise_cell(cell):
                         for p in inner.split(","))):
             for p in inner.split(","):
                 comp = canonical_company(p)
+                if comp in seen:
+                    continue
+                if comp:
+                    seen.add(comp)
                 out.append(" `%s`" % (comp if comp else tag_key(p)))
             changed = True
             continue
         comp = canonical_company(part)
         if comp:
+            if comp in seen:
+                changed = True
+                continue
+            seen.add(comp)
             new = "%s`%s`" % (lead, comp)
             if new != part:
                 changed = True

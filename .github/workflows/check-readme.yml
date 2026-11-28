@@ -43,10 +43,11 @@ jobs:
 
       # The README marker lists and the shared LeetCode client: both read by
       # several scripts, neither run by any other gate. Offline.
-      - name: Test readme_markers and lc_graphql
+      - name: Test readme_markers, lc_graphql and fix_readme_tags
         run: |
           python3 script/test_readme_markers.py
           python3 script/test_lc_graphql.py
+          python3 script/test_fix_readme_tags.py
 
       # Dead solution links, an id filed in both table sets, a status cell the
       # planners cannot read, an impossible date in the practice log.

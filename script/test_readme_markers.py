@@ -31,6 +31,8 @@ README = "\n".join([
     row(3, "MUST, two pointers", "OK"),
     row(4, "try again later", ""),
     row(5, "", "AGAIN*"),
+    row(8, "", "again (1)"),
+    row(9, "", "OK*** (7) (but again)"),
     "## Newly Added (kamyu104 gap)",
     "### Array",
     HEADER, RULE,
@@ -51,13 +53,28 @@ class IsMust(unittest.TestCase):
         self.assertFalse(sr.is_must("EVERY ROW MUST EQUAL", "imported"))
 
 
+class StatusWord(unittest.TestCase):
+    def test_any_casing_reads_upper(self):
+        self.assertEqual(sr.status_word("again (1)"), "AGAIN")
+        self.assertEqual(sr.status_word("Again*** (2)"), "AGAIN")
+        self.assertEqual(sr.status_word("ok* (3)"), "OK")
+
+    def test_first_word_wins(self):
+        self.assertEqual(sr.status_word("OK**** (5) (but again, MUST)"), "OK")
+
+    def test_none(self):
+        self.assertIsNone(sr.status_word("imported"))
+        self.assertIsNone(sr.status_word(""))
+
+
 class MarkedRows(unittest.TestCase):
     def ids(self, marker):
         return [int(line.split("|")[1]) for _, line in rm.marked_rows(README, marker)]
 
     def test_again_reads_the_status_word_only(self):
         # not the prose line, not "try again" in a note, not the imported index
-        self.assertEqual(self.ids("again"), [1, 5])
+        # any casing of the word; "(but again)" after OK is a note, not a verdict
+        self.assertEqual(self.ids("again"), [1, 5, 8])
 
     def test_must_uses_the_shared_rule(self):
         self.assertEqual(self.ids("must"), [1, 3])
@@ -69,8 +86,8 @@ class MarkedRows(unittest.TestCase):
     def test_render_header_counts_rows(self):
         text = rm.render(rm.marked_rows(README, "again"), "again")
         self.assertIn("# LeetCode Problems with AGAIN marker", text)
-        self.assertIn("# Total count: 2", text)
-        self.assertTrue(text.endswith(row(5, "", "AGAIN*") + "\n"))
+        self.assertIn("# Total count: 3", text)
+        self.assertTrue(text.endswith(row(8, "", "again (1)") + "\n"))
 
 
 class LiveReadme(unittest.TestCase):
