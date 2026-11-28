@@ -14,7 +14,8 @@ null}`, so a 200 is not a success until the payload says so.
 `post()` has one contract: it returns `data` (a dict) or raises. A network
 failure re-raises the original exception (`urllib.error.URLError`,
 `TimeoutError`, ...) once the tries are spent; a response that is not a usable
-GraphQL result raises `GraphQLError`. A caller that wants None on failure
+GraphQL result — a rejected query, or an HTML page where JSON should be —
+raises `GraphQLError`. A caller that wants None on failure
 catches both — see `scrape_lc_discuss_company.gql`.
 
 Retries are opt-in (`tries`, `backoff`): the bulk scraper needs them to ride out
@@ -84,8 +85,11 @@ def post(query, variables=None, *, referer="https://leetcode.com/", timeout=30,
                 detail = exc.read().decode(errors="replace")[:300]
                 raise GraphQLError(f"HTTP 400 (bad query): {detail}") from exc
             last = exc
-        except (urllib.error.URLError, TimeoutError, ValueError, OSError) as exc:
-            # a network hiccup, or the WAF answering with HTML instead of JSON
+        except ValueError as exc:
+            # the WAF answering with an HTML page instead of JSON: retryable,
+            # and if it persists it is not a usable result -> GraphQLError
+            last = GraphQLError(f"response was not JSON ({exc})")
+        except OSError as exc:      # URLError, TimeoutError, a reset socket
             last = exc
         else:
             return check(payload)

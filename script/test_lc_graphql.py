@@ -79,6 +79,19 @@ class Post(unittest.TestCase):
                 g.post("q", tries=2, quiet=True, backoff=lambda a, e: 1)
         self.assertEqual(sleep.call_count, 1)      # no sleep after the last try
 
+    def test_an_html_page_is_retried_then_a_graphql_error(self):
+        with mock.patch("urllib.request.urlopen",
+                        side_effect=lambda *a, **k: FakeResponse(b"<html>challenge</html>")) as u:
+            with self.assertRaisesRegex(g.GraphQLError, "not JSON"):
+                g.post("q", tries=2, quiet=True)
+        self.assertEqual(u.call_count, 2)
+
+    def test_fetch_tag_survives_a_waf_page(self):
+        import add_lc_problem_lists as a
+        with mock.patch("urllib.request.urlopen", return_value=FakeResponse(b"<html>")), \
+                mock.patch("sys.stderr", new=io.StringIO()):
+            self.assertIsNone(a.fetch_tag("array"))
+
     def test_graphql_error_is_not_retried(self):
         with mock.patch("urllib.request.urlopen",
                         return_value=ok({"errors": [{"message": "nope"}]})) as u:
