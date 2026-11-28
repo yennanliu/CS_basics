@@ -43,6 +43,8 @@ import java.util.Arrays;
  *  Time  : O(K + N) for K updates over N slots
  *  Space : O(N)
  *
+ *  See algorithm/python/difference_array.py for a 0-indexed, reusable
+ *  class version in Python.
  *  Reference: https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md
  */
 public class DifferenceArray {

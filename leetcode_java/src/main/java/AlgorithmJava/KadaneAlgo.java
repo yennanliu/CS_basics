@@ -31,7 +31,9 @@ package AlgorithmJava;
  *  Time  : O(N)
  *  Space : O(1)
  *
- *  Reference: https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/kadane_algo.md
+ *  See algorithm/python/kadane.py for the same algorithm in Python (plus
+ *  the circular variant, LC 918).
+ *  Reference: https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/kadane_algorithm.md
  */
 public class KadaneAlgo {
 
