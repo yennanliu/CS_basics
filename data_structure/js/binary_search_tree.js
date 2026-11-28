@@ -49,7 +49,7 @@ class BinarySearchTree {
     }
 
     let current = this.root;
-    for (;;) {
+    while (true) {
       if (value < current.value) {
         if (current.left === null) {
           current.left = node;
@@ -117,10 +117,13 @@ class BinarySearchTree {
         node.right = removeFrom(node.right, value);
       } else {
         removed = true;
-        if (node.left === null) return node.right; // 0 or 1 child
-        if (node.right === null) return node.left;
+        // found it -- whatever is returned replaces this node in its parent
+        if (node.left === null) return node.right; // no child (null) or right child only
+        if (node.right === null) return node.left; // left child only
 
-        let successor = node.right; // 2 children
+        // 2 children: overwrite with the successor's value, then remove
+        // the successor (it has no left child, so that is an easy case)
+        let successor = node.right;
         while (successor.left !== null) successor = successor.left;
         node.value = successor.value;
         node.right = removeFrom(node.right, successor.value);

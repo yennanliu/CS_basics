@@ -34,43 +34,59 @@ class HashTable {
   // Turn a string key into a bucket index.
   // NOTE: this is a teaching hash, not a good one -- a real table uses
   // something like FNV-1a or MurmurHash to spread keys evenly.
+  //
+  // Keys must be PRIMITIVES (string, number, boolean ...). An object has
+  // no stable text to hash: String(obj) changes when its fields do, which
+  // would file it under one bucket and look for it in another. (The
+  // built-in Map can take objects because it hashes their identity.)
   _hash(key) {
+    if (key !== null && (typeof key === 'object' || typeof key === 'function')) {
+      throw new TypeError('HashTable keys must be primitives, not objects');
+    }
+    const text = String(key); // so a number key hashes by its digits
     let hash = 0;
-    for (let i = 0; i < key.length; i++) {
-      hash = (hash + key.charCodeAt(i) * (i + 1)) % this.data.length;
+    for (let i = 0; i < text.length; i++) {
+      // weight each character by its position, so 'ab' and 'ba' differ
+      hash = (hash + text.charCodeAt(i) * (i + 1)) % this.data.length;
     }
     return hash;
   }
 
+  // The [key, value] entry for `key`, or undefined. Every read goes
+  // through here: hash to a bucket, then compare the FULL key.
+  _findEntry(key) {
+    const bucket = this.data[this._hash(key)];
+    if (!bucket) return undefined;
+    for (const entry of bucket) {
+      if (entry[0] === key) return entry;
+    }
+    return undefined;
+  }
+
   // Insert, or OVERWRITE when the key is already present.
   set(key, value) {
-    const address = this._hash(key);
-    if (!this.data[address]) this.data[address] = [];
-
-    const bucket = this.data[address];
-    for (const entry of bucket) {
-      if (entry[0] === key) {
-        entry[1] = value; // overwrite -- do not append a duplicate
-        return this;
-      }
+    const entry = this._findEntry(key);
+    if (entry) {
+      entry[1] = value; // overwrite -- do not append a duplicate
+      return this;
     }
-    bucket.push([key, value]);
+
+    const address = this._hash(key);
+    if (!this.data[address]) this.data[address] = []; // first key in this bucket
+    this.data[address].push([key, value]);
     this.size++;
     return this;
   }
 
   // Return the value for key, or undefined.
   get(key) {
-    const bucket = this.data[this._hash(key)];
-    if (!bucket) return undefined;
-    for (const [storedKey, value] of bucket) {
-      if (storedKey === key) return value;
-    }
-    return undefined;
+    const entry = this._findEntry(key);
+    return entry ? entry[1] : undefined;
   }
 
+  // Asks "is the KEY stored?", so a key whose value is undefined still counts.
   has(key) {
-    return this.get(key) !== undefined;
+    return this._findEntry(key) !== undefined;
   }
 
   // Delete key; returns true if something was removed.
@@ -98,7 +114,12 @@ class HashTable {
   }
 
   values() {
-    return this.keys().map((key) => this.get(key));
+    const values = [];
+    for (const bucket of this.data) {
+      if (!bucket) continue;
+      for (const [, value] of bucket) values.push(value);
+    }
+    return values;
   }
 }
 
@@ -121,6 +142,27 @@ console.assert(table.remove('apples') === true, 'remove reports success');
 console.assert(table.remove('apples') === false, 'removing twice is a no-op');
 console.assert(table.size === 2);
 console.assert(table.keys().sort().join(',') === 'grapes,oranges', 'all keys');
+
+// has() is about the key, not the value
+table.set('empty', undefined);
+console.assert(table.has('empty') && !table.has('missing'), 'has() sees a key holding undefined');
+console.assert(table.values().length === table.size, 'values() returns one per entry');
+
+// keys are compared with ===, so the number 1 and the string '1' are different keys
+table.set(1, 'number').set('1', 'string');
+console.assert(table.get(1) === 'number' && table.get('1') === 'string', 'full-key comparison');
+
+// an object key is refused up front, by every operation, and stores nothing
+for (const operation of ['set', 'get', 'has', 'remove']) {
+  let threw = false;
+  try {
+    table[operation]({ id: 1 }, 'value');
+  } catch (error) {
+    threw = error instanceof TypeError;
+  }
+  console.assert(threw, `${operation}() rejects an object key`);
+}
+console.assert(table.size === 5, 'a rejected key changes nothing');
 
 // 2 buckets but 20 keys -> heavy chaining, everything still resolves
 const crowded = new HashTable(2);

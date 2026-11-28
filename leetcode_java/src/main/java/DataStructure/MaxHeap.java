@@ -51,7 +51,6 @@ public class MaxHeap {
         this.heapSize = heapSize;
         // one extra slot because indexing starts at 1
         maxHeap = new int[heapSize + 1];
-        maxHeap[0] = 0;   // never read
     }
 
     /** How many elements are stored. */
@@ -63,7 +62,7 @@ public class MaxHeap {
         return realSize == 0;
     }
 
-    /** Add an element, then bubble it UP to its place. */
+    /** Add an element in the first free slot, then SIFT it UP to its place. */
     public void add(int element) {
         if (realSize >= heapSize) {
             throw new IllegalStateException("heap is full (capacity=" + heapSize + ")");
@@ -71,13 +70,7 @@ public class MaxHeap {
 
         realSize++;
         maxHeap[realSize] = element;
-
-        int index = realSize;
-        while (index > 1 && maxHeap[index] > maxHeap[index / 2]) {
-            int parent = index / 2;
-            swap(index, parent);
-            index = parent;
-        }
+        siftUp(realSize);
     }
 
     /** The maximum, in O(1). It is always at the root. */
@@ -88,7 +81,7 @@ public class MaxHeap {
         return maxHeap[1];
     }
 
-    /** Remove and return the maximum, then bubble the new root DOWN. */
+    /** Remove and return the maximum, then SIFT the new root DOWN. */
     public int pop() {
         if (isEmpty()) {
             throw new IllegalStateException("heap is empty");
@@ -98,16 +91,38 @@ public class MaxHeap {
         maxHeap[1] = maxHeap[realSize];   // the last element takes the root
         realSize--;
 
-        int index = 1;
+        siftDown(1);
+        return largest;
+    }
+
+    //--- the two moves --------------------------------------------
+
+    /** Swap the value at `index` with its parent while it is larger. */
+    private void siftUp(int index) {
+        while (index > 1) {
+            int parent = index / 2;
+            if (maxHeap[parent] >= maxHeap[index]) {
+                break;                    // the parent is already in order
+            }
+            swap(index, parent);
+            index = parent;
+        }
+    }
+
+    /** Swap the value at `index` with its LARGER child while it is smaller. */
+    private void siftDown(int index) {
         while (index * 2 <= realSize) {   // while the node has a left child
             int left = index * 2;
             int right = left + 1;
 
-            // NOTE the `right <= realSize` guard. The right child may not
-            // exist; without this we would read a slot past the end --
-            // which still holds a stale value from an earlier pop and
-            // silently corrupts the heap.
-            int child = (right <= realSize && maxHeap[right] > maxHeap[left]) ? right : left;
+            // Pick the larger of the two children. The right child may not
+            // exist: without the `right <= realSize` check we would read a
+            // slot past the end -- which still holds a stale value from an
+            // earlier pop and silently corrupts the heap.
+            int child = left;
+            if (right <= realSize && maxHeap[right] > maxHeap[left]) {
+                child = right;
+            }
 
             if (maxHeap[index] >= maxHeap[child]) {
                 break;                    // heap property restored
@@ -115,8 +130,6 @@ public class MaxHeap {
             swap(index, child);
             index = child;
         }
-
-        return largest;
     }
 
     private void swap(int i, int j) {

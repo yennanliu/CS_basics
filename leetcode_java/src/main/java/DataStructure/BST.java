@@ -84,42 +84,54 @@ public class BST<Key extends Comparable<Key>, Value> {
      *  given. That is what lets the recursion rewire parent pointers
      *  without ever holding a parent reference.
      */
-    private Node put(Node x, Key key, Value val) {
-        if (x == null) {                     // fell off the tree -> this is the spot
+    private Node put(Node node, Key key, Value val) {
+        if (node == null) {                     // fell off the tree -> this is the spot
             size++;
             return new Node(key, val);
         }
-        int cmp = key.compareTo(x.key);
+        int cmp = key.compareTo(node.key);
         if (cmp < 0) {
-            x.left = put(x.left, key, val);
+            node.left = put(node.left, key, val);
         } else if (cmp > 0) {
-            x.right = put(x.right, key, val);
+            node.right = put(node.right, key, val);
         } else {
-            x.val = val;                     // same key -> overwrite, do not grow
+            node.val = val;                     // same key -> overwrite, do not grow
         }
-        return x;
+        return node;
     }
 
     //--- get ------------------------------------------------------
 
-    /** The value for `key`, or null. Iterative: no stack needed. */
+    /** The value for `key`, or null when the key is absent. */
     public Value get(Key key) {
-        Node x = root;
-        while (x != null) {
-            int cmp = key.compareTo(x.key);
+        Node node = find(key);
+        return node == null ? null : node.val;
+    }
+
+    /** Asks "is the KEY stored?", so a key mapped to a null value still counts. */
+    public boolean contains(Key key) {
+        return find(key) != null;
+    }
+
+    /**
+     *  The node holding `key`, or null. Iterative: no stack needed.
+     *
+     *  One comparison per level decides left or right, so the loop
+     *  follows a single root-to-leaf path -- this is the O(H).
+     */
+    private Node find(Key key) {
+        Node node = root;
+        while (node != null) {
+            int cmp = key.compareTo(node.key);
             if (cmp < 0) {
-                x = x.left;
+                node = node.left;            // key is smaller -> it can only be on the left
             } else if (cmp > 0) {
-                x = x.right;
+                node = node.right;           // key is larger  -> it can only be on the right
             } else {
-                return x.val;
+                return node;
             }
         }
         return null;
-    }
-
-    public boolean contains(Key key) {
-        return get(key) != null;
     }
 
     //--- min / max ------------------------------------------------
@@ -134,18 +146,18 @@ public class BST<Key extends Comparable<Key>, Value> {
         if (root == null) {
             return null;
         }
-        Node x = root;
-        while (x.right != null) {
-            x = x.right;
+        Node node = root;
+        while (node.right != null) {
+            node = node.right;
         }
-        return x.key;
+        return node.key;
     }
 
-    private Node min(Node x) {
-        while (x.left != null) {
-            x = x.left;
+    private Node min(Node node) {
+        while (node.left != null) {
+            node = node.left;
         }
-        return x;
+        return node;
     }
 
     //--- delete ---------------------------------------------------
@@ -168,37 +180,40 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
     }
 
-    private Node delete(Node x, Key key) {
-        if (x == null) {
+    private Node delete(Node node, Key key) {
+        if (node == null) {
             return null;
         }
-        int cmp = key.compareTo(x.key);
+        int cmp = key.compareTo(node.key);
         if (cmp < 0) {
-            x.left = delete(x.left, key);
+            node.left = delete(node.left, key);
         } else if (cmp > 0) {
-            x.right = delete(x.right, key);
+            node.right = delete(node.right, key);
         } else {
-            if (x.left == null) {            // 0 or 1 child
-                return x.right;
+            if (node.left == null) {            // 0 or 1 child
+                return node.right;
             }
-            if (x.right == null) {
-                return x.left;
+            if (node.right == null) {
+                return node.left;
             }
-            Node successor = min(x.right);   // 2 children
+            // 2 children: a copy of the successor takes this node's place,
+            // adopting both subtrees (the right one minus the successor)
+            Node successor = min(node.right);
             Node replacement = new Node(successor.key, successor.val);
-            replacement.right = deleteMin(x.right);
-            replacement.left = x.left;
+            replacement.right = deleteMin(node.right);
+            replacement.left = node.left;
             return replacement;
         }
-        return x;
+        return node;
     }
 
-    private Node deleteMin(Node x) {
-        if (x.left == null) {
-            return x.right;
+    /** Remove the leftmost node of a subtree; return the subtree's new root. */
+    private Node deleteMin(Node node) {
+        if (node.left == null) {
+            return node.right;
         }
-        x.left = deleteMin(x.left);
-        return x;
+        node.left = deleteMin(node.left);
+        return node;
     }
 
     //--- iteration ------------------------------------------------
@@ -210,13 +225,13 @@ public class BST<Key extends Comparable<Key>, Value> {
         return keys;
     }
 
-    private void inorder(Node x, List<Key> keys) {
-        if (x == null) {
+    private void inorder(Node node, List<Key> keys) {
+        if (node == null) {
             return;
         }
-        inorder(x.left, keys);
-        keys.add(x.key);
-        inorder(x.right, keys);
+        inorder(node.left, keys);
+        keys.add(node.key);
+        inorder(node.right, keys);
     }
 
     /** Edges on the longest root-to-leaf path. Empty = -1, single node = 0. */
@@ -224,11 +239,11 @@ public class BST<Key extends Comparable<Key>, Value> {
         return height(root);
     }
 
-    private int height(Node x) {
-        if (x == null) {
+    private int height(Node node) {
+        if (node == null) {
             return -1;
         }
-        return 1 + Math.max(height(x.left), height(x.right));
+        return 1 + Math.max(height(node.left), height(node.right));
     }
 
     public static void main(String[] args) {
@@ -264,6 +279,13 @@ public class BST<Key extends Comparable<Key>, Value> {
 
         bst.delete("S");                     // the root, two children
         assertThat(bst.keys().toString().equals("[H, L, M, P, R, X]"), "root removed");
+
+        // contains() is about the key: a null VALUE is still a stored key
+        BST<String, Integer> sparse = new BST<>();
+        sparse.put("K", null);
+        assertThat(sparse.contains("K") && sparse.get("K") == null, "null value, key present");
+        sparse.delete("K");
+        assertThat(sparse.isEmpty(), "and it can be deleted");
 
         bst.delete("ZZZ");                   // absent -> no-op
         assertThat(bst.size() == 6, "deleting an absent key changes nothing");

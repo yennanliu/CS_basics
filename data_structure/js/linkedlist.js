@@ -79,6 +79,12 @@ class LinkedList {
   //   after  : 1 -> 9 -> 2 -> 3
   // An index past the end appends, rather than throwing.
   insert(index, value) {
+    // Clamping only makes sense for a whole number. NaN or 1.5 would slip
+    // past both comparisons below and corrupt the links, so refuse them
+    // BEFORE any pointer is touched.
+    if (!Number.isInteger(index)) {
+      throw new RangeError(`index must be an integer, got ${index}`);
+    }
     if (index <= 0) return this.prepend(value);
     if (index >= this.length) return this.append(value);
 
@@ -118,9 +124,9 @@ class LinkedList {
     this.tail = this.head;
 
     while (current !== null) {
-      const next = current.next;
-      current.next = previous;
-      previous = current;
+      const next = current.next; // 1. remember the way forward
+      current.next = previous;   // 2. point this node backwards
+      previous = current;        // 3. step both pointers along
       current = next;
     }
     this.head = previous;
@@ -161,6 +167,19 @@ console.assert(list.tail.value === 16, 'tail is repaired after removing the last
 list.reverse();
 console.assert(list.toArray().join(',') === '16,5,10,1', 'reversed');
 console.assert(list.head.value === 16 && list.tail.value === 1, 'head/tail swapped');
+
+// a bad index is rejected before anything is rewired
+const before = list.toArray().join(',');
+for (const bad of [NaN, 1.5, '1', undefined]) {
+  let threw = false;
+  try {
+    list.insert(bad, 'x');
+  } catch (error) {
+    threw = error instanceof RangeError;
+  }
+  console.assert(threw, `insert(${bad}) throws RangeError`);
+}
+console.assert(list.toArray().join(',') === before, 'the list is untouched by a rejected insert');
 
 const single = new LinkedList(1);
 single.remove(0);

@@ -86,7 +86,8 @@ if __name__ == "__main__":
     except OverflowError:
         pass
 
-    s.pop(); s.pop(); s.pop()
+    for _ in range(3):               # drain it
+        s.pop()
     try:
         s.pop()                      # empty -> underflow
         raise AssertionError("expected IndexError")

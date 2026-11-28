@@ -6,8 +6,8 @@
 // may contain cycles and has no root.
 //
 //     0 --- 1 --- 3
-//     |    /|     |
-//     2 --/ |     4 --- 5 --- 6
+//      \   /      |
+//        2 ------ 4 --- 5 --- 6
 //
 // TWO WAYS TO STORE IT
 //
@@ -25,6 +25,11 @@
 //         bfs / dfs            O(V + E)
 // Space : O(V + E)
 
+// What shortestPath records as "came from" for the START vertex, which
+// came from nowhere. A unique Symbol rather than null, so that it can
+// never be mistaken for a real vertex -- a vertex may be named null.
+const NO_PREVIOUS = Symbol('no previous vertex');
+
 class Graph {
   constructor(directed = false) {
     this.directed = directed;
@@ -35,8 +40,12 @@ class Graph {
     return Object.keys(this.adjacentList).length;
   }
 
+  // An undirected edge sits in TWO adjacency lists, so halve the total.
   get numberOfEdges() {
-    const total = Object.values(this.adjacentList).reduce((n, list) => n + list.length, 0);
+    let total = 0;
+    for (const neighbours of Object.values(this.adjacentList)) {
+      total += neighbours.length;
+    }
     return this.directed ? total : total / 2;
   }
 
@@ -63,14 +72,18 @@ class Graph {
   }
 
   // Breadth-first: nearest vertices first, using a QUEUE.
+  //
+  // The queue is an array plus a read position (`head`). Taking from the
+  // front with queue.shift() would re-index the whole array every time,
+  // making the walk O(V^2); advancing `head` is O(1).
   bfs(start) {
     if (!this.adjacentList[start]) return [];
     const visited = new Set([start]);
     const order = [];
     const queue = [start];
 
-    while (queue.length > 0) {
-      const node = queue.shift();
+    for (let head = 0; head < queue.length; head++) {
+      const node = queue[head];
       order.push(node);
       for (const neighbour of this.adjacentList[node]) {
         if (visited.has(neighbour)) continue;
@@ -102,27 +115,38 @@ class Graph {
   // Only correct on an UNWEIGHTED graph -- with weights you need Dijkstra.
   shortestPath(start, end) {
     if (!this.adjacentList[start] || !this.adjacentList[end]) return null;
-    if (start === end) return [start];
-
-    const previous = new Map([[start, null]]);
+    // previous.get(v) = the vertex we reached v FROM. It doubles as the
+    // visited set: a vertex with an entry has already been queued.
+    //
+    // "Have we reached `end`?" is asked as previous.has(end) -- a Map
+    // lookup, which (unlike ===) also recognises NaN as itself.
+    const previous = new Map([[start, NO_PREVIOUS]]);
     const queue = [start];
 
-    while (queue.length > 0) {
-      const node = queue.shift();
+    for (let head = 0; head < queue.length && !previous.has(end); head++) {
+      const node = queue[head];
       for (const neighbour of this.adjacentList[node]) {
         if (previous.has(neighbour)) continue;
         previous.set(neighbour, node);
-        if (neighbour === end) {
-          const path = [end]; // rebuild the path backwards
-          while (previous.get(path[path.length - 1]) !== null) {
-            path.push(previous.get(path[path.length - 1]));
-          }
-          return path.reverse();
-        }
         queue.push(neighbour);
       }
     }
-    return null;
+
+    if (!previous.has(end)) return null; // ran out of vertices first
+    return this._rebuildPath(previous, end);
+  }
+
+  // Follow the `previous` links from the end back to the start.
+  // The walk ends at the NO_PREVIOUS marker stored for the start. Testing
+  // for that marker (rather than `node === start`) never compares two
+  // vertices, so it is right for every vertex name -- including null, and
+  // NaN, which is not equal to itself.
+  _rebuildPath(previous, end) {
+    const path = [];
+    for (let node = end; node !== NO_PREVIOUS; node = previous.get(node)) {
+      path.push(node);
+    }
+    return path.reverse(); // collected end -> start
   }
 
   showConnections() {
@@ -135,8 +159,8 @@ class Graph {
 
 // demo
 //    0 --- 1 --- 3
-//    |    /|     |
-//    2 --/ |     4 --- 5 --- 6
+//     \   /      |
+//       2 ------ 4 --- 5 --- 6
 const graph = new Graph();
 [['3', '1'], ['3', '4'], ['4', '2'], ['4', '5'],
  ['1', '2'], ['1', '0'], ['0', '2'], ['6', '5']].forEach(([a, b]) => graph.addEdge(a, b));
@@ -155,6 +179,22 @@ console.assert(graph.shortestPath('0', '6').join(',') === '0,2,4,5,6', 'fewest e
 console.assert(graph.shortestPath('0', '0').join(',') === '0', 'path to self');
 graph.addVertex('island');
 console.assert(graph.shortestPath('0', 'island') === null, 'unreachable -> null');
+
+// a vertex named null is still a vertex (object keys make it the string 'null')
+const odd = new Graph();
+odd.addEdge('a', null).addEdge(null, 'b');
+console.assert(odd.shortestPath('a', null).length === 2, 'path ends AT the null-named vertex');
+console.assert(odd.shortestPath('a', null)[1] === null, 'and includes it');
+
+// ... and so is one named NaN, which is not even equal to itself
+odd.addEdge(NaN, 'b');
+const fromNaN = odd.shortestPath(NaN, 'b');
+console.assert(fromNaN.length === 2 && Number.isNaN(fromNaN[0]) && fromNaN[1] === 'b',
+  'a path that starts at NaN terminates');
+console.assert(odd.shortestPath(NaN, 'a').length === 4, 'NaN -> b -> null -> a');
+const toNaN = odd.shortestPath('a', NaN);
+console.assert(toNaN.length === 4 && Number.isNaN(toNaN[3]), 'NaN as the destination');
+console.assert(odd.shortestPath(NaN, NaN).length === 1, 'NaN to itself');
 
 // a DIRECTED edge goes one way only
 const digraph = new Graph(true);
