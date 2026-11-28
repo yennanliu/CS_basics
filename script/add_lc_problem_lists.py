@@ -25,12 +25,14 @@ which also gives the canonical display name for each tag.
 """
 
 import argparse
-import json
 import os
 import re
 import sys
 import urllib.error
 import urllib.request
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lc_graphql  # noqa: E402  — the shared LeetCode client
 
 SECTION_TITLE = "LeetCode Problem Lists"
 
@@ -274,35 +276,13 @@ def insert_block(text, block):
     return f"{head}\n\n{block}\n{tail}"
 
 
-GRAPHQL_URL = "https://leetcode.com/graphql/"
-BROWSER_UA = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-)
-
-
 def fetch_tag(slug):
     """Return LeetCode's display name for a topic tag slug, or None if it doesn't exist."""
-    payload = json.dumps(
-        {
-            "query": "query t($slug:String!){topicTag(slug:$slug){name slug}}",
-            "variables": {"slug": slug},
-        }
-    ).encode()
-    req = urllib.request.Request(
-        GRAPHQL_URL,
-        data=payload,
-        headers={
-            "Content-Type": "application/json",
-            "User-Agent": BROWSER_UA,
-            "Origin": "https://leetcode.com",
-            "Referer": "https://leetcode.com/problemset/",
-        },
-    )
     try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            tag = json.load(resp)["data"]["topicTag"]
-    except (urllib.error.URLError, KeyError, TypeError, ValueError) as exc:
+        tag = lc_graphql.post("query t($slug:String!){topicTag(slug:$slug){name slug}}",
+                              {"slug": slug}, referer="https://leetcode.com/problemset/",
+                              timeout=20)["topicTag"]
+    except (lc_graphql.GraphQLError, urllib.error.URLError, TimeoutError, KeyError) as exc:
         print(f"  {slug}: request failed ({exc})", file=sys.stderr)
         return None
     return tag["name"] if tag else None

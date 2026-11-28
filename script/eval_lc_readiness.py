@@ -24,16 +24,13 @@ import os
 import re
 import sys
 import urllib.error
-import urllib.request
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 
-GRAPHQL = "https://leetcode.com/graphql"
-UA = (
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
-)
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "script"))
+import lc_graphql  # noqa: E402  — the shared LeetCode client
+import suggest_review as sr  # noqa: E402  — the shared README parser
 
 # ---------------------------------------------------------------------------
 # The bar, per level. A Google coding round is ~45 min for 1-2 problems, and the
@@ -120,36 +117,14 @@ GOOGLE_TOPICS = [
 # ---------------------------------------------------------------------------
 # Fetch
 # ---------------------------------------------------------------------------
-class GraphQLError(RuntimeError):
-    """A 200 response that is not a usable GraphQL result."""
+GraphQLError = lc_graphql.GraphQLError
 
 
 def gql(query, variables, user):
-    body = json.dumps({"query": query, "variables": variables}).encode()
-    req = urllib.request.Request(
-        GRAPHQL,
-        data=body,
-        headers={
-            "Content-Type": "application/json",
-            "User-Agent": UA,
-            "Referer": f"https://leetcode.com/u/{user}/",
-        },
-    )
-    with urllib.request.urlopen(req, timeout=30) as r:
-        payload = json.loads(r.read())
-
-    # LeetCode answers a rejected query with HTTP 200 and {"errors": [...],
-    # "data": null}. Caching that would destroy a good cache and then crash
-    # evaluate() on a missing field, so refuse it here instead.
-    if not isinstance(payload, dict):
-        raise GraphQLError(f"expected a JSON object, got {type(payload).__name__}")
-    if payload.get("errors"):
-        first = payload["errors"][0]
-        msg = first.get("message", first) if isinstance(first, dict) else first
-        raise GraphQLError(f"GraphQL error: {msg}")
-    if payload.get("data") is None:
-        raise GraphQLError("GraphQL response carried no data")
-    return payload
+    """-> the whole payload ({"data": ...}), which is what the cache stores.
+    Raises GraphQLError on a rejected query, the network error otherwise."""
+    data = lc_graphql.post(query, variables, referer=f"https://leetcode.com/u/{user}/", timeout=30)
+    return {"data": data}
 
 
 QUERIES = {
@@ -295,42 +270,27 @@ def fetch_all(user, cache_dir, offline, year):
 # ---------------------------------------------------------------------------
 # README parsing
 # ---------------------------------------------------------------------------
-ROW = re.compile(r"^\|\s*(\d{1,4})\s*\|(.+)$")
-STATUS = re.compile(r"\b(OK|AGAIN|NOT_OK|TODO)\b")
-DIFF = re.compile(r"\b(Easy|Medium|Hard)\b")
-
-
 def parse_readme(path):
-    """Yield one dict per problem row, keyed by LC number (last row wins)."""
-    problems = {}
-    section = None
-    with open(path, encoding="utf-8") as f:
-        for line in f:
-            if line.startswith("## "):
-                section = line[3:].strip()
-                continue
-            m = ROW.match(line.rstrip())
-            if not m:
-                continue
-            num = int(m.group(1))
-            rest = m.group(2)
-            cells = [c.strip() for c in rest.split("|")]
-            status_cell = cells[-1] if cells[-1] else (cells[-2] if len(cells) > 1 else "")
-            sm = STATUS.search(status_cell)
-            dm = DIFF.search(rest)
-            reps = status_cell.count("*")
-            note = rest.lower()
-            problems[num] = {
-                "num": num,
-                "section": section,
-                "difficulty": dm.group(1) if dm else None,
-                "status": sm.group(1) if sm else None,
-                "reps": reps,
-                "google": "google" in note,
-                "must": "must" in note,
-                "raw": note,
-            }
-    return problems
+    """{lc: row} from suggest_review.parse_readme, the shared README parser,
+    so MUST, the status word and the pass count are read by one rule.
+
+    It used to parse README itself and call a row MUST when "must" appeared
+    anywhere in it — prose in a note and the imported index included — which
+    counted 229 MUST rows where the marker sits on 205.
+    """
+    return {
+        num: {
+            "num": num,
+            "section": p["section"],
+            "difficulty": p["difficulty"] or None,
+            "status": p["status"],
+            "reps": p["passes"],
+            "google": "google" in p["tags"],
+            "must": p["must"],
+            "raw": p["raw"].lower(),
+        }
+        for num, p in sr.parse_readme(path).items()
+    }
 
 
 # ---------------------------------------------------------------------------

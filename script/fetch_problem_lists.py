@@ -40,6 +40,9 @@ import re
 import sys
 import urllib.request
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lc_graphql  # noqa: E402  — the shared LeetCode client
+
 USER_AGENT = "Mozilla/5.0 (compatible; CS_basics; +https://github.com/yennanliu/CS_basics)"
 
 # ── NeetCode ────────────────────────────────────────────────────────────────
@@ -59,7 +62,6 @@ NEETCODE_MIN_TOTAL = 900
 
 # ── LeetCode ────────────────────────────────────────────────────────────────
 
-LEETCODE_GRAPHQL = "https://leetcode.com/graphql/"
 LEETCODE_PLAN = "top-100-liked"
 LEETCODE_QUERY = """
 query($slug: String!) {
@@ -75,13 +77,8 @@ query($slug: String!) {
 LEETCODE_EXPECTED = 100
 
 
-def get(url, payload=None):
-    headers = {"User-Agent": USER_AGENT}
-    data = None
-    if payload is not None:
-        headers["Content-Type"] = "application/json"
-        data = json.dumps(payload).encode()
-    request = urllib.request.Request(url, data=data, headers=headers)
+def get(url):
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(request, timeout=60) as response:
         return response.read().decode("utf-8", "replace")
 
@@ -136,11 +133,12 @@ def fetch_neetcode():
 
 def fetch_leetcode_top100():
     """-> {lc id: {title, difficulty, group, lists}} for the Top 100 Liked plan."""
-    raw = get(LEETCODE_GRAPHQL, {"query": LEETCODE_QUERY, "variables": {"slug": LEETCODE_PLAN}})
-    payload = json.loads(raw)
-    if payload.get("errors"):
-        raise SystemExit(f"leetcode: {payload['errors']}")
-    detail = (payload.get("data") or {}).get("studyPlanV2Detail")
+    try:
+        data = lc_graphql.post(LEETCODE_QUERY, {"slug": LEETCODE_PLAN},
+                               referer="https://leetcode.com/studyplan/", timeout=60)
+    except lc_graphql.GraphQLError as exc:
+        raise SystemExit(f"leetcode: {exc}")
+    detail = data.get("studyPlanV2Detail")
     if not detail:
         raise SystemExit(f"leetcode: no study plan '{LEETCODE_PLAN}' in the response")
 
