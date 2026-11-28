@@ -97,8 +97,8 @@
 - Cheatsheet review
 	
 	- Doing
-		- 字串演算法與操作
-			- https://yennj12.js.org/CS_basics/cheatsheets/string.zh.html
+		- 樹的 LCA、距離與路徑問題
+			- https://yennj12.js.org/CS_basics/cheatsheets/tree_lca_distance.zh.html
 
 
 
@@ -115,6 +115,7 @@
 		- BFS（廣度優先搜尋）
 		- DFS（深度優先搜尋）
 		- 堆積與優先佇列
+		- 字串演算法與操作
 
 
 
