@@ -178,6 +178,9 @@ TYPE_TAG_TOPICS = {
     "sql": {"database"},
     "shell": {"shell"},
 }
+# tag_key() lowercases, but a key may be written as the README writes it
+# (`BST`); look a tag up through this, never TYPE_TAG_TOPICS directly.
+TYPE_TAG_KEYS = {k.lower(): k for k in TYPE_TAG_TOPICS}
 
 # LeetCode topic slug -> the label this README writes it as.
 #
@@ -340,7 +343,7 @@ def normalise_cell(cell):
         inner = body.strip("`").strip()
         # rescue a backtick span that swallowed a comma between two real tags
         if (body.startswith("`") and body.endswith("`") and "," in inner
-                and all(canonical_company(p) or tag_key(p) in TYPE_TAG_TOPICS
+                and all(canonical_company(p) or tag_key(p) in TYPE_TAG_KEYS
                         for p in inner.split(","))):
             for p in inner.split(","):
                 comp = canonical_company(p)
@@ -699,11 +702,11 @@ def rewrite(lines, topics, companies, lists):
         bold = re.findall(r"\*\*(.+?)\*\*", cell)
         if not bold:
             parts = split_tags(cell)
-            first = tag_key(parts[0])        # already lowercased
-            if first in TYPE_TAG_TOPICS:
-                parts[0] = "**%s**" % first
+            label = TYPE_TAG_KEYS.get(tag_key(parts[0]))
+            if label:
+                parts[0] = "**%s**" % label
                 cell = ",".join(parts)
-                bold = [first]
+                bold = [label]
                 stats["type_tag_added"] += 1
 
         entry = topics.get(str(lc))
@@ -711,7 +714,7 @@ def rewrite(lines, topics, companies, lists):
         # 3) the problem's real topics, when the bold tag names none of them
         if entry and bold and h2 not in NON_ALGO_SECTIONS:
             tag = bold[0]
-            backing = TYPE_TAG_TOPICS.get(tag) or TYPE_TAG_TOPICS.get(tag.lower())
+            backing = TYPE_TAG_TOPICS.get(TYPE_TAG_KEYS.get(tag.lower()))
             if backing is not None and not (backing & set(entry["topics"])):
                 have = present_tags(cell)
                 # LeetCode lists a problem's topics primary-first, so the
