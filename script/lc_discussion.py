@@ -329,7 +329,7 @@ def cmd_xref(args):
     import suggest_review as sr
     problems = sr.parse_readme(os.path.join(ROOT, "README.md"))
     log, _ = l3_core.latest_verdicts(os.path.join(ROOT, "data", "progress.txt"))
-    core = set(l3_core.load_core())
+    core = set((l3_core.load_core() or {}).get("ids", []))
     print("%-5s %-44s %-7s %-6s %-10s %s" % ("LC", "README title", "README", "log", "last", "tries"))
     for lc in args.ids:
         p = problems.get(lc)

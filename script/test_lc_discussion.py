@@ -195,6 +195,10 @@ class Xref(unittest.TestCase):
         text = out.getvalue()
         self.assertIn("Two Sum", text)
         self.assertIn("(not in README)", text)
+        # LC 1 is in data/l3_core.json; the tag read the file's keys, not its ids
+        two_sum = next(l for l in text.splitlines() if l.lstrip().startswith("1 "))
+        self.assertIn("[L3 core]", two_sum)
+        self.assertNotIn("[L3 core]", text.split("(not in README)")[1])
 
 
 if __name__ == "__main__":
