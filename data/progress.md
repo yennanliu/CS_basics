@@ -99,6 +99,7 @@
 	- Doing
 		- 動態規劃（DP）
 			- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
+				- `2. 處理「空」的初始條件`
 
 
 	- Done
