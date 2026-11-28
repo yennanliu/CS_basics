@@ -45,6 +45,8 @@ class HashSet:
     MAX_LOAD = 0.75                  # resize once items / buckets exceeds this
 
     def __init__(self, keys=(), n_buckets=8):
+        if n_buckets < 1:            # `% 0` cannot pick a bucket
+            raise ValueError("n_buckets must be at least 1, got {}".format(n_buckets))
         self.buckets = [[] for _ in range(n_buckets)]
         self._size = 0
         for key in keys:
@@ -140,6 +142,16 @@ if __name__ == "__main__":
     assert len(crowded.buckets) == 8
     assert crowded.buckets[1] == [1, 9] and crowded.buckets[5] == [5]
     assert sorted(crowded) == [1, 5, 8, 9]
+
+    # one bucket is legal (it just grows); zero cannot hold anything
+    tiny = HashSet([1, 2, 3], n_buckets=1)
+    assert sorted(tiny) == [1, 2, 3] and len(tiny.buckets) > 1
+    for bad_count in (0, -4):
+        try:
+            HashSet(n_buckets=bad_count)
+            raise AssertionError("expected ValueError")
+        except ValueError:
+            pass
 
     # 1000 keys: the table keeps growing so the average chain stays short
     big = HashSet(range(1000))

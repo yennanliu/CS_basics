@@ -37,6 +37,8 @@ class HashTable:
     """Fixed-slot hash table using separate chaining."""
 
     def __init__(self, n_slots=8, hash_func=hash):
+        if n_slots < 1:              # `% 0` cannot pick a slot
+            raise ValueError("n_slots must be at least 1, got {}".format(n_slots))
         self.n_slots = n_slots
         self.hash_func = hash_func
         self.slots = [[] for _ in range(n_slots)]
@@ -151,5 +153,11 @@ if __name__ == "__main__":
     for i in range(5):
         crowded.put(i, i)
     assert len(crowded.slots[0]) == 5 and crowded.get(4) == 4
+
+    try:
+        HashTable(n_slots=0)
+        raise AssertionError("expected ValueError")
+    except ValueError:
+        pass
 
     print("Success.")

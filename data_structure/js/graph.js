@@ -122,7 +122,7 @@ class Graph {
       for (const neighbour of this.adjacentList[node]) {
         if (previous.has(neighbour)) continue;
         previous.set(neighbour, node);
-        if (neighbour === end) return this._rebuildPath(previous, end);
+        if (neighbour === end) return this._rebuildPath(previous, start, end);
         queue.push(neighbour);
       }
     }
@@ -130,11 +130,14 @@ class Graph {
   }
 
   // Follow the `previous` links from the end back to the start.
-  _rebuildPath(previous, end) {
+  // The loop stops on reaching `start` itself, not on a null link: a
+  // vertex may be named null, so null cannot double as "no more".
+  _rebuildPath(previous, start, end) {
     const path = [];
-    for (let node = end; node !== null; node = previous.get(node)) {
-      path.push(node); // the start's previous is null, which ends the loop
+    for (let node = end; node !== start; node = previous.get(node)) {
+      path.push(node);
     }
+    path.push(start);
     return path.reverse(); // collected end -> start
   }
 
@@ -168,6 +171,12 @@ console.assert(graph.shortestPath('0', '6').join(',') === '0,2,4,5,6', 'fewest e
 console.assert(graph.shortestPath('0', '0').join(',') === '0', 'path to self');
 graph.addVertex('island');
 console.assert(graph.shortestPath('0', 'island') === null, 'unreachable -> null');
+
+// a vertex named null is still a vertex (object keys make it the string 'null')
+const odd = new Graph();
+odd.addEdge('a', null).addEdge(null, 'b');
+console.assert(odd.shortestPath('a', null).length === 2, 'path ends AT the null-named vertex');
+console.assert(odd.shortestPath('a', null)[1] === null, 'and includes it');
 
 // a DIRECTED edge goes one way only
 const digraph = new Graph(true);

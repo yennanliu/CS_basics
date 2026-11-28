@@ -95,6 +95,12 @@ class DoublyLinkedList {
   //     leader <-> follower          becomes
   //     leader <-> new <-> follower
   insert(index, value) {
+    // Clamping only makes sense for a whole number. NaN or 1.5 would slip
+    // past both comparisons below and corrupt the links, so refuse them
+    // BEFORE any pointer is touched.
+    if (!Number.isInteger(index)) {
+      throw new RangeError(`index must be an integer, got ${index}`);
+    }
     if (index <= 0) return this.prepend(value);
     if (index >= this.length) return this.append(value);
 
@@ -183,6 +189,20 @@ list.remove(list.length - 1);
 console.assert(list.toArray().join(',') === '10,5,16');
 console.assert(list.toArrayReversed().join(',') === '16,5,10');
 console.assert(list.head.prev === null && list.tail.next === null, 'ends are terminated');
+
+// a bad index is rejected before anything is rewired
+const before = list.toArray().join(',');
+for (const bad of [NaN, 1.5, '1', undefined]) {
+  let threw = false;
+  try {
+    list.insert(bad, 'x');
+  } catch (error) {
+    threw = error instanceof RangeError;
+  }
+  console.assert(threw, `insert(${bad}) throws RangeError`);
+}
+console.assert(list.toArray().join(',') === before, 'the list is untouched by a rejected insert');
+console.assert(list.toArrayReversed().reverse().join(',') === before, 'in both directions');
 
 const single = new DoublyLinkedList(1);
 single.remove(0);

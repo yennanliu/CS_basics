@@ -34,7 +34,15 @@ class HashTable {
   // Turn a string key into a bucket index.
   // NOTE: this is a teaching hash, not a good one -- a real table uses
   // something like FNV-1a or MurmurHash to spread keys evenly.
+  //
+  // Keys must be PRIMITIVES (string, number, boolean ...). An object has
+  // no stable text to hash: String(obj) changes when its fields do, which
+  // would file it under one bucket and look for it in another. (The
+  // built-in Map can take objects because it hashes their identity.)
   _hash(key) {
+    if (key !== null && (typeof key === 'object' || typeof key === 'function')) {
+      throw new TypeError('HashTable keys must be primitives, not objects');
+    }
     const text = String(key); // so a number key hashes by its digits
     let hash = 0;
     for (let i = 0; i < text.length; i++) {
@@ -143,6 +151,18 @@ console.assert(table.values().length === table.size, 'values() returns one per e
 // keys are compared with ===, so the number 1 and the string '1' are different keys
 table.set(1, 'number').set('1', 'string');
 console.assert(table.get(1) === 'number' && table.get('1') === 'string', 'full-key comparison');
+
+// an object key is refused up front, by every operation, and stores nothing
+for (const operation of ['set', 'get', 'has', 'remove']) {
+  let threw = false;
+  try {
+    table[operation]({ id: 1 }, 'value');
+  } catch (error) {
+    threw = error instanceof TypeError;
+  }
+  console.assert(threw, `${operation}() rejects an object key`);
+}
+console.assert(table.size === 5, 'a rejected key changes nothing');
 
 // 2 buckets but 20 keys -> heavy chaining, everything still resolves
 const crowded = new HashTable(2);

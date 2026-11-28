@@ -52,12 +52,20 @@ class TreeNode:
         return str(self.value)
 
 
+# Default for the `node` parameters below, meaning "start at the root".
+# It cannot be None: None is a real answer ("this subtree is empty"),
+# e.g. what find() returns for a missing value.
+_WHOLE_TREE = object()
+
+
 class Tree:
     """A general tree, addressed through its root.
 
-    Every public method answers for the WHOLE tree, or for the subtree
-    under `node` when one is passed in. The recursion itself lives in a
-    private `_helper(node)` so each public method stays one line.
+    size / height / find / dfs / pretty answer for the WHOLE tree, or
+    for the subtree under `node` when one is passed in (an empty
+    subtree, None, gives the empty answer). bfs and leaves always cover
+    the whole tree. The recursion lives in private `_helper(node)`
+    methods so each public method stays short.
     """
 
     def __init__(self, root_value=None):
@@ -65,10 +73,10 @@ class Tree:
 
     def _start(self, node):
         """Where a walk begins: the given subtree, or the root by default."""
-        return self.root if node is None else node
+        return self.root if node is _WHOLE_TREE else node
 
     #--- measurements ---------------------------------------------
-    def size(self, node=None):
+    def size(self, node=_WHOLE_TREE):
         """Number of nodes: 1 for the node itself + the size of every child."""
         return self._size(self._start(node))
 
@@ -80,7 +88,7 @@ class Tree:
             total += self._size(child)
         return total
 
-    def height(self, node=None):
+    def height(self, node=_WHOLE_TREE):
         """Longest path down, in EDGES. A single node has height 0."""
         return self._height(self._start(node))
 
@@ -93,7 +101,7 @@ class Tree:
         return 1 + tallest_child           # a leaf: 1 + (-1) = 0
 
     #--- search ---------------------------------------------------
-    def find(self, value, node=None):
+    def find(self, value, node=_WHOLE_TREE):
         """Depth-first search for the first node holding `value`, else None."""
         return self._find(self._start(node), value)
 
@@ -109,7 +117,7 @@ class Tree:
         return None
 
     #--- traversals -----------------------------------------------
-    def dfs(self, node=None):
+    def dfs(self, node=_WHOLE_TREE):
         """Pre-order depth-first walk: parent first, then each subtree."""
         values = []
         self._dfs(self._start(node), values)
@@ -149,7 +157,7 @@ class Tree:
             self._leaves(child, values)
 
     #--- display --------------------------------------------------
-    def pretty(self, node=None, depth=0):
+    def pretty(self, node=_WHOLE_TREE, depth=0):
         """Indented text drawing of the tree, one node per line."""
         node = self._start(node)
         if node is None:
@@ -189,6 +197,13 @@ if __name__ == "__main__":
 
     # subtree queries: pass the node to start from
     assert tree.size(a) == 3 and tree.dfs(c) == ["c", "f"]
+
+    # a subtree that does not exist is EMPTY -- it is not the whole tree
+    missing = tree.find("zzz")
+    assert missing is None
+    assert tree.size(missing) == 0 and tree.dfs(missing) == []
+    assert tree.height(missing) == -1 and tree.pretty(missing) == ""
+    assert tree.find("a", missing) is None
 
     # two nodes may hold the same VALUE; leaves() must look at the node,
     # not look the value up again

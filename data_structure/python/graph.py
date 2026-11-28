@@ -134,18 +134,23 @@ class Graph:
                     continue
                 previous[neighbour] = node
                 if neighbour == end:
-                    return self._rebuild_path(previous, end)
+                    return self._rebuild_path(previous, start, end)
                 queue.append(neighbour)
         return None
 
     @staticmethod
-    def _rebuild_path(previous, end):
-        """Follow the `previous` links from the end back to the start."""
+    def _rebuild_path(previous, start, end):
+        """Follow the `previous` links from the end back to the start.
+
+        The loop stops on reaching `start` itself, not on a None link:
+        None is a legal vertex name, so it cannot double as "no more".
+        """
         path = []
         node = end
-        while node is not None:              # the start's previous is None
+        while node != start:
             path.append(node)
             node = previous[node]
+        path.append(start)
         path.reverse()                       # collected end -> start
         return path
 
@@ -172,6 +177,14 @@ if __name__ == "__main__":
     assert g.shortest_path("0", "0") == ["0"]
     g.add_vertex("island")
     assert g.shortest_path("0", "island") is None
+
+    # any hashable value can name a vertex -- even None
+    odd = Graph()
+    odd.add_edge("a", None)
+    odd.add_edge(None, "b")
+    assert odd.shortest_path("a", None) == ["a", None]
+    assert odd.shortest_path("a", "b") == ["a", None, "b"]
+    assert odd.shortest_path(None, "b") == [None, "b"]
 
     # in a DIRECTED graph the edge goes one way only
     d = Graph(directed=True)
