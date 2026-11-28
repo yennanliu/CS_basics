@@ -52,9 +52,11 @@ import re
 import subprocess
 import sys
 import time
-import urllib.request
 from collections import Counter
 from pathlib import Path
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lc_graphql  # noqa: E402  — the shared LeetCode client
 
 ROOT = Path(__file__).resolve().parent.parent
 README = ROOT / "README.md"
@@ -528,15 +530,9 @@ def refresh_topics():
     """Re-fetch LeetCode's official topicTags into data/lc_topic_tags.json."""
     out, skip = {}, 0
     while True:
-        payload = json.dumps({"query": GRAPHQL,
-                              "variables": {"limit": 500, "skip": skip}}).encode()
-        req = urllib.request.Request(
-            "https://leetcode.com/graphql/", data=payload,
-            headers={"Content-Type": "application/json",
-                     "User-Agent": "Mozilla/5.0",
-                     "Referer": "https://leetcode.com/problemset/"})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            data = json.load(resp)["data"]["problemsetQuestionList"]
+        data = lc_graphql.post(GRAPHQL, {"limit": 500, "skip": skip},
+                               referer="https://leetcode.com/problemset/",
+                               timeout=60)["problemsetQuestionList"]
         if not data["questions"]:
             break
         for q in data["questions"]:

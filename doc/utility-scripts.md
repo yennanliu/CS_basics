@@ -768,13 +768,44 @@ changed and added per top-level tree, the new Python and Java solution files, an
 `data/progress.txt` gained. The workflow appends GitHub's merged-PR notes under it, because
 most of this repo lands as direct pushes and the PR list alone describes a fraction of a release.
 
+## readme_markers.py
+
+Writes README's marked problem rows to `data/again_problems.txt` or
+`data/must_problems.txt`, a `#` header and then each row verbatim, so a diff of the
+file still reads row by row. `get_again_problems.sh` / `get_must_problems.sh` are thin
+wrappers, kept because `/lc-again` documents the first by name.
+
+```bash
+python3 script/readme_markers.py again            # = bash script/get_again_problems.sh
+python3 script/readme_markers.py must             # = bash script/get_must_problems.sh
+python3 script/readme_markers.py again --stdout   # print, write nothing
+```
+
+Rows come from `check_readme.parse_rows`, main tables only (never the imported
+kamyu104 index). `again` means the status cell's word is `AGAIN`; `must` is
+`suggest_review.is_must`, the one MUST rule `suggest_review.py`, `extract_must_lc.py`
+and `eval_lc_readiness.py` all read by. Both used to be `grep -i <MARKER> README.md`,
+which also caught prose, the data-structure table above `## Array`, and notes such as
+"try again". Tests: `script/test_readme_markers.py`.
+
+## lc_graphql.py
+
+The one LeetCode GraphQL client: `post(query, variables)` returns the response's
+`data` or raises, with `GraphQLError` for a rejected query (LeetCode answers one with
+HTTP 200 and an `errors` field) and the network error otherwise. Retries are opt-in
+(`tries`, `backoff`); HTTP 400 is never retried. `eval_lc_readiness.py`,
+`scrape_lc_discuss_company.py` (and through it `lc_discussion.py`),
+`add_lc_problem_lists.py`, `fix_readme_tags.py --refresh-topics` and
+`fetch_problem_lists.py` all go through it, each keeping its own return contract in a
+small adapter. Tests (offline, `urlopen` patched): `script/test_lc_graphql.py`.
+
 ## Other Scripts
 
 | Script | Purpose |
 |--------|---------|
-| `get_again_problems.sh` | Extract problems to review again |
+| `get_again_problems.sh` | Wrapper: `readme_markers.py again` (see above) |
 | `get_company_LC.sh` | Get company-specific LeetCode problems |
 | `get_lc_per_rating.py` | Filter problems by difficulty rating |
-| `get_must_problems.sh` | Extract must-do problems |
+| `get_must_problems.sh` | Wrapper: `readme_markers.py must` (see above) |
 | `get_review_list.py` | Fibonacci-interval spaced-repetition dates from `data/progress.txt` (see `suggest_review.py` above for the importance/balance view) |
 | `list_leetcode_solutions_by_type.sh` | List solutions by algorithm type |

@@ -26,17 +26,15 @@ Notes:
 import argparse
 import os
 import re
+import sys
 from collections import OrderedDict
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from suggest_review import FIRST_LC_SECTION, MUST_ANY_CASE, is_must  # noqa: E402  — one MUST rule
+
 DIFFS = {"easy", "medium", "hard"}
-# status column: any casing of "must" is a marker -> MUST / must / Must / MUST!
-MUST_ANY_CASE = re.compile(r"must", re.IGNORECASE)
-# tags column: only a standalone ALL-CAPS MUST token is a marker, otherwise
-# ordinary prose ("gcd ... must be >= 2") would be treated as a flag.
-MUST_TAG_TOKEN = re.compile(r"(?<![A-Za-z])MUST(?![A-Za-z])")
-# Category sections only start once the LC tables begin. Everything above
-# (## Cmd, ## Resource, ## Database, ...) is intro/non-LC content.
-FIRST_LC_SECTION = "Array"
+# Category sections only start once the LC tables begin (FIRST_LC_SECTION);
+# everything above (## Cmd, ## Resource, ## Database, ...) is intro content.
 # Everything from here on is the imported kamyu104 index: every row's status is
 # `imported`, and its tags are generated prose in caps ("EVERY ROW MUST EQUAL
 # ROW 0 ..."), so a MUST token there is never the owner's marker.
@@ -85,7 +83,7 @@ def parse(readme_path):
         # site/build-roadmap.js mirrors this rule for the roadmap page.
         status = cols[-1] if cols else ""
         tags = cols[-2] if len(cols) >= 2 else ""
-        if not (MUST_ANY_CASE.search(status) or MUST_TAG_TOKEN.search(tags)):
+        if not is_must(tags, status):
             continue
 
         # problem name: first markdown link text in col 2

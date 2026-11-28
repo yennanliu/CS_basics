@@ -53,19 +53,11 @@ import time
 import urllib.error
 import urllib.request
 
-GRAPHQL_URL = "https://leetcode.com/graphql/"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lc_graphql  # noqa: E402  — the shared client
+
 PROBLEM_INDEX_URL = "https://leetcode.com/api/problems/all/"
-HEADERS = {
-    "Content-Type": "application/json",
-    "Accept": "*/*",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Origin": "https://leetcode.com",
-    "Referer": "https://leetcode.com/discuss/",
-    "User-Agent": (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-    ),
-}
+HEADERS = lc_graphql.headers("https://leetcode.com/discuss/")   # also used for the REST index
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 LIST_Q = """query list($keywords: [String]!, $tagSlugs: [String!], $skip: Int, $first: Int) {
@@ -95,33 +87,18 @@ COMMENTS_Q = """query comments($topicId: Int!, $pageNo: Int, $numPerPage: Int) {
 # --------------------------------------------------------------------------- net
 def gql(query, variables, delay, tries=3, quiet=False):
     """POST a GraphQL query. Returns `data`, or None if the query is unrecoverable."""
-    body = json.dumps({"query": query, "variables": variables}).encode()
-    for attempt in range(tries):
-        try:
-            req = urllib.request.Request(GRAPHQL_URL, data=body, headers=HEADERS)
-            with urllib.request.urlopen(req, timeout=45) as resp:
-                payload = json.loads(resp.read().decode())
-        except urllib.error.HTTPError as exc:
-            detail = exc.read().decode()[:300]
-            if exc.code == 400:
-                # Malformed query - retrying cannot help.
-                print(f"    HTTP 400 (bad query): {detail}", file=sys.stderr)
-                return None
-            if not quiet:
-                print(f"    HTTP {exc.code}; backing off", file=sys.stderr)
-            time.sleep(max(45, delay * 18) * (attempt + 1))
-            continue
-        except Exception as exc:  # network hiccup, or WAF returning HTML instead of JSON
-            if not quiet:
-                print(f"    {type(exc).__name__}: {exc}; retrying", file=sys.stderr)
-            time.sleep(max(30, delay * 12) * (attempt + 1))
-            continue
-
-        if payload.get("errors"):
-            msg = payload["errors"][0].get("message", "")
-            print(f"    GraphQL error: {msg[:200]}", file=sys.stderr)
-            return None
-        return payload.get("data")
+    def backoff(attempt, exc):
+        # a WAF block (HTTP 403/429) needs a longer pause than a dropped socket
+        base = max(45, delay * 18) if isinstance(exc, urllib.error.HTTPError) else max(30, delay * 12)
+        return base * (attempt + 1)
+    try:
+        return lc_graphql.post(query, variables, referer="https://leetcode.com/discuss/",
+                               timeout=45, tries=tries, backoff=backoff, quiet=quiet)
+    except lc_graphql.GraphQLError as exc:
+        print(f"    {str(exc)[:200]}", file=sys.stderr)
+    except Exception as exc:  # tries spent on network errors
+        if not quiet:
+            print(f"    {type(exc).__name__}: {exc}; giving up", file=sys.stderr)
     return None
 
 

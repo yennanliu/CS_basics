@@ -108,6 +108,18 @@ STATUS_WORD = re.compile(r"\b(OK|AGAIN|NOT_OK|TODO)\b")
 
 
 # ── README ──────────────────────────────────────────────────────────────────
+def is_must(note, status):
+    """README's MUST marker, the one rule every script reads it by.
+
+    Any casing in the status cell, but only a standalone ALL-CAPS token in the
+    note cell, so prose ("the window must be non-decreasing") is not mistaken
+    for the marker. An `imported` row is never one: its notes are generated caps
+    prose ("EVERY ROW MUST EQUAL ...").
+    """
+    return status != "imported" and bool(
+        MUST_ANY_CASE.search(status) or MUST_TAG_TOKEN.search(note))
+
+
 def parse_readme(path):
     """README.md -> {lc: problem}.  Columns are
     `# | Title | Solution | Time | Space | Difficulty | Note | Status`.
@@ -149,13 +161,7 @@ def parse_readme(path):
             difficulty = next((c for c in cols if c in DIFFS), "")
             note, status = cols[-2], cols[-1]
 
-            # `MUST` is read the way script/extract_must_lc.py reads it: any
-            # casing in the status cell, but only a standalone ALL-CAPS token in
-            # the note cell, so prose ("the window must be non-decreasing")
-            # is not mistaken for the marker. An `imported` row is never one:
-            # its notes are generated caps prose ("EVERY ROW MUST EQUAL ...").
-            must = status != "imported" and bool(
-                MUST_ANY_CASE.search(status) or MUST_TAG_TOKEN.search(note))
+            must = is_must(note, status)
             sm = STATUS_WORD.search(status)
             tags = set(re.findall(r"`([^`]+)`", note))
             paths = [q.split("#")[0].lstrip("./")
@@ -172,6 +178,7 @@ def parse_readme(path):
                 first = problems[num]
                 first["also_in"].append(section)
                 first["note"] += ", " + note
+                first["raw"] += "\n" + line
                 first["must"] = first["must"] or must
                 first["tags"] |= tags
                 first["passes"] = max(first["passes"], status.count("*"))
@@ -193,6 +200,7 @@ def parse_readme(path):
                 "must": must,
                 "tags": tags,
                 "paths": paths,
+                "raw": line,            # the row as written, for free-text searches
             }
 
     return problems
