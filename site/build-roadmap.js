@@ -249,9 +249,14 @@ function readLogVerdicts(rawLog) {
   // for parseReadmeProblems, and a top-level cycle would hand one of them an
   // empty exports object.
   const { parseProgress, mergeDays, aggregate } = require('./build-review-plan');
+  if (!rawLog) return new Map();
+  return verdictsFromProblems(aggregate(mergeDays(parseProgress(rawLog).days)));
+}
+
+/** id → {status, date} for every aggregated problem whose latest verdict is ok or again. */
+function verdictsFromProblems(problems) {
   const verdicts = new Map();
-  if (!rawLog) return verdicts;
-  for (const p of aggregate(mergeDays(parseProgress(rawLog).days))) {
+  for (const p of problems) {
     if (p.latest !== 'ok' && p.latest !== 'again') continue;
     verdicts.set(String(p.id), { status: p.latest, date: p.dates[p.dates.length - 1] });
   }
@@ -859,5 +864,6 @@ module.exports = {
   buildLists,
   buildProblemDictionary,
   readLogVerdicts,
+  verdictsFromProblems,
   buildRoadmap
 };

@@ -149,8 +149,7 @@
     var empty = scope.querySelector('.filter-empty');
     // Orientation for a first visit; once someone is filtering they are looking
     // for one sheet, so get it out of the way.
-    var intro = [scope.querySelector('.tier-key'), scope.querySelector('.start-here'),
-      scope.querySelector('.cat-jump')];
+    var intro = [scope.querySelector('.cat-jump')];
     var minTier = 0;
 
     function inHiddenView(el) {

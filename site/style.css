@@ -274,33 +274,9 @@ footer a:hover { color: var(--text); opacity: 1; }
 
 .intro { font-size: 18px; color: var(--text-muted); margin-bottom: 24px; max-width: var(--prose-max); }
 
-/* ── Cheatsheet index: tiers, start-here ladder, described cards ─── */
-.tier-key { border: 1px solid var(--border); background: var(--surface); padding: 16px 18px; margin: 0 0 32px; }
-.key-heading {
-  margin: 0 0 12px; font-size: 13px; font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim);
-}
-.tier-key-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.tier-key-item { display: grid; grid-template-columns: 90px 130px 1fr; gap: 12px; align-items: baseline; font-size: 15px; }
-.tier-key-label { color: var(--text); }
+/* ── Cheatsheet index: tiers and described cards ─── */
 .tier-key-note { color: var(--text-muted); }
-.tier-key-foot { margin: 14px 0 0; font-size: 15px; color: var(--text-muted); max-width: var(--prose-max); }
 
-.start-here { margin: 0 0 40px; }
-.start-here h2 { margin-top: 0; }
-.start-list { list-style: none; counter-reset: start; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--border); }
-.start-item {
-  counter-increment: start;
-  display: grid; grid-template-columns: 32px minmax(160px, 1.1fr) 90px minmax(0, 2fr);
-  gap: 12px; align-items: baseline;
-  padding: 10px 0; border-bottom: 1px solid var(--border);
-}
-.start-item::before { content: counter(start); color: var(--text-dim); font-size: 15px; }
-.start-title { color: var(--text); text-decoration: none; font-weight: 600; }
-.start-title:hover { text-decoration: underline; opacity: 1; }
-.start-why { color: var(--text-muted); font-size: 15px; }
-
-.catalogue-heading { margin-top: 8px; }
 .cat-heading {
   display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
   margin-top: 36px; margin-bottom: 4px; padding-bottom: 8px;
@@ -645,11 +621,7 @@ h4 > a.header-anchor:hover { text-decoration: underline; }
 
   /* Index: stack the multi-column rows into readable blocks. */
   .sheet-grid { grid-template-columns: 1fr; }
-  .tier-key-item { grid-template-columns: 90px 1fr; }
   .tier-key-note { grid-column: 1 / -1; font-size: 14px; }
-  .start-item { grid-template-columns: 24px 1fr; row-gap: 4px; }
-  .start-item .prio { grid-column: 2; }
-  .start-why { grid-column: 2; }
   .cheatsheet-header h1 { font-size: 22px; }
 
   /* ── Broader content area ── */

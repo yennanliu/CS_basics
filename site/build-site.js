@@ -5,7 +5,7 @@ const MarkdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 const hljs = require('highlight.js');
 const {
-  slugify, TIER_LABELS, prioBadge, PRIO_BADGE_RE, headingText,
+  slugify, prioBadge, headingText,
   annotatePriorityHeadings, PRIORITY_LEGEND, PRIO_TEXT, priorityLegend, generateTOC, extractHeadings,
   headingIds, anchorMap, retargetAnchors,
   ensureHeadingIds, groupByCategory, buildPrevNext, buildIndexGrid,
@@ -14,15 +14,21 @@ const {
   isoDate,
   stampDrillVerdicts, markCardSlots, READING_CLASS,
   drillSummary,
+  SITE_ORIGIN, escAttr, unescAttr, trimDescription,
 } = require('./build-lib');
 
-// The practice log's latest verdict per problem, for the Drill Path badges on the
-// cheatsheet pages — the same reading the roadmap renders, so the two never
-// disagree about whether a problem is done. Required here rather than with the
-// other build-roadmap import below, because the cheatsheets render first.
-const drillVerdicts = fs.existsSync('data/progress.txt')
-  ? require('./build-roadmap').readLogVerdicts(fs.readFileSync('data/progress.txt', 'utf8'))
-  : new Map();
+const { verdictsFromProblems, parseReadmeProblems } = require('./build-roadmap');
+const { buildPayload } = require('./build-review-plan');
+
+// The practice log, compiled once: the Drill Path badges on the cheatsheet pages
+// and the landing page's progress sentence both read it. No catalog — nothing
+// here needs README metadata attached to every logged problem.
+const logPayload = fs.existsSync('data/progress.txt')
+  ? buildPayload(fs.readFileSync('data/progress.txt', 'utf8'), null).payload
+  : null;
+// The log's latest verdict per problem — the same reading the roadmap renders,
+// so the two never disagree about whether a problem is done.
+const drillVerdicts = logPayload ? verdictsFromProblems(logPayload.problems) : new Map();
 const { compose, parseStore, docs: zhDocs, orphanStores } = require('./i18n');
 
 // A commit that only retouches a header or fixes a link is not a content update.
@@ -31,15 +37,28 @@ const { compose, parseStore, docs: zhDocs, orphanStores } = require('./i18n');
 // bulk Scope-line commit did to 39 of the 74 cheatsheets.
 const SUBSTANTIVE_LINE_CHANGES = 10;
 
-// Build a map of filePath → last-modified date string in one git log call.
-// Prefers the newest *substantive* commit and falls back to the newest commit of
-// any size, so a file whose only history is a small edit still gets a date.
-function buildLastModifiedMap(filePaths) {
+// Every tree a page's "Updated" date is read from. One `git log` over all of
+// them is a third of the cost of one per page family (six, counting zh).
+const LAST_MODIFIED_TREES = ['doc/cheatsheet', 'doc/faq', 'doc/behavioral', 'i18n/zh'];
+
+// filePath → last-modified date string, for every file under LAST_MODIFIED_TREES,
+// read once and shared. Prefers the newest *substantive* commit and falls back to
+// the newest commit of any size, so a file whose only history is a small edit
+// still gets a date.
+let lastModifiedCache = null;
+function buildLastModifiedMap() {
+  if (!lastModifiedCache) lastModifiedCache = readLastModified(LAST_MODIFIED_TREES);
+  return lastModifiedCache;
+}
+
+function readLastModified(paths) {
   const substantive = new Map();
   const anySize = new Map();
   try {
     const raw = execSync(
-      `git log --numstat --format="COMMIT %ai" -- ${filePaths.map(f => `"${f}"`).join(' ')}`,
+      // --no-renames: over whole trees, rename detection pairs a new file with an
+      // unrelated deleted one and reports `{a => b}`, hiding the commit from both.
+      `git log --no-renames --numstat --format="COMMIT %ai" -- ${paths.map(f => `"${f}"`).join(' ')}`,
       { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }
     );
     let currentDate = null;
@@ -83,12 +102,7 @@ const md = new MarkdownIt({
   }
 }).use(markdownItAnchor, {
   slugify: slugify,
-  permalink: markdownItAnchor.permalink && markdownItAnchor.permalink.headerLink
-    ? markdownItAnchor.permalink.headerLink({ safariReaderFix: true })
-    : true,
-  // Fallback for older markdown-it-anchor API (before v9)
-  permalinkBefore: true,
-  permalinkSymbol: '#'
+  permalink: markdownItAnchor.permalink.headerLink({ safariReaderFix: true })
 });
 
 function wrapCodeBlocks(html) {
@@ -261,6 +275,17 @@ function renderContent(rawContent, srcDir = '.', outDir = '') {
   return lazyLoadImages(wrapTables(wrapCodeBlocks(processLinks(md.render(rawContent), srcDir, outDir))));
 }
 
+// The English page pipeline every doc family shares. `enHeadingIds` is captured
+// before the H1 is split off, so a translated page — measured at the same point —
+// lines up heading-for-heading with it. Each family adds its own last step
+// (drill badges, card slots) to `html`.
+function renderDoc(raw, srcDir, outDir) {
+  const withIds = ensureHeadingIds(renderContent(raw, srcDir, outDir));
+  const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(withIds);
+  const { html, hasPriority } = annotatePriorityHeadings(bodyHtml);
+  return { enHeadingIds: headingIds(withIds), h1Title, titleId, html, hasPriority };
+}
+
 
 // Records accumulated across the build for the client-side global search index.
 const searchRecords = [];
@@ -354,8 +379,7 @@ const cheatsheetMeta = JSON.parse(fs.readFileSync('data/cheatsheet_meta.json', '
 if (cheatsheetFiles.length > 0) {
   const files = cheatsheetFiles;
 
-  const filePaths = files.map(f => path.join(cheatsheetDir, f));
-  const lastModMap = buildLastModifiedMap(filePaths);
+  const lastModMap = buildLastModifiedMap();
 
   // Fail the build rather than silently dumping a new cheatsheet into "Other".
   const unmapped = files.map(f => path.basename(f, '.md')).filter(b => !cheatsheetMeta.sheets[b]);
@@ -396,15 +420,9 @@ if (cheatsheetFiles.length > 0) {
     const sheetMeta = cheatsheetMeta.sheets[baseName];
     const raw = fs.readFileSync(filePath, 'utf8');
 
-    let htmlContent = renderContent(raw, cheatsheetDir, 'cheatsheets');
-    htmlContent = ensureHeadingIds(htmlContent);
-    // Captured before the H1 is split off, so the translated sheet — measured at
-    // the same point — lines up heading-for-heading with it.
-    const enHeadingIds = headingIds(htmlContent);
-    const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
-    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
-    htmlContent = stampDrillVerdicts(annotated, drillVerdicts);
-    htmlContent = markCardSlots(htmlContent);
+    const { enHeadingIds, h1Title, titleId, html: annotated, hasPriority } =
+      renderDoc(raw, cheatsheetDir, 'cheatsheets');
+    const htmlContent = markCardSlots(stampDrillVerdicts(annotated, drillVerdicts));
     // Read back for the index: how much of this sheet's drill is ok, and what is next.
     const drill = drillSummary(htmlContent);
 
@@ -452,7 +470,7 @@ if (cheatsheetFiles.length > 0) {
         lastMod: lastModMap.get(filePath) || null,
         indexHref: 'cheatsheets.html',
         indexLabel: 'Cheat Sheets',
-        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}`,
+        githubHref: `${GITHUB_BLOB}doc/cheatsheet/${file}`,
         titleId,
         contentClass: READING_CLASS,
         meta: `<span class="cat-chip">${category}</span>` +
@@ -538,7 +556,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
   const names = new Set(translated.map(({ page }) => page.file));
   // A composed page changes when either side does, so it is dated by whichever
   // was touched last — the translation, or the English document under it.
-  const lastMod = buildLastModifiedMap(translated.flatMap(({ doc }) => [doc.en, doc.store]));
+  const lastMod = buildLastModifiedMap();
   /** The later of two date strings, tolerating either being absent. */
   const laterOf = (a, b) => (a && b ? (new Date(a) >= new Date(b) ? a : b) : a || b || null);
 
@@ -593,7 +611,7 @@ function composeZhPages({ corpus, pages, outDir, indexHref, indexLabel, type, de
         lastMod: laterOf(lastMod.get(doc.store), lastMod.get(doc.en)),
         indexHref,
         indexLabel,
-        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${doc.store}`,
+        githubHref: `${GITHUB_BLOB}${doc.store}`,
         titleId,
         contentClass: readingLayout ? READING_CLASS : '',
         labels: ZH_LABELS,
@@ -644,7 +662,7 @@ function walkDir(dir) {
 }
 
 if (faqFiles.length > 0) {
-  const lastModMap = buildLastModifiedMap(faqFiles);
+  const lastModMap = buildLastModifiedMap();
 
   const faqCategoryMap = {
     'java': 'Java', 'backend': 'Backend', 'db': 'Database',
@@ -659,8 +677,7 @@ if (faqFiles.length > 0) {
     const subDir = path.dirname(relativePath);
     // Same name the page registry recorded, so the two cannot drift apart.
     const uniqueName = faqPageName(filePath);
-    const title = baseName.replace(/_/g, ' ').split(' ')
-      .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    const title = titleCaseFromFile(baseName);
 
     let category = 'General';
     if (subDir !== '.') {
@@ -669,14 +686,9 @@ if (faqFiles.length > 0) {
     }
 
     const raw = fs.readFileSync(filePath, 'utf8');
-    let htmlContent = renderContent(raw, path.dirname(filePath), 'faqs');
-    htmlContent = ensureHeadingIds(htmlContent);
-    // Captured before the H1 is split off, so the translated page — measured at
-    // the same point — lines up heading-for-heading with it.
-    const enHeadingIds = headingIds(htmlContent);
-    const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
-    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
-    htmlContent = markCardSlots(annotated);
+    const { enHeadingIds, h1Title, titleId, html: annotated, hasPriority } =
+      renderDoc(raw, path.dirname(filePath), 'faqs');
+    const htmlContent = markCardSlots(annotated);
     const pageTitle = h1Title || title;
     const docHeadings = extractHeadings(htmlContent);
     // summariseDoc falls back in order: the Scope line if the FAQ has one (17
@@ -709,7 +721,7 @@ if (faqFiles.length > 0) {
         lastMod: lastModMap.get(filePath) || null,
         indexHref: 'faqs.html',
         indexLabel: 'FAQs',
-        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${filePath}`,
+        githubHref: `${GITHUB_BLOB}${filePath}`,
         titleId,
         contentClass: READING_CLASS,
         meta: `<span class="cat-chip">${category}</span>`,
@@ -774,17 +786,14 @@ const behaviorals = [];
 
 if (behavioralFiles.length > 0) {
   const srcOf = slug => `${behavioralDir}/${slug}.md`;
-  const lastModMap = buildLastModifiedMap(behavioralFiles.map(srcOf));
+  const lastModMap = buildLastModifiedMap();
 
   for (const slug of behavioralFiles) {
     const filePath = srcOf(slug);
     const category = (BEHAVIORAL_META[slug] || {}).category || 'General';
     const raw = fs.readFileSync(filePath, 'utf8');
-    let htmlContent = ensureHeadingIds(renderContent(raw, behavioralDir, 'behavioral'));
-    const enHeadingIds = headingIds(htmlContent);
-    const { title: h1Title, titleId, html: bodyHtml } = splitLeadingH1(htmlContent);
-    const { html: annotated, hasPriority } = annotatePriorityHeadings(bodyHtml);
-    htmlContent = annotated;
+    const { enHeadingIds, h1Title, titleId, html: htmlContent, hasPriority } =
+      renderDoc(raw, behavioralDir, 'behavioral');
     const pageTitle = h1Title || slug;
     const docHeadings = extractHeadings(htmlContent);
     const description = summariseDoc(raw, docHeadings);
@@ -812,7 +821,7 @@ if (behavioralFiles.length > 0) {
         lastMod: lastModMap.get(filePath) || null,
         indexHref: 'behavioral.html',
         indexLabel: 'Behavioral',
-        githubHref: `https://github.com/yennanliu/CS_basics/blob/master/${filePath}`,
+        githubHref: `${GITHUB_BLOB}${filePath}`,
         titleId,
         meta: `<span class="cat-chip">${category}</span>`,
         legend: hasPriority ? PRIORITY_LEGEND : ''
@@ -878,30 +887,8 @@ for (const page of zhBehaviorals) {
 // Where the site is served from. Needed for the absolute URLs that canonical,
 // hreflang, Open Graph and the sitemap all require — a relative one is not valid
 // in any of them.
-const SITE_ORIGIN = 'https://yennanliu.github.io/CS_basics/';
-
 const DEFAULT_DESCRIPTION =
   'Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions';
-
-function escAttr(value) {
-  return String(value)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
-// A title reaches htmlTemplate already entity-escaped when it came from rendered
-// markdown ("Hashing &amp; Counting") and raw when a caller passed a literal
-// ("Problem Index"). Decoding first makes escAttr idempotent over both, which is
-// what stops og:title shipping "Hashing &amp;amp; Counting".
-function unescAttr(value) {
-  // Null-safe: a page that passes no description must reach metaDescription as
-  // "" and get the default, not the string "undefined".
-  if (value === null || value === undefined) return '';
-  return String(value)
-    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'")
-    .replace(/&amp;/g, '&');
-}
 
 // A description is a sentence about *this* page or it is noise. Every page family
 // already computes one for its index card — the Scope line for a cheatsheet, the
@@ -910,7 +897,7 @@ function unescAttr(value) {
 function metaDescription(text) {
   const clean = String(text || '').replace(/\s+/g, ' ').trim();
   if (!clean) return DEFAULT_DESCRIPTION;
-  return clean.length > 300 ? clean.slice(0, 297).replace(/\s+\S*$/, '') + '…' : clean;
+  return trimDescription(clean);
 }
 
 // `opts.lang` / `opts.langAlt` mark a page that exists in two languages; nav.js
@@ -1007,7 +994,6 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '', o
 // So the README keeps its page — it is the problem index, and it is genuinely
 // useful — but at problems.html, with a landing page in front of it.
 
-const { parseReadmeProblems } = require('./build-roadmap');
 const readmeProblems = parseReadmeProblems(readme);
 
 // README's two table sets: the author's own rows, and the word `imported` on
@@ -1027,12 +1013,9 @@ const setCounts = readmeSetCounts(readmeProblems);
 // build-review-plan.js already compiles it for the review plan. So the numbers
 // here are the log's *latest verdict* per problem — the same reading the
 // roadmap's done state and /l3-core use — and they move the day the log does.
-const { buildPayload } = require('./build-review-plan');
 const logProgress = (() => {
-  if (!fs.existsSync('data/progress.txt')) return null;
-  // No catalog: the six numbers below come from the log alone, and attaching
-  // README metadata to every logged problem would re-parse the index for nothing.
-  const { payload } = buildPayload(fs.readFileSync('data/progress.txt', 'utf8'), null);
+  if (!logPayload) return null;
+  const payload = logPayload;
   // `latest` — the log's last word, the reading the roadmap renders — not
   // `status`, the strongest signal the schedule keys on.
   const by = word => payload.problems.filter(p => p.latest === word).length;
@@ -1317,40 +1300,33 @@ if (bilingualIndex) {
   console.log(`✓ Created cheatsheets.zh.html index (${zhSheets.length} translated sheets)`);
 }
 
-const translated = new Set(zhSheets.map(s => s.file));
-
-if (cheatsheets.length > 0) {
-  fs.mkdirSync('_site/cheatsheets', { recursive: true });
-  cheatsheets.forEach((sheet, idx) => {
-    let fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
-    fixedContent += buildPrevNext(cheatsheets, idx);
-    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(
-      sheet.title, fixedContent, 'cheatsheets', '../',
-      Object.assign({
-        url: `cheatsheets/${sheet.file}.html`,
-        description: sheet.description
-      }, translated.has(sheet.file) ? { lang: 'en', langAlt: `${sheet.file}.zh.html` } : {})
-    ));
+// Every doc family — cheatsheets, FAQs, behavioral — writes its pages the same
+// way: one directory deep, prev/next threaded through the family, and the 中文
+// pages paired with their English counterparts by the bare `file` key. prev/next
+// for the zh pages gets a list whose `file` carries the `.zh` suffix, so the two
+// languages thread separately.
+function writeFamily(dir, pages, zhPages) {
+  // Rendered image paths are site-root-relative; these pages sit one level down.
+  const body = (list, idx) =>
+    list[idx].content.replace(/src\s*=\s*"doc\//g, 'src="../doc/') + buildPrevNext(list, idx);
+  const translatedFiles = new Set(zhPages.map(p => p.file));
+  fs.mkdirSync(`_site/${dir}`, { recursive: true });
+  pages.forEach((page, idx) => {
+    fs.writeFileSync(`_site/${dir}/${page.file}.html`, htmlTemplate(page.title, body(pages, idx), dir, '../',
+      Object.assign({ url: `${dir}/${page.file}.html`, description: page.description },
+        translatedFiles.has(page.file) ? { lang: 'en', langAlt: `${page.file}.zh.html` } : {})));
   });
-  console.log(`✓ Created ${cheatsheets.length} individual cheatsheet pages`);
+  const zhSuffixed = zhPages.map(p => ({ ...p, file: `${p.file}.zh` }));
+  zhSuffixed.forEach((page, idx) => {
+    fs.writeFileSync(`_site/${dir}/${page.file}.html`, htmlTemplate(page.title, body(zhSuffixed, idx), dir, '../', {
+      lang: 'zh', langAlt: `${zhPages[idx].file}.html`,
+      url: `${dir}/${page.file}.html`, description: page.description
+    }));
+  });
 }
 
-if (zhSheets.length > 0) {
-  // prev/next has to thread the .zh pages, so it gets a list whose `file` carries
-  // the suffix — the sheets themselves stay keyed by the bare slug so the index
-  // and the toggle can pair the two languages up.
-  const zhPages = zhSheets.map(s => ({ ...s, file: `${s.file}.zh` }));
-  zhPages.forEach((sheet, idx) => {
-    let fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
-    fixedContent += buildPrevNext(zhPages, idx);
-    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(
-      sheet.title, fixedContent, 'cheatsheets', '../',
-      { lang: 'zh', langAlt: `${zhSheets[idx].file}.html`,
-        url: `cheatsheets/${sheet.file}.html`, description: sheet.description }
-    ));
-  });
-  console.log(`✓ Created ${zhSheets.length} 繁體中文 cheatsheet pages`);
-}
+writeFamily('cheatsheets', cheatsheets, zhSheets);
+console.log(`✓ Created ${cheatsheets.length} individual cheatsheet pages (${zhSheets.length} in 繁體中文)`);
 
 const knownFaqCategoryOrder = ['General', 'Data Engineering', 'Java', 'Backend', 'Database', 'SQL', 'Redis', 'Kafka', 'Spark & Hadoop', 'Flink', 'Streaming'];
 const faqGrouped = groupByCategory(faqs);
@@ -1359,8 +1335,8 @@ const faqCategoryOrder = [
   ...Object.keys(faqGrouped).filter(cat => !knownFaqCategoryOrder.includes(cat))
 ];
 
-/** The tip panel the index closes with, in whichever language the index is in. */
-const faqIndexFoot = t =>
+/** The tip panel an index (FAQ, behavioral) closes with, in whichever language the index is in. */
+const indexFoot = t =>
   `\n<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
   <p>${t.tip}</p>
   <p>${t.source}</p>
@@ -1369,7 +1345,7 @@ const faqIndexFoot = t =>
 const faqIndexContent = '<h1>FAQ - Frequently Asked Questions</h1>' +
   '<p class="intro">Interview preparation FAQs covering Java, Backend, Database, Streaming, and more.</p>' +
   buildIndexGrid(faqGrouped, faqCategoryOrder, 'faqs') +
-  faqIndexFoot({
+  indexFoot({
     tip: '<strong>💡 Tip:</strong> These FAQs are designed for quick reference during technical interview preparation.',
     source: 'View all FAQs on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/faq">GitHub</a>.'
   });
@@ -1389,7 +1365,7 @@ if (bilingualFaqIndex) {
   const zhFaqIndexContent = `<h1>${FAQ_ZH.h1}</h1>` +
     `<p class="intro">${FAQ_ZH.intro}</p>` +
     buildIndexGrid(zhFaqGrouped, faqCategoryOrder, 'faqs', { lang: 'zh', catName: zhFaqCategory }) +
-    faqIndexFoot(FAQ_ZH);
+    indexFoot(FAQ_ZH);
   fs.writeFileSync('_site/faqs.zh.html', htmlTemplate(FAQ_ZH.h1, zhFaqIndexContent, 'faqs', '', {
     lang: 'zh', langAlt: 'faqs.html', url: 'faqs.zh.html',
     description: `${zhFaqs.length} 篇技術面試問答的繁體中文版，涵蓋 Java、後端、資料庫與串流系統。`
@@ -1397,79 +1373,32 @@ if (bilingualFaqIndex) {
   console.log(`✓ Created faqs.zh.html index (${zhFaqs.length} translated FAQs)`);
 }
 
-const translatedFaqs = new Set(zhFaqs.map(f => f.file));
-
-if (faqs.length > 0) {
-  fs.mkdirSync('_site/faqs', { recursive: true });
-  faqs.forEach((faq, idx) => {
-    let fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
-    fixedContent += buildPrevNext(faqs, idx);
-    fs.writeFileSync(`_site/faqs/${faq.file}.html`, htmlTemplate(faq.title, fixedContent, 'faqs', '../', Object.assign({
-      url: `faqs/${faq.file}.html`, description: faq.description
-    }, translatedFaqs.has(faq.file) ? { lang: 'en', langAlt: `${faq.file}.zh.html` } : {})));
-  });
-  console.log(`✓ Created ${faqs.length} individual FAQ pages`);
-}
-
-if (zhFaqs.length > 0) {
-  // prev/next has to thread the .zh pages, so it gets a list whose `file` carries
-  // the suffix — the FAQs themselves stay keyed by the bare page name so the index
-  // and the toggle can pair the two languages up.
-  const zhPages = zhFaqs.map(f => ({ ...f, file: `${f.file}.zh` }));
-  zhPages.forEach((faq, idx) => {
-    let fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
-    fixedContent += buildPrevNext(zhPages, idx);
-    fs.writeFileSync(`_site/faqs/${faq.file}.html`, htmlTemplate(faq.title, fixedContent, 'faqs', '../', {
-      lang: 'zh', langAlt: `${zhFaqs[idx].file}.html`,
-      url: `faqs/${faq.file}.html`, description: faq.description
-    }));
-  });
-  console.log(`✓ Created ${zhFaqs.length} 繁體中文 FAQ pages`);
-}
+writeFamily('faqs', faqs, zhFaqs);
+console.log(`✓ Created ${faqs.length} individual FAQ pages (${zhFaqs.length} in 繁體中文)`);
 
 if (behaviorals.length > 0) {
   const grouped = groupByCategory(behaviorals);
   const order = [...new Set(behaviorals.map(b => b.category))];
-  const foot = t => `\n<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
-  <p>${t.tip}</p>
-  <p>${t.source}</p>
-</div>`;
-  const translatedBehaviorals = new Set(zhBehaviorals.map(b => b.file));
-  const bilingualIndex = zhBehaviorals.length > 0;
+  const bilingualBehavioralIndex = zhBehaviorals.length > 0;
   const en = BEHAVIORAL_TEXT.en;
 
   fs.writeFileSync('_site/behavioral.html', htmlTemplate(en.h1,
     `<h1>${en.h1}</h1><p class="intro">${en.intro}</p>` +
-    buildIndexGrid(grouped, order, 'behavioral') + foot(en),
+    buildIndexGrid(grouped, order, 'behavioral') + indexFoot(en),
     'behavioral', '', Object.assign({ url: 'behavioral.html', description: en.description(behaviorals.length) },
-      bilingualIndex ? { lang: 'en', langAlt: 'behavioral.zh.html' } : {})));
+      bilingualBehavioralIndex ? { lang: 'en', langAlt: 'behavioral.zh.html' } : {})));
 
-  fs.mkdirSync('_site/behavioral', { recursive: true });
-  behaviorals.forEach((page, idx) => {
-    const body = page.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/') + buildPrevNext(behaviorals, idx);
-    fs.writeFileSync(`_site/behavioral/${page.file}.html`, htmlTemplate(page.title, body, 'behavioral', '../',
-      Object.assign({ url: `behavioral/${page.file}.html`, description: page.description },
-        translatedBehaviorals.has(page.file) ? { lang: 'en', langAlt: `${page.file}.zh.html` } : {})));
-  });
-
-  if (bilingualIndex) {
+  if (bilingualBehavioralIndex) {
     const zh = BEHAVIORAL_TEXT.zh;
     fs.writeFileSync('_site/behavioral.zh.html', htmlTemplate(zh.h1,
       `<h1>${zh.h1}</h1><p class="intro">${zh.intro}</p>` +
       buildIndexGrid(groupByCategory(zhBehaviorals), order, 'behavioral',
-        { lang: 'zh', catName: c => zh.categories[c] || c }) + foot(zh),
+        { lang: 'zh', catName: c => zh.categories[c] || c }) + indexFoot(zh),
       'behavioral', '', { lang: 'zh', langAlt: 'behavioral.html', url: 'behavioral.zh.html',
         description: zh.description(zhBehaviorals.length) }));
-
-    const zhPages = zhBehaviorals.map(b => ({ ...b, file: `${b.file}.zh` }));
-    zhPages.forEach((page, idx) => {
-      const body = page.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/') + buildPrevNext(zhPages, idx);
-      fs.writeFileSync(`_site/behavioral/${page.file}.html`, htmlTemplate(page.title, body, 'behavioral', '../', {
-        lang: 'zh', langAlt: `${zhBehaviorals[idx].file}.html`,
-        url: `behavioral/${page.file}.html`, description: page.description
-      }));
-    });
   }
+
+  writeFamily('behavioral', behaviorals, zhBehaviorals);
   console.log(`✓ Created behavioral.html and ${behaviorals.length} guides (${zhBehaviorals.length} in 繁體中文)`);
 }
 
@@ -1680,16 +1609,15 @@ console.log('✓ Created search.html');
 // heading shape. Assert the result rather than trusting it.
 {
   const dir = '_site/cheatsheets';
-  const idsOf = new Map();
   const pages = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.html')) : [];
-  for (const page of pages) {
-    const html = fs.readFileSync(path.join(dir, page), 'utf8');
+  const htmlOf = new Map(pages.map(page => [page, fs.readFileSync(path.join(dir, page), 'utf8')]));
+  const idsOf = new Map();
+  for (const [page, html] of htmlOf) {
     idsOf.set(page, new Set([...html.matchAll(/\bid="([^"]*)"/g)].map(m => m[1])));
   }
 
   const dangling = [];
-  for (const page of pages) {
-    const html = fs.readFileSync(path.join(dir, page), 'utf8');
+  for (const [page, html] of htmlOf) {
     for (const [, href] of html.matchAll(/href="([^"]*#[^"]*)"/g)) {
       const hash = href.indexOf('#');
       const target = href.slice(0, hash) || page;

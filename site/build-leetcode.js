@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const GH_BLOB = 'https://github.com/yennanliu/CS_basics/blob/master';
+const { GH_BLOB, parseReadmeProblems, statusWord } = require('./build-roadmap');
 
 // Clean a raw title: drop anything after a parenthesis (the source data
 // sometimes has trailing "(/problems/..." junk).
@@ -151,7 +151,6 @@ function attachSolutions(problems) {
 // index gets no field at all. Nothing on the explorer reads it yet; it is the
 // data a status facet needs, one build step ahead of the facet.
 function attachStatus(problems) {
-  const { parseReadmeProblems, statusWord } = require('./build-roadmap');
   const readme = parseReadmeProblems(fs.readFileSync('README.md', 'utf8'));
   const counts = {};
   for (const p of problems.values()) {
