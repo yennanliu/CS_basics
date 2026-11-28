@@ -61,7 +61,11 @@ def fib_recursive(n):
 
 # V1 : top-down -- the same recursion plus a cache
 def fib_memo(n, cache=None):
-    """O(N) time, O(N) space (cache + call stack)."""
+    """O(N) time, O(N) space (cache + call stack).
+
+    Recurses n levels deep, so n is limited by Python's recursion limit
+    (about 1000); the bottom-up versions below have no such limit.
+    """
     if cache is None:
         cache = {}
     if n < 2:
@@ -147,7 +151,13 @@ def coin_change(coins, amount):
     return dp[amount]
 
 
-# the same problem top-down, to show the two styles side by side
+# the same problem top-down, to show the two styles side by side.
+#
+# LIMIT: the recursion goes as deep as the longest chain of
+# subproblems -- with a coin of 1, that is `amount` nested calls. Past
+# Python's recursion limit (about 1000) this raises RecursionError,
+# however good the cache is. That is the practical reason to prefer the
+# bottom-up form: coin_change above handles any amount.
 def coin_change_memo(coins, amount):
     cache = {}
 
@@ -241,6 +251,14 @@ if __name__ == "__main__":
     for coins in ([1, 2, 5], [2], [1, 3, 4], [5, 7]):
         for amount in range(30):
             assert coin_change(coins, amount) == coin_change_memo(coins, amount)
+
+    # top-down is limited by recursion depth; bottom-up is not
+    assert coin_change([1], 10000) == 10000
+    try:
+        coin_change_memo([1], 10000)
+        raise AssertionError("expected RecursionError")
+    except RecursionError:
+        pass
 
     # LCS: the table from the header, and LC 1143's examples
     assert longest_common_subsequence("abcde", "ace") == 3

@@ -50,8 +50,10 @@ def max_subarray(nums):
         raise ValueError("max_subarray needs at least one number")
     best_here = nums[0]              # best sum of a run ending at the current element
     best = nums[0]                   # best sum seen anywhere so far
-    for num in nums[1:]:
-        best_here = max(num, best_here + num)    # start fresh, or extend
+    # an index loop, not `for num in nums[1:]`: the slice would copy the
+    # list and quietly turn O(1) extra space into O(N)
+    for i in range(1, len(nums)):
+        best_here = max(nums[i], best_here + nums[i])    # start fresh, or extend
         best = max(best, best_here)
     return best
 
@@ -123,7 +125,8 @@ def max_product_subarray(nums):
     max_here = nums[0]
     min_here = nums[0]
     best = nums[0]
-    for num in nums[1:]:
+    for i in range(1, len(nums)):
+        num = nums[i]
         candidates = (num, max_here * num, min_here * num)
         max_here = max(candidates)
         min_here = min(candidates)

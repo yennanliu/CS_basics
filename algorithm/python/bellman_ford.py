@@ -7,16 +7,27 @@
 #        the faster algorithm when all weights are >= 0, and
 #        floyd_warshall.py for every pair of vertices.
 #
-#           4
+#           5
 #       0 -----> 1
-#       |        |               shortest 0 -> 2 is NOT the direct edge (5):
-#     5 |        | -3              0 -> 1 -> 2 = 4 + (-3) = 1
+#       |        |               shortest 0 -> 2 is NOT the direct edge (2):
+#     2 |        | -4              0 -> 1 -> 2 = 5 + (-4) = 1
 #       v        v
-#       2 <------+               Dijkstra would finalise 2 at distance 5
-#       |                        before ever looking at the -3 edge.
+#       2 <------+               and so 0 -> 3 costs 1 + 4 = 5, not 2 + 4 = 6
+#       |
 #     4 |
 #       v
 #       3
+#
+# WHY DIJKSTRA GETS THIS WRONG
+#   Dijkstra finalises the closest vertex first, and never reopens it:
+#
+#     finalise 0 (0)   -> 1 is at 5, 2 is at 2
+#     finalise 2 (2)   -> 3 is at 6          2 is closer than 1, so it goes first
+#     finalise 1 (5)   -> 2 could now be 1, but 2 is already final
+#     finalise 3 (6)   wrong: the true distances are 2 -> 1 and 3 -> 5
+#
+#   The negative edge leaves a vertex that is finalised AFTER the vertex
+#   it improves. With weights >= 0 that cannot happen.
 #
 # THE IDEA
 #   RELAX an edge u -> v: "if going to u and then along this edge is
@@ -107,18 +118,43 @@ def count_sweeps(vertices, edges, src):
     return sweeps
 
 
+def finalise_closest_first(vertices, edges, src):
+    """Textbook Dijkstra, WITHOUT its non-negative-weights check.
+
+    Only here to show, in the demo below, what goes wrong with a
+    negative edge. Not a shortest-path function to use.
+    """
+    dist = {v: INF for v in range(vertices)}
+    dist[src] = 0
+    final = set()
+    while len(final) < vertices:
+        closest = None
+        for v in range(vertices):
+            if v not in final and (closest is None or dist[v] < dist[closest]):
+                closest = v
+        final.add(closest)
+        for u, v, weight in edges:
+            if u == closest and v not in final and dist[u] + weight < dist[v]:
+                dist[v] = dist[u] + weight
+    return dist
+
+
 if __name__ == "__main__":
     # the graph from the header
     edges = [
-        (0, 1, 4),
-        (0, 2, 5),
-        (1, 2, -3),
+        (0, 1, 5),
+        (0, 2, 2),
+        (1, 2, -4),
         (2, 3, 4),
     ]
-    assert bellman_ford(4, edges, 0) == {0: 0, 1: 4, 2: 1, 3: 5}
+    assert bellman_ford(4, edges, 0) == {0: 0, 1: 5, 2: 1, 3: 5}
+
+    # the header's claim, checked: a Dijkstra that finalises the closest
+    # vertex and never reopens it gets 2 and 3 wrong on this graph
+    assert finalise_closest_first(4, edges, 0) == {0: 0, 1: 5, 2: 2, 3: 6}
 
     # edges are directed: nothing leads back to 0 from 1
-    assert bellman_ford(4, edges, 1) == {0: INF, 1: 0, 2: -3, 3: 1}
+    assert bellman_ford(4, edges, 1) == {0: INF, 1: 0, 2: -4, 3: 0}
 
     # 0 -> 1 -> 2 -> 0 has total weight 1 - 1 - 1 = -1: a negative cycle
     neg_cycle = [(0, 1, 1), (1, 2, -1), (2, 0, -1)]

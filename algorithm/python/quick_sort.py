@@ -27,8 +27,14 @@
 #   largest value peels off ONE element per level: N levels = O(N^2).
 #   "Always pick the last element" hits that worst case on input that
 #   is already sorted -- the most common input there is. Picking the
-#   pivot at RANDOM (V1) makes the bad case vanishingly unlikely on
-#   any input.
+#   pivot at RANDOM (V1) makes that bad case vanishingly unlikely,
+#   whatever order the input arrives in.
+#
+#   Random pivots do NOT help with a second bad case: MANY EQUAL
+#   VALUES. If every value is the same, every pivot is both the
+#   smallest and the largest, and a two-way partition (V0, V1) puts
+#   everything on one side -- O(N^2) again, with certainty. The fix is
+#   a different partition, not a different pivot: V2 splits three ways.
 #
 # Time  : Best/Avg O(N log N), Worst O(N^2) (bad pivots every time)
 # Space : O(log N) average for the recursion stack, O(N) worst;
@@ -154,8 +160,16 @@ if __name__ == "__main__":
     assert quick_sort_inplace(list(ordered)) == ordered
     assert quick_sort_inplace(ordered[::-1]) == ordered
 
-    # all-equal input: the 3-way partition finishes in ONE pass
+    # all-equal input: the 3-way partition finishes in ONE pass ...
     assert quick_sort_3way([4] * 5000) == [4] * 5000
+    # ... while the two-way versions peel off one element per call and
+    # run out of stack, however the pivot is chosen
+    for two_way in (quick_sort, quick_sort_inplace):
+        try:
+            two_way([4] * 5000)
+            raise AssertionError("expected RecursionError")
+        except RecursionError:
+            pass
 
     # agree with the built-in sort on random input
     random.seed(1)

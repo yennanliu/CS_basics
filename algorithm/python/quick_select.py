@@ -5,27 +5,37 @@
 # Scope: find the k-th smallest value WITHOUT sorting everything.
 #        See quick_sort.py for the partition step this is built on.
 #
-# After one partition the pivot is in its FINAL sorted position p:
+# One partition splits the range into three blocks around a pivot:
 #
-#     [ smaller than pivot ] pivot [ larger than pivot ]
-#       indexes lo..p-1        p     indexes p+1..hi
+#     [ smaller than pivot ][ equal to pivot ][ larger than pivot ]
+#       indexes lo..lt-1      lt..gt            gt+1..hi
 #
-# Quick sort now recurses into BOTH sides. Quick select only needs the
-# side that contains index k, and throws the other one away:
+# The middle block is in its FINAL sorted position. Quick sort would
+# now recurse into BOTH outer blocks. Quick select only needs the one
+# that contains index k, and throws the rest away:
 #
-#     k == p   -> the pivot is the answer
-#     k <  p   -> look only in the left part
-#     k >  p   -> look only in the right part
+#     lt <= k <= gt   -> the pivot is the answer
+#     k < lt          -> look only in the left block
+#     k > gt          -> look only in the right block
 #
 #     nums = [3, 2, 1, 5, 6, 4],  want index k = 4 (the 5th smallest)
-#       partition -> [3, 2, 1, 4 | 6, 5]   pivot 4 at p = 3;  4 > 3 -> go right
-#       partition -> [5, 6]                pivot 6 at p = 5;  4 < 5 -> go left
-#       one element left, index 4 -> 5
+#       pivot 4 -> [3, 2, 1 | 4 | 5, 6]   block is index 3;   4 > 3 -> go right
+#       pivot 6 -> [5 | 6]                block is index 5;   4 < 5 -> go left
+#       one element left, at index 4 -> 5
 #
 # Each round keeps about half: N + N/2 + N/4 + ... = 2N work in total.
 #
-# Time  : Avg O(N), Worst O(N^2) (bad pivot every time; the random
-#         pivot makes that vanishingly unlikely)
+# WHY THREE BLOCKS, NOT TWO
+#   A two-way partition (smaller | pivot | everything else) is enough
+#   when the values are distinct. With many EQUAL values it is not: on
+#   an all-equal list nothing is "smaller", so each round removes just
+#   one element and the total is N + (N-1) + ... = O(N^2) -- on every
+#   run, whatever pivot is picked. Giving the equal values a block of
+#   their own ends that case in a single round.
+#
+# Time  : Avg O(N); Worst O(N^2), which now needs an unlucky pivot
+#         round after round (a random pivot makes that vanishingly
+#         unlikely) -- duplicates alone can no longer cause it
 # Space : O(1) -- a loop, no recursion. It REORDERS the list it is given.
 #
 #     approach            time          when
@@ -42,22 +52,29 @@ import random
 
 
 def partition(nums, lo, hi):
-    """Lomuto partition of nums[lo..hi] around a random pivot.
+    """3-way partition of nums[lo..hi] around a random pivot.
 
-    Returns the pivot's final index: everything left of it is smaller,
-    everything right of it is greater or equal.
+    Returns (lt, gt): afterwards nums[lo..lt-1] < pivot,
+    nums[lt..gt] == pivot, and nums[gt+1..hi] > pivot.
+
+        [ < pivot | == pivot | not looked at yet | > pivot ]
+          lo..lt-1   lt..i-1       i..gt            gt+1..hi
     """
-    pivot_index = random.randint(lo, hi)
-    nums[pivot_index], nums[hi] = nums[hi], nums[pivot_index]
-    pivot = nums[hi]
-
-    boundary = lo                    # nums[lo..boundary-1] < pivot
-    for j in range(lo, hi):
-        if nums[j] < pivot:
-            nums[boundary], nums[j] = nums[j], nums[boundary]
-            boundary += 1
-    nums[boundary], nums[hi] = nums[hi], nums[boundary]
-    return boundary
+    pivot = nums[random.randint(lo, hi)]
+    lt = lo
+    i = lo
+    gt = hi
+    while i <= gt:
+        if nums[i] < pivot:
+            nums[lt], nums[i] = nums[i], nums[lt]
+            lt += 1
+            i += 1
+        elif nums[i] > pivot:
+            nums[gt], nums[i] = nums[i], nums[gt]
+            gt -= 1                  # do NOT advance i: the value swapped in is unseen
+        else:
+            i += 1
+    return lt, gt
 
 
 # V0 : k-th smallest, k counted from 0 (k = 0 is the minimum)
@@ -72,13 +89,13 @@ def quick_select(nums, k):
     lo = 0
     hi = len(nums) - 1
     while True:
-        p = partition(nums, lo, hi)
-        if p == k:
-            return nums[p]           # the pivot landed exactly on index k
-        if k < p:
-            hi = p - 1               # the answer is in the left part
+        lt, gt = partition(nums, lo, hi)
+        if k < lt:
+            hi = lt - 1              # the answer is among the smaller values
+        elif k > gt:
+            lo = gt + 1              # the answer is among the larger values
         else:
-            lo = p + 1               # the answer is in the right part
+            return nums[k]           # index k falls inside the == pivot block
 
 
 # V1 : LC 215 -- k-th LARGEST, k counted from 1
@@ -89,7 +106,8 @@ def kth_largest(nums, k):
 
 
 # V2 : the k smallest values. After quick_select puts the right value
-# at index k - 1, everything before it is already no larger than it.
+# at index k - 1, everything before it is already no larger than it
+# (each partition only ever moves smaller values to the left).
 def k_smallest(nums, k):
     """The k smallest values, in no particular order. Leaves nums untouched."""
     if k <= 0:
@@ -114,6 +132,22 @@ if __name__ == "__main__":
 
     assert sorted(k_smallest([9, 5, 6, 2, 3, 8, 1], 3)) == [1, 2, 3]
     assert k_smallest([4, 2], 0) == [] and sorted(k_smallest([4, 2], 9)) == [2, 4]
+
+    # what partition promises: three blocks, the middle one in final position
+    random.seed(3)
+    blocks = [5, 1, 5, 9, 5, 2]
+    lt, gt = partition(blocks, 0, len(blocks) - 1)
+    pivot = blocks[lt]
+    assert all(value < pivot for value in blocks[:lt])
+    assert all(value == pivot for value in blocks[lt:gt + 1])
+    assert all(value > pivot for value in blocks[gt + 1:])
+
+    # all-equal input ends in ONE round. (A two-way partition would take
+    # 200000 rounds here -- about 20 billion comparisons.)
+    same = [7] * 200000
+    assert partition(same, 0, len(same) - 1) == (0, len(same) - 1)
+    assert quick_select(same, 0) == quick_select(same, len(same) - 1) == 7
+    assert quick_select([2, 1] * 50000, 50000) == 2      # only two distinct values
 
     try:
         quick_select([1, 2, 3], 3)

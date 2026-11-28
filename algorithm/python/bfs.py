@@ -129,6 +129,9 @@ def bfs_grid_distance(grid, start, goal):
     """
     rows = len(grid)
     cols = len(grid[0])
+    # a walk cannot begin or end inside a wall
+    if grid[start[0]][start[1]] == 1 or grid[goal[0]][goal[1]] == 1:
+        return -1
     visited = {start}
     queue = deque([(start, 0)])      # (cell, moves taken to get there)
     while queue:
@@ -193,5 +196,9 @@ if __name__ == "__main__":
     assert bfs_grid_distance(grid, (0, 0), (0, 0)) == 0
     walled = [[0, 1, 0]]
     assert bfs_grid_distance(walled, (0, 0), (0, 2)) == -1
+    # a wall is not a place to start from, or to arrive at
+    assert bfs_grid_distance([[1, 0]], (0, 0), (0, 1)) == -1
+    assert bfs_grid_distance([[0, 1]], (0, 0), (0, 1)) == -1
+    assert bfs_grid_distance([[1]], (0, 0), (0, 0)) == -1
 
     print("Success.")
