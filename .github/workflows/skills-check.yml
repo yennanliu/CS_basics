@@ -32,36 +32,20 @@ on:
     branches: [ master ]
     paths:
       - '.claude/skills/**'
-      - 'site/pages/skills.html'
-      - 'site/pages/lc-python.html'
-      - 'site/pages/lc-java.html'
-      - 'site/pages/lc-cheatsheet.html'
-      - 'site/pages/lc-log.html'
-      - 'site/pages/lc-again.html'
-      - 'site/pages/lc-zh-translate.html'
-      - 'site/pages/lc-algo-demo.html'
-      - 'site/pages/lc-site-data.html'
-      - 'site/pages/lc-faq-add.html'
-      - 'site/pages/l3-core.html'
+      - 'site/pages/*.html'          # check_skills finds the pages that link a skill
+      - 'CLAUDE.md'
       - 'script/check_skills.py'
+      - 'script/check_readme.py'     # check_skills imports its Report
       - 'script/test_check_skills.py'
       - '.github/workflows/skills-check.yml'
   pull_request:
     branches: [ master ]
     paths:
       - '.claude/skills/**'
-      - 'site/pages/skills.html'
-      - 'site/pages/lc-python.html'
-      - 'site/pages/lc-java.html'
-      - 'site/pages/lc-cheatsheet.html'
-      - 'site/pages/lc-log.html'
-      - 'site/pages/lc-again.html'
-      - 'site/pages/lc-zh-translate.html'
-      - 'site/pages/lc-algo-demo.html'
-      - 'site/pages/lc-site-data.html'
-      - 'site/pages/lc-faq-add.html'
-      - 'site/pages/l3-core.html'
+      - 'site/pages/*.html'          # check_skills finds the pages that link a skill
+      - 'CLAUDE.md'
       - 'script/check_skills.py'
+      - 'script/check_readme.py'     # check_skills imports its Report
       - 'script/test_check_skills.py'
       - '.github/workflows/skills-check.yml'
   workflow_dispatch:

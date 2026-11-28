@@ -72,13 +72,18 @@ BASH = shutil.which("bash") or "/bin/bash"
 # over it is truncated, and a truncated description matches badly.
 MAX_DESCRIPTION = 1024
 
-# Files that name a skill path and go stale when a skill is renamed: CLAUDE.md
-# and every hand-written page under site/pages/ that links one, found rather
-# than listed, so a new skill page is covered the day it lands.
+# Files that name a skill path and go stale when a skill is renamed. The two
+# required ones are checked for existence even if deleted; every other page
+# under site/pages/ that links a skill is found rather than listed, so a new
+# skill page is covered the day it lands. A deleted skill page is caught by
+# e2e-check.js, because the agent-skills.html hub links every one.
+REQUIRED_WIRING = ["CLAUDE.md", "site/pages/agent-skills.html"]
+
+
 def wiring_sources():
-    pages = sorted(p for p in (ROOT / "site" / "pages").glob("*.html")
+    pages = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "site" / "pages").glob("*.html")
                    if ".claude/skills" in p.read_text(encoding="utf-8"))
-    return ["CLAUDE.md"] + [str(p.relative_to(ROOT)) for p in pages]
+    return REQUIRED_WIRING + [p for p in pages if p not in REQUIRED_WIRING]
 
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.S)
