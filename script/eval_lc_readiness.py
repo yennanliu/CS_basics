@@ -298,7 +298,6 @@ def fetch_all(user, cache_dir, offline, year):
 ROW = re.compile(r"^\|\s*(\d{1,4})\s*\|(.+)$")
 STATUS = re.compile(r"\b(OK|AGAIN|NOT_OK|TODO)\b")
 DIFF = re.compile(r"\b(Easy|Medium|Hard)\b")
-COMPANIES = ("google", "amazon", "fb", "meta", "apple", "microsoft", "m\\$", "uber", "netflix")
 
 
 def parse_readme(path):
@@ -329,8 +328,6 @@ def parse_readme(path):
                 "reps": reps,
                 "google": "google" in note,
                 "must": "must" in note,
-                "has_java": ".java" in rest,
-                "has_python": "leetcode_python" in rest,
                 "raw": note,
             }
     return problems
@@ -373,8 +370,7 @@ def evaluate(data, problems, year, level="L4"):
     tc = data["tags"]["data"]["matchedUser"]["tagProblemCounts"]
     for bucket in ("fundamental", "intermediate", "advanced"):
         for t in tc[bucket]:
-            tagmap[t["tagSlug"]] = {"name": t["tagName"], "solved": t["problemsSolved"],
-                                    "bucket": bucket}
+            tagmap[t["tagSlug"]] = {"name": t["tagName"], "solved": t["problemsSolved"]}
 
     cr = data["contest"]["data"]["userContestRanking"] or {}
     cal = data["calendar"]["data"]["matchedUser"]["userCalendar"]
@@ -509,7 +505,6 @@ def evaluate(data, problems, year, level="L4"):
         "acceptance_rate": accepted_subs / all_subs if all_subs else 0,
         "reps_per_problem": accepted_subs / solved["all"] if solved["all"] else 0,
         "hard_share": hard_share,
-        "tags": tagmap,
         "topics": topics,
         "lc_total": lc_total,
         "baseline": baseline,
@@ -666,9 +661,8 @@ def main():
     result = evaluate(data, problems, a.year, a.level)
     print(render(result))
     if a.json_out:
-        slim = {k: v for k, v in result.items() if k != "tags"}
         with open(a.json_out, "w") as f:
-            json.dump(slim, f, indent=2)
+            json.dump(result, f, indent=2)
         print(f"\nwrote {a.json_out}")
 
 

@@ -20,8 +20,7 @@ Default:
 import re
 import sys
 from pathlib import Path
-from typing import Set, List, Tuple
-from collections import defaultdict
+from typing import Set
 
 
 def extract_problems_from_markdown(md_file: str) -> Set[int]:
@@ -85,17 +84,11 @@ def extract_problems_from_pdf_text(pdf_text: str) -> Set[int]:
     # Common in table exports where problem # appears at start of each row
     for line in pdf_text.split('\n'):
         line = line.strip()
-        # Match lines starting with 3-4 digit numbers (LC problem numbers)
-        # But exclude common words like dates, percentages, etc.
-        if line and re.match(r'^(\d{3,4})(?:\s|$)', line):
-            # Make sure it's not a date or percentage
-            if not re.match(r'^\d{4}[-/]', line) and not re.search(r'%', line):
-                match = re.match(r'^(\d{3,4})', line)
-                if match:
-                    num = int(match.group(1))
-                    # LeetCode problem numbers are typically 1-3000
-                    if 1 <= num <= 3000:
-                        problems.add(num)
+        # A 3-4 digit number then whitespace or end of line: `(?:\s|$)` already
+        # rules out a date (`2024-01-…`); a `%` marks a percentage column.
+        m = re.match(r'^(\d{3,4})(?:\s|$)', line)
+        if m and '%' not in line and 1 <= int(m.group(1)) <= 3000:
+            problems.add(int(m.group(1)))
 
     return problems
 
@@ -207,7 +200,7 @@ def generate_report(pdf_problems: Set[int], md_problems: Set[int]) -> str:
     report.append("=" * 80)
     report.append("")
 
-    report.append(f"📈 Statistics:")
+    report.append("📈 Statistics:")
     report.append(f"  • Problems in PDF:         {len(pdf_problems)}")
     report.append(f"  • Problems in Markdown:    {len(md_problems)}")
     report.append(f"  • Common problems:         {len(common)}")

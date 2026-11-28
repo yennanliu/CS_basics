@@ -352,12 +352,14 @@ class LiveSkills(unittest.TestCase):
 
     def test_every_recipe_page_is_wired_into_the_gate(self):
         # A skill with a page nobody checks is a page whose links rot silently.
+        wired = cs.wiring_sources()
+        self.assertIn("CLAUDE.md", wired)
         for skill in self.recipes:
             page = f"site/pages/{skill.name}.html"
             if (cs.ROOT / page).is_file():
                 with self.subTest(skill=skill.name):
-                    self.assertIn(page, cs.WIRING_SOURCES,
-                                  f"{page} exists but is not in WIRING_SOURCES")
+                    self.assertIn(page, wired,
+                                  f"{page} exists but links no .claude/skills path")
 
 
 if __name__ == "__main__":

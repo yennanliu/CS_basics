@@ -10,7 +10,6 @@ bottom for the vacuous-pass guards — the set must be non-empty and every id in
 data/l3_core.json must still be what the rule produces, or `refresh --check`
 in CI would be the first to know.
 """
-import json
 import os
 import sys
 import tempfile

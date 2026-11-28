@@ -249,16 +249,14 @@ def split_row(line):
 
 def iter_rows(lines):
     """(index, lc_id, section, cells) for every problem row, in file order."""
-    h2 = h3 = None
+    h2 = None
     for i, line in enumerate(lines):
         if line.startswith("## "):
-            h2, h3 = line[3:].strip(), None
-        elif line.startswith("### "):
-            h3 = line[4:].strip()
+            h2 = line[3:].strip()
         cells = split_row(line)
         if cells is None:
             continue
-        yield i, int(ROW_ID.match(cells[0]).group(1)), h2, h3, cells
+        yield i, int(ROW_ID.match(cells[0]).group(1)), h2, cells
 
 
 def split_tags(cell):
@@ -549,7 +547,7 @@ def refresh_topics():
             break
         time.sleep(0.4)
     # keep only what the README asks about, so the cache stays reviewable
-    wanted = {str(lc) for _, lc, _, _, _ in iter_rows(README.read_text().split("\n"))}
+    wanted = {str(lc) for _, lc, _, _ in iter_rows(README.read_text().split("\n"))}
     trimmed = {k: out[k] for k in sorted(wanted & set(out), key=int)}
     write_cache(TOPIC_CACHE, TOPIC_COMMENT, trimmed)
     print("wrote %s (%d problems)" % (TOPIC_CACHE, len(trimmed)), file=sys.stderr)
@@ -683,7 +681,7 @@ def rewrite(lines, topics, companies, lists):
     stats = Counter()
     company_ids = {c: set(v) for c, v in companies.items()}
 
-    for idx, lc, h2, h3, cells in list(iter_rows(lines)):
+    for idx, lc, h2, cells in list(iter_rows(lines)):
         cell = cells[-2]
         original = cell
 
@@ -701,12 +699,11 @@ def rewrite(lines, topics, companies, lists):
         bold = re.findall(r"\*\*(.+?)\*\*", cell)
         if not bold:
             parts = split_tags(cell)
-            first = tag_key(parts[0])
-            if first in TYPE_TAG_TOPICS or first.lower() in TYPE_TAG_TOPICS:
-                label = first if first in TYPE_TAG_TOPICS else first.lower()
-                parts[0] = "**%s**" % label
+            first = tag_key(parts[0])        # already lowercased
+            if first in TYPE_TAG_TOPICS:
+                parts[0] = "**%s**" % first
                 cell = ",".join(parts)
-                bold = [label]
+                bold = [first]
                 stats["type_tag_added"] += 1
 
         entry = topics.get(str(lc))

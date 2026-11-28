@@ -132,7 +132,7 @@ def fetch_post_list(tag, cache_dir, delay, per_page, max_pages):
     dst = os.path.join(cache_dir, "posts.json")
     posts = {}
     if os.path.exists(dst):
-        posts = {n["uuid"]: n for n in json.load(open(dst))}
+        posts = load_posts(dst)
     skip, page = 0, 0
     while max_pages is None or page < max_pages:
         data = gql(LIST_Q, {"keywords": [], "tagSlugs": [tag],
@@ -299,6 +299,16 @@ def extract(posts, comments, by_slug, by_num, by_title):
 
 
 # ------------------------------------------------------------------------ report
+def strongest(hit):
+    """Strongest evidence, not most frequent: one link outweighs ten prose mentions."""
+    return "url" if hit["methods"]["url"] else "num" if hit["methods"]["number"] else "title"
+
+
+def load_posts(path):
+    with open(path) as f:
+        return {n["uuid"]: n for n in json.load(f)}
+
+
 def post_url(node):
     return f'https://leetcode.com/discuss/post/{node["topicId"]}/{node.get("slug") or ""}/'
 
@@ -373,9 +383,7 @@ def render(tag, posts, comments, ranked, solved, out_path, generated_on):
             rec = hit["rec"]
             link = f'https://leetcode.com/problems/{rec["slug"]}/'
             paid = " 🔒" if rec["paid_only"] else ""
-            # Strongest evidence, not most frequent: one link outweighs ten prose mentions.
-            how = ("url" if hit["methods"]["url"]
-                   else "num" if hit["methods"]["number"] else "title")
+            how = strongest(hit)
             last = max(p["createdAt"][:10] for p in hit["posts"].values())
             w(f'| {rec["num"]} | [{rec["title"]}]({link}){paid} | {rec["difficulty"]} '
               f'| {type_of(rec)} | {len(hit["posts"])} | {how} | {last} '
@@ -502,19 +510,19 @@ def main():
         posts_file = os.path.join(cache_dir, "posts.json")
         if not os.path.exists(posts_file):
             sys.exit(f"no cache at {cache_dir} — run without --build-only first")
-        posts = {n["uuid"]: n for n in json.load(open(posts_file))}
+        posts = load_posts(posts_file)
         print(f"[build-only] {len(posts)} posts from cache")
     else:
         print(f"[1/3] listing `{args.tag}` discuss posts")
         posts = fetch_post_list(args.tag, cache_dir, args.delay, args.per_page, args.max_pages)
         if not posts:
             sys.exit("no posts found — check the tag slug, or the API/WAF may be blocking")
-        print(f"[2/3] fetching post bodies")
+        print("[2/3] fetching post bodies")
         fetch_bodies(posts, cache_dir, args.delay)
         if args.no_comments:
             print("[3/3] skipping comments (--no-comments)")
         else:
-            print(f"[3/3] fetching comments")
+            print("[3/3] fetching comments")
             fetch_comments(posts, cache_dir, args.delay)
 
     # Merge cached bodies + comments into the post records.
@@ -537,9 +545,7 @@ def main():
     generated_on = time.strftime("%Y-%m-%d")
     render(args.tag, posts, comments, ranked, load_repo_solved(), out_path, generated_on)
 
-    method_counts = collections.Counter(
-        "url" if h["methods"]["url"] else "num" if h["methods"]["number"] else "title"
-        for h in ranked)
+    method_counts = collections.Counter(strongest(h) for h in ranked)
     shown = os.path.relpath(out_path, REPO_ROOT)
     print(f"\nwrote {out_path if shown.startswith('..') else shown}")
     print(f"  posts={len(posts)} bodies={sum(1 for n in posts.values() if n.get('content'))} "
