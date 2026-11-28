@@ -97,10 +97,8 @@
 - Cheatsheet review
 	
 	- Doing
-		- 樹的 LCA、距離與路徑問題
-			- https://yennj12.js.org/CS_basics/cheatsheets/tree_lca_distance.zh.html
-				- `Template 2: Parent Map + BFS — LC 863`
-
+		- 圖論演算法
+			- https://yennj12.js.org/CS_basics/cheatsheets/graph.zh.html
 
 
 	- Done
@@ -117,6 +115,7 @@
 		- DFS（深度優先搜尋）
 		- 堆積與優先佇列
 		- 字串演算法與操作
+		- 樹的 LCA、距離與路徑問題
 
 
 
