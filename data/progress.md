@@ -97,8 +97,8 @@
 - Cheatsheet review
 	
 	- Doing
-		- 樹狀資料結構 — 概念與模式
-			- https://yennj12.js.org/CS_basics/cheatsheets/tree.zh.html
+		- 動態規劃（DP）
+			- https://yennj12.js.org/CS_basics/cheatsheets/dp.zh.html
 
 
 	- Done
@@ -117,6 +117,7 @@
 		- 字串演算法與操作
 		- 樹的 LCA、距離與路徑問題
 		- 圖論演算法
+		- 樹狀資料結構 — 概念與模式
 
 
 
