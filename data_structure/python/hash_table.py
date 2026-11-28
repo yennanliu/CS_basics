@@ -22,6 +22,11 @@
 #
 # Time  : put / get / remove -> O(1) average, O(N) worst
 #                               (worst = every key hashed to one slot)
+#
+# The slot count here is FIXED, so chains grow as the table fills. A
+# real table (Python's dict, Java's HashMap) watches its LOAD FACTOR
+# (entries / slots) and, past a threshold, allocates more slots and
+# re-inserts everything -- that resize is what keeps "O(1) average" true.
 # Space : O(N)
 #
 # References:
@@ -41,45 +46,68 @@ class HashTable:
         return self._size
 
     def __str__(self):
-        return str({k: v for chain in self.slots for k, v in chain})
+        return str(dict(self.items()))
 
-    def _index(self, key):
-        """Map a key to a slot index."""
-        return self.hash_func(key) % self.n_slots
+    #--- the two steps every operation starts with ----------------
+    def _chain(self, key):
+        """Step 1: hash the key and fold it into a slot; return that slot's chain."""
+        index = self.hash_func(key) % self.n_slots
+        return self.slots[index]
 
-    def put(self, key, value):
-        """Insert, or overwrite the value if the key is already present."""
-        chain = self.slots[self._index(key)]
+    @staticmethod
+    def _position(chain, key):
+        """Step 2: scan the chain for the key. Return its position, or -1.
+
+        This compares the FULL key: two different keys can share a slot.
+        """
         for i, (existing_key, _) in enumerate(chain):
             if existing_key == key:
-                chain[i] = (key, value)      # overwrite, do NOT append a duplicate
-                return
-        chain.append((key, value))
-        self._size += 1
+                return i
+        return -1
+
+    #--- operations -----------------------------------------------
+    def put(self, key, value):
+        """Insert, or overwrite the value if the key is already present."""
+        chain = self._chain(key)
+        i = self._position(chain, key)
+        if i >= 0:
+            chain[i] = (key, value)          # overwrite, do NOT append a duplicate
+        else:
+            chain.append((key, value))
+            self._size += 1
 
     def get(self, key, default=None):
         """Return the value for key, or `default` if absent."""
-        for existing_key, value in self.slots[self._index(key)]:
-            if existing_key == key:
-                return value
-        return default
+        chain = self._chain(key)
+        i = self._position(chain, key)
+        if i < 0:
+            return default
+        return chain[i][1]                   # the entry is (key, value)
 
     def remove(self, key):
         """Delete key. Returns True if something was removed."""
-        chain = self.slots[self._index(key)]
-        for i, (existing_key, _) in enumerate(chain):
-            if existing_key == key:
-                chain.pop(i)
-                self._size -= 1
-                return True
-        return False
+        chain = self._chain(key)
+        i = self._position(chain, key)
+        if i < 0:
+            return False
+        chain.pop(i)
+        self._size -= 1
+        return True
+
+    def __contains__(self, key):
+        """So that `key in table` works."""
+        return self._position(self._chain(key), key) >= 0
+
+    def items(self):
+        """Every (key, value) pair, slot by slot -- O(n_slots + N)."""
+        pairs = []
+        for chain in self.slots:
+            for pair in chain:
+                pairs.append(pair)
+        return pairs
 
     def keys(self):
-        return [k for chain in self.slots for k, _ in chain]
-
-    # so `key in table` works
-    def __contains__(self, key):
-        return any(k == key for k, _ in self.slots[self._index(key)])
+        return [key for key, _ in self.items()]
 
 
 if __name__ == "__main__":
@@ -113,5 +141,15 @@ if __name__ == "__main__":
         big.put(i, i * i)
     assert all(big.get(i) == i * i for i in range(20))
     assert len(big) == 20
+
+    # a value of None is still a stored key: `in` and get() must not confuse them
+    table.put("nothing", None)
+    assert "nothing" in table and table.get("nothing", "default") is None
+
+    # worst case made visible: a hash that sends EVERY key to slot 0
+    crowded = HashTable(n_slots=4, hash_func=lambda key: 0)
+    for i in range(5):
+        crowded.put(i, i)
+    assert len(crowded.slots[0]) == 5 and crowded.get(4) == 4
 
     print("Success.")

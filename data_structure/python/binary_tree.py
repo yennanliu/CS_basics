@@ -23,7 +23,8 @@
 #
 # Time  : every traversal O(N); height O(N)
 # Space : O(H) recursion stack (H = height; O(N) if the tree degrades
-#         into a chain, O(log N) when balanced)
+#         into a chain, O(log N) when balanced), plus O(N) for the
+#         returned list. level-order holds one level in its queue: O(W)
 #
 # References:
 #   - https://www.geeksforgeeks.org/binary-tree-array-implementation/
@@ -44,32 +45,62 @@ class TreeNode:
         return str(self.value)
 
 
-def preorder(node):
+# The three depth-first walks share one shape: a recursive helper that
+# appends into ONE shared list. (Returning `left + [value] + right` looks
+# shorter, but every `+` copies a list, which quietly turns an O(N) walk
+# into O(N^2) on a deep tree.)
+
+def preorder(root):
     """node -> left -> right"""
-    if node is None:
-        return []
-    return [node.value] + preorder(node.left) + preorder(node.right)
+    values = []
+
+    def walk(node):
+        if node is None:
+            return
+        values.append(node.value)      # visit BEFORE both subtrees
+        walk(node.left)
+        walk(node.right)
+
+    walk(root)
+    return values
 
 
-def inorder(node):
+def inorder(root):
     """left -> node -> right"""
-    if node is None:
-        return []
-    return inorder(node.left) + [node.value] + inorder(node.right)
+    values = []
+
+    def walk(node):
+        if node is None:
+            return
+        walk(node.left)
+        values.append(node.value)      # visit BETWEEN the subtrees
+        walk(node.right)
+
+    walk(root)
+    return values
 
 
-def postorder(node):
+def postorder(root):
     """left -> right -> node"""
-    if node is None:
-        return []
-    return postorder(node.left) + postorder(node.right) + [node.value]
+    values = []
+
+    def walk(node):
+        if node is None:
+            return
+        walk(node.left)
+        walk(node.right)
+        values.append(node.value)      # visit AFTER both subtrees
+
+    walk(root)
+    return values
 
 
 def level_order(root):
     """Breadth-first: visit depth 0, then depth 1, ... using a queue."""
     if root is None:
         return []
-    values, queue = [], deque([root])
+    values = []
+    queue = deque([root])
     while queue:
         node = queue.popleft()
         values.append(node.value)
@@ -86,7 +117,9 @@ def inorder_iterative(root):
     Walk left as far as possible pushing every node, then pop-and-visit
     and turn right. This is the pattern behind most 'BST iterator' problems.
     """
-    values, stack, node = [], [], root
+    values = []
+    stack = []
+    node = root
     while stack or node:
         while node:                    # dive left, remembering the way back
             stack.append(node)
@@ -105,6 +138,7 @@ def height(node):
 
 
 def size(node):
+    """Number of nodes: this one + everything in both subtrees."""
     if node is None:
         return 0
     return 1 + size(node.left) + size(node.right)
@@ -179,6 +213,12 @@ if __name__ == "__main__":
     assert size(root) == 6
 
     assert preorder(None) == [] and level_order(None) == [] and height(None) == -1
+
+    # a 5000-deep chain: the iterative walk needs no recursion at all
+    chain = None
+    for value in range(5000):
+        chain = TreeNode(value, left=chain)
+    assert inorder_iterative(chain) == list(range(5000))
 
     #      A
     #    /   \

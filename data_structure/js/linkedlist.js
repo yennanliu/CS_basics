@@ -118,9 +118,9 @@ class LinkedList {
     this.tail = this.head;
 
     while (current !== null) {
-      const next = current.next;
-      current.next = previous;
-      previous = current;
+      const next = current.next; // 1. remember the way forward
+      current.next = previous;   // 2. point this node backwards
+      previous = current;        // 3. step both pointers along
       current = next;
     }
     this.head = previous;

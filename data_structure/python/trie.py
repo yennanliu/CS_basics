@@ -45,6 +45,8 @@ class TrieNode:
 
 
 class Trie:
+    """Prefix tree over strings. The root stands for the empty prefix."""
+
     def __init__(self, words=()):
         self.root = TrieNode()
         for word in words:

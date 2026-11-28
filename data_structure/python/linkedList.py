@@ -147,13 +147,15 @@ class LinkedList:
         `prev` trails one node behind `current`; `nxt` is saved first
         because rewriting current.next destroys the way forward.
         """
-        prev, current = None, self.head
-        self.head, self.tail = self.tail, self.head
+        prev = None
+        current = self.head
         while current:
-            nxt = current.next
-            current.next = prev
-            prev = current
+            nxt = current.next       # 1. remember the way forward
+            current.next = prev      # 2. point this node backwards
+            prev = current           # 3. step both pointers along
             current = nxt
+        # the old head is now the last node, and vice versa
+        self.head, self.tail = self.tail, self.head
 
 
 if __name__ == "__main__":

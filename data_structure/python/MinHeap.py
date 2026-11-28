@@ -26,7 +26,8 @@
 #   pop():  take the root, move the LAST element into the root, then
 #           SIFT DOWN -- swap it with its smaller child while it is
 #           bigger than one of them.
-# Both walk one root-to-leaf path, so both are O(log N).
+# Both walk one root-to-leaf path, so both are O(log N). In the code
+# they are `_sift_up` and `_sift_down`.
 #
 # Time  : peek O(1), add O(log N), pop O(log N)
 # Space : O(N)
@@ -60,41 +61,55 @@ class MinHeap:
         return self.heap[1]
 
     def add(self, element):
-        """Append at the end, then bubble the value UP to its place."""
+        """Append in the first free slot, then SIFT UP to its place."""
         if self.size >= self.capacity:
             raise OverflowError("heap is full (capacity={})".format(self.capacity))
 
         self.size += 1
         self.heap[self.size] = element
-
-        index = self.size
-        while index > 1 and self.heap[index] < self.heap[index // 2]:
-            parent = index // 2
-            self.heap[index], self.heap[parent] = self.heap[parent], self.heap[index]
-            index = parent
+        self._sift_up(self.size)
 
     def pop(self):
-        """Remove and return the minimum, then bubble the new root DOWN."""
+        """Remove and return the minimum, then SIFT the new root DOWN."""
         if self.is_empty():
             raise IndexError("pop from an empty heap")
 
         smallest = self.heap[1]
         self.heap[1] = self.heap[self.size]      # last element takes the root
         self.size -= 1
+        self._sift_down(1)
+        return smallest
 
-        index = 1
+    #--- the two moves --------------------------------------------
+    def _sift_up(self, index):
+        """Swap the value at `index` with its parent while it is smaller."""
+        while index > 1:
+            parent = index // 2
+            if self.heap[parent] <= self.heap[index]:
+                break                            # parent is already in order
+            self._swap(index, parent)
+            index = parent
+
+    def _sift_down(self, index):
+        """Swap the value at `index` with its SMALLER child while it is larger."""
         while index * 2 <= self.size:            # while the node has a left child
             left = index * 2
             right = left + 1
-            # NOTE the `right <= self.size` guard: the right child may not
-            # exist, and without this we would read a stale slot past the end
-            child = right if right <= self.size and self.heap[right] < self.heap[left] else left
+
+            # pick the smaller of the two children. The right child may not
+            # exist: without the `right <= self.size` check we would read a
+            # stale slot past the end of the heap.
+            child = left
+            if right <= self.size and self.heap[right] < self.heap[left]:
+                child = right
+
             if self.heap[index] <= self.heap[child]:
                 break                            # heap property restored
-            self.heap[index], self.heap[child] = self.heap[child], self.heap[index]
+            self._swap(index, child)
             index = child
 
-        return smallest
+    def _swap(self, i, j):
+        self.heap[i], self.heap[j] = self.heap[j], self.heap[i]
 
 
 if __name__ == "__main__":

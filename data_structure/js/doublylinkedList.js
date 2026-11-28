@@ -70,9 +70,18 @@ class DoublyLinkedList {
     return node;
   }
 
+  // Node at `index`. Caller must have validated the index.
+  // Walks from whichever END is closer -- a second thing `prev` buys:
+  // at most N/2 steps instead of N.
   _nodeAt(index) {
-    let node = this.head;
-    for (let i = 0; i < index; i++) node = node.next;
+    let node;
+    if (index < this.length / 2) {
+      node = this.head;
+      for (let i = 0; i < index; i++) node = node.next;
+    } else {
+      node = this.tail;
+      for (let i = this.length - 1; i > index; i--) node = node.prev;
+    }
     return node;
   }
 
@@ -93,9 +102,9 @@ class DoublyLinkedList {
     const leader = this._nodeAt(index - 1);
     const follower = leader.next;
 
-    node.prev = leader;
+    node.prev = leader; // 1-2. the new node learns its neighbours
     node.next = follower;
-    leader.next = node;
+    leader.next = node; // 3-4. the neighbours learn the new node
     follower.prev = node;
     this.length++;
     return node;
@@ -155,6 +164,10 @@ list.insert(20, 88); // index past the end -> appended
 console.assert(list.tail.value === 88 && list.tail.prev.value === 16, 'tail wired both ways');
 
 console.assert(list.get(2) === 99, 'get by index');
+console.assert(
+  list.toArray().every((value, i) => list.get(i) === value),
+  'get() agrees with a full walk, whichever end it starts from'
+);
 console.assert(list.remove(2) === 99, 'remove returns the removed value');
 console.assert(list.toArray().join(',') === '1,10,5,16,88');
 

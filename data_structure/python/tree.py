@@ -53,67 +53,105 @@ class TreeNode:
 
 
 class Tree:
-    """A general tree, addressed through its root."""
+    """A general tree, addressed through its root.
+
+    Every public method answers for the WHOLE tree, or for the subtree
+    under `node` when one is passed in. The recursion itself lives in a
+    private `_helper(node)` so each public method stays one line.
+    """
 
     def __init__(self, root_value=None):
         self.root = TreeNode(root_value) if root_value is not None else None
 
-    def size(self, node="__root__"):
-        """Number of nodes in the subtree (1 for itself + every child's size)."""
-        node = self.root if node == "__root__" else node
-        if node is None:
-            return 0
-        return 1 + sum(self.size(child) for child in node.children)
+    def _start(self, node):
+        """Where a walk begins: the given subtree, or the root by default."""
+        return self.root if node is None else node
 
-    def height(self, node="__root__"):
+    #--- measurements ---------------------------------------------
+    def size(self, node=None):
+        """Number of nodes: 1 for the node itself + the size of every child."""
+        return self._size(self._start(node))
+
+    def _size(self, node):
+        if node is None:                   # empty tree
+            return 0
+        total = 1
+        for child in node.children:
+            total += self._size(child)
+        return total
+
+    def height(self, node=None):
         """Longest path down, in EDGES. A single node has height 0."""
-        node = self.root if node == "__root__" else node
+        return self._height(self._start(node))
+
+    def _height(self, node):
         if node is None:
             return -1                      # empty tree, so that a leaf works out to 0
-        if node.is_leaf():
-            return 0
-        return 1 + max(self.height(child) for child in node.children)
+        tallest_child = -1
+        for child in node.children:
+            tallest_child = max(tallest_child, self._height(child))
+        return 1 + tallest_child           # a leaf: 1 + (-1) = 0
 
-    def find(self, value, node="__root__"):
-        """Depth-first search for the first node holding `value`."""
-        node = self.root if node == "__root__" else node
+    #--- search ---------------------------------------------------
+    def find(self, value, node=None):
+        """Depth-first search for the first node holding `value`, else None."""
+        return self._find(self._start(node), value)
+
+    def _find(self, node, value):
         if node is None:
             return None
         if node.value == value:
             return node
         for child in node.children:
-            found = self.find(value, child)
-            if found:
+            found = self._find(child, value)
+            if found is not None:
                 return found
         return None
 
-    def dfs(self, node="__root__"):
+    #--- traversals -----------------------------------------------
+    def dfs(self, node=None):
         """Pre-order depth-first walk: parent first, then each subtree."""
-        node = self.root if node == "__root__" else node
-        if node is None:
-            return []
-        values = [node.value]
-        for child in node.children:
-            values.extend(self.dfs(child))
+        values = []
+        self._dfs(self._start(node), values)
         return values
+
+    def _dfs(self, node, values):
+        if node is None:
+            return
+        values.append(node.value)          # visit the parent...
+        for child in node.children:        # ...then all of each subtree in turn
+            self._dfs(child, values)
 
     def bfs(self):
         """Level-order breadth-first walk, using a queue."""
         if self.root is None:
             return []
-        values, queue = [], deque([self.root])
+        values = []
+        queue = deque([self.root])
         while queue:
             node = queue.popleft()
             values.append(node.value)
-            queue.extend(node.children)
+            queue.extend(node.children)    # children wait behind this whole level
         return values
 
     def leaves(self):
-        return [v for v in self.dfs() if self.find(v).is_leaf()]
+        """Values of every node with no children, left to right."""
+        values = []
+        self._leaves(self.root, values)
+        return values
 
-    def pretty(self, node="__root__", depth=0):
-        """Indented text drawing of the tree."""
-        node = self.root if node == "__root__" else node
+    def _leaves(self, node, values):
+        if node is None:
+            return
+        if node.is_leaf():
+            values.append(node.value)
+        for child in node.children:
+            self._leaves(child, values)
+
+    #--- display --------------------------------------------------
+    def pretty(self, node=None, depth=0):
+        """Indented text drawing of the tree, one node per line."""
+        node = self._start(node)
         if node is None:
             return ""
         out = "  " * depth + str(node.value) + "\n"
@@ -147,7 +185,16 @@ if __name__ == "__main__":
 
     assert tree.find("e").value == "e"
     assert tree.find("zzz") is None
-    assert sorted(tree.leaves()) == ["b", "d", "e", "f"]
+    assert tree.leaves() == ["d", "e", "b", "f"]
+
+    # subtree queries: pass the node to start from
+    assert tree.size(a) == 3 and tree.dfs(c) == ["c", "f"]
+
+    # two nodes may hold the same VALUE; leaves() must look at the node,
+    # not look the value up again
+    twins = Tree("x")
+    twins.root.add_child("x")
+    assert twins.leaves() == ["x"]
 
     empty = Tree()
     assert empty.size() == 0 and empty.height() == -1 and empty.bfs() == []

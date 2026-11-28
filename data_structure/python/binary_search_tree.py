@@ -37,6 +37,8 @@
 
 
 class Node:
+    """A value plus a left (smaller) and a right (larger) subtree."""
+
     def __init__(self, value):
         self.value = value
         self.left = None
@@ -57,6 +59,12 @@ class BST:
         self.root = self._insert(self.root, value)
 
     def _insert(self, node, value):
+        """Insert into the subtree under `node`; return that subtree's root.
+
+        Returning the root is what lets the caller write
+        `node.left = self._insert(node.left, value)` without ever tracking
+        a parent pointer -- the same trick `_delete` uses below.
+        """
         if node is None:                 # fell off the tree -> this is the spot
             return Node(value)
         if value < node.value:
@@ -99,6 +107,7 @@ class BST:
 
     @staticmethod
     def _min_node(node):
+        """Leftmost node of a subtree = its smallest value."""
         while node.left:
             node = node.left
         return node
@@ -126,11 +135,15 @@ class BST:
         elif value > node.value:
             node.right = self._delete(node.right, value)
         else:
-            if node.left is None:                 # 0 or 1 child
-                return node.right
+            # found it. Whatever we return replaces this node in its parent.
+            if node.left is None:
+                return node.right        # 0 children (returns None) or right child only
             if node.right is None:
-                return node.left
-            successor = self._min_node(node.right)   # 2 children
+                return node.left         # left child only
+            # 2 children: keep the node, overwrite its value with the
+            # successor's, then remove the successor (which has no left
+            # child, so that removal is one of the easy cases above)
+            successor = self._min_node(node.right)
             node.value = successor.value
             node.right = self._delete(node.right, successor.value)
         return node
@@ -150,6 +163,7 @@ class BST:
         return values
 
     def preorder(self):
+        """node -> left -> right. Re-inserting in this order rebuilds the same tree."""
         values = []
 
         def walk(node):
@@ -172,6 +186,7 @@ class BST:
         return walk(self.root)
 
     def __len__(self):
+        """Number of values. O(N): it counts by walking the whole tree."""
         return len(self.inorder())
 
 
@@ -190,6 +205,7 @@ if __name__ == "__main__":
     assert bst.preorder() == [8, 3, 1, 6, 4, 7, 10, 14, 13]
     assert len(bst) == 9
     assert bst.height() == 3
+    assert BST(bst.preorder()).preorder() == bst.preorder()   # pre-order rebuilds the tree
 
     assert 6 in bst and 99 not in bst
     assert bst.search(6).value == 6

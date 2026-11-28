@@ -5,12 +5,9 @@
 # A graph is a set of vertices plus a set of edges. Unlike a tree it
 # may contain cycles and has no root.
 #
-#         0 --- 1 --- 3
-#         |    /|     |
-#         |   / |     |
-#         2 -/  |     4 --- 5
-#                \         /
-#                 --------- 6
+#     0 --- 1 --- 3
+#     |    /      |
+#     2 --/       4 --- 5 --- 6
 #
 # TWO WAYS TO STORE IT
 #
@@ -36,17 +33,22 @@ from collections import deque
 
 
 class Graph:
-    """Undirected graph stored as an adjacency list."""
+    """Adjacency-list graph: undirected by default, directed on request.
+
+    `self.adjacent` maps every vertex to the list of its neighbours.
+    """
 
     def __init__(self, directed=False):
         self.directed = directed
         self.adjacent = {}
 
     def __str__(self):
-        return "\n".join(
-            "{} --> {}".format(node, " ".join(str(n) for n in sorted(neighbours)))
-            for node, neighbours in sorted(self.adjacent.items(), key=lambda kv: str(kv[0]))
-        )
+        """One line per vertex: `1 --> 0 2 3`."""
+        lines = []
+        for node in sorted(self.adjacent, key=str):
+            neighbours = " ".join(str(n) for n in sorted(self.adjacent[node], key=str))
+            lines.append("{} --> {}".format(node, neighbours))
+        return "\n".join(lines)
 
     @property
     def vertex_count(self):
@@ -54,7 +56,8 @@ class Graph:
 
     @property
     def edge_count(self):
-        total = sum(len(n) for n in self.adjacent.values())
+        """An undirected edge sits in TWO adjacency lists, so halve the total."""
+        total = sum(len(neighbours) for neighbours in self.adjacent.values())
         return total if self.directed else total // 2
 
     def add_vertex(self, node):
@@ -70,16 +73,20 @@ class Graph:
             self.adjacent[node2].append(node1)
 
     def neighbours(self, node):
+        """The vertices one edge away from `node` (empty if it is unknown)."""
         return self.adjacent.get(node, [])
 
     def has_edge(self, node1, node2):
-        return node2 in self.adjacent.get(node1, [])
+        """O(deg(node1)): scans one adjacency list."""
+        return node2 in self.neighbours(node1)
 
     def bfs(self, start):
         """Breadth-first: nearest vertices first, using a QUEUE."""
         if start not in self.adjacent:
             return []
-        visited, order, queue = {start}, [], deque([start])
+        visited = {start}
+        order = []
+        queue = deque([start])
         while queue:
             node = queue.popleft()
             order.append(node)
@@ -91,12 +98,13 @@ class Graph:
 
     def dfs(self, start):
         """Depth-first: follow one branch to the end, using recursion."""
-        order, visited = [], set()
+        order = []
+        visited = set()
 
         def walk(node):
             visited.add(node)
             order.append(node)
-            for neighbour in self.adjacent.get(node, []):
+            for neighbour in self.adjacent[node]:
                 if neighbour not in visited:
                     walk(neighbour)
 
@@ -114,26 +122,38 @@ class Graph:
             return None
         if start == end:
             return [start]
-        previous, queue = {start: None}, deque([start])
+
+        # previous[v] = the vertex we reached v FROM. It doubles as the
+        # visited set: a vertex with an entry has already been queued.
+        previous = {start: None}
+        queue = deque([start])
         while queue:
             node = queue.popleft()
             for neighbour in self.adjacent[node]:
                 if neighbour in previous:
                     continue
                 previous[neighbour] = node
-                if neighbour == end:                 # rebuild the path backwards
-                    path = [end]
-                    while previous[path[-1]] is not None:
-                        path.append(previous[path[-1]])
-                    return path[::-1]
+                if neighbour == end:
+                    return self._rebuild_path(previous, end)
                 queue.append(neighbour)
         return None
+
+    @staticmethod
+    def _rebuild_path(previous, end):
+        """Follow the `previous` links from the end back to the start."""
+        path = []
+        node = end
+        while node is not None:              # the start's previous is None
+            path.append(node)
+            node = previous[node]
+        path.reverse()                       # collected end -> start
+        return path
 
 
 if __name__ == "__main__":
     #    0 --- 1 --- 3
-    #    |    /|     |
-    #    2 --/ |     4 --- 5 --- 6
+    #    |    /      |
+    #    2 --/       4 --- 5 --- 6
     g = Graph()
     for edge in [("0", "1"), ("0", "2"), ("1", "2"), ("1", "3"),
                  ("3", "4"), ("4", "5"), ("5", "6")]:

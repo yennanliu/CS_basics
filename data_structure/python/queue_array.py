@@ -93,7 +93,8 @@ if __name__ == "__main__":
     except OverflowError:
         pass
 
-    q.dequeue(); q.dequeue(); q.dequeue()
+    for _ in range(3):               # drain it
+        q.dequeue()
     try:
         q.dequeue()                  # empty -> underflow
         raise AssertionError("expected IndexError")

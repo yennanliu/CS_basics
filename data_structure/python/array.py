@@ -33,10 +33,19 @@ class Array:
     def __len__(self):
         return self.size
 
+    def _check(self, index):
+        """A fixed-size array has no slot outside 0 .. size-1."""
+        if not 0 <= index < self.size:
+            raise IndexError("index out of range: {}".format(index))
+
     def __getitem__(self, index):
+        """arr[index] -- O(1): one multiplication finds the slot."""
+        self._check(index)
         return self.items[index]
 
     def __setitem__(self, index, value):
+        """arr[index] = value -- O(1), same arithmetic."""
+        self._check(index)
         self.items[index] = value
 
     def __str__(self):
@@ -59,8 +68,7 @@ class Array:
                           <-- shift
             after  : [1, 9, 2, 3]   (4 is pushed out)
         """
-        if not 0 <= position < self.size:
-            raise IndexError("position out of range: {}".format(position))
+        self._check(position)
         for i in range(self.size - 2, position - 1, -1):
             self.items[i + 1] = self.items[i]
         self.items[position] = value
@@ -74,8 +82,7 @@ class Array:
                          shift -->
             after  : [1, 2, 3, 0]
         """
-        if not 0 <= position < self.size:
-            raise IndexError("position out of range: {}".format(position))
+        self._check(position)
         for i in range(position, self.size - 1):
             self.items[i] = self.items[i + 1]
         self.items[self.size - 1] = self.item_type()
@@ -98,5 +105,13 @@ if __name__ == "__main__":
 
     arr.delete(1)                    # tail slot is reset to 0
     assert str(arr) == "1 2 3 4 0"
+
+    # there is no slot 5 in a 5-slot array -- and no negative slots either
+    for bad_index in (5, -1):
+        try:
+            arr[bad_index]
+            raise AssertionError("expected IndexError")
+        except IndexError:
+            pass
 
     print("Success.")

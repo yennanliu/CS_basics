@@ -95,12 +95,23 @@ class DoublyLinkedList:
         return node
 
     def _node_at(self, index):
-        node = self.head
-        for _ in range(index):
-            node = node.next
+        """Return the node at `index`. Caller must validate the index.
+
+        Walk from whichever END is closer -- a second thing `prev` buys:
+        at most N/2 steps instead of N.
+        """
+        if index < self._size // 2:
+            node = self.head
+            for _ in range(index):
+                node = node.next
+        else:
+            node = self.tail
+            for _ in range(self._size - 1 - index):
+                node = node.prev
         return node
 
     def get(self, index):
+        """Return the value at `index`."""
         if not 0 <= index < self._size:
             raise IndexError("index out of range: {}".format(index))
         return self._node_at(index).value
@@ -124,24 +135,26 @@ class DoublyLinkedList:
         leader = self._node_at(index - 1)
         follower = leader.next
 
-        node.prev = leader
+        node.prev = leader           # 1-2. the new node learns its neighbours
         node.next = follower
-        leader.next = node
+        leader.next = node           # 3-4. the neighbours learn the new node
         follower.prev = node
         self._size += 1
         return node
 
     def remove_node(self, node):
         """Unlink a node we already hold -- O(1), no traversal needed."""
+        # make the node BEFORE it skip forward over it
         if node.prev:
             node.prev.next = node.next
         else:                                  # node was the head
             self.head = node.next
+        # make the node AFTER it skip backward over it
         if node.next:
             node.next.prev = node.prev
         else:                                  # node was the tail
             self.tail = node.prev
-        node.prev = node.next = None
+        node.prev = node.next = None           # detach, so it cannot be reused by mistake
         self._size -= 1
         return node.value
 
@@ -168,6 +181,7 @@ if __name__ == "__main__":
     assert dll.to_list_reversed() == [4, 6, 8, 7, 1, 0]
 
     assert dll.get(3) == 8
+    assert [dll.get(i) for i in range(len(dll))] == dll.to_list()   # from either end
     assert dll.remove(3) == 8
     assert dll.to_list() == [0, 1, 7, 6, 4]
 

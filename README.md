@@ -191,7 +191,9 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 ||Array| [Py](./data_structure/python/array.py) | | | AGAIN*|
 ||Queue| [Py (array)](./data_structure/python/queue_array.py), [Py (linkedlist)](./data_structure/python/queue_linkedlist.py), [JS](./data_structure/js/queue.js) | | | AGAIN*|
 ||Stack| [Py](./data_structure/python/stack.py), [JS (linkedlist)](./data_structure/js/stack_linkedlist.js), [JS (array)](./data_structure/js/stack_array.js) | | | OK|
-||Hash table| [Py](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity B(O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****|
+||Deque| [Py](./data_structure/python/deque.py) | O(1) at both ends: BFS queue, sliding-window max (LC 239) | ring buffer | |
+||Hash table| [Py](./data_structure/python/hash_table.py), [JS](./data_structure/js/hash_table.js) | usually for improving `time complexity (Big-O)` via extra space complexity (time-space tradeoff)|`good basic`| AGAIN****|
+||Hash set| [Py](./data_structure/python/hash_set.py) | "seen before?" checks, dedup (LC 705) | chaining + resize (load factor) | |
 ||`Linear, Pointer`| | | | |
 ||LinkedList| [Py](./data_structure/python/linkedList.py), [JS](./data_structure/js/linkedlist.js), [Java](./leetcode_java/src/main/java/DataStructure/ListNode.java) | | | OK**|
 ||Doubly LinkedList| [Python](./data_structure/python/doublylinkedlist.py), [JS](./data_structure/js/doublylinkedList.js) | | | AGAIN|
@@ -200,11 +202,14 @@ python3 script/fix_readme_tags.py            # rewrite the Note column
 ||Binary search Tree (BST)| [Python](./data_structure/python/binary_search_tree.py), [JS](./data_structure/js/binary_search_tree.js), [Java](leetcode_java/src/main/java/DataStructure/BST.java) | | | AGAIN|
 ||Binary Tree| [Py](./data_structure/python/binary_tree.py) | | | AGAIN**|
 ||Trie| [Py](./data_structure/python/trie.py) | | | AGAIN|
-||Heap| [heap.py](./data_structure/python/heap.py), [MinHeap.py](./data_structure/python/MinHeap.py), [MaxHeap.py](./data_structure/python/MaxHeap.py), [MinHeap.java](leetcode_java/src/main/java/DataStructure/MinHeap.java), [MaxHeap.java](leetcode_java/src/main/java/DataStructure/MaxHeap.java) | | | AGAIN|
+||Heap| [heap.py](./data_structure/python/heap.py), [MinHeap.py](./data_structure/python/MinHeap.py), [MaxHeap.py](./data_structure/python/MaxHeap.py), [max_heap.py (heapq)](./data_structure/python/max_heap.py), [MinHeap.java](leetcode_java/src/main/java/DataStructure/MinHeap.java), [MaxHeap.java](leetcode_java/src/main/java/DataStructure/MaxHeap.java) | | | AGAIN|
 ||Priority Queue (PQ)| [Py 1](./data_structure/python/pq_1.py), [Py 2](./data_structure/python/pq_2.py), [Py 3](./data_structure/python/pq_3.py) | | | AGAIN|
+||Binary Indexed Tree (Fenwick)| [Py](./data_structure/python/binary_indexed_tree.py) | range sum with point updates (LC 307) | [cheatsheet](./doc/cheatsheet/binary_indexed_tree.md) | |
+||Segment Tree| [Py](./data_structure/python/segment_tree.py) | range sum / min / max with point updates (LC 307) | [cheatsheet](./doc/cheatsheet/segment_tree.md) | |
 ||`Graph`| | | | |
-||Graph| [Py](./data_structure/python/graph.py), [JS](./data_structure/js/graph.js). [Java1](./algorithm/java/Graph.java), [Java2](./algorithm/java/GraphClient.java) | | | OK***|
+||Graph| [Py](./data_structure/python/graph.py), [JS](./data_structure/js/graph.js), [Java1](./algorithm/java/Graph.java), [Java2](./algorithm/java/GraphClient.java) | | | OK***|
 ||DirectedEdge|  [Java](leetcode_java/src/main/java/DataStructure/DirectedEdge.java) | | | AGAIN|
+||Union Find (Disjoint Set)| [Py](./algorithm/python/union_find.py), [Java](./leetcode_java/src/main/java/AlgorithmJava/UnionFind.java) | connected components, cycle detection | [cheatsheet](./doc/cheatsheet/union_find.md) | |
 
 
 ## Algorithm

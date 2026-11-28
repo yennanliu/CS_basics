@@ -6,8 +6,8 @@
 // may contain cycles and has no root.
 //
 //     0 --- 1 --- 3
-//     |    /|     |
-//     2 --/ |     4 --- 5 --- 6
+//      \   /      |
+//        2 ------ 4 --- 5 --- 6
 //
 // TWO WAYS TO STORE IT
 //
@@ -35,8 +35,12 @@ class Graph {
     return Object.keys(this.adjacentList).length;
   }
 
+  // An undirected edge sits in TWO adjacency lists, so halve the total.
   get numberOfEdges() {
-    const total = Object.values(this.adjacentList).reduce((n, list) => n + list.length, 0);
+    let total = 0;
+    for (const neighbours of Object.values(this.adjacentList)) {
+      total += neighbours.length;
+    }
     return this.directed ? total : total / 2;
   }
 
@@ -63,14 +67,18 @@ class Graph {
   }
 
   // Breadth-first: nearest vertices first, using a QUEUE.
+  //
+  // The queue is an array plus a read position (`head`). Taking from the
+  // front with queue.shift() would re-index the whole array every time,
+  // making the walk O(V^2); advancing `head` is O(1).
   bfs(start) {
     if (!this.adjacentList[start]) return [];
     const visited = new Set([start]);
     const order = [];
     const queue = [start];
 
-    while (queue.length > 0) {
-      const node = queue.shift();
+    for (let head = 0; head < queue.length; head++) {
+      const node = queue[head];
       order.push(node);
       for (const neighbour of this.adjacentList[node]) {
         if (visited.has(neighbour)) continue;
@@ -104,25 +112,30 @@ class Graph {
     if (!this.adjacentList[start] || !this.adjacentList[end]) return null;
     if (start === end) return [start];
 
+    // previous.get(v) = the vertex we reached v FROM. It doubles as the
+    // visited set: a vertex with an entry has already been queued.
     const previous = new Map([[start, null]]);
     const queue = [start];
 
-    while (queue.length > 0) {
-      const node = queue.shift();
+    for (let head = 0; head < queue.length; head++) {
+      const node = queue[head];
       for (const neighbour of this.adjacentList[node]) {
         if (previous.has(neighbour)) continue;
         previous.set(neighbour, node);
-        if (neighbour === end) {
-          const path = [end]; // rebuild the path backwards
-          while (previous.get(path[path.length - 1]) !== null) {
-            path.push(previous.get(path[path.length - 1]));
-          }
-          return path.reverse();
-        }
+        if (neighbour === end) return this._rebuildPath(previous, end);
         queue.push(neighbour);
       }
     }
     return null;
+  }
+
+  // Follow the `previous` links from the end back to the start.
+  _rebuildPath(previous, end) {
+    const path = [];
+    for (let node = end; node !== null; node = previous.get(node)) {
+      path.push(node); // the start's previous is null, which ends the loop
+    }
+    return path.reverse(); // collected end -> start
   }
 
   showConnections() {
@@ -135,8 +148,8 @@ class Graph {
 
 // demo
 //    0 --- 1 --- 3
-//    |    /|     |
-//    2 --/ |     4 --- 5 --- 6
+//     \   /      |
+//       2 ------ 4 --- 5 --- 6
 const graph = new Graph();
 [['3', '1'], ['3', '4'], ['4', '2'], ['4', '5'],
  ['1', '2'], ['1', '0'], ['0', '2'], ['6', '5']].forEach(([a, b]) => graph.addEdge(a, b));
