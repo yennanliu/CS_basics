@@ -104,7 +104,16 @@ MIN_SCORE_FRAC = 0.3
 DIFFS = ("Easy", "Medium", "Hard")
 MUST_ANY_CASE = re.compile(r"must", re.IGNORECASE)
 MUST_TAG_TOKEN = re.compile(r"(?<![A-Za-z])MUST(?![A-Za-z])")
-STATUS_WORD = re.compile(r"\b(OK|AGAIN|NOT_OK|TODO)\b")
+# Case-insensitive: check_readme's grammar accepts `Again` / `again` / `ok`, and
+# site/build-roadmap.js's statusWord() reads them with /i. Read the match as
+# status_word(), which upper-cases it.
+STATUS_WORD = re.compile(r"\b(OK|AGAIN|NOT_OK|TODO)\b", re.IGNORECASE)
+
+
+def status_word(cell):
+    """A status cell -> OK / AGAIN / NOT_OK / TODO (first one wins), or None."""
+    m = STATUS_WORD.search(cell)
+    return m.group(1).upper() if m else None
 
 
 # ── README ──────────────────────────────────────────────────────────────────
@@ -162,7 +171,6 @@ def parse_readme(path):
             note, status = cols[-2], cols[-1]
 
             must = is_must(note, status)
-            sm = STATUS_WORD.search(status)
             tags = set(re.findall(r"`([^`]+)`", note))
             paths = [q.split("#")[0].lstrip("./")
                      for q in re.findall(r"\]\(([^)]+)\)", cols[2])
@@ -182,7 +190,7 @@ def parse_readme(path):
                 first["must"] = first["must"] or must
                 first["tags"] |= tags
                 first["passes"] = max(first["passes"], status.count("*"))
-                first["status"] = first["status"] or (sm.group(1) if sm else None)
+                first["status"] = first["status"] or status_word(status)
                 first["paths"] += paths
                 continue
 
@@ -194,7 +202,7 @@ def parse_readme(path):
                 "section": section,
                 "also_in": [],
                 "note": note,
-                "status": sm.group(1) if sm else None,
+                "status": status_word(status),
                 # The `*` run counts review passes; see doc/lc-readiness-guide.md.
                 "passes": status.count("*"),
                 "must": must,
