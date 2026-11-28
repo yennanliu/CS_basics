@@ -36,15 +36,29 @@ class TypeTags(unittest.TestCase):
         self.assertEqual(f.TYPE_TAG_KEYS.get(f.tag_key("BST")), "BST")
 
 
+def companies(cell):
+    """Every company in a note cell, including inside a badly quoted span such
+    as `` `tree, M$` ``, which split_tags keeps as one part (normalise_cell
+    splits it the same way)."""
+    found = []
+    for part in f.split_tags(cell):
+        inner = part.strip().strip("`").strip()
+        for piece in (inner.split(",") if "," in inner else [part]):
+            comp = f.canonical_company(piece)
+            if comp:
+                found.append(comp)
+    return found
+
+
 class LiveReadme(unittest.TestCase):
+    def test_companies_sees_inside_a_span(self):
+        self.assertEqual(companies(" `microsoft`, `tree, M$`"), ["microsoft", "microsoft"])
+
     def test_no_row_lists_a_company_twice(self):
         with open(os.path.join(f.ROOT, "README.md"), encoding="utf-8") as fh:
             lines = fh.read().split("\n")
-        dupes = []
-        for idx, lc, _, cells in f.iter_rows(lines):
-            comps = [c for c in (f.canonical_company(p) for p in f.split_tags(cells[-2])) if c]
-            if len(comps) != len(set(comps)):
-                dupes.append(lc)
+        dupes = [lc for _, lc, _, cells in f.iter_rows(lines)
+                 if len(companies(cells[-2])) != len(set(companies(cells[-2])))]
         self.assertEqual(dupes, [])
 
 
