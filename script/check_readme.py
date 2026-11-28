@@ -159,14 +159,13 @@ def local_path(target):
     return re.sub(r"^(\./)+", "", target.split("#")[0])
 
 
-def resolves(root, rel):
-    """True when `rel` names a regular file inside `root`.
+def resolves(root_real, rel):
+    """True when `rel` names a regular file inside `root_real` (already realpath'd).
 
     Not `os.path.exists`: that accepts a directory (`./leetcode_python/` is not a
     solution, and `..` walks up to the root itself and "exists") and follows a
     `../` out of the repo. A solution link has to land on a file we ship.
     """
-    root_real = os.path.realpath(root)
     candidate = os.path.realpath(os.path.join(root_real, rel))
     return (os.path.commonpath((root_real, candidate)) == root_real
             and candidate != root_real
@@ -207,12 +206,13 @@ def findings(readme_text, progress_text, root=ROOT):
 
     dead = []
     linked = set()
+    root_real = os.path.realpath(root)
     for r in rows:
         for label, target in r["solutions"]:
             rel = local_path(target)
             if rel is None:
                 continue
-            if resolves(root, rel):
+            if resolves(root_real, rel):
                 linked.add(rel)
             else:
                 dead.append({"line": r["line"], "id": r["id"], "label": label, "target": target})
@@ -321,12 +321,15 @@ def run(rep, f, base, strict=False):
               "%d rows" % len(f["rows"]) if not f["bad_rows"]
               else "; ".join("line %d" % r["line"] for r in f["bad_rows"][:5]))
 
+    def baselined(total, new):
+        n = len(total) - len(new)
+        return ", %d baselined" % n if n else ""
+
     rep.section("solution links")
     new_dead = [d for d in f["dead_links"] if not allow("dead_links", d)]
-    known_dead = len(f["dead_links"]) - len(new_dead)
     rep.check("every relative solution link resolves", not new_dead,
               "%d resolve, %d dead%s" % (f["linked"], len(f["dead_links"]),
-                                         ", %d baselined" % known_dead if known_dead else ""))
+                                         baselined(f["dead_links"], new_dead)))
     for d in (new_dead if not rep.verbose else f["dead_links"]):
         rep_line = "line %d  LC %d  [%s](%s)" % (d["line"], d["id"], d["label"], d["target"])
         if d in new_dead:
@@ -338,8 +341,7 @@ def run(rep, f, base, strict=False):
     new_cross = [i for i in f["cross_duplicates"] if not allow("cross_duplicates", i)]
     rep.check("no id is filed in both the main tables and the imported set", not new_cross,
               "%d shared%s" % (len(f["cross_duplicates"]),
-                               ", %d baselined" % (len(f["cross_duplicates"]) - len(new_cross))
-                               if len(f["cross_duplicates"]) - len(new_cross) else ""))
+                               baselined(f["cross_duplicates"], new_cross)))
     if new_cross:
         print("        " + ", ".join(str(i) for i in new_cross))
     rep.info("filed in two main sections (allowed): %s" % ", ".join(str(i) for i in f["main_duplicates"]))
@@ -361,8 +363,7 @@ def run(rep, f, base, strict=False):
     rep.check("every main-table status cell parses (word, stars, notes)", not new_status,
               "%d cells checked, %d unparseable%s" % (
                   sum(1 for r in f["rows"] if not r["imported"]), len(f["bad_status"]),
-                  ", %d baselined" % (len(f["bad_status"]) - len(new_status))
-                  if len(f["bad_status"]) - len(new_status) else ""))
+                  baselined(f["bad_status"], new_status)))
     for r in new_status[:10]:
         print("        line %d  LC %d  %r" % (r["line"], r["id"], r["status"]))
 
@@ -370,8 +371,7 @@ def run(rep, f, base, strict=False):
     new_dates = [x for x in f["bad_dates"] if not allow("bad_dates", x)]
     rep.check("every date header in data/progress.txt is a real date", not new_dates,
               "%d dates, %d impossible%s" % (f["dates"], len(f["bad_dates"]),
-                                             ", %d baselined" % (len(f["bad_dates"]) - len(new_dates))
-                                             if len(f["bad_dates"]) - len(new_dates) else ""))
+                                             baselined(f["bad_dates"], new_dates)))
     for i, d in new_dates:
         print("        line %d  %s" % (i, d))
 

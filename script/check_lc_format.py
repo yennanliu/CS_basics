@@ -19,7 +19,6 @@ Usage:
 
 import re
 import sys
-import os
 from pathlib import Path
 
 CHEATSHEET_DIR = Path(__file__).parent.parent / "doc" / "cheatsheet"
@@ -121,14 +120,6 @@ def classify_entry(entry):
     return issues
 
 
-def extract_idea_from_java(code_lines):
-    for line in code_lines:
-        m = re.match(r'\s*// IDEA:\s*(.+)', line)
-        if m:
-            return m.group(1).strip()
-    return None
-
-
 def main():
     verbose = "--verbose" in sys.argv or "-v" in sys.argv
 
@@ -183,7 +174,7 @@ def main():
             print(f"    {entry['header'][:70]}")
             print(f"      issues: {', '.join(entry['issues'])}")
 
-    print(f"\n[SUMMARY]")
+    print("\n[SUMMARY]")
     total_bad = sum(len(v) for v in results.values())
     print(f"  Total files with issues: {len(results)}")
     print(f"  Total entries with issues: {total_bad}")

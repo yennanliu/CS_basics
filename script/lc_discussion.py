@@ -55,8 +55,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 
-ENDPOINT = "https://leetcode.com/graphql/"
-POST_URL = "https://leetcode.com/discuss/post/{topic}/{slug}/"
+from scrape_lc_discuss_company import gql, post_url  # noqa: E402  — one client, one URL shape
+
 PAGE_SIZE = 50
 ORDERS = ("MOST_RECENT", "MOST_RELEVANT", "MOST_VOTES", "HOT")
 
@@ -84,7 +84,6 @@ DELAY = 1.5
 
 
 def graphql(query, variables, delay=DELAY):
-    from scrape_lc_discuss_company import gql
     data = gql(query, variables, delay)
     if data is None:
         raise SystemExit("LeetCode GraphQL request failed (see the message above)")
@@ -114,10 +113,6 @@ def list_posts(keywords, order, pages, days=None):
 def upvotes(node):
     return sum(r["count"] for r in node.get("reactions") or []
                if r.get("reactionType") == "UPVOTE")
-
-
-def post_url(node):
-    return POST_URL.format(topic=node["topicId"], slug=node["slug"])
 
 
 def has_terms(text, keywords):

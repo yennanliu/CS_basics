@@ -455,8 +455,9 @@ def lookup(number, out=sys.stdout):
 
 def todo(limit=0, out=sys.stdout):
     have = readme_sql_rows(read_readme())
-    missing = [r for n, r in sorted(sql_problems().items()) if n not in have]
-    print("%d SQL problems in the audit, %d not under ## SQL" % (len(sql_problems()), len(missing)),
+    audit = sql_problems()
+    missing = [r for n, r in sorted(audit.items()) if n not in have]
+    print("%d SQL problems in the audit, %d not under ## SQL" % (len(audit), len(missing)),
           file=out)
     for rec in missing[:limit or None]:
         print("%5d  %-6s %s  %s" % (rec["num"], rec["difficulty"],

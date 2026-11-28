@@ -158,6 +158,9 @@ def parse_readme(path):
                 MUST_ANY_CASE.search(status) or MUST_TAG_TOKEN.search(note))
             sm = STATUS_WORD.search(status)
             tags = set(re.findall(r"`([^`]+)`", note))
+            paths = [q.split("#")[0].lstrip("./")
+                     for q in re.findall(r"\]\(([^)]+)\)", cols[2])
+                     if not q.startswith("http")]
 
             if num in problems:
                 # The duplicate row is the same problem filed a second time, and
@@ -173,9 +176,7 @@ def parse_readme(path):
                 first["tags"] |= tags
                 first["passes"] = max(first["passes"], status.count("*"))
                 first["status"] = first["status"] or (sm.group(1) if sm else None)
-                first["paths"] += [q.split("#")[0].lstrip("./")
-                                   for q in re.findall(r"\]\(([^)]+)\)", cols[2])
-                                   if not q.startswith("http")]
+                first["paths"] += paths
                 continue
 
             problems[num] = {
@@ -191,9 +192,7 @@ def parse_readme(path):
                 "passes": status.count("*"),
                 "must": must,
                 "tags": tags,
-                "paths": [p.split("#")[0].lstrip("./")
-                          for p in re.findall(r"\]\(([^)]+)\)", cols[2])
-                          if not p.startswith("http")],
+                "paths": paths,
             }
 
     return problems
@@ -362,27 +361,27 @@ def _classify(note):
     return "other" if text else "none"
 
 
-def parse_progress(path):
-    """-> ({lc: [epoch_seconds, ...]} newest first, {lc: Counter(status)}, warnings)."""
-    if not os.path.exists(path):
-        return {}, {}, ["%s not found" % path]
+def _paren_depth(text):
+    depth = 0
+    for ch in text:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth = max(0, depth - 1)
+    return depth
 
-    dates = defaultdict(list)
-    notes = defaultdict(Counter)
-    warnings = []
+
+def iter_progress(path, warnings):
+    """Yield (epoch_seconds, lc, note) for every LC entry in the log, in file
+    order; a problem with the log's shape is appended to `warnings`.
+
+    The one walk of data/progress.txt in Python — parse_progress counts what
+    it yields, l3_core.latest_verdicts keeps the latest of it.
+    """
     current_ts = None
     pending = None
 
-    def depth_of(text):
-        depth = 0
-        for ch in text:
-            if ch == "(":
-                depth += 1
-            elif ch == ")":
-                depth = max(0, depth - 1)
-        return depth
-
-    def flush():
+    def entries():
         if pending is None or current_ts is None:
             return
         for chunk in _split_top_level(pending.replace("|", ",")):
@@ -393,19 +392,17 @@ def parse_progress(path):
             m = re.match(r"^(\d+)(?!\d|\s*/)\s*(?:\((.*)\))?", _strip_label(entry))
             if not m:      # named drills — topo_sort, weekly_331 — not LC rows
                 continue
-            lc = int(m.group(1))
-            dates[lc].append(current_ts)
-            notes[lc][_classify(m.group(2))] += 1
+            yield current_ts, int(m.group(1)), m.group(2)
 
     with open(path, encoding="utf-8") as f:
         lines = f.read().split("\n")
 
     for i, raw in enumerate(lines):
         trimmed = raw.strip()
-        mid_annotation = pending is not None and depth_of(pending) > 0
+        mid_annotation = pending is not None and _paren_depth(pending) > 0
 
         if not trimmed or re.match(r"^[-=]{2,}", trimmed):
-            flush()
+            yield from entries()
             pending = None
             continue
 
@@ -416,7 +413,7 @@ def parse_progress(path):
         if header:
             if mid_annotation:
                 warnings.append("line %d: previous entry left '(' unclosed" % (i + 1))
-            flush()
+            yield from entries()
             try:
                 current_ts = time.mktime(time.strptime(header.group(1), "%Y%m%d"))
             except ValueError:
@@ -433,7 +430,20 @@ def parse_progress(path):
         else:
             pending += ("" if mid_annotation else ",") + trimmed
 
-    flush()
+    yield from entries()
+
+
+def parse_progress(path):
+    """-> ({lc: [epoch_seconds, ...]} newest first, {lc: Counter(status)}, warnings)."""
+    if not os.path.exists(path):
+        return {}, {}, ["%s not found" % path]
+
+    dates = defaultdict(list)
+    notes = defaultdict(Counter)
+    warnings = []
+    for ts, lc, note in iter_progress(path, warnings):
+        dates[lc].append(ts)
+        notes[lc][_classify(note)] += 1
 
     for lc in dates:
         dates[lc].sort(reverse=True)
@@ -879,7 +889,6 @@ def main(argv=None):
         "by_cat": Counter(),
         "events": 0,
         "problems": 0,
-        "lcs": Counter(),
         "bulk_commits": bulk_commits,
     }
     cutoff = now - args.window * DAY
@@ -889,7 +898,6 @@ def main(argv=None):
             recent["by_cat"][r["section"]] += len(hits)
             recent["events"] += len(hits)
             recent["problems"] += 1
-            recent["lcs"][r["lc"]] += len(hits)
 
     for r in rows:
         r["balance"] = cats[r["section"]]["multiplier"] if not args.no_balance else 1.0

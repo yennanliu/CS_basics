@@ -134,6 +134,7 @@ def count_file(name, text, tier):
     counts = {r: 0 for r in RULES}
     lines = text.split("\n")
     h2 = []
+    headings = []
     prev_lc_heading = None    # index of an `### … LC n` heading awaiting its first content line
     pending = None            # a block comparator whose `return` is still to come
     for i, line, lang in scan(lines):
@@ -151,6 +152,7 @@ def count_file(name, text, tier):
             hm = HEADING.match(line)
             if hm:
                 level, title = len(hm.group(1)), hm.group(2)
+                headings.append(title)
                 prev_lc_heading = i if level >= 3 and LC_IN_HEADING.search(title) else None
                 if EMOJI.search(STAR_RUN.sub("", title)):
                     counts["heading-emoji"] += 1
@@ -207,8 +209,6 @@ def count_file(name, text, tier):
         counts["examples-after-summary"] = sum(
             1 for t in h2[summary_at + 1:] if re.search(r"\bexamples?\b", t, re.I))
 
-    headings = [HEADING.match(l).group(2) for _, l, lang in scan(lines)
-                if lang is None and HEADING.match(l)]
     r = role(name)
     if r == "core" and tier >= 4:
         counts["no-recognition"] = 0 if any(RECOGNITION.search(h) for h in headings) else 1

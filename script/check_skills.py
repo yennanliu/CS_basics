@@ -52,7 +52,6 @@ tracked.
 """
 
 import argparse
-import os
 import re
 import shutil
 import subprocess
@@ -60,6 +59,8 @@ import sys
 import tempfile
 import zipfile
 from pathlib import Path
+
+from check_readme import Report  # noqa: E402  — the gates print one shape
 
 ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = ROOT / ".claude" / "skills"
@@ -71,14 +72,18 @@ BASH = shutil.which("bash") or "/bin/bash"
 # over it is truncated, and a truncated description matches badly.
 MAX_DESCRIPTION = 1024
 
-# Files that name a skill path and go stale when a skill is renamed.
-WIRING_SOURCES = ["CLAUDE.md", "site/pages/agent-skills.html",
-                  "site/pages/skills.html", "site/pages/lc-python.html",
-                  "site/pages/lc-java.html", "site/pages/lc-cheatsheet.html",
-                  "site/pages/lc-log.html", "site/pages/lc-again.html",
-                  "site/pages/lc-zh-translate.html", "site/pages/lc-algo-demo.html",
-                  "site/pages/lc-site-data.html", "site/pages/lc-faq-add.html",
-                  "site/pages/l3-core.html"]
+# Files that name a skill path and go stale when a skill is renamed. The two
+# required ones are checked for existence even if deleted; every other page
+# under site/pages/ that links a skill is found rather than listed, so a new
+# skill page is covered the day it lands. A deleted skill page is caught by
+# e2e-check.js, because the agent-skills.html hub links every one.
+REQUIRED_WIRING = ["CLAUDE.md", "site/pages/agent-skills.html"]
+
+
+def wiring_sources():
+    pages = sorted(str(p.relative_to(ROOT)) for p in (ROOT / "site" / "pages").glob("*.html")
+                   if ".claude/skills" in p.read_text(encoding="utf-8"))
+    return REQUIRED_WIRING + [p for p in pages if p not in REQUIRED_WIRING]
 
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 FRONTMATTER_RE = re.compile(r"\A---\n(.*?)\n---\n", re.S)
@@ -91,31 +96,6 @@ SKILL_PATH_RE = re.compile(r"\.claude/skills/[A-Za-z0-9_./-]*")
 BACKTICK_PATH_RE = re.compile(r"`([A-Za-z0-9_][A-Za-z0-9_.-]*(?:/[A-Za-z0-9_.-]+)+\.md)`")
 MD_LINK_RE = re.compile(r"\]\(([^)#][^)]*)\)")
 FENCE_RE = re.compile(r"^```.*?^```", re.S | re.M)
-
-
-class Report:
-    """PASS/FAIL lines and a tally, in the shape site/e2e-check.js prints."""
-
-    def __init__(self, verbose=False):
-        self.passed = 0
-        self.failed = 0
-        self.verbose = verbose
-
-    def section(self, title):
-        print(f"\n== {title} ==")
-
-    def check(self, name, cond, detail=""):
-        if cond:
-            self.passed += 1
-        else:
-            self.failed += 1
-        suffix = f"  — {detail}" if detail else ""
-        print(f"  {'PASS' if cond else 'FAIL'}  {name}{suffix}")
-        return cond
-
-    def info(self, text):
-        if self.verbose:
-            print(f"  INFO  {text}")
 
 
 def parse_frontmatter(text):
@@ -253,7 +233,7 @@ def check_wiring(rep, skills):
     can see it — e2e-check.js only resolves links that are local files, and
     these are absolute github.com URLs by necessity.
     """
-    sources = list(WIRING_SOURCES)
+    sources = wiring_sources()
     sources += [str((d / "INSTALL.md").relative_to(ROOT)) for d in skills
                 if (d / "INSTALL.md").is_file()]
 

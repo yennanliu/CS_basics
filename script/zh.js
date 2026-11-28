@@ -88,7 +88,7 @@ function survey(docs) {
     // An entry the English no longer has: left behind by an edit upstream.
     const keys = new Set(rows.map(r => r.key));
     const orphans = [...store.keys()].filter(k => !keys.has(k)).length;
-    return { doc, rows, total: rows.length, done, orphans };
+    return { doc, en, store, rows, total: rows.length, done, orphans };
   });
 }
 
@@ -351,7 +351,7 @@ function tracker(c, rows) {
 function cmdCheck(docs) {
   let failures = 0;
   const rows = survey(docs);
-  for (const { doc, rows: sections, orphans } of rows) {
+  for (const { doc, en, store, rows: sections, orphans } of rows) {
     const problems = [];
     const missing = sections.filter(r => r.zh === undefined);
     if (missing.length) {
@@ -360,7 +360,7 @@ function cmdCheck(docs) {
     }
     if (orphans) problems.push(`${orphans} orphaned entr${orphans === 1 ? 'y' : 'ies'} — run: node script/zh.js sync ${doc.id}`);
     try {
-      I.compose(fs.readFileSync(abs(doc.en), 'utf8'), readStore(doc));
+      I.compose(en, store);       // the text survey() already read
     } catch (err) {
       problems.push(`does not compose: ${err.message}`);
     }

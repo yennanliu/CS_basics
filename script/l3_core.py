@@ -38,7 +38,6 @@ with /lc-log and promoted with /lc-again, which own those files.
 import argparse
 import json
 import os
-import re
 import sys
 import time
 from collections import Counter, OrderedDict, defaultdict
@@ -122,73 +121,25 @@ def _verdict(note):
 def latest_verdicts(path=PROGRESS):
     """-> {lc: {"verdict", "ts", "attempts", "first_ts"}}, warnings.
 
-    Walks the log the way suggest_review.parse_progress does (same date rule,
-    same label stripping, same top-level split) but keeps *which* annotation
-    was the latest rather than a Counter of all of them. Within one day the
-    later entry wins, so "139(again), ... 139(ok)" on a single line reads ok.
+    Reads the log through suggest_review.iter_progress, so the two planners
+    cannot disagree about a line, but keeps *which* annotation was the latest
+    rather than a Counter of all of them. Within one day the later entry wins,
+    so "139(again), ... 139(ok)" on a single line reads ok. Only bad dates are
+    reported; the log-shape warnings are suggest_review's to give.
     """
     if not os.path.exists(path):
         return {}, ["%s not found" % path]
     state = {}
-    warnings = []
-    current_ts = None
-    pending = None
-
-    def depth_of(text):
-        depth = 0
-        for ch in text:
-            if ch == "(":
-                depth += 1
-            elif ch == ")":
-                depth = max(0, depth - 1)
-        return depth
-
-    def flush():
-        if pending is None or current_ts is None:
-            return
-        for chunk in sr._split_top_level(pending.replace("|", ",")):
-            entry = chunk.strip()
-            if not entry:
-                continue
-            m = re.match(r"^(\d+)(?!\d|\s*/)\s*(?:\((.*)\))?", sr._strip_label(entry))  # `0/1 Knapsack` is a drill
-            if not m:
-                continue
-            lc = int(m.group(1))
-            rec = state.setdefault(lc, {"verdict": "none", "ts": None, "attempts": 0, "first_ts": None})
-            rec["attempts"] += 1
-            if rec["first_ts"] is None or current_ts < rec["first_ts"]:
-                rec["first_ts"] = current_ts
-            if rec["ts"] is None or current_ts >= rec["ts"]:
-                rec["ts"] = current_ts
-                rec["verdict"] = _verdict(m.group(2))
-
-    with open(path, encoding="utf-8") as f:
-        lines = f.read().split("\n")
-
-    for i, raw in enumerate(lines):
-        trimmed = raw.strip()
-        mid_annotation = pending is not None and depth_of(pending) > 0
-        if not trimmed or re.match(r"^[-=]{2,}", trimmed):
-            flush()
-            pending = None
-            continue
-        header = re.match(r"^(\d{8})\s*[:.]?\s*(.*)$", trimmed)
-        if header:
-            flush()
-            try:
-                current_ts = time.mktime(time.strptime(header.group(1), "%Y%m%d"))
-            except ValueError:
-                warnings.append("line %d: unreadable date %r" % (i + 1, header.group(1)))
-                current_ts = None
-            pending = header.group(2)
-            continue
-        if pending is None:
-            if current_ts is None:
-                continue
-            pending = trimmed
-        else:
-            pending += ("" if mid_annotation else ",") + trimmed
-    flush()
+    shape_warnings = []
+    for ts, lc, note in sr.iter_progress(path, shape_warnings):
+        rec = state.setdefault(lc, {"verdict": "none", "ts": None, "attempts": 0, "first_ts": None})
+        rec["attempts"] += 1
+        if rec["first_ts"] is None or ts < rec["first_ts"]:
+            rec["first_ts"] = ts
+        if rec["ts"] is None or ts >= rec["ts"]:
+            rec["ts"] = ts
+            rec["verdict"] = _verdict(note)
+    warnings = [w for w in shape_warnings if "unreadable date" in w]
     return state, warnings
 
 
@@ -223,7 +174,7 @@ def build_rows(ids, problems, log, now=None):
 def summarise(rows):
     c = Counter(r["verdict"] for r in rows)
     size = len(rows)
-    by_section = defaultdict(lambda: Counter())
+    by_section = defaultdict(Counter)
     for r in rows:
         by_section[r["section"]][r["verdict"]] += 1
         by_section[r["section"]]["total"] += 1

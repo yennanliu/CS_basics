@@ -22,7 +22,6 @@ import re
 import os
 import sys
 from datetime import date
-from pathlib import Path
 from collections import defaultdict
 
 _CATEGORY_MAPPING = {
@@ -49,7 +48,6 @@ def extract_lc_problems(file_path, year_start=2025, year_end=2026):
 
     lc_problems = set()
     in_range = False
-    year_pattern = '|'.join(str(y) for y in range(year_start, year_end + 1))
 
     for line in lines:
         year_header = re.match(r'^# (\d{4})', line)
@@ -114,7 +112,7 @@ def scan_directory_for_problems(base_dir, problem_set, file_ext):
                                     if prob_num not in problem_to_category:
                                         problem_to_category[prob_num] = normalized_cat
                                 break
-                except Exception as e:
+                except Exception:
                     continue
 
     return problem_to_category
@@ -251,7 +249,7 @@ if __name__ == '__main__':
 
     print(f"Categorized: {sum(len(v) for v in category_map.values())} problems")
     print(f"Uncategorized: {len(uncategorized)} problems")
-    print(f"\nCategories found:")
+    print("\nCategories found:")
     for cat in sorted(category_map.keys()):
         print(f"  - {format_category_name(cat)}: {len(category_map[cat])} problems")
 
@@ -264,7 +262,7 @@ if __name__ == '__main__':
         f.write(markdown)
 
     print(f"\n✅ Document generated: {output_file}")
-    print(f"\nTop 5 categories:")
+    print("\nTop 5 categories:")
     for i, (cat, probs) in enumerate(sorted(category_map.items(), key=lambda x: len(x[1]), reverse=True)[:5], 1):
         percentage = (len(probs) / len(problems)) * 100
         print(f"  {i}. {format_category_name(cat)}: {len(probs)} problems ({percentage:.1f}%)")
